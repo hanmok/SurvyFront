@@ -19,7 +19,7 @@ function HomeView({ navigation }) {
             {/* <Text style={styles.bottomText}>설문 요청</Text> */}
             <Button
                 title="설문 요청"
-                onPress={() => navigation.navigate("SurveyRequestScreen")}
+                onPress={() => navigation.navigate("설문 요청")}
             >
                 설문 요청
             </Button>
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         textAlign: "right",
         alignSelf: "flex-end",
         flexBasis: 30,
-        paddingRight: paddingSizes.s,
+        paddingRight: paddingSizes.s12,
     },
     genre: {
         // flex: 1,

@@ -25,7 +25,7 @@ export default function App() {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen
-                    name="SurveyRequestScreen"
+                    name="설문 요청"
                     component={SurveyRequestScreen}
                 />
             </Stack.Navigator>

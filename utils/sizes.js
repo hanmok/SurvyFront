@@ -1,10 +1,10 @@
 export const paddingSizes = {
-    xxs: 4,
-    xs: 8,
-    s: 12,
-    m: 16,
-    l: 20,
-    xl: 24,
+    xxs4: 4,
+    xs8: 8,
+    s12: 12,
+    m16: 16,
+    l20: 20,
+    xl24: 24,
 };
 
 export const fontSizes = {

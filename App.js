@@ -18,6 +18,7 @@ export default function App() {
                     name="홈"
                     component={HomeView}
                     options={{
+                        headerShown: false,
                         tabBarIcon: ({ focused }) => {
                             return focused ? (
                                 <Image

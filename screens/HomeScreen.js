@@ -3,18 +3,21 @@ import { View, Text } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { paddingSizes } from "../utils/sizes";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 function HomeView() {
     return (
         // <View
         //     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         // >
-        <View style={styles.container}>
+        // <View style={styles.container}>
+        <SafeAreaView style={styles.container} edges={["top"]}>
             {/* <View style={styles.topContainer}> */}
             <Text style={styles.collectedMoney}>Collected Money</Text>
             <Text style={styles.genre}>Genre</Text>
             <Text style={styles.surveyList}>Survey List</Text>
             <Text style={styles.bottomText}>설문 요청</Text>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -29,14 +32,13 @@ const styles = StyleSheet.create({
     collectedMoney: {
         width: 150,
         justifyContent: "flex-end",
-        // alignItems: "flex-end",
         textAlign: "right",
         alignSelf: "flex-end",
         flexBasis: 30,
         paddingRight: paddingSizes.s,
     },
     genre: {
-        flex: 1,
+        // flex: 1,
         justifyContent: "center",
         alignSelf: "stretch",
         flexBasis: 40,

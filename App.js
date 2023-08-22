@@ -2,58 +2,33 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+// import { SurveyRequestScreen } from "./screens/SurveyRequestScreen";
+import SurveyRequestScreen from "./screens/SurveyRequestScreen";
+const Stack = createStackNavigator();
 
-import HomeView from "./screens/HomeScreen";
-import MypageView from "./screens/SettingsScreen";
+// import HomeView from "./screens/HomeScreen";
+// import MypageView from "./screens/SettingsScreen";
 
-import { Ionicons } from "@expo/vector-icons";
+// import { Ionicons } from "@expo/vector-icons";
+import MainTabs from "./screens/MainTabs";
 
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
 
 export default function App() {
     return (
         <NavigationContainer>
-            <Tab.Navigator>
-                <Tab.Screen
-                    name="홈"
-                    component={HomeView}
-                    options={{
-                        headerShown: false,
-                        tabBarIcon: ({ focused }) => {
-                            return focused ? (
-                                <Image
-                                    style={{ width: 20, height: 20 }}
-                                    source={require("./assets/selectedHomeIcon.jpg")}
-                                />
-                            ) : (
-                                <Image
-                                    style={{ width: 20, height: 20 }}
-                                    source={require("./assets/unselectedHomeIcon.jpg")}
-                                />
-                            );
-                        },
-                    }}
+            <Stack.Navigator>
+                <Stack.Screen
+                    name="MainTabs"
+                    component={MainTabs}
+                    options={{ headerShown: false }}
                 />
-                <Tab.Screen
-                    name="마이페이지"
-                    component={MypageView}
-                    options={{
-                        tabBarIcon: ({ focused }) => {
-                            return focused ? (
-                                <Image
-                                    style={{ width: 20, height: 20 }}
-                                    source={require("./assets/selectedMypageIcon.jpg")}
-                                />
-                            ) : (
-                                <Image
-                                    style={{ width: 20, height: 20 }}
-                                    source={require("./assets/unselectedMypageIcon.jpg")}
-                                />
-                            );
-                        },
-                    }}
+                <Stack.Screen
+                    name="SurveyRequestScreen"
+                    component={SurveyRequestScreen}
                 />
-            </Tab.Navigator>
+            </Stack.Navigator>
         </NavigationContainer>
     );
 }

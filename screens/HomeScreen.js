@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { paddingSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-function HomeView() {
+function HomeView({ navigation }) {
     return (
         // <View
         //     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
@@ -16,7 +16,13 @@ function HomeView() {
             <Text style={styles.collectedMoney}>Collected Money</Text>
             <Text style={styles.genre}>Genre</Text>
             <Text style={styles.surveyList}>Survey List</Text>
-            <Text style={styles.bottomText}>설문 요청</Text>
+            {/* <Text style={styles.bottomText}>설문 요청</Text> */}
+            <Button
+                title="설문 요청"
+                onPress={() => navigation.navigate("SurveyRequestScreen")}
+            >
+                설문 요청
+            </Button>
         </SafeAreaView>
     );
 }

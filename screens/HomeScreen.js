@@ -40,6 +40,7 @@ function HomeView({ navigation }) {
         <SafeAreaView style={styles.container} edges={["top"]}>
             <Text style={styles.collectedMoney}>Collected Money</Text>
             <Text style={styles.genre}>Genre</Text>
+            {/* onPress 에 navigation.navigate("설문 참여") */}
             <FlatList
                 data={data}
                 renderItem={renderItem}
@@ -48,12 +49,14 @@ function HomeView({ navigation }) {
                 style={styles.surveyListContainer}
             />
 
+            {/*
             <Button
                 title="설문 요청"
                 onPress={() => navigation.navigate("설문 요청")}
             >
                 설문 요청
             </Button>
+			*/}
         </SafeAreaView>
     );
 }

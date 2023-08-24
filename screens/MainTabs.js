@@ -5,6 +5,8 @@ const Tab = createBottomTabNavigator();
 
 import MypageView from "./SettingsScreen";
 import HomeView from "./HomeScreen";
+import SurveyParticipateScreen from "./SurveyParticipateScreen";
+import SurveyRequestScreen from "./SurveyRequestScreen";
 
 export default function MainTabs() {
     return (
@@ -24,6 +26,26 @@ export default function MainTabs() {
                             <Image
                                 style={{ width: 20, height: 20 }}
                                 source={require("../assets/unselectedHomeIcon.jpg")}
+                            />
+                        );
+                    },
+                }}
+            />
+            <Tab.Screen
+                name="설문 요청"
+                component={SurveyRequestScreen}
+                options={{
+                    tabBarIcon: ({ focused }) => {
+                        return focused ? (
+                            <Image
+                                style={{ width: 20, height: 20 }}
+                                // source={require("./assets/selectedMypageIcon.jpg")}
+                                source={require("../assets/selectedUploadIcon.jpg")}
+                            />
+                        ) : (
+                            <Image
+                                style={{ width: 20, height: 20 }}
+                                source={require("../assets/unselectedUploadIcon.jpg")}
                             />
                         );
                     },

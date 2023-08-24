@@ -12,6 +12,7 @@ const Stack = createStackNavigator();
 
 // import { Ionicons } from "@expo/vector-icons";
 import MainTabs from "./screens/MainTabs";
+import SurveyParticipateScreen from "./screens/SurveyParticipateScreen";
 
 // const Tab = createBottomTabNavigator();
 
@@ -25,8 +26,8 @@ export default function App() {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen
-                    name="설문 요청"
-                    component={SurveyRequestScreen}
+                    name="설문 참여"
+                    component={SurveyParticipateScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>

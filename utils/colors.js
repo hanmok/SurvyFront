@@ -1,5 +1,7 @@
 export const colors = {
     magenta: "magenta",
+    background: "#EFEFEF",
+    surveyBoxBackground: "#fff",
     gray: "#AAA",
     darkGray: "#444",
     deepMainColor: "#66A1FF",

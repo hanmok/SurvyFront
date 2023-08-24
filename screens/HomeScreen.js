@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Button, FlatList } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
@@ -6,6 +6,10 @@ import { paddingSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvailableSurvey from "./AvailableSurvey";
 import CollectedMoney from "../components/CollectedMoney";
+import axios from "axios";
+
+// participationGoal
+// numOfParticipation
 
 const data = [
     {
@@ -30,13 +34,55 @@ const data = [
 ];
 
 function HomeView({ navigation }) {
+    const [myData, setMyData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const fetchSurveys = async () => {
+        try {
+            // const response = await axios.get("http://127.0.0.1:3000/survey");
+            // http://localhost:3000/survey
+            await fetch("http://localhost:3000/survey")
+                .then(response => response.json())
+                .then(jsonData =>
+                    jsonData.data.map(item => ({
+                        title: item.title,
+                        id: item.id,
+                        numOfParticipation: item.numOfParticipation,
+                        participationGoal: item.participationGoal,
+                    }))
+                )
+                .then(sth => {
+                    console.log(`umm.. `, sth);
+                    setIsLoading(false);
+                    setMyData(sth);
+                    // console.log("myData: ", myData);
+                });
+        } catch (error) {
+            console.log("Error fetching data: ", error.message);
+        }
+    };
+
+    // Component 가 Rendering 될 때 API 호출
+    useEffect(() => {
+        fetchSurveys();
+    }, []);
+
     const renderItem = ({ item }) => (
         <AvailableSurvey
             title={item.title}
-            currentParticipation={item.currentParticipation}
+            numOfParticipation={item.numOfParticipation}
             participationGoal={item.participationGoal}
         />
     );
+
+    if (isLoading) {
+        return (
+            <View>
+                <Text style={{ backgroundColor: "magenta" }}>loading..</Text>
+            </View>
+        );
+    }
+
     return (
         <SafeAreaView style={styles.container} edges={["top"]}>
             {/* <Text style={styles.collectedMoney}>Collected Money</Text> */}
@@ -44,7 +90,7 @@ function HomeView({ navigation }) {
             {/* <Text style={styles.genre}>Genre</Text> */}
             {/* onPress 에 navigation.navigate("설문 참여") */}
             <FlatList
-                data={data}
+                data={myData}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
@@ -68,7 +114,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-between",
         // alignItems: "center",
-        backgroundColor: colors.gray,
+        // backgroundColor: colors.gray,
+        backgroundColor: colors.background,
         // alignItems: "stretch",
     },
     collectedMoney: {
@@ -78,6 +125,7 @@ const styles = StyleSheet.create({
         alignSelf: "flex-end",
         flexBasis: 30,
         paddingRight: paddingSizes.s12,
+        borderRadius: 10,
     },
     genre: {
         // flex: 1,

@@ -10,14 +10,14 @@ import { colors } from "../utils/colors";
 
 interface MyCustomComponentProps {
     title: string;
-    currentParticipation: number;
+    numOfParticipation: number;
     participationGoal: number;
     // genres: string[];
 }
 
 const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
     title,
-    currentParticipation,
+    numOfParticipation,
     participationGoal,
     // genres
 }) => {
@@ -25,7 +25,7 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
         <View style={styles.container}>
             <Text style={styles.titleText}>{title}</Text>
             <Text style={styles.participationText}>
-                {currentParticipation}/{participationGoal}
+                {numOfParticipation}/{participationGoal}
             </Text>
             <View style={{ direction: "rtl" }}>
                 <Text style={styles.participateButtonText}>참여하기 &gt;</Text>
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     container: {
         height: 120,
         borderRadius: 20,
-        backgroundColor: colors.white,
+        backgroundColor: colors.surveyBoxBackground,
     },
     titleText: {
         color: colors.black,

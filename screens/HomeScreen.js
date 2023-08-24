@@ -41,7 +41,7 @@ function HomeView({ navigation }) {
         <SafeAreaView style={styles.container} edges={["top"]}>
             {/* <Text style={styles.collectedMoney}>Collected Money</Text> */}
             <CollectedMoney amount={10000} style={styles.collectedMoney} />
-            <Text style={styles.genre}>Genre</Text>
+            {/* <Text style={styles.genre}>Genre</Text> */}
             {/* onPress 에 navigation.navigate("설문 참여") */}
             <FlatList
                 data={data}

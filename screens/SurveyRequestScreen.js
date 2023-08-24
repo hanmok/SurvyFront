@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
         color: colors.buttonBlue,
         textAlign: "center",
     },
-
     expectedTime: {
         // width: 100,
         flexBasis: 24,

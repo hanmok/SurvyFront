@@ -1,22 +1,53 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, FlatList } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { paddingSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AvailableSurvey from "./AvailableSurvey";
+
+const data = [
+    {
+        id: "1",
+        title: "Item 1",
+        currentParticipation: "10",
+        participationGoal: "100",
+    },
+    {
+        id: "2",
+        title: "Item 2",
+        currentParticipation: "10",
+        participationGoal: "100",
+    },
+    {
+        id: "3",
+        title: "Item 3",
+        currentParticipation: "10",
+        participationGoal: "100",
+    },
+    // ... 더 많은 아이템 추가 가능
+];
 
 function HomeView({ navigation }) {
+    const renderItem = ({ item }) => (
+        <AvailableSurvey
+            title={item.title}
+            currentParticipation={item.currentParticipation}
+            participationGoal={item.participationGoal}
+        />
+    );
     return (
-        // <View
-        //     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        // >
-        // <View style={styles.container}>
         <SafeAreaView style={styles.container} edges={["top"]}>
-            {/* <View style={styles.topContainer}> */}
             <Text style={styles.collectedMoney}>Collected Money</Text>
             <Text style={styles.genre}>Genre</Text>
-            <Text style={styles.surveyList}>Survey List</Text>
-            {/* <Text style={styles.bottomText}>설문 요청</Text> */}
+            <FlatList
+                data={data}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+                style={styles.surveyListContainer}
+            />
+
             <Button
                 title="설문 요청"
                 onPress={() => navigation.navigate("설문 요청")}
@@ -49,6 +80,8 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         flexBasis: 40,
         backgroundColor: colors.magenta,
+        paddingTop: 10,
+        paddingBottom: 16,
     },
     surveyList: {
         flex: 1,
@@ -70,6 +103,10 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         width: "auto",
         textAlign: "center",
+    },
+    surveyListContainer: {
+        paddingTop: 20,
+        paddingHorizontal: 12,
     },
 });
 

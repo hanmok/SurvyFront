@@ -8,4 +8,8 @@ export const colors = {
     buttonBlue: "#007AFF",
     white: "#fff",
     black: "#000",
+    gray1: "#333",
+    gray2: "#666",
+    gray3: "#999",
+    gray4: "#ccc",
 };

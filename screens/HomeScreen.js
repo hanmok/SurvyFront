@@ -5,6 +5,7 @@ import { colors } from "../utils/colors";
 import { paddingSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvailableSurvey from "./AvailableSurvey";
+import CollectedMoney from "../components/CollectedMoney";
 
 const data = [
     {
@@ -38,7 +39,8 @@ function HomeView({ navigation }) {
     );
     return (
         <SafeAreaView style={styles.container} edges={["top"]}>
-            <Text style={styles.collectedMoney}>Collected Money</Text>
+            {/* <Text style={styles.collectedMoney}>Collected Money</Text> */}
+            <CollectedMoney amount={10000} style={styles.collectedMoney} />
             <Text style={styles.genre}>Genre</Text>
             {/* onPress 에 navigation.navigate("설문 참여") */}
             <FlatList

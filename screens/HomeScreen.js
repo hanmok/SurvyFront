@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Button, FlatList } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
-import { paddingSizes } from "../utils/sizes";
+import { marginSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvailableSurvey from "./AvailableSurvey";
 import CollectedMoney from "../components/CollectedMoney";
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         textAlign: "right",
         alignSelf: "flex-end",
         flexBasis: 30,
-        paddingRight: paddingSizes.s12,
+        marginRight: marginSizes.s12,
         borderRadius: 10,
     },
     genre: {

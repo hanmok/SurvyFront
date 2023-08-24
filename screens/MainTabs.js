@@ -51,6 +51,7 @@ export default function MainTabs() {
                     },
                 }}
             />
+
             <Tab.Screen
                 name="마이페이지"
                 component={MypageView}

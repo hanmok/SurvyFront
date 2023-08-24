@@ -1,4 +1,4 @@
-export const paddingSizes = {
+export const marginSizes = {
     xxs4: 4,
     xs8: 8,
     s12: 12,

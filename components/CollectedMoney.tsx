@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import { fontSizes, paddingSizes } from "../utils/sizes";
+import { fontSizes, marginSizes } from "../utils/sizes";
 import accounting from "accounting";
 import { colors } from "../utils/colors";
 
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: 10,
         width: 140,
-        paddingRight: 12,
+        marginRight: 12,
         alignSelf: "flex-end", // 오른쪽으로 밀착
         justifyContent: "center",
     },

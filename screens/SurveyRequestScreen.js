@@ -1,5 +1,13 @@
 import React from "react";
-import { View, Text, TextInput, Button, Image, ScrollView } from "react-native";
+import {
+    View,
+    Text,
+    TextInput,
+    Button,
+    Image,
+    ScrollView,
+    SectionList,
+} from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { fontSizes, marginSizes } from "../utils/sizes";
@@ -17,51 +25,82 @@ export default function SurveyRequestScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.container} edges={["top"]}>
-            <TextInput
-                placeholder="설문 제목을 입력해주세요"
-                style={styles.surveyTitle}
-            />
-            <View style={styles.moduleContainer}>
-                <TextButton
-                    backgroundStyle={styles.selectionButtonBG}
-                    textStyle={styles.selectionButtonText}
-                    title="타겟층"
-                />
-                <Text>Targets</Text>
-            </View>
-
-            {/* Genre Module */}
-            <View style={styles.moduleContainer}>
-                <TextButton
-                    backgroundStyle={styles.selectionButtonBG}
-                    textStyle={styles.selectionButtonText}
-                    title="관심사"
-                />
-                <Text>Genres</Text>
-            </View>
-
-            {/* Questions To Make. List 로 만들 것. */}
-
+        <SafeAreaView style={styles.container} edges={[]}>
             <ScrollView style={styles.questionList}>
-                <Text>hi</Text>
-                <Text>hi</Text>
-                <Text>hi</Text>
-                <Text>hi</Text>
-                <Text>hi</Text>
-                <Text>hi</Text>
-                <PostingQuestionBox index={customViews.length + 1} question />
+                {/* <ScrollView> */}
+                <TextInput
+                    placeholder="설문 제목을 입력해주세요"
+                    style={styles.surveyTitle}
+                />
+                <View style={styles.moduleContainer}>
+                    <TextButton
+                        backgroundStyle={styles.selectionButtonBG}
+                        textStyle={styles.selectionButtonText}
+                        title="타겟층"
+                    />
+                    <Text>Targets</Text>
+                </View>
+
+                {/* Genre Module */}
+                <View style={[styles.moduleContainer, { marginBottom: 20 }]}>
+                    <TextButton
+                        backgroundStyle={styles.selectionButtonBG}
+                        textStyle={styles.selectionButtonText}
+                        title="관심사"
+                    />
+                    <Text>Genres</Text>
+                </View>
+
+                {/* Questions To Make. List 로 만들 것. */}
+
+                {/* 이거.. List 로 어떻게 뿌리지 ? Section List 써야할 것 같은데 ? */}
+                <SectionList
+                    sections={[
+                        {
+                            sIndex: 1,
+                            data: [customViews.length + 1],
+                        },
+                        {
+                            sIndex: 2,
+                            data: [customViews.length + 2],
+                        },
+                    ]}
+                    renderItem={({ item }) => (
+                        <PostingQuestionBox index={item} />
+                    )}
+                    renderSectionHeader={({ section }) => (
+                        <Text style={styles.sectionHeader} numberOfLines={1}>
+                            Section {section.sIndex}
+                        </Text>
+                    )}
+                    keyExtractor={item => `basicListEntry-${item}`}
+                />
+                {/* <PostingQuestionBox index={customViews.length + 1} question /> */}
+
+                {/* <ImageButton
+                    img={require("../assets/plus.jpg")}
+                    imageStyle={styles.plusButtonText}
+                    backgroundStyle={styles.plusButtonBG}
+                    // size={30} // 왜 사이즈가 안변하냐 ?
+                    height={80}
+                /> */}
+                <View justifyContent="center">
+                    <TextButton
+                        title="+"
+                        onPress={() => console.log}
+                        textStyle={[
+                            styles.plusButtonText,
+                            { textAlignVertical: "center" },
+                        ]}
+                        backgroundStyle={[
+                            styles.plusButtonBG,
+                            { justifyContent: "center" },
+                        ]}
+                    />
+                </View>
+
+                {/* <PostingQuestionBox/></PostingQuestionBox> */}
             </ScrollView>
-            <ImageButton
-                img={require("../assets/plus.jpg")}
-                imageStyle={styles.plusButtonText}
-                backgroundStyle={styles.plusButtonBG}
-                // size={30} // 왜 사이즈가 안변하냐 ?
-                height={80}
-            />
-
-            {/* <PostingQuestionBox/></PostingQuestionBox> */}
-
             <Text style={styles.expectedTime}>예상 소요시간 2분</Text>
 
             <TextButton
@@ -85,8 +124,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginHorizontal: marginSizes.m16,
         height: 50,
-        marginTop: marginSizes.l20,
-        marginBottom: marginSizes.s12,
+        marginTop: marginSizes.xxs4,
+        marginBottom: marginSizes.xxs4,
         textAlign: "center",
         fontSize: 18,
         fontWeight: "bold",
@@ -124,10 +163,26 @@ const styles = StyleSheet.create({
         marginVertical: marginSizes.m16,
     },
 
+    sectionHeader: {
+        marginLeft: marginSizes.xs8,
+        fontWeight: "500",
+        marginTop: marginSizes.l20,
+        marginBottom: marginSizes.xs8,
+        backgroundColor: colors.selectedQuestionBoxBG,
+        borderRadius: 5,
+        overflow: "hidden",
+        paddingHorizontal: 10,
+        width: 90,
+        textAlign: "center",
+        // width: 200,
+        // whiteSpace: "nowrap",
+        // textOverflow: "ellipsis",
+    },
+
     plusButtonBG: {
         backgroundColor: colors.deepMainColor,
-        marginHorizontal: marginSizes.l20,
         marginBottom: marginSizes.xl24,
+        marginTop: marginSizes.s12,
         borderRadius: 12,
         overflow: "hidden",
         justifyContent: "center",
@@ -136,7 +191,8 @@ const styles = StyleSheet.create({
     plusButtonText: {
         color: colors.white,
         textAlign: "center",
-        fontSize: 60,
+        // fontSize: 60,
+        fontSize: 40,
         fontWeight: "bold",
         borderRadius: 40,
     },
@@ -155,7 +211,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         backgroundColor: colors.inactiveBtnBG,
-        marginBottom: 12,
+        marginBottom: marginSizes.l20,
     },
     requestText: {
         color: colors.white,

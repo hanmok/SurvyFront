@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { colors } from "../utils/colors";
+import QuestionTypeSelectionBox from "./QuestionTypeSelectionBox";
+import QuestionTypeSelectionBoxContainer from "./QuestionTypeSelectionBoxContainer";
+import { boxSizes } from "../utils/sizes";
 
 interface PostingQuestionProps {
     index: number;
@@ -32,10 +35,9 @@ const PostingQuestionBox: React.FC<PostingQuestionProps> = ({
                     />
                 </View>
                 {/* Question Type Selection Box */}
-
-                <View
-                    style={{ backgroundColor: colors.magenta, height: 50 }}
-                ></View>
+                {/* <QuestionTypeSelectionBox index={undefined} /> */}
+                <QuestionTypeSelectionBoxContainer />
+                <View style={{ height: 60 }}></View>
             </View>
         </>
     );
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.surveyBoxBackground,
         borderRadius: 10,
         overflow: "hidden",
-        height: 80,
+        height: boxSizes.requestingQuestionContainer,
     },
     questionTextContainer: {
         flexDirection: "row",

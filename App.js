@@ -13,6 +13,7 @@ const Stack = createStackNavigator();
 // import { Ionicons } from "@expo/vector-icons";
 import MainTabs from "./screens/MainTabs";
 import SurveyParticipateScreen from "./screens/SurveyParticipateScreen";
+import { colors } from "./utils/colors";
 
 // const Tab = createBottomTabNavigator();
 
@@ -23,13 +24,29 @@ export default function App() {
                 <Stack.Screen
                     name="MainTabs"
                     component={MainTabs}
-                    options={{ headerShown: false }}
+                    options={{
+                        headerShown: false,
+                    }}
                 />
                 <Stack.Screen
-                    name="설문 참여asd"
+                    name="설문 참여"
                     component={SurveyParticipateScreen}
+                    options={{
+                        headerBackTitleVisible: false,
+                        headerStyle: { backgroundColor: colors.background },
+                    }}
+                />
+                <Stack.Screen
+                    name="설문 요청"
+                    component={SurveyRequestScreen}
+                    options={{
+                        // headerBackTitle: " ",
+                        headerBackTitleVisible: false,
+                        headerStyle: { backgroundColor: colors.background },
+                    }}
                 />
             </Stack.Navigator>
+            {/* <Text style={styles.requestButton}>ansdj</Text> */}
         </NavigationContainer>
     );
 }
@@ -40,5 +57,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",
+    },
+    requestButton: {
+        position: "absolute",
+        bottom: 50,
+        alignSelf: "center",
     },
 });

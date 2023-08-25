@@ -15,4 +15,7 @@ export const colors = {
     gray2: "#666",
     gray3: "#999",
     gray4: "#ccc",
+    unselectedQuestionBoxBG: "#DCEAFF",
+    selectedQuestionBoxBG: "#5094FD",
+    unselectedQuestionBoxText: "#777777",
 };

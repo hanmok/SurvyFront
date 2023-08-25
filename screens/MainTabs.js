@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image } from "react-native";
+import { Image, View, Text } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +31,7 @@ export default function MainTabs() {
                     },
                 }}
             />
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="설문 요청"
                 component={SurveyRequestScreen}
                 options={{
@@ -51,7 +51,7 @@ export default function MainTabs() {
                         );
                     },
                 }}
-            />
+            /> */}
 
             <Tab.Screen
                 name="마이페이지"

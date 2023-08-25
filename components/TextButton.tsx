@@ -5,12 +5,13 @@ import {
     ViewStyle,
     StyleProp,
     StyleSheet,
+    TextStyle,
 } from "react-native";
 
 interface TextButtonProps {
     title: string;
     onPress: () => void;
-    textStyle?: StyleProp<ViewStyle>;
+    textStyle?: StyleProp<TextStyle>;
     backgroundStyle?: StyleProp<ViewStyle>;
 }
 

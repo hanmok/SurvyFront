@@ -14,3 +14,7 @@ export const fontSizes = {
     xl: 28,
     xxl: 32,
 };
+
+export const boxSizes = {
+    requestingQuestionContainer: 120,
+};

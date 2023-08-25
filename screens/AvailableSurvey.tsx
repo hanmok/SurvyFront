@@ -27,7 +27,12 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
             <Text style={styles.participationText}>
                 {numOfParticipation}/{participationGoal}
             </Text>
-            <View style={{ direction: "rtl" }}>
+            <View
+                style={{
+                    flexDirection: "row-reverse",
+                    alignItems: "flex-end",
+                }}
+            >
                 <Text style={styles.participateButtonText}>참여하기 &gt;</Text>
             </View>
         </View>
@@ -44,22 +49,20 @@ const styles = StyleSheet.create({
     },
     titleText: {
         color: colors.black,
-        // backgroundColor: colors.deepMainColor,
         fontSize: 20,
-        paddingTop: 12,
-        paddingHorizontal: 12,
+        marginTop: 12,
+        marginHorizontal: 12,
         fontWeight: "bold",
     },
     participationText: {
-        paddingTop: 8,
+        marginTop: 8,
         color: colors.gray1,
         fontSize: 16,
-        paddingHorizontal: 12,
+        marginHorizontal: 12,
     },
     participateButtonText: {
-        fontSize: 20,
-        backgroundColor: "magenta",
-        width: 100,
-        margin: 10,
+        fontSize: 16,
+        marginRight: 15,
+        marginTop: 20,
     },
 });

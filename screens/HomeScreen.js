@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     },
 
     collectedMoney: {
-        width: 150,
+        width: 120,
         justifyContent: "flex-end",
         textAlign: "right",
         alignSelf: "flex-end",

@@ -41,7 +41,7 @@ export default CollectedMoney;
 const styles = StyleSheet.create({
     container: {
         borderRadius: 10,
-        width: 140,
+        width: 120,
         marginRight: 12,
         alignSelf: "flex-end", // 오른쪽으로 밀착
         justifyContent: "center",
@@ -56,12 +56,13 @@ const styles = StyleSheet.create({
     img: {
         // backgroundColor: "magenta",
         borderRadius: 14,
-        paddingLeft: 10,
+        // paddingLeft: 10,
+        marginLeft: 14,
     },
     collectedMoney: {
-        width: 100,
+        width: 80,
         color: "#3255ED",
-        fontSize: fontSizes.m,
+        fontSize: fontSizes.s,
         fontWeight: "bold",
         textAlign: "center", // 수평 중앙정렬
         borderRadius: 10,

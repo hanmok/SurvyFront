@@ -17,6 +17,8 @@ import TextButton from "../components/TextButton";
 import ImageButton from "../components/ImageButton";
 import PostingQuestionBox from "../components/PostingQuestionBox";
 import { useState } from "react";
+
+// Header, Footer 로 중첩 Scroll 해결하기.
 export default function SurveyRequestScreen() {
     const [customViews, setCustomViews] = useState([]);
 
@@ -37,6 +39,7 @@ export default function SurveyRequestScreen() {
                         backgroundStyle={styles.selectionButtonBG}
                         textStyle={styles.selectionButtonText}
                         title="타겟층"
+                        onPress={console.log}
                     />
                     <Text>Targets</Text>
                 </View>
@@ -47,6 +50,7 @@ export default function SurveyRequestScreen() {
                         backgroundStyle={styles.selectionButtonBG}
                         textStyle={styles.selectionButtonText}
                         title="관심사"
+                        onPress={console.log}
                     />
                     <Text>Genres</Text>
                 </View>
@@ -84,7 +88,7 @@ export default function SurveyRequestScreen() {
                     // size={30} // 왜 사이즈가 안변하냐 ?
                     height={80}
                 /> */}
-                <View justifyContent="center">
+                <View style={{ justifyContent: "center" }}>
                     <TextButton
                         title="+"
                         onPress={() => console.log}
@@ -107,6 +111,7 @@ export default function SurveyRequestScreen() {
                 textStyle={styles.requestText}
                 backgroundStyle={styles.requestButtonBG}
                 title="설문 요청하기"
+                onPress={console.log}
             />
         </SafeAreaView>
     );
@@ -210,7 +215,7 @@ const styles = StyleSheet.create({
         color: colors.white,
         borderRadius: 10,
         padding: 10,
-        backgroundColor: colors.inactiveBtnBG,
+        // backgroundColor: colors.inactiveBtnBG,
         marginBottom: marginSizes.l20,
     },
     requestText: {

@@ -8,16 +8,16 @@ import { boxSizes } from "../utils/sizes";
 
 interface PostingQuestionProps {
     index: number;
-    question: string;
-    questionTypeIndex: number;
-    selectableOptionsText: number;
+    // question: string;
+    // questionTypeIndex: number;
+    // selectableOptionsText: number;
 }
 
 const PostingQuestionBox: React.FC<PostingQuestionProps> = ({
     index,
-    question,
-    questionTypeIndex,
-    selectableOptionsText,
+    // question,
+    // questionTypeIndex,
+    // selectableOptionsText,
 }) => {
     const [title, setTitle] = useState("");
 

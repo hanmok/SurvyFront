@@ -29,20 +29,23 @@ export default function App() {
                     }}
                 />
                 <Stack.Screen
-                    name="설문 참여"
+                    name="Participate"
                     component={SurveyParticipateScreen}
                     options={{
                         headerBackTitleVisible: false,
+                        // TODO: 개발 끝나면 false 로 처리하기.
+                        // headerShown: false,
                         headerStyle: { backgroundColor: colors.background },
                     }}
                 />
                 <Stack.Screen
-                    name="설문 요청"
+                    name="Posting"
                     component={SurveyRequestScreen}
                     options={{
-                        // headerBackTitle: " ",
                         headerBackTitleVisible: false,
-                        headerStyle: { backgroundColor: colors.background },
+                        headerStyle: {
+                            backgroundColor: colors.background,
+                        },
                     }}
                 />
             </Stack.Navigator>

@@ -8,8 +8,16 @@ import AvailableSurvey from "./AvailableSurvey";
 import CollectedMoney from "../components/CollectedMoney";
 import axios from "axios";
 import TextButton from "../components/TextButton";
+import { StackNavigationProp } from "@react-navigation/stack";
+
 // participationGoal
 // numOfParticipation
+
+type RootStackParamList = {
+    Home: undefined;
+    Participate: { sectionId: number };
+    Posting: undefined;
+};
 
 const data = [
     {
@@ -35,7 +43,11 @@ const data = [
 
 const screenWidth = Dimensions.get("window").width;
 
-function HomeView({ navigation }) {
+function HomeView({
+    navigation,
+}: {
+    navigation: StackNavigationProp<RootStackParamList, "Home">;
+}) {
     const [myData, setMyData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -74,6 +86,7 @@ function HomeView({ navigation }) {
             title={item.title}
             numOfParticipation={item.numOfParticipation}
             participationGoal={item.participationGoal}
+            onPress={() => navigation.navigate("Participate", { sectionId: 3 })}
         />
     );
 
@@ -88,8 +101,8 @@ function HomeView({ navigation }) {
     return (
         <SafeAreaView style={styles.container} edges={["top"]}>
             {/* <Text style={styles.collectedMoney}>Collected Money</Text> */}
-            <CollectedMoney amount={10000} style={styles.collectedMoney} />
-            {/* onPress 에 navigation.navigate("설문 참여") */}
+            {/* <CollectedMoney amount={10000} style={styles.collectedMoney} /> */}
+            <CollectedMoney amount={10000} />
             <View style={styles.subContainer}>
                 <FlatList
                     data={myData}
@@ -102,8 +115,8 @@ function HomeView({ navigation }) {
                 />
                 <View style={styles.floatingButtonContainer}>
                     <TextButton
-                        title="설문 요청"
-                        onPress={() => navigation.navigate("설문 요청")}
+                        title="설문요청"
+                        onPress={() => navigation.navigate("Posting")}
                         backgroundStyle={styles.requestContainer}
                         textStyle={styles.requestText}
                     />

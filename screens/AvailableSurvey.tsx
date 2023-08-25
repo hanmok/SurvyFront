@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
+import TextButton from "../components/TextButton";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 // props
 // title
@@ -8,17 +10,22 @@ import { colors } from "../utils/colors";
 // ParticipationGoal
 // Genres
 
+// type RootStackParamList = {
+//     Participate: { sectionId: number };
+// };
+
 interface MyCustomComponentProps {
     title: string;
     numOfParticipation: number;
     participationGoal: number;
-    // genres: string[];
+    onPress: () => void;
 }
 
 const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
     title,
     numOfParticipation,
     participationGoal,
+    onPress,
     // genres
 }) => {
     return (
@@ -33,7 +40,13 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                     alignItems: "flex-end",
                 }}
             >
-                <Text style={styles.participateButtonText}>참여하기 &gt;</Text>
+                {/* <Text style={styles.participateButtonText}>참여하기 &gt;</Text> */}
+                <TextButton
+                    title="참여하기 >"
+                    onPress={onPress}
+                    textStyle={styles.participateButtonText}
+                    backgroundStyle={{ backgroundColor: colors.white }}
+                />
             </View>
         </View>
     );

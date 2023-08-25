@@ -35,6 +35,7 @@ export default function MainTabs() {
                 name="설문 요청"
                 component={SurveyRequestScreen}
                 options={{
+                    headerShown: false,
                     tabBarIcon: ({ focused }) => {
                         return focused ? (
                             <Image

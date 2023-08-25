@@ -1,56 +1,74 @@
 import React from "react";
-import {
-    View,
-    Text,
-    TextInput,
-    Button,
-    TouchableOpacity,
-    Touchable,
-} from "react-native";
+import { View, Text, TextInput, Button, Image, ScrollView } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { fontSizes, marginSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spacer from "../components/Spacer";
-
+import TextButton from "../components/TextButton";
+import ImageButton from "../components/ImageButton";
+import PostingQuestionBox from "../components/PostingQuestionBox";
+import { useState } from "react";
 export default function SurveyRequestScreen() {
+    const [customViews, setCustomViews] = useState([]);
+
+    const handleAddCustomView = inputValue => {
+        setCustomViews(prevViews => [...prevViews, inputValue]);
+    };
+
     return (
-        // <SafeAreaView style={styles.container} edges={["top"]}>
-        <SafeAreaView style={styles.container} edges={[]}>
+        <SafeAreaView style={styles.container} edges={["top"]}>
             <TextInput
                 placeholder="설문 제목을 입력해주세요"
                 style={styles.surveyTitle}
             />
             <View style={styles.moduleContainer}>
-                <TouchableOpacity style={styles.selectionButtonBG}>
-                    <Text style={styles.selectionButtonText}>타겟층</Text>
-                </TouchableOpacity>
+                <TextButton
+                    backgroundStyle={styles.selectionButtonBG}
+                    textStyle={styles.selectionButtonText}
+                    title="타겟층"
+                />
                 <Text>Targets</Text>
             </View>
 
             {/* Genre Module */}
             <View style={styles.moduleContainer}>
-                <TouchableOpacity style={styles.selectionButtonBG}>
-                    <Text style={styles.selectionButtonText}>관심사</Text>
-                </TouchableOpacity>
+                <TextButton
+                    backgroundStyle={styles.selectionButtonBG}
+                    textStyle={styles.selectionButtonText}
+                    title="관심사"
+                />
                 <Text>Genres</Text>
             </View>
-            {/* <Spacer size={30} /> */}
-            {/* Questions To Make */}
-            <View style={styles.questionList}></View>
 
-            {/* <Spacer size={30} /> */}
-            <TouchableOpacity style={styles.plusButtonBG}>
-                <View style={{ justifyContent: "center" }}>
-                    <Text style={styles.plusButtonText}>+</Text>
-                </View>
-            </TouchableOpacity>
+            {/* Questions To Make. List 로 만들 것. */}
 
-            <Text style={styles.expectedTime}>예상 소요시간 1분</Text>
+            <ScrollView style={styles.questionList}>
+                <Text>hi</Text>
+                <Text>hi</Text>
+                <Text>hi</Text>
+                <Text>hi</Text>
+                <Text>hi</Text>
+                <Text>hi</Text>
+                <PostingQuestionBox index={customViews.length + 1} question />
+            </ScrollView>
+            <ImageButton
+                img={require("../assets/plus.jpg")}
+                imageStyle={styles.plusButtonText}
+                backgroundStyle={styles.plusButtonBG}
+                // size={30} // 왜 사이즈가 안변하냐 ?
+                height={80}
+            />
 
-            <TouchableOpacity style={styles.requestButtonBG}>
-                <Text style={styles.requestText}>설문 요청하기</Text>
-            </TouchableOpacity>
+            {/* <PostingQuestionBox/></PostingQuestionBox> */}
+
+            <Text style={styles.expectedTime}>예상 소요시간 2분</Text>
+
+            <TextButton
+                textStyle={styles.requestText}
+                backgroundStyle={styles.requestButtonBG}
+                title="설문 요청하기"
+            />
         </SafeAreaView>
     );
 }
@@ -84,17 +102,14 @@ const styles = StyleSheet.create({
         marginTop: marginSizes.m16,
     },
     selectionButtonBG: {
-        // backgroundColor: colors.blurredGray,
         backgroundColor: colors.blurredGray,
         width: 60,
-        // backgroundColor: "#000",
         fontWeight: "bold",
         justifyContent: "center",
         height: 30,
         borderRadius: 10,
         overflow: "hidden",
         marginHorizontal: 10,
-        // marginVertical: marginSizes.m16,
     },
     selectionButtonText: {
         color: colors.buttonBlue,
@@ -104,34 +119,26 @@ const styles = StyleSheet.create({
     },
 
     questionList: {
-        // flex: 1,
-        // marginVertical: 8,
         marginHorizontal: marginSizes.l20,
         flexGrow: 1,
-        backgroundColor: colors.surveyBoxBackground,
-        borderRadius: 10,
-        overflow: "hidden",
         marginVertical: marginSizes.m16,
     },
 
     plusButtonBG: {
         backgroundColor: colors.deepMainColor,
-        // height: 60,
-        // flex: 1,
-        // alignItems: 'center',
-        // alignItems: "center",
-        // flexBasis: 40,
         marginHorizontal: marginSizes.l20,
         marginBottom: marginSizes.xl24,
         borderRadius: 12,
         overflow: "hidden",
         justifyContent: "center",
+        height: 50,
     },
     plusButtonText: {
         color: colors.white,
         textAlign: "center",
         fontSize: 60,
         fontWeight: "bold",
+        borderRadius: 40,
     },
 
     expectedTime: {

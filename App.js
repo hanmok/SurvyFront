@@ -26,7 +26,7 @@ export default function App() {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen
-                    name="설문 참여"
+                    name="설문 참여asd"
                     component={SurveyParticipateScreen}
                 />
             </Stack.Navigator>

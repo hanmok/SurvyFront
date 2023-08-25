@@ -1,0 +1,40 @@
+import React from "react";
+import {
+    Text,
+    TouchableOpacity,
+    ViewStyle,
+    StyleProp,
+    StyleSheet,
+} from "react-native";
+
+interface TextButtonProps {
+    title: string;
+    onPress: () => void;
+    textStyle?: StyleProp<ViewStyle>;
+    backgroundStyle?: StyleProp<ViewStyle>;
+}
+
+const TextButton: React.FC<TextButtonProps> = ({
+    title,
+    onPress,
+    textStyle,
+    backgroundStyle,
+}) => {
+    return (
+        <TouchableOpacity
+            style={[styles.container, backgroundStyle]}
+            onPress={onPress}
+        >
+            <Text style={textStyle}>{title}</Text>
+        </TouchableOpacity>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: "center",
+    },
+    text: {},
+});
+
+export default TextButton;

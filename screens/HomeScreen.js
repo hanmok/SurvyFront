@@ -113,10 +113,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "space-between",
-        // alignItems: "center",
-        // backgroundColor: colors.gray,
         backgroundColor: colors.background,
-        // alignItems: "stretch",
     },
     collectedMoney: {
         width: 150,
@@ -128,7 +125,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     genre: {
-        // flex: 1,
         justifyContent: "center",
         alignSelf: "stretch",
         flexBasis: 40,
@@ -146,7 +142,6 @@ const styles = StyleSheet.create({
     topContainer: {
         flexDirection: "row",
         direction: "rtl",
-        // justifyContent: "flex-end",
     },
     bottomText: {
         height: 50,

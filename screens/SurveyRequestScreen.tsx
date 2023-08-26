@@ -61,11 +61,11 @@ export default function SurveyRequestScreen() {
                 <SectionList
                     sections={[
                         {
-                            sIndex: 1,
+                            sectionIndex: 1,
                             data: [customViews.length + 1],
                         },
                         {
-                            sIndex: 2,
+                            sectionIndex: 2,
                             data: [customViews.length + 2],
                         },
                     ]}
@@ -74,7 +74,7 @@ export default function SurveyRequestScreen() {
                     )}
                     renderSectionHeader={({ section }) => (
                         <Text style={styles.sectionHeader} numberOfLines={1}>
-                            Section {section.sIndex}
+                            Section {section.sectionIndex}
                         </Text>
                     )}
                     keyExtractor={item => `basicListEntry-${item}`}

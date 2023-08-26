@@ -41,7 +41,7 @@ function HomeView({
 }: {
     navigation: StackNavigationProp<RootStackParamList, "Home">;
 }) {
-    const [myData, setMyData] = useState<Survey[]>([]);
+    const [surveys, setSurveys] = useState<Survey[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const fetchSurveys = async () => {
@@ -50,7 +50,7 @@ function HomeView({
             await fetch("http://localhost:3000/survey")
                 .then(response => response.json())
                 .then(jsonData =>
-                    jsonData.data.map(item => ({
+                    jsonData.data.map((item: Survey) => ({
                         title: item.title,
                         id: item.id,
                         currentParticipation: item.currentParticipation,
@@ -59,10 +59,10 @@ function HomeView({
                         rewardRange: item.rewardRange,
                     }))
                 )
-                .then(sth => {
-                    console.log(`umm.. `, sth);
+                .then(surveys => {
+                    console.log(`umm.. `, surveys);
                     setIsLoading(false);
-                    setMyData(sth);
+                    setSurveys(surveys);
                 });
         } catch (error) {
             console.log("Error fetching data: ", error.message);
@@ -102,7 +102,7 @@ function HomeView({
             <CollectedMoney amount={10000} />
             <View style={styles.subContainer}>
                 <FlatList
-                    data={myData}
+                    data={surveys}
                     renderItem={renderItem}
                     keyExtractor={item => `${item.id}`}
                     ItemSeparatorComponent={() => (

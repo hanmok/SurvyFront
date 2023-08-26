@@ -9,15 +9,7 @@ import CollectedMoney from "../components/CollectedMoney";
 import axios from "axios";
 import TextButton from "../components/TextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
-
-// participationGoal
-// numOfParticipation
-
-type RootStackParamList = {
-    Home: undefined;
-    Participate: { sectionId: number };
-    Posting: undefined;
-};
+import { RootStackParamList } from "../RootStackParamList";
 
 const data = [
     {

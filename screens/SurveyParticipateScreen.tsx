@@ -4,12 +4,7 @@ import { colors } from "../utils/colors";
 import { fontSizes, marginSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RouteProp } from "@react-navigation/native";
-
-type RootStackParamList = {
-    Home: undefined;
-    Participate: { sectionId: number };
-    Posting: undefined;
-};
+import { RootStackParamList } from "../RootStackParamList";
 
 function SurveyparticipateScreen({
     route,

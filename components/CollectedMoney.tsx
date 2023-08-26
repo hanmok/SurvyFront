@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     collectedMoney: {
         width: 80,
         color: "#3255ED",
-        fontSize: fontSizes.s,
+        fontSize: fontSizes.s16,
         fontWeight: "bold",
         textAlign: "center", // 수평 중앙정렬
         borderRadius: 10,

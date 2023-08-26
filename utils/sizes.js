@@ -8,11 +8,11 @@ export const marginSizes = {
 };
 
 export const fontSizes = {
-    s: 16,
-    m: 20,
-    l: 24,
-    xl: 28,
-    xxl: 32,
+    s16: 16,
+    m20: 20,
+    l24: 24,
+    xl28: 28,
+    xxl32: 32,
 };
 
 export const boxSizes = {

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import TextButton from "../components/TextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { fontSizes, marginSizes } from "../utils/sizes";
 
 // props
 // title
@@ -16,14 +17,14 @@ import { StackNavigationProp } from "@react-navigation/stack";
 
 interface MyCustomComponentProps {
     title: string;
-    numOfParticipation: number;
+    currentParticipation: number;
     participationGoal: number;
     onPress: () => void;
 }
 
 const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
     title,
-    numOfParticipation,
+    currentParticipation,
     participationGoal,
     onPress,
     // genres
@@ -32,7 +33,7 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
         <View style={styles.container}>
             <Text style={styles.titleText}>{title}</Text>
             <Text style={styles.participationText}>
-                {numOfParticipation}/{participationGoal}
+                {currentParticipation}/{participationGoal}
             </Text>
             <View
                 style={{
@@ -62,20 +63,20 @@ const styles = StyleSheet.create({
     },
     titleText: {
         color: colors.black,
-        fontSize: 20,
-        marginTop: 12,
-        marginHorizontal: 12,
+        fontSize: fontSizes.m20,
+        marginTop: marginSizes.s12,
+        marginHorizontal: marginSizes.s12,
         fontWeight: "bold",
     },
     participationText: {
         marginTop: 8,
         color: colors.gray1,
-        fontSize: 16,
-        marginHorizontal: 12,
+        fontSize: fontSizes.s16,
+        marginHorizontal: marginSizes.s12,
     },
     participateButtonText: {
-        fontSize: 16,
-        marginRight: 15,
-        marginTop: 20,
+        fontSize: fontSizes.s16,
+        marginRight: marginSizes.m16,
+        marginTop: marginSizes.l20,
     },
 });

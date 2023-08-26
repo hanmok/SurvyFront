@@ -10,6 +10,7 @@ import axios from "axios";
 import TextButton from "../components/TextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackParamList";
+import { Survey } from "../types/Survey";
 
 const data = [
     {
@@ -40,28 +41,28 @@ function HomeView({
 }: {
     navigation: StackNavigationProp<RootStackParamList, "Home">;
 }) {
-    const [myData, setMyData] = useState([]);
+    const [myData, setMyData] = useState<Survey[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const fetchSurveys = async () => {
         try {
             // const response = await axios.get("http://127.0.0.1:3000/survey");
-            // http://localhost:3000/survey
             await fetch("http://localhost:3000/survey")
                 .then(response => response.json())
                 .then(jsonData =>
                     jsonData.data.map(item => ({
                         title: item.title,
                         id: item.id,
-                        numOfParticipation: item.numOfParticipation,
+                        currentParticipation: item.currentParticipation,
                         participationGoal: item.participationGoal,
+                        initialSectionId: item.initialSectionId,
+                        rewardRange: item.rewardRange,
                     }))
                 )
                 .then(sth => {
                     console.log(`umm.. `, sth);
                     setIsLoading(false);
                     setMyData(sth);
-                    // console.log("myData: ", myData);
                 });
         } catch (error) {
             console.log("Error fetching data: ", error.message);
@@ -73,12 +74,16 @@ function HomeView({
         fetchSurveys();
     }, []);
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item }: { item: Survey }) => (
         <AvailableSurvey
             title={item.title}
-            numOfParticipation={item.numOfParticipation}
+            currentParticipation={item.currentParticipation}
             participationGoal={item.participationGoal}
-            onPress={() => navigation.navigate("Participate", { sectionId: 3 })}
+            onPress={() =>
+                navigation.navigate("Participate", {
+                    sectionId: item.initialSectionId,
+                })
+            }
         />
     );
 
@@ -99,7 +104,7 @@ function HomeView({
                 <FlatList
                     data={myData}
                     renderItem={renderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => `${item.id}`}
                     ItemSeparatorComponent={() => (
                         <View style={{ height: 16 }} />
                     )}
@@ -128,6 +133,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         // alignItems: "center",
         alignItems: "stretch",
+        // paddingBottom: 200,
     },
 
     floatingButtonContainer: {
@@ -160,6 +166,9 @@ const styles = StyleSheet.create({
     surveyListContainer: {
         paddingTop: 20,
         marginHorizontal: marginSizes.m16,
+        paddingBottom: 200,
+        backgroundColor: "magenta",
+        // marginBottom: 200,
     },
 
     requestText: {

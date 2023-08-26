@@ -2,14 +2,17 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
+import { fontSizes } from "../utils/sizes";
 
 interface ParticipatingQuestionProps {
+    position: number;
     id: number;
     text: string;
     required: number;
 }
 
 const ParticipatingQuestionBox: React.FC<ParticipatingQuestionProps> = ({
+    position,
     id,
     text,
     required,
@@ -17,7 +20,9 @@ const ParticipatingQuestionBox: React.FC<ParticipatingQuestionProps> = ({
     return (
         <View style={styles.container}>
             {/* <Text>q_id: {id}</Text> */}
-            <Text>{text}</Text>
+            <Text style={styles.textStyle}>
+                {position + 1}. {text}
+            </Text>
             {/* <Text>q_required: {required}</Text> */}
         </View>
     );
@@ -27,7 +32,11 @@ export default ParticipatingQuestionBox;
 
 const styles = StyleSheet.create({
     container: {
-        margin: 20,
+        marginLeft: 12,
+        marginBottom: 12, // spacing between q and selectable-option
         backgroundColor: colors.lightMainColor,
+    },
+    textStyle: {
+        fontSize: fontSizes.m20,
     },
 });

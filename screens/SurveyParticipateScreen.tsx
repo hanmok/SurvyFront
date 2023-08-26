@@ -9,6 +9,7 @@ import { Question } from "../types/Question";
 import { SelectableOption } from "../types/SelectableOption";
 import SelectableOptionBox from "../components/SelectableOptionBox";
 import ParticipatingQuestionBox from "../components/ParticipatingQuestionBox";
+import TextButton from "../components/TextButton";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -28,54 +29,54 @@ function SurveyparticipateScreen({
     const { sectionId } = route.params;
 
     // selectable Options 도 모두 가져와야함.
-    const fetchQuestions = async () => {
-        try {
-            await fetch(`http://localhost:3000/section/${sectionId}/questions`)
-                .then(response => response.json())
-                .then(jsonData =>
-                    jsonData.data.map((item: Question) => ({
-                        id: item.id,
-                        position: item.position,
-                        text: item.text,
-                        required: item.required,
-                        expectedTimeInSec: item.expectedTimeInSec,
-                        questionType: item.questionType,
-                    }))
-                )
-                .then((questions: Question[]) => {
-                    const string = JSON.stringify(questions);
-                    console.log(`fetched questions: ${string}`);
-                    setQuestions(questions);
-                });
-        } catch (error) {
-            console.log(`Error fetching Questions: ${error.message}`);
-        }
-    };
+    // const fetchQuestions = async () => {
+    //     try {
+    //         await fetch(`http://localhost:3000/section/${sectionId}/questions`)
+    //             .then(response => response.json())
+    //             .then(jsonData =>
+    //                 jsonData.data.map((item: Question) => ({
+    //                     id: item.id,
+    //                     position: item.position,
+    //                     text: item.text,
+    //                     required: item.required,
+    //                     expectedTimeInSec: item.expectedTimeInSec,
+    //                     questionType: item.questionType,
+    //                 }))
+    //             )
+    //             .then((questions: Question[]) => {
+    //                 const string = JSON.stringify(questions);
+    //                 console.log(`fetched questions: ${string}`);
+    //                 setQuestions(questions);
+    //             });
+    //     } catch (error) {
+    //         console.log(`Error fetching Questions: ${error.message}`);
+    //     }
+    // };
 
-    const fetchSelectableOptions = async () => {
-        try {
-            await fetch(
-                `http://localhost:3000/section/${sectionId}/selectable-options`
-            )
-                .then(response => response.json())
-                .then(jsonData =>
-                    jsonData.data.map((item: SelectableOption) => ({
-                        id: item.id,
-                        position: item.position,
-                        value: item.value,
-                        questionId: item.questionId,
-                    }))
-                )
-                .then((selectableOptions: SelectableOption[]) => {
-                    const string = JSON.stringify(questions);
-                    // setSelectableOptionIds
-                    console.log(`fetched selectableOptions: ${string}`);
-                    setSelectableOptions(selectableOptions);
-                });
-        } catch (error) {
-            console.log(`Error fetching Questions: ${error.message}`);
-        }
-    };
+    // const fetchSelectableOptions = async () => {
+    //     try {
+    //         await fetch(
+    //             `http://localhost:3000/section/${sectionId}/selectable-options`
+    //         )
+    //             .then(response => response.json())
+    //             .then(jsonData =>
+    //                 jsonData.data.map((item: SelectableOption) => ({
+    //                     id: item.id,
+    //                     position: item.position,
+    //                     value: item.value,
+    //                     questionId: item.questionId,
+    //                 }))
+    //             )
+    //             .then((selectableOptions: SelectableOption[]) => {
+    //                 const string = JSON.stringify(questions);
+    //                 // setSelectableOptionIds
+    //                 console.log(`fetched selectableOptions: ${string}`);
+    //                 setSelectableOptions(selectableOptions);
+    //             });
+    //     } catch (error) {
+    //         console.log(`Error fetching Questions: ${error.message}`);
+    //     }
+    // };
 
     // // my codes
     //     useEffect(() => {
@@ -179,7 +180,9 @@ function SurveyparticipateScreen({
                     tempQuestions.push(targetQuestion);
                 }
                 setQuestions(tempQuestions);
-
+                tempQuestions.forEach(q =>
+                    console.log(`q type: ${q.questionType}`)
+                );
                 setIsLoading(false);
             } catch (error) {
                 console.log(`Error fetching data: ${error.message}`);
@@ -198,11 +201,16 @@ function SurveyparticipateScreen({
     }
 
     const renderItem = ({ item }: { item: Question }) => (
-        <View>
-            <Text>{item.text}</Text>
+        <View style={styles.questionContainerBox}>
+            <ParticipatingQuestionBox {...item} />
             {item.selectableOptions !== undefined &&
             item.selectableOptions.length > 0 ? (
-                <Text>`{item.selectableOptions.length}`</Text>
+                item.selectableOptions.map((option, index) => (
+                    <SelectableOptionBox
+                        {...option}
+                        questionType={item.questionType}
+                    />
+                ))
             ) : (
                 <Text>no selectable Options</Text>
             )}
@@ -210,7 +218,7 @@ function SurveyparticipateScreen({
     );
 
     return (
-        <>
+        <View style={{ alignItems: "center" }}>
             <Text
                 style={{
                     backgroundColor: "blue",
@@ -218,7 +226,7 @@ function SurveyparticipateScreen({
                     textAlign: "center",
                 }}
             >
-                {sectionId}
+                sectionId: {sectionId}
             </Text>
 
             <FlatList
@@ -227,7 +235,9 @@ function SurveyparticipateScreen({
                 keyExtractor={item => `${item.id}`}
                 ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
             />
-        </>
+
+            <TextButton title="finish" onPress={() => console.log("")} />
+        </View>
     );
 }
 
@@ -236,8 +246,12 @@ export default SurveyparticipateScreen;
 
 const styles = StyleSheet.create({
     questionContainerBox: {
-        backgroundColor: colors.magenta,
+        backgroundColor: colors.lightMainColor,
         marginHorizontal: marginSizes.l20,
         marginVertical: marginSizes.s12,
+        paddingVertical: 16,
+        borderRadius: 20,
+        overflow: "hidden",
+        paddingBottom: 16,
     },
 });

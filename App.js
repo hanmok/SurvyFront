@@ -14,43 +14,47 @@ const Stack = createStackNavigator();
 import MainTabs from "./screens/MainTabs";
 import SurveyParticipateScreen from "./screens/SurveyParticipateScreen";
 import { colors } from "./utils/colors";
+import { Provider } from "react-redux";
+import store from "./store";
 
 // const Tab = createBottomTabNavigator();
 
 export default function App() {
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="MainTabs"
-                    component={MainTabs}
-                    options={{
-                        headerShown: false,
-                    }}
-                />
-                <Stack.Screen
-                    name="Participate"
-                    component={SurveyParticipateScreen}
-                    options={{
-                        headerBackTitleVisible: false,
-                        // TODO: 개발 끝나면 false 로 처리하기.
-                        // headerShown: false,
-                        headerStyle: { backgroundColor: colors.background },
-                    }}
-                />
-                <Stack.Screen
-                    name="Posting"
-                    component={SurveyRequestScreen}
-                    options={{
-                        headerBackTitleVisible: false,
-                        headerStyle: {
-                            backgroundColor: colors.background,
-                        },
-                    }}
-                />
-            </Stack.Navigator>
-            {/* <Text style={styles.requestButton}>ansdj</Text> */}
-        </NavigationContainer>
+        <Provider store={store}>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        name="MainTabs"
+                        component={MainTabs}
+                        options={{
+                            headerShown: false,
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Participate"
+                        component={SurveyParticipateScreen}
+                        options={{
+                            headerBackTitleVisible: false,
+                            // TODO: 개발 끝나면 false 로 처리하기.
+                            // headerShown: false,
+                            headerStyle: { backgroundColor: colors.background },
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Posting"
+                        component={SurveyRequestScreen}
+                        options={{
+                            headerBackTitleVisible: false,
+                            headerStyle: {
+                                backgroundColor: colors.background,
+                            },
+                        }}
+                    />
+                </Stack.Navigator>
+                {/* <Text style={styles.requestButton}>ansdj</Text> */}
+            </NavigationContainer>
+        </Provider>
     );
 }
 

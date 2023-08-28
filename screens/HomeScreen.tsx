@@ -11,6 +11,7 @@ import TextButton from "../components/TextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackParamList";
 import { Survey } from "../types/Survey";
+import { Counter } from "../features/counter/Counter";
 
 const data = [
     {
@@ -99,6 +100,7 @@ function HomeView({
         <SafeAreaView style={styles.container} edges={["top"]}>
             {/* <Text style={styles.collectedMoney}>Collected Money</Text> */}
             {/* <CollectedMoney amount={10000} style={styles.collectedMoney} /> */}
+            {/* <Counter /> */}
             <CollectedMoney amount={10000} />
             <View style={styles.subContainer}>
                 <FlatList

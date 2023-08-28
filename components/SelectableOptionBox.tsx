@@ -29,7 +29,9 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         img={require("../assets/selectedSingleSelection.png")}
                         onPress={() => {
                             console.log(`isSelected: ${isSelected}`);
-                            setIsSelected(!isSelected);
+                            if (isSelected) {
+                                setIsSelected(!isSelected);
+                            }
                         }}
                     />
                 ) : (
@@ -53,7 +55,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
             ) : (
                 <ImageButton
                     // img={require("../assets/unselectedMultipleSelection.png")}
-                    img={require("../assets/unselectedSingleSelection.png")}
+                    img={require("../assets/unselectedMultipleSelection.png")}
                     backgroundStyle={{ justifyContent: "center" }}
                     onPress={() => {
                         console.log(`isSelected: ${isSelected}`);

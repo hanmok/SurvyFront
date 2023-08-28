@@ -11,6 +11,7 @@ import SelectableOptionBox from "../components/SelectableOptionBox";
 import ParticipatingQuestionBox from "../components/ParticipatingQuestionBox";
 import TextButton from "../components/TextButton";
 import { useNavigation } from "@react-navigation/native";
+import SelectableOptionContainer from "../components/SelectableOptionContainer";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -143,12 +144,16 @@ function SurveyparticipateScreen({
             <ParticipatingQuestionBox {...item} />
             {item.selectableOptions !== undefined &&
             item.selectableOptions.length > 0 ? (
-                item.selectableOptions.map((option, index) => (
-                    <SelectableOptionBox
-                        {...option}
-                        questionType={item.questionType}
-                    />
-                ))
+                // item.selectableOptions.map((option, index) => (
+                //     <SelectableOptionBox
+                //         {...option}
+                //         questionType={item.questionType}
+                //     />
+                // ))
+                <SelectableOptionContainer
+                    selectableOptions={item.selectableOptions}
+                    questionType={item.questionType}
+                />
             ) : (
                 <Text>no selectable Options</Text>
             )}

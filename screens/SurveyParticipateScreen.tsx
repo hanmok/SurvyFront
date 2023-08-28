@@ -144,12 +144,6 @@ function SurveyparticipateScreen({
             <ParticipatingQuestionBox {...item} />
             {item.selectableOptions !== undefined &&
             item.selectableOptions.length > 0 ? (
-                // item.selectableOptions.map((option, index) => (
-                //     <SelectableOptionBox
-                //         {...option}
-                //         questionType={item.questionType}
-                //     />
-                // ))
                 <SelectableOptionContainer
                     selectableOptions={item.selectableOptions}
                     questionType={item.questionType}
@@ -163,16 +157,6 @@ function SurveyparticipateScreen({
     return (
         // <View style={{ alignItems: "center" }}>
         <View style={styles.container}>
-            <Text
-                style={{
-                    backgroundColor: "blue",
-                    color: colors.white,
-                    textAlign: "center",
-                }}
-            >
-                sectionId: {sectionId}
-            </Text>
-
             <FlatList
                 style={styles.flatListStyle}
                 data={questions}

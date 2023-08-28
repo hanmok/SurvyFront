@@ -9,6 +9,7 @@ interface SelectableOptionProps {
     position: number;
     value: string;
     questionType: string;
+    onPress?: () => {};
 }
 
 const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
@@ -17,6 +18,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     position,
     value,
     questionType,
+    onPress,
 }) => {
     const [isSelected, setIsSelected] = useState(false);
     return (
@@ -59,10 +61,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                     }}
                 />
             )}
-            <Text style={styles.textStyle}>
-                {/* {position + 1}. {value} */}
-                {value}
-            </Text>
+            <Text style={styles.textStyle}>{value}</Text>
         </View>
     );
 };

@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import TextButton from "./TextButton";
 import { QuestionType, getQuestionType } from "../QuestionType";
 import { colors } from "../utils/colors";
+import { borderSizes } from "../utils/sizes";
 
 interface QuestionTypeProps {
     index: number;
@@ -42,7 +43,7 @@ export default QuestionTypeSelectionBox;
 
 const styles = StyleSheet.create({
     commonBackground: {
-        borderRadius: 10,
+        borderRadius: borderSizes.m10,
         overflow: "hidden",
         width: 70,
         marginVertical: 10,

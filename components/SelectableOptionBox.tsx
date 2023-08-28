@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { fontSizes } from "../utils/sizes";
+import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
+import ImageButton from "./ImageButton";
 
 interface SelectableOptionProps {
     id: number;
@@ -17,15 +18,50 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     value,
     questionType,
 }) => {
+    const [isSelected, setIsSelected] = useState(false);
     return (
         <View style={styles.container}>
             {questionType === "SINGLE_SELECTION" ? (
-                <Text>Single</Text>
+                isSelected === true ? (
+                    <ImageButton
+                        img={require("../assets/selectedSingleSelection.png")}
+                        onPress={() => {
+                            console.log(`isSelected: ${isSelected}`);
+                            setIsSelected(!isSelected);
+                        }}
+                    />
+                ) : (
+                    <ImageButton
+                        img={require("../assets/unselectedSingleSelection.png")}
+                        onPress={() => {
+                            console.log(`isSelected: ${isSelected}`);
+                            setIsSelected(!isSelected);
+                        }}
+                    />
+                )
+            ) : isSelected === true ? (
+                <ImageButton
+                    img={require("../assets/selectedMultipleSelection.png")}
+                    backgroundStyle={{ justifyContent: "center" }}
+                    onPress={() => {
+                        console.log(`isSelected: ${isSelected}`);
+                        setIsSelected(!isSelected);
+                    }}
+                />
             ) : (
-                <Text>Multi</Text>
+                <ImageButton
+                    // img={require("../assets/unselectedMultipleSelection.png")}
+                    img={require("../assets/unselectedSingleSelection.png")}
+                    backgroundStyle={{ justifyContent: "center" }}
+                    onPress={() => {
+                        console.log(`isSelected: ${isSelected}`);
+                        setIsSelected(!isSelected);
+                    }}
+                />
             )}
             <Text style={styles.textStyle}>
-                {position}. {value}
+                {/* {position + 1}. {value} */}
+                {value}
             </Text>
         </View>
     );
@@ -35,9 +71,13 @@ export default SelectableOptionBox;
 
 const styles = StyleSheet.create({
     container: {
-        paddingLeft: 16,
+        flexDirection: "row",
+        paddingLeft: paddingSizes.m16,
+        alignItems: "center",
+        marginTop: marginSizes.s12,
     },
     textStyle: {
         fontSize: fontSizes.s16,
+        marginLeft: marginSizes.s12,
     },
 });

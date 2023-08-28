@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Button, FlatList, Dimensions } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
-import { marginSizes } from "../utils/sizes";
+import { borderSizes, marginSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvailableSurvey from "./AvailableSurvey";
 import CollectedMoney from "../components/CollectedMoney";
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         alignSelf: "flex-end",
         flexBasis: 30,
         marginRight: marginSizes.s12,
-        borderRadius: 10,
+        borderRadius: borderSizes.m10,
     },
     genre: {
         justifyContent: "center",
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
         backgroundColor: "blue",
         height: 60,
         width: 60,
-        borderRadius: 30,
+        borderRadius: borderSizes.xl30,
         marginBottom: 50,
     },
 });

@@ -5,7 +5,7 @@ import { colors } from "../utils/colors";
 import QuestionTypeSelectionBox from "./QuestionTypeSelectionBox";
 import QuestionTypeSelectionBoxContainer from "./QuestionTypeSelectionBoxContainer";
 import { boxSizes } from "../utils/sizes";
-
+import { borderSizes } from "../utils/sizes";
 interface PostingQuestionProps {
     index: number;
     // question: string;
@@ -46,7 +46,7 @@ const PostingQuestionBox: React.FC<PostingQuestionProps> = ({
 const styles = StyleSheet.create({
     questionContainer: {
         backgroundColor: colors.surveyBoxBackground,
-        borderRadius: 10,
+        borderRadius: borderSizes.m10,
         overflow: "hidden",
         height: boxSizes.requestingQuestionContainer,
     },

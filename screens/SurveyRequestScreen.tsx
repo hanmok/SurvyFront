@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
-import { fontSizes, marginSizes } from "../utils/sizes";
+import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spacer from "../components/Spacer";
 import TextButton from "../components/TextButton";
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     surveyTitle: {
         borderColor: colors.deepMainColor,
         borderWidth: 5,
-        borderRadius: 10,
+        borderRadius: borderSizes.m10,
         marginHorizontal: marginSizes.m16,
         height: 50,
         marginTop: marginSizes.xxs4,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         justifyContent: "center",
         height: 30,
-        borderRadius: 10,
+        borderRadius: borderSizes.m10,
         overflow: "hidden",
         marginHorizontal: 10,
     },
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
         marginHorizontal: marginSizes.l20,
         backgroundColor: colors.deepMainColor,
         color: colors.white,
-        borderRadius: 10,
+        borderRadius: borderSizes.m10,
         padding: 10,
         // backgroundColor: colors.inactiveBtnBG,
         marginBottom: marginSizes.l20,

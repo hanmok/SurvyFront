@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import { fontSizes, marginSizes } from "../utils/sizes";
+import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
 import accounting from "accounting";
 import { colors } from "../utils/colors";
-
+import { borderSizes } from "../utils/sizes";
 interface CollectedMoneyProps {
     amount: number;
 }
@@ -40,7 +40,7 @@ export default CollectedMoney;
 
 const styles = StyleSheet.create({
     container: {
-        borderRadius: 10,
+        borderRadius: borderSizes.m10,
         width: 120,
         marginRight: 12,
         alignSelf: "flex-end", // 오른쪽으로 밀착
@@ -50,14 +50,12 @@ const styles = StyleSheet.create({
         // contains image and text
         flexDirection: "row",
         justifyContent: "center",
-        borderRadius: 10,
+        borderRadius: borderSizes.m10,
         backgroundColor: colors.lightMainColor,
     },
     img: {
-        // backgroundColor: "magenta",
-        borderRadius: 14,
-        // paddingLeft: 10,
-        marginLeft: 14,
+        borderRadius: borderSizes.m10,
+        marginLeft: marginSizes.s12,
     },
     collectedMoney: {
         width: 80,
@@ -65,15 +63,15 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.s16,
         fontWeight: "bold",
         textAlign: "center", // 수평 중앙정렬
-        borderRadius: 10,
-        paddingRight: 5,
+        borderRadius: borderSizes.m10,
+        paddingRight: paddingSizes.xxs4,
     },
     centeredTextContainer: {
         justifyContent: "center", // 수직 중앙 정렬
         alignItems: "center", // 수평 중앙 정렬
         height: 30,
         flexDirection: "row",
-        borderRadius: 10,
+        borderRadius: borderSizes.m10,
     },
     overflowHidden: {
         overflow: "hidden",

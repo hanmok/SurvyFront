@@ -19,7 +19,6 @@ const ParticipatingQuestionBox: React.FC<ParticipatingQuestionProps> = ({
 }) => {
     return (
         <View style={styles.container}>
-            {/* <Text>q_id: {id}</Text> */}
             <Text style={styles.textStyle}>
                 {position + 1}. {text}
             </Text>

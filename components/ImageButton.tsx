@@ -11,10 +11,10 @@ import {
 
 interface ImageButtonProps {
     img: ImageRequireSource;
-    onPress: () => void;
+    onPress?: () => void;
     imageStyle?: StyleProp<ImageStyle>;
     backgroundStyle?: StyleProp<ViewStyle>;
-    size: number;
+    size?: number;
 }
 
 const ImageButton: React.FC<ImageButtonProps> = ({

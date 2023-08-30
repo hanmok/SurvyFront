@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
 import { initialize } from "../features/selector/selectorSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -32,7 +33,9 @@ function SurveyparticipateScreen({
     const [shouldGoBack, setShouldGoBack] = useState(false);
     const { sectionId } = route.params;
     const dispatch = useDispatch();
-
+    const selectedIndexes = useSelector((state: RootState) => {
+        return state.selector.selectedIndexes;
+    });
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -185,8 +188,17 @@ function SurveyparticipateScreen({
             <TextButton
                 title="Finish"
                 onPress={() => console.log("")}
-                textStyle={styles.finishButtonText}
-                backgroundStyle={styles.finishButtonBackground}
+                // textStyle={if (selectedIndexes) styles.finishButtonText}
+                textStyle={
+                    selectedIndexes.every(arr => arr.length !== 0)
+                        ? styles.activatedButtonText
+                        : styles.inactivatedButtonText
+                }
+                backgroundStyle={
+                    selectedIndexes.every(arr => arr.length !== 0)
+                        ? styles.activatedFinishButtonBackground
+                        : styles.inactivatedFinishButtonBackground
+                }
             />
         </View>
     );
@@ -215,15 +227,29 @@ const styles = StyleSheet.create({
         paddingBottom: 16,
         alignSelf: "stretch",
     },
-    finishButtonText: {
+    activatedButtonText: {
+        textAlign: "center",
+        fontSize: fontSizes.m20,
+        letterSpacing: 1,
+        color: "#fff",
+    },
+    inactivatedButtonText: {
         textAlign: "center",
         fontSize: fontSizes.m20,
         letterSpacing: 1,
         color: "#DDD",
     },
-    finishButtonBackground: {
+    activatedFinishButtonBackground: {
         marginTop: 20,
         // backgroundColor: colors.gray3,
+        backgroundColor: "#666",
+        alignSelf: "stretch",
+        padding: 10,
+        borderRadius: borderSizes.m10,
+    },
+
+    inactivatedFinishButtonBackground: {
+        marginTop: 20,
         backgroundColor: "#BBB",
         alignSelf: "stretch",
         padding: 10,

@@ -6,7 +6,7 @@ import {
     selectSingleSelection,
     selectMultipleSelection,
 } from "../features/selector/selectorSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 interface SelectablContainerProps {
     selectableOptions: SelectableOption[];

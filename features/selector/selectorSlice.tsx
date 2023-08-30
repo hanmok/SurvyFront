@@ -15,11 +15,7 @@ export const selectorSlice = createSlice({
     name: "selector",
     initialState,
     reducers: {
-        // selectedIndexes 여러개 생성하기
-        // initialize: (state, action) => {
         initialize: (state, action: PayloadAction<number>) => {
-            // state.selectedIndexes = [[]]
-
             const numberOfQuestions = action.payload;
             console.log(`number of questions: `, numberOfQuestions);
             let outer: number[][] = [];
@@ -56,7 +52,6 @@ export const selectorSlice = createSlice({
             const { questionIndex, selectedIndex: selectedOptionIndex } =
                 action.payload;
 
-            // if (state.selectedIndexes.includes(selectedIndex)) {
             if (
                 state.selectedIndexes[questionIndex].includes(
                     selectedOptionIndex

@@ -178,7 +178,6 @@ function SurveyparticipateScreen({
                 style={styles.flatListStyle}
                 data={questions}
                 renderItem={renderItem}
-                // keyExtractor={item => `${item.id}`}
                 keyExtractor={item => `${item.selectableOptions[0].id} `}
                 ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
             />

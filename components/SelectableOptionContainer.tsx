@@ -46,6 +46,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                         questionType={questionType}
                         onPress={() => handlePress(index)}
                         questionIndex={questionIndex}
+                        key={`${selectableOption.id}`}
                     />
                 );
             })}

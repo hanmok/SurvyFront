@@ -1,21 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
+
+interface SelectorState {
+    selectedIndexes: number[][];
+    textAnswers: string[];
+}
+
+const initialState: SelectorState = {
+    selectedIndexes: [],
+    textAnswers: [],
+};
 
 export const selectorSlice = createSlice({
     name: "selector",
-    initialState: {
-        // selectedIndexes: [[], []],
-        selectedIndexes: [],
-        textAnswers: [],
-    },
-
+    initialState,
     reducers: {
         // selectedIndexes 여러개 생성하기
-        initialize: (state, action) => {
+        // initialize: (state, action) => {
+        initialize: (state, action: PayloadAction<number>) => {
             // state.selectedIndexes = [[]]
 
             const numberOfQuestions = action.payload;
             console.log(`number of questions: `, numberOfQuestions);
-            let outer = [];
+            let outer: number[][] = [];
             for (let i = 0; i < numberOfQuestions; i++) {
                 outer.push([]);
             }
@@ -26,23 +33,42 @@ export const selectorSlice = createSlice({
                 state.selectedIndexes
             );
         },
-        selectSingleSelection: (state, action) => {
+        selectSingleSelection: (
+            state,
+            action: PayloadAction<{
+                questionIndex: number;
+                selectedIndex: number;
+            }>
+        ) => {
             // questionIndex, selectedIndex
             const { questionIndex, selectedIndex } = action.payload;
             console.log(`${questionIndex}`);
             state.selectedIndexes[questionIndex] = [selectedIndex];
         },
-        selectMultipleSelection: (state, action) => {
+        selectMultipleSelection: (
+            state,
+            action: PayloadAction<{
+                questionIndex: number;
+                selectedIndex: number;
+            }>
+        ) => {
             // questionIndex, selectedIndex
-            const { questionIndex, selectedIndex } = action.payload;
-            if (state.selectedIndexes.includes(selectedIndex)) {
+            const { questionIndex, selectedIndex: selectedOptionIndex } =
+                action.payload;
+
+            // if (state.selectedIndexes.includes(selectedIndex)) {
+            if (
+                state.selectedIndexes[questionIndex].includes(
+                    selectedOptionIndex
+                )
+            ) {
                 // 이미 포함시 제거
                 state.selectedIndexes[questionIndex] = state.selectedIndexes[
                     questionIndex
-                ].filter(item => item !== selectedIndex);
+                ].filter(item => item !== selectedOptionIndex);
             } else {
                 // 없을 경우 추가
-                state.selectedIndexes[questionIndex].push(selectedIndex);
+                state.selectedIndexes[questionIndex].push(selectedOptionIndex);
             }
         },
     },

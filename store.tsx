@@ -1,6 +1,4 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-// import counterReducer from "./features/counter/counterSlice";
-// import selectorReducer from "./features/selector/selectorSlice";
 import { selectorSlice } from "./features/selector/selectorSlice";
 import { counterSlice } from "./features/counter/counterSlice";
 

@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
 import ImageButton from "./ImageButton";
+import { useSelector } from "react-redux";
+// import RootState from "../store";
+// import SelectorRootState from "../RootState";
+// import { SelectorRootState } from "../RootState";
+import { RootState } from "../store";
 
 interface SelectableOptionProps {
     id: number;
@@ -9,7 +14,8 @@ interface SelectableOptionProps {
     position: number;
     value: string;
     questionType: string;
-    onPress?: () => {};
+    onPress?: () => void;
+    questionIndex: number;
 }
 
 const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
@@ -19,48 +25,43 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     value,
     questionType,
     onPress,
+    questionIndex,
 }) => {
+    const sth = [[], []];
     const [isSelected, setIsSelected] = useState(false);
+    const selectedIndexes = useSelector((state: RootState) => {
+        return state.selector.selectedIndexes;
+    });
+
+    if (selectedIndexes == null) {
+        return <Text>selectedIndexes: null </Text>;
+    }
+
     return (
         <View style={styles.container}>
             {questionType === "SINGLE_SELECTION" ? (
-                isSelected === true ? (
+                selectedIndexes[questionIndex].includes(position) ? (
                     <ImageButton
                         img={require("../assets/selectedSingleSelection.png")}
-                        onPress={() => {
-                            console.log(`isSelected: ${isSelected}`);
-                            if (isSelected) {
-                                setIsSelected(!isSelected);
-                            }
-                        }}
+                        onPress={onPress}
                     />
                 ) : (
                     <ImageButton
                         img={require("../assets/unselectedSingleSelection.png")}
-                        onPress={() => {
-                            console.log(`isSelected: ${isSelected}`);
-                            setIsSelected(!isSelected);
-                        }}
+                        onPress={onPress}
                     />
                 )
-            ) : isSelected === true ? (
+            ) : selectedIndexes[questionIndex].includes(position) ? (
                 <ImageButton
                     img={require("../assets/selectedMultipleSelection.png")}
                     backgroundStyle={{ justifyContent: "center" }}
-                    onPress={() => {
-                        console.log(`isSelected: ${isSelected}`);
-                        setIsSelected(!isSelected);
-                    }}
+                    onPress={onPress}
                 />
             ) : (
                 <ImageButton
-                    // img={require("../assets/unselectedMultipleSelection.png")}
                     img={require("../assets/unselectedMultipleSelection.png")}
                     backgroundStyle={{ justifyContent: "center" }}
-                    onPress={() => {
-                        console.log(`isSelected: ${isSelected}`);
-                        setIsSelected(!isSelected);
-                    }}
+                    onPress={onPress}
                 />
             )}
             <Text style={styles.textStyle}>{value}</Text>

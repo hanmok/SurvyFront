@@ -12,6 +12,8 @@ import ParticipatingQuestionBox from "../components/ParticipatingQuestionBox";
 import TextButton from "../components/TextButton";
 import { useNavigation } from "@react-navigation/native";
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
+import { initialize } from "../features/selector/selectorSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -29,6 +31,7 @@ function SurveyparticipateScreen({
     >([]);
     const [shouldGoBack, setShouldGoBack] = useState(false);
     const { sectionId } = route.params;
+    const dispatch = useDispatch();
 
     const navigation = useNavigation();
 
@@ -64,7 +67,7 @@ function SurveyparticipateScreen({
     };
 
     useEffect(() => {
-        const fetchAndProcessData = async () => {
+        const fetchData = async () => {
             try {
                 const questionsResponse = await fetch(
                     `http://localhost:3000/section/${sectionId}/questions`
@@ -80,7 +83,6 @@ function SurveyparticipateScreen({
                         questionType: item.questionType,
                     })
                 );
-                setQuestions(questionsArray);
 
                 const selectableOptionsResponse = await fetch(
                     `http://localhost:3000/section/${sectionId}/selectable-options`
@@ -95,7 +97,6 @@ function SurveyparticipateScreen({
                         questionId: item.questionId,
                     })
                 );
-                setSelectableOptions(selectableOptionsArray);
 
                 const myDic: Dictionary<SelectableOption> = {};
                 questionsArray.forEach(question => {
@@ -118,17 +119,32 @@ function SurveyparticipateScreen({
 
                     tempQuestions.push(targetQuestion);
                 }
-                setQuestions(tempQuestions);
-                tempQuestions.forEach(q =>
-                    console.log(`q type: ${q.questionType}`)
-                );
+
+                dispatch(initialize(tempQuestions.length));
+                console.log("initialize called");
                 setIsLoading(false);
+
+                return {
+                    questions: tempQuestions,
+                    selectableOptions: selectableOptionsArray,
+                };
             } catch (error) {
                 console.log(`Error fetching data: ${error.message}`);
+                setIsLoading(false);
+                return null;
             }
         };
 
-        fetchAndProcessData();
+        const fetchDataAndSetData = async () => {
+            const fetchDataResult = await fetchData();
+
+            if (fetchDataResult) {
+                setQuestions(fetchDataResult.questions);
+                setSelectableOptions(fetchDataResult.selectableOptions);
+            }
+        };
+
+        fetchDataAndSetData();
     }, []);
 
     if (isLoading) {
@@ -147,6 +163,7 @@ function SurveyparticipateScreen({
                 <SelectableOptionContainer
                     selectableOptions={item.selectableOptions}
                     questionType={item.questionType}
+                    questionIndex={item.position}
                 />
             ) : (
                 <Text>no selectable Options</Text>
@@ -161,7 +178,8 @@ function SurveyparticipateScreen({
                 style={styles.flatListStyle}
                 data={questions}
                 renderItem={renderItem}
-                keyExtractor={item => `${item.id}`}
+                // keyExtractor={item => `${item.id}`}
+                keyExtractor={item => `${item.selectableOptions[0].id} `}
                 ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
             />
 

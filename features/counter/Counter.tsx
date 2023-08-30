@@ -1,11 +1,13 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { decrement, increment } from "./counterSlice";
+import { decrement, increment, incrementByAmount } from "./counterSlice";
 import { Button, View, Text } from "react-native";
 // import styles from './Counter.module.css'
+// import { CounterRootState } from "../../RootState";
+import { RootState } from "../../store";
 
 export function Counter() {
-    const count = useSelector(state => state.counter.value);
+    const count = useSelector((state: RootState) => state.counter.value);
     const dispatch = useDispatch();
 
     return (
@@ -16,7 +18,8 @@ export function Counter() {
                 title="Increment"
             ></Button>
             <Button
-                onPress={() => dispatch(decrement())}
+                // onPress={() => dispatch(decrement())}
+                onPress={() => dispatch(incrementByAmount(5))}
                 title="Decrement"
             ></Button>
         </View>

@@ -100,7 +100,7 @@ function HomeView({
         <SafeAreaView style={styles.container} edges={["top"]}>
             {/* <Text style={styles.collectedMoney}>Collected Money</Text> */}
             {/* <CollectedMoney amount={10000} style={styles.collectedMoney} /> */}
-            {/* <Counter /> */}
+            <Counter />
             <CollectedMoney amount={10000} />
             <View style={styles.subContainer}>
                 <FlatList

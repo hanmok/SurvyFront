@@ -138,13 +138,15 @@ function SurveyparticipateScreen({
     const buttonTapAction = async () => {
         // const buttonTapAction = () => {
         console.log("buttonTapAction called");
-        await postAnswer(424, 344, 404, 734);
+        await postAnswer(424, 344, 404, 24);
+
+        // await postAnswer(surveyId, question)
 
         // const promises = [];
         // for (let i = 0; i < 10; i++) {
         //     promises.push(postEachAnswer());
         // }
-        // // 먼저, 버튼이 눌렸을 때 answer 되는지부터 확인해보기!
+        // // 먼저, 버튼이 눌렸을 때 answer 되는지부터 확인해보기! 확인 함~
 
         // const newData = await Promise.all(promises);
 

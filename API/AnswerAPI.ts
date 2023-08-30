@@ -10,12 +10,6 @@ export async function postAnswer(
     const data = { surveyId, userId, questionId, selectableOptionId };
 
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
-    // const data = {
-    //     survey_id: surveyId,
-    //     user_id: userId,
-    //     question_id: questionId,
-    //     selectableOption_id: selectableOptionId,
-    // };
 
     try {
         const response = await fetch(url, {

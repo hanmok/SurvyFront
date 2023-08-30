@@ -2,9 +2,9 @@ import { API_BASE_URL } from "./API";
 import _ from "lodash";
 export async function postAnswer(
     surveyId: number,
+    userId: number,
     questionId: number,
-    selectableOptionId: number,
-    userId: number
+    selectableOptionId: number
 ): Promise<ApiResponse> {
     const url = `${API_BASE_URL}/answer`;
     const data = { surveyId, userId, questionId, selectableOptionId };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, View, Alert } from "react-native";
 import { colors } from "../utils/colors";
 import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
@@ -26,34 +26,37 @@ function SurveyparticipateScreen({
 }: {
     route: RouteProp<RootStackParamList, "Participate">;
 }) {
+    const userId = useSelector((state: RootState) => {
+        return state.user.userId ?? -1;
+    });
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const [selectableOptions, setSelectableOptions] = useState<
         SelectableOption[]
     >([]);
-    const [shouldGoBack, setShouldGoBack] = useState(false);
+    // const [shouldGoBack, setShouldGoBack] = useState(false);
+    const shouldGoBack = useRef(false);
     const { sectionId, surveyId } = route.params;
     const dispatch = useDispatch();
-    const selectedIndexes = useSelector((state: RootState) => {
+    const selectedIndexIds = useSelector((state: RootState) => {
         return state.selector.selectedIndexIds;
     });
+
     const navigation = useNavigation();
 
-    // const userId: number | undefined = useSelector(
-    //     (state: RootState) => state.user.userId
-    // );
-
     useEffect(() => {
+        // 뒤로가기 버튼 누를 때 호출될 함수
         const unsubscribe = navigation.addListener("beforeRemove", e => {
-            // 뒤로가기 버튼 누를 때 호출될 함수
-            e.preventDefault(); // 뒤로가기 막기
-            showAlertAndGoBack(e);
+            if (!shouldGoBack.current) {
+                e.preventDefault(); // 뒤로가기 막기
+                showAlertAndGoBack();
+            }
         });
 
         return unsubscribe;
     }, [navigation]);
 
-    const showAlertAndGoBack = e => {
+    const showAlertAndGoBack = () => {
         Alert.alert(
             "경고",
             "정말로 뒤로가시겠습니까?",
@@ -65,8 +68,8 @@ function SurveyparticipateScreen({
                 {
                     text: "확인",
                     onPress: () => {
-                        // 확인 버튼 누를 때 처리
-                        navigation.dispatch(e.data.action);
+                        shouldGoBack.current = true;
+                        navigation.goBack();
                     },
                 },
             ],
@@ -126,31 +129,46 @@ function SurveyparticipateScreen({
         // await postAnswer(surveyId, questionId, selectableOptionId, userId);
     }
 
-    const postEachAnswer = async () => {
-        const response = await fetch("some_url");
-        return response;
+    const postEachAnswer = async (
+        surveyId: number,
+        userId: number,
+        questionId: number,
+        selectableOptionId: number
+    ) => {
+        // const response = await fetch("some_url");
+        await postAnswer(surveyId, userId, questionId, selectableOptionId);
+        // return response;
     };
 
     const handleNextScreen = () => {
         console.log("handleNextScreen called");
+        navigation.goBack();
     };
 
     const buttonTapAction = async () => {
         // const buttonTapAction = () => {
         console.log("buttonTapAction called");
-        await postAnswer(424, 344, 404, 24);
-
-        // await postAnswer(surveyId, question)
-
-        // const promises = [];
-        // for (let i = 0; i < 10; i++) {
-        //     promises.push(postEachAnswer());
-        // }
-        // // 먼저, 버튼이 눌렸을 때 answer 되는지부터 확인해보기! 확인 함~
-
-        // const newData = await Promise.all(promises);
-
-        handleNextScreen();
+        // await postAnswer(424, 344, 404, 24);
+        const promises = [];
+        for (let q = 0; q < questions.length; q++) {
+            for (let i = 0; i < selectedIndexIds[q].length; i++) {
+                const apiCall = postEachAnswer(
+                    surveyId,
+                    userId,
+                    questions[q].id,
+                    selectedIndexIds[q][i]
+                );
+                promises.push(apiCall);
+            }
+        }
+        await Promise.all(promises)
+            .then(() => {
+                shouldGoBack.current = true;
+                handleNextScreen();
+            })
+            .catch(error => {
+                console.log(error);
+            });
     };
 
     useEffect(() => {
@@ -275,12 +293,12 @@ function SurveyparticipateScreen({
                 onPress={buttonTapAction}
                 // textStyle={if (selectedIndexes) styles.finishButtonText}
                 textStyle={
-                    selectedIndexes.every(arr => arr.length !== 0)
+                    selectedIndexIds.every(arr => arr.length !== 0)
                         ? styles.activatedButtonText
                         : styles.inactivatedButtonText
                 }
                 backgroundStyle={
-                    selectedIndexes.every(arr => arr.length !== 0)
+                    selectedIndexIds.every(arr => arr.length !== 0)
                         ? styles.activatedFinishButtonBackground
                         : styles.inactivatedFinishButtonBackground
                 }

@@ -8,12 +8,9 @@ interface UserState {
 }
 
 const initialState: UserState = {
-    // userId: undefined,
-    // accessToken: undefined,
-    // refreshToken: undefined,
-    userId: 774,
-    accessToken: "access",
-    refreshToken: "refresh",
+    userId: -1,
+    accessToken: "",
+    refreshToken: "",
 };
 
 export const userSlice = createSlice({

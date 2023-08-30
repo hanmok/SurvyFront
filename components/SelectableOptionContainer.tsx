@@ -19,18 +19,28 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     questionType,
     questionIndex,
 }) => {
-    const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
+    // const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
+
+    const [selectedIndexIds, setSelectedIndexIds] = useState<number[]>([]);
+
     const dispatch = useDispatch();
 
     const handlePress = useCallback(
         (selectedIndex: number) => {
             if (questionType === "SINGLE_SELECTION") {
                 dispatch(
-                    selectSingleSelection({ questionIndex, selectedIndex })
+                    // selectSingleSelection({ questionIndex, selectedIndex })
+                    selectSingleSelection({
+                        questionIndex,
+                        selectedIndexId: selectableOptions[selectedIndex].id,
+                    })
                 );
             } else {
                 dispatch(
-                    selectMultipleSelection({ questionIndex, selectedIndex })
+                    selectMultipleSelection({
+                        questionIndex,
+                        selectedIndexId: selectableOptions[selectedIndex].id,
+                    })
                 );
             }
         },

@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 interface SelectorState {
-    selectedIndexes: number[][];
+    selectedIndexIds: number[][];
     textAnswers: string[];
 }
 
 const initialState: SelectorState = {
-    selectedIndexes: [],
+    selectedIndexIds: [],
     textAnswers: [],
 };
 
@@ -22,48 +22,46 @@ export const selectorSlice = createSlice({
             for (let i = 0; i < numberOfQuestions; i++) {
                 outer.push([]);
             }
+            // selectedIndexes 초기화
+            state.selectedIndexIds = outer;
 
-            state.selectedIndexes = outer;
             console.log(
                 `selected Indexes set from reducer: `,
-                state.selectedIndexes
+                state.selectedIndexIds
             );
         },
         selectSingleSelection: (
             state,
             action: PayloadAction<{
                 questionIndex: number;
-                selectedIndex: number;
+                selectedIndexId: number;
             }>
         ) => {
             // questionIndex, selectedIndex
-            const { questionIndex, selectedIndex } = action.payload;
+            const { questionIndex, selectedIndexId } = action.payload;
             console.log(`${questionIndex}`);
-            state.selectedIndexes[questionIndex] = [selectedIndex];
+            state.selectedIndexIds[questionIndex] = [selectedIndexId];
         },
         selectMultipleSelection: (
             state,
             action: PayloadAction<{
                 questionIndex: number;
-                selectedIndex: number;
+                selectedIndexId: number;
             }>
         ) => {
             // questionIndex, selectedIndex
-            const { questionIndex, selectedIndex: selectedOptionIndex } =
-                action.payload;
+            const { questionIndex, selectedIndexId } = action.payload;
 
             if (
-                state.selectedIndexes[questionIndex].includes(
-                    selectedOptionIndex
-                )
+                state.selectedIndexIds[questionIndex].includes(selectedIndexId)
             ) {
                 // 이미 포함시 제거
-                state.selectedIndexes[questionIndex] = state.selectedIndexes[
+                state.selectedIndexIds[questionIndex] = state.selectedIndexIds[
                     questionIndex
-                ].filter(item => item !== selectedOptionIndex);
+                ].filter(item => item !== selectedIndexId);
             } else {
                 // 없을 경우 추가
-                state.selectedIndexes[questionIndex].push(selectedOptionIndex);
+                state.selectedIndexIds[questionIndex].push(selectedIndexId);
             }
         },
     },

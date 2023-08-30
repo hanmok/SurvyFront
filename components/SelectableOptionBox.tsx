@@ -29,18 +29,19 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
 }) => {
     const sth = [[], []];
     const [isSelected, setIsSelected] = useState(false);
-    const selectedIndexes = useSelector((state: RootState) => {
-        return state.selector.selectedIndexes;
+    // const selectedIndexes = useSelector((state: RootState) => {
+    const selectedIndexIds = useSelector((state: RootState) => {
+        return state.selector.selectedIndexIds;
     });
 
-    if (selectedIndexes == null) {
+    if (selectedIndexIds == null) {
         return <Text>selectedIndexes: null </Text>;
     }
 
     return (
         <View style={styles.container}>
             {questionType === "SINGLE_SELECTION" ? (
-                selectedIndexes[questionIndex].includes(position) ? (
+                selectedIndexIds[questionIndex].includes(id) ? (
                     <ImageButton
                         img={require("../assets/selectedSingleSelection.png")}
                         onPress={onPress}
@@ -51,7 +52,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         onPress={onPress}
                     />
                 )
-            ) : selectedIndexes[questionIndex].includes(position) ? (
+            ) : selectedIndexIds[questionIndex].includes(id) ? (
                 <ImageButton
                     img={require("../assets/selectedMultipleSelection.png")}
                     backgroundStyle={{ justifyContent: "center" }}

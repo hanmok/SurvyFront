@@ -35,7 +35,7 @@ function SurveyparticipateScreen({
     const { sectionId, surveyId } = route.params;
     const dispatch = useDispatch();
     const selectedIndexes = useSelector((state: RootState) => {
-        return state.selector.selectedIndexes;
+        return state.selector.selectedIndexIds;
     });
     const navigation = useNavigation();
 

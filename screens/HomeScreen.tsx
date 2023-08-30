@@ -12,6 +12,11 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackParamList";
 import { Survey } from "../types/Survey";
 import { Counter } from "../features/counter/Counter";
+import { ResponseForm } from "../types/ResponseForm";
+// import { UserResponse, login } from "../API/API";
+import { UserResponse, login } from "../API/UserAPI";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../features/user/userSlice";
 
 const data = [
     {
@@ -42,8 +47,31 @@ function HomeView({
 }: {
     navigation: StackNavigationProp<RootStackParamList, "Home">;
 }) {
+    const dispatch = useDispatch();
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // login({ username: "kkk@gmail.com", password: "kkkk" });
+        // const userResponse: login("kkk@gmail.com", "kkkk");
+        // const userResponse: User = await login("kkk@gmail.com", "kkkk");
+        // const userResponse: UserResponse = await login('kkk@gmail.com', 'kkkk')
+
+        const fetchUser = async () => {
+            try {
+                const userResponse = await login("kkk@gmail.com", "kkkk");
+                console.log(
+                    `userResponse: ${userResponse.data.userId}, ${userResponse.data.accessToken}, ${userResponse.data.refreshToken}`
+                );
+                const { userId, accessToken, refreshToken } = userResponse.data;
+                dispatch(setUserInfo({ userId, accessToken, refreshToken }));
+            } catch (error) {
+                // TODO: handle error
+                console.log(error);
+            }
+        };
+        fetchUser();
+    }, []);
 
     const fetchSurveys = async () => {
         try {
@@ -83,6 +111,7 @@ function HomeView({
             onPress={() =>
                 navigation.navigate("Participate", {
                     sectionId: item.initialSectionId,
+                    surveyId: item.id,
                 })
             }
         />
@@ -100,7 +129,7 @@ function HomeView({
         <SafeAreaView style={styles.container} edges={["top"]}>
             {/* <Text style={styles.collectedMoney}>Collected Money</Text> */}
             {/* <CollectedMoney amount={10000} style={styles.collectedMoney} /> */}
-            <Counter />
+            {/* <Counter /> */}
             <CollectedMoney amount={10000} />
             <View style={styles.subContainer}>
                 <FlatList

@@ -5,47 +5,62 @@ import { useCallback, useState } from "react";
 import {
     selectSingleSelection,
     selectMultipleSelection,
+    textInputAction,
 } from "../features/selector/selectorSlice";
 import { useDispatch } from "react-redux";
 
 interface SelectablContainerProps {
     selectableOptions: SelectableOption[];
     questionType: string;
-    questionIndex: number;
+    questionIndex: number; // questionId 를 알아야 하는건 아냐?
+    questionId: number;
 }
 
 const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     selectableOptions,
     questionType,
     questionIndex,
+    questionId,
 }) => {
-    // const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
-
     const [selectedIndexIds, setSelectedIndexIds] = useState<number[]>([]);
 
     const dispatch = useDispatch();
 
+    // const handleUserInput = useCallback(userInput: string) => {
+    // 	dispatch(textInputAction({questionId, userInput})
+    // }
+
     const handlePress = useCallback(
         (selectedIndex: number) => {
-            if (questionType === "SINGLE_SELECTION") {
-                dispatch(
-                    // selectSingleSelection({ questionIndex, selectedIndex })
-                    selectSingleSelection({
-                        questionIndex,
-                        selectedIndexId: selectableOptions[selectedIndex].id,
-                    })
-                );
-            } else {
-                dispatch(
-                    selectMultipleSelection({
-                        questionIndex,
-                        selectedIndexId: selectableOptions[selectedIndex].id,
-                    })
-                );
+            switch (questionType) {
+                case "SINGLE_SELECTION":
+                    dispatch(
+                        selectSingleSelection({
+                            questionIndex,
+                            selectedIndexId:
+                                selectableOptions[selectedIndex].id,
+                        })
+                    );
+                    break;
+                case "MULTIPLE_SELECTION":
+                    dispatch(
+                        selectMultipleSelection({
+                            questionIndex,
+                            selectedIndexId:
+                                selectableOptions[selectedIndex].id,
+                        })
+                    );
+                    break;
             }
         },
         [dispatch, questionType, questionIndex]
     );
+
+    // const handleTextInput = useCallback(
+    // 	(userInput: string) => {
+    // 		dispatch(textInputAction({ questionId, userInput}))
+    // 	}, [dispatch]
+    // )
 
     return (
         <View>
@@ -55,6 +70,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                         {...selectableOption}
                         questionType={questionType}
                         onPress={() => handlePress(index)}
+                        // onTextInput={() => handleTextInput(asd)}
                         questionIndex={questionIndex}
                         key={`${selectableOption.id}`}
                     />

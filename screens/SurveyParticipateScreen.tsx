@@ -15,7 +15,7 @@ import SelectableOptionContainer from "../components/SelectableOptionContainer";
 import { initialize } from "../features/selector/selectorSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { postAnswer } from "../API/AnswerAPI";
+import { postAnswer, createParticipate } from "../API/AnswerAPI";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -77,67 +77,13 @@ function SurveyparticipateScreen({
         );
     };
 
-    async function postData(url: string, data: any) {
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-
-            const responseData = await response.json();
-            return responseData;
-        } catch (error) {
-            console.error("Error sending POST request:", error);
-            throw error;
-        }
-    }
-
-    async function post() {
-        const url = "";
-        const data = {};
-
-        // questionId <- questions
-        // selectableOptionId <- selectedIndexes (Redux)
-
-        // surveyId <-surveyId
-        // userId <- userId
-
-        // 여러 API 를 한번에 보내야하네 ??
-        // 맞아. 음.. 어떻게 하지? 다 동시에 보내야지 뭐.
-
-        // 일단 보내봐 아무거나 !
-        // await this.postData(url, data)
-        //     .then(response => {
-        //         console.log("Server response:", response);
-        //     })
-        //     .catch(error => {
-        //         console.log("An error occurred:", error);
-        //     });
-
-        // selectableOptions 가 주어짐
-        // questions 가 주어짐
-        // selectedIndexes 가 주어짐
-        // 음.. ;;
-        const questionId = 1;
-        const selectableOptionId = 2;
-        // await postAnswer(surveyId, questionId, selectableOptionId, userId);
-    }
-
     const postEachAnswer = async (
         surveyId: number,
         userId: number,
         questionId: number,
         selectableOptionId: number
     ) => {
-        // const response = await fetch("some_url");
         await postAnswer(surveyId, userId, questionId, selectableOptionId);
-        // return response;
     };
 
     const handleNextScreen = () => {
@@ -146,9 +92,7 @@ function SurveyparticipateScreen({
     };
 
     const buttonTapAction = async () => {
-        // const buttonTapAction = () => {
         console.log("buttonTapAction called");
-        // await postAnswer(424, 344, 404, 24);
         const promises = [];
         for (let q = 0; q < questions.length; q++) {
             for (let i = 0; i < selectedIndexIds[q].length; i++) {
@@ -162,6 +106,9 @@ function SurveyparticipateScreen({
             }
         }
         await Promise.all(promises)
+            .then(() => {
+                createParticipate(surveyId, userId, sectionId);
+            })
             .then(() => {
                 shouldGoBack.current = true;
                 handleNextScreen();
@@ -269,6 +216,7 @@ function SurveyparticipateScreen({
                     selectableOptions={item.selectableOptions}
                     questionType={item.questionType}
                     questionIndex={item.position}
+                    questionId={item.id}
                 />
             ) : (
                 <Text>no selectable Options</Text>

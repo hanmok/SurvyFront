@@ -10,13 +10,14 @@ import axios from "axios";
 import TextButton from "../components/TextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackParamList";
-import { Survey } from "../types/Survey";
+import { Survey } from "../interfaces/Survey";
 import { Counter } from "../features/counter/Counter";
-import { ResponseForm } from "../types/ResponseForm";
+import { ResponseForm } from "../interfaces/ResponseForm";
 // import { UserResponse, login } from "../API/API";
 import { UserResponse, login } from "../API/UserAPI";
 import { useDispatch } from "react-redux";
 import { UserState, setUserInfo } from "../features/user/userSlice";
+import { API_BASE_URL } from "../API/API";
 
 const data = [
     {
@@ -81,8 +82,7 @@ function HomeView({
 
     const fetchSurveys = async () => {
         try {
-            // const response = await axios.get("http://127.0.0.1:3000/survey");
-            await fetch("http://localhost:3000/survey")
+            await fetch(`${API_BASE_URL}/survey`)
                 .then(response => response.json())
                 .then(jsonData =>
                     jsonData.data.map((item: Survey) => ({

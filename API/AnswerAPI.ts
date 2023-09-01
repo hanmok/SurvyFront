@@ -1,7 +1,9 @@
+import { CustomAnswer } from "../features/selector/selectorSlice";
+import { printObject } from "../utils/printObject";
 import { API_BASE_URL } from "./API";
 import _ from "lodash";
 
-export async function postAnswer(
+export async function postSelectionAnswer(
     surveyId: number,
     userId: number,
     questionId: number,
@@ -9,9 +11,49 @@ export async function postAnswer(
 ): Promise<ApiResponse> {
     const url = `${API_BASE_URL}/answer`;
     const data = { surveyId, userId, questionId, selectableOptionId };
-
+    // console.log(`data from postSelectionAnswer: ${data}`);
+    printObject(data, "postSelectionAnswer");
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
+    printObject(snakeData, "postSelectionAnswer snake");
 
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(snakeData),
+        });
+        response;
+        if (!response.ok) {
+            console.log("postSelectionAnswer error!!");
+            throw new Error("postSelectionAnswer error!!");
+        }
+
+        const responseData: ApiResponse = await response.json();
+        console.log(`status: ${responseData.statusCode}`);
+
+        return responseData;
+    } catch (error) {
+        console.log("postSelectionAnswer error!");
+        console.log(error);
+        throw error;
+    }
+}
+
+export async function postTextAnswer(
+    customAnswer: CustomAnswer,
+    userId: number
+): Promise<ApiResponse> {
+    const url = `${API_BASE_URL}/custom-answer`;
+
+    const { selectableOptionId, sequence, answerText } = customAnswer;
+    const data = { selectableOptionId, sequence, answerText, userId };
+    // console.log(`data from postTextAnswer: ${data}`);
+    printObject(data, "postTextAnswer");
+    const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
+    // console.log(`snakeData form postTextAnswer: ${snakeData}`);
+    printObject(snakeData, "postTextAnswer snake");
     try {
         const response = await fetch(url, {
             method: "POST",
@@ -22,17 +64,13 @@ export async function postAnswer(
         });
 
         if (!response.ok) {
-            console.log("error!!");
-            throw new Error("Network response was not ok");
+            console.log("postTextAnswer error!!");
+            throw new Error("postTextAnswer Network response was not ok");
         }
-
         const responseData: ApiResponse = await response.json();
-        // console.log(`userResponse id: ${responseData.data}`);
-        console.log(`status: ${responseData.statusCode}`);
-
         return responseData;
     } catch (error) {
-        console.log(error);
+        console.log("postTextAnswer error");
         throw error;
     }
 }
@@ -57,7 +95,7 @@ export async function createParticipate(
         });
 
         if (!response.ok) {
-            console.log("error!!");
+            console.log("createParticipate error!!");
             throw new Error("Network response was not ok");
         }
 
@@ -66,7 +104,7 @@ export async function createParticipate(
 
         return responseData;
     } catch (error) {
-        console.log(error);
+        console.log("createParticipate error");
         throw error;
     }
 }

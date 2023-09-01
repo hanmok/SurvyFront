@@ -1,17 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { numberOfQuetsions } from "../../types/types";
 
 export interface CustomAnswer {
-    // questionId: number;
     selectableOptionId: number;
     sequence: number;
-    userInput: string;
+    answerText: string;
 }
 
 interface SelectorState {
     selectedIndexIds: number[][];
     textAnswers: CustomAnswer[];
-    // textAnswers:
 }
 
 const initialState: SelectorState = {
@@ -23,20 +22,14 @@ export const selectorSlice = createSlice({
     name: "selector",
     initialState,
     reducers: {
-        initialize: (state, action: PayloadAction<number>) => {
+        initialize: (state, action: PayloadAction<numberOfQuetsions>) => {
             const numberOfQuestions = action.payload;
-            console.log(`number of questions: `, numberOfQuestions);
+
             let outer: number[][] = [];
             for (let i = 0; i < numberOfQuestions; i++) {
                 outer.push([]);
             }
-            // selectedIndexes 초기화
             state.selectedIndexIds = outer;
-
-            console.log(
-                `selected Indexes set from reducer: `,
-                state.selectedIndexIds
-            );
         },
         selectSingleSelection: (
             state,
@@ -47,7 +40,7 @@ export const selectorSlice = createSlice({
         ) => {
             // questionIndex, selectedIndex
             const { questionIndex, selectedIndexId } = action.payload;
-            console.log(`${questionIndex}`);
+
             state.selectedIndexIds[questionIndex] = [selectedIndexId];
         },
         selectMultipleSelection: (
@@ -57,7 +50,6 @@ export const selectorSlice = createSlice({
                 selectedIndexId: number;
             }>
         ) => {
-            // questionIndex, selectedIndex
             const { questionIndex, selectedIndexId } = action.payload;
 
             if (
@@ -79,9 +71,6 @@ export const selectorSlice = createSlice({
             }>
         ) => {
             const customAnswer = action.payload.customAnswer;
-            console.log(
-                `dispatch called, customAnswer: ${customAnswer.userInput}, ${customAnswer.selectableOptionId}`
-            );
             state.textAnswers.push(customAnswer);
         },
     },

@@ -35,7 +35,6 @@ const printVehicle = (vehicle: Vehicle): void => {
 };
 
 const printSummary = (report: Reportable): void => {
-    // console.log(`summary: ${summary.summary()}`)
     console.log(report.summary());
 };
 

@@ -12,7 +12,7 @@ import { Button } from "react-native";
 import ImageButton from "./ImageButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { QuestionTypeEnum } from "../features/selector/QuestionTypeEnum";
+import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
 
 interface SelectableOptionProps {
     id: number;
@@ -120,7 +120,10 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         />
                         <Button
                             title="submit"
-                            onPress={() => handleUserInput(text)}
+                            onPress={() => {
+                                handleUserInput(text);
+                                onPress();
+                            }}
                         />
                     </View>
                 );

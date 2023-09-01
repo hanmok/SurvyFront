@@ -1,7 +1,7 @@
 import { QuestionType } from "../QuestionType";
 import { SelectableOption } from "./SelectableOption";
 
-export type Question = {
+export interface Question {
     id: number;
     position: number;
     text: string;
@@ -9,4 +9,4 @@ export type Question = {
     required: number;
     questionType: QuestionType;
     selectableOptions: SelectableOption[];
-};
+}

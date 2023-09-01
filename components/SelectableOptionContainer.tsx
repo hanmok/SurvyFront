@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { SelectableOption } from "../types/SelectableOption";
+import { SelectableOption } from "../interfaces/SelectableOption";
 import SelectableOptionBox from "./SelectableOptionBox";
 import { useCallback, useState } from "react";
 import {
@@ -9,7 +9,7 @@ import {
     CustomAnswer,
 } from "../features/selector/selectorSlice";
 import { useDispatch } from "react-redux";
-import { QuestionTypeEnum } from "../features/selector/QuestionTypeEnum";
+import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
 
 interface SelectablContainerProps {
     selectableOptions: SelectableOption[];
@@ -33,7 +33,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
             const sequence = index;
             const customAnswer: CustomAnswer = {
                 selectableOptionId,
-                userInput,
+                answerText: userInput,
                 sequence,
             };
             dispatch(dispatch(textInputAction({ customAnswer })));
@@ -59,6 +59,14 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                             questionIndex,
                             selectedIndexId:
                                 selectableOptions[selectedIndex].id,
+                        })
+                    );
+                    break;
+                default:
+                    dispatch(
+                        selectSingleSelection({
+                            questionIndex,
+                            selectedIndexId: selectableOptions[0].id,
                         })
                     );
                     break;

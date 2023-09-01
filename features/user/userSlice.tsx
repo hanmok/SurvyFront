@@ -8,7 +8,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-    userId: -1,
+    userId: 84,
     accessToken: "",
     refreshToken: "",
 };

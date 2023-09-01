@@ -5,17 +5,22 @@ import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../RootStackParamList";
-import { Question } from "../types/Question";
-import { SelectableOption } from "../types/SelectableOption";
+import { Question } from "../interfaces/Question";
+import { SelectableOption } from "../interfaces/SelectableOption";
 import SelectableOptionBox from "../components/SelectableOptionBox";
 import ParticipatingQuestionBox from "../components/ParticipatingQuestionBox";
 import TextButton from "../components/TextButton";
 import { useNavigation } from "@react-navigation/native";
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
-import { initialize } from "../features/selector/selectorSlice";
+import { CustomAnswer, initialize } from "../features/selector/selectorSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { postAnswer, createParticipate } from "../API/AnswerAPI";
+import {
+    postSelectionAnswer,
+    createParticipate,
+    postTextAnswer,
+} from "../API/AnswerAPI";
+import { API_BASE_URL } from "../API/API";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -27,7 +32,7 @@ function SurveyparticipateScreen({
     route: RouteProp<RootStackParamList, "Participate">;
 }) {
     const userId = useSelector((state: RootState) => {
-        return state.user.userId ?? -1;
+        return state.user.userId ?? 774;
     });
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState<Boolean>(true);
@@ -40,6 +45,9 @@ function SurveyparticipateScreen({
     const dispatch = useDispatch();
     const selectedIndexIds = useSelector((state: RootState) => {
         return state.selector.selectedIndexIds;
+    });
+    const textAnswers = useSelector((state: RootState) => {
+        return state.selector.textAnswers;
     });
 
     const navigation = useNavigation();
@@ -77,13 +85,22 @@ function SurveyparticipateScreen({
         );
     };
 
-    const postEachAnswer = async (
+    const postEachSelectionAnswer = async (
         surveyId: number,
         userId: number,
         questionId: number,
         selectableOptionId: number
     ) => {
-        await postAnswer(surveyId, userId, questionId, selectableOptionId);
+        await postSelectionAnswer(
+            surveyId,
+            userId,
+            questionId,
+            selectableOptionId
+        );
+    };
+
+    const postEachTextAnswer = async (customAnswer: CustomAnswer) => {
+        await postTextAnswer(customAnswer, userId);
     };
 
     const handleNextScreen = () => {
@@ -96,7 +113,7 @@ function SurveyparticipateScreen({
         const promises = [];
         for (let q = 0; q < questions.length; q++) {
             for (let i = 0; i < selectedIndexIds[q].length; i++) {
-                const apiCall = postEachAnswer(
+                const apiCall = postEachSelectionAnswer(
                     surveyId,
                     userId,
                     questions[q].id,
@@ -105,6 +122,11 @@ function SurveyparticipateScreen({
                 promises.push(apiCall);
             }
         }
+        for (let j = 0; j < textAnswers.length; j++) {
+            const apiCall = postEachTextAnswer(textAnswers[j]);
+            promises.push(apiCall);
+        }
+
         await Promise.all(promises)
             .then(() => {
                 createParticipate(surveyId, userId, sectionId);
@@ -122,7 +144,7 @@ function SurveyparticipateScreen({
         const fetchData = async () => {
             try {
                 const questionsResponse = await fetch(
-                    `http://localhost:3000/section/${sectionId}/questions`
+                    `${API_BASE_URL}/section/${sectionId}/questions`
                 );
                 const questionsData = await questionsResponse.json();
                 const questionsArray = questionsData.data.map(
@@ -137,7 +159,7 @@ function SurveyparticipateScreen({
                 );
 
                 const selectableOptionsResponse = await fetch(
-                    `http://localhost:3000/section/${sectionId}/selectable-options`
+                    `${API_BASE_URL}/section/${sectionId}/selectable-options`
                 );
                 const selectableOptionsData =
                     await selectableOptionsResponse.json();

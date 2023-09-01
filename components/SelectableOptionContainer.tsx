@@ -9,6 +9,7 @@ import {
     CustomAnswer,
 } from "../features/selector/selectorSlice";
 import { useDispatch } from "react-redux";
+import { QuestionTypeEnum } from "../features/selector/QuestionTypeEnum";
 
 interface SelectablContainerProps {
     selectableOptions: SelectableOption[];
@@ -43,7 +44,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     const handlePress = useCallback(
         (selectedIndex: number) => {
             switch (questionType) {
-                case "SINGLE_SELECTION":
+                case QuestionTypeEnum.SingleSelection:
                     dispatch(
                         selectSingleSelection({
                             questionIndex,
@@ -52,7 +53,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                         })
                     );
                     break;
-                case "MULTIPLE_SELECTION":
+                case QuestionTypeEnum.MultipleSelection:
                     dispatch(
                         selectMultipleSelection({
                             questionIndex,

@@ -16,7 +16,7 @@ import { ResponseForm } from "../types/ResponseForm";
 // import { UserResponse, login } from "../API/API";
 import { UserResponse, login } from "../API/UserAPI";
 import { useDispatch } from "react-redux";
-import { setUserInfo } from "../features/user/userSlice";
+import { UserState, setUserInfo } from "../features/user/userSlice";
 
 const data = [
     {
@@ -64,7 +64,13 @@ function HomeView({
                     `userResponse: ${userResponse.data.userId}, ${userResponse.data.accessToken}, ${userResponse.data.refreshToken}`
                 );
                 const { userId, accessToken, refreshToken } = userResponse.data;
-                dispatch(setUserInfo({ userId, accessToken, refreshToken }));
+                const userState: UserState = {
+                    userId,
+                    accessToken,
+                    refreshToken,
+                };
+                // dispatch(setUserInfo({ userId, accessToken, refreshToken }));
+                dispatch(setUserInfo({ userState }));
             } catch (error) {
                 // TODO: handle error
                 console.log(error);

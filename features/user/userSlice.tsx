@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-interface UserState {
+export interface UserState {
     userId: number;
     accessToken: string;
     refreshToken: string;
@@ -20,20 +20,20 @@ export const userSlice = createSlice({
         setUserInfo: (
             state,
             action: PayloadAction<{
-                userId: number;
-                accessToken: string;
-                refreshToken: string;
+                userState: UserState;
             }>
         ) => {
-            const { userId, accessToken, refreshToken } = action.payload;
-            state.userId = userId;
-            state.accessToken = accessToken;
-            state.refreshToken = refreshToken;
+            const { userId, accessToken, refreshToken } =
+                action.payload.userState;
+            state = { ...state, userId, accessToken, refreshToken };
         },
         logoutAction: state => {
-            state.userId = undefined;
-            state.accessToken = undefined;
-            state.refreshToken = undefined;
+            state = {
+                ...state,
+                userId: undefined,
+                accessToken: undefined,
+                refreshToken: undefined,
+            };
         },
     },
 });

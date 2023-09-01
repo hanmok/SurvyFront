@@ -11,10 +11,8 @@ import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
 import { Button } from "react-native";
 import ImageButton from "./ImageButton";
 import { useSelector } from "react-redux";
-// import RootState from "../store";
-// import SelectorRootState from "../RootState";
-// import { SelectorRootState } from "../RootState";
 import { RootState } from "../store";
+import { QuestionTypeEnum } from "../features/selector/QuestionTypeEnum";
 
 interface SelectableOptionProps {
     id: number;
@@ -23,7 +21,6 @@ interface SelectableOptionProps {
     value: string;
     questionType: string;
     onPress?: () => void;
-    // onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
     handleUserInput?: (text: string) => void;
     questionIndex: number;
 }
@@ -38,7 +35,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     handleUserInput,
     questionIndex,
 }) => {
-    // const selectedIndexes = useSelector((state: RootState) => {
     const textInputRef = useRef(null);
 
     const handleFocusTextInput = () => {
@@ -59,7 +55,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
 
     {
         switch (questionType) {
-            case "SINGLE_SELECTION":
+            case QuestionTypeEnum.SingleSelection:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
@@ -81,7 +77,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 );
                 break;
 
-            case "MULTIPLE_SELECTION":
+            case QuestionTypeEnum.MultipleSelection:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (

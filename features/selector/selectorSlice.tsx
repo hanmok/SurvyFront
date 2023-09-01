@@ -75,23 +75,10 @@ export const selectorSlice = createSlice({
         textInputAction: (
             state,
             action: PayloadAction<{
-                // questionId: number;
-                // selectableOptionId: number;
-                // sequence: number;
-                // userInput: string;
                 customAnswer: CustomAnswer;
             }>
         ) => {
-            // const { questionId, userInput } = action.payload;
-            // const { selectableOptionId, sequence, userInput } = action.payload;
             const customAnswer = action.payload.customAnswer;
-            // question Id 도 알아야 하는거 아닌가? 맞을걸 ??
-            // state.textAnswers;
-            // const item: CustomAnswer = {
-            //     selectableOptionId,
-            //     userInput,
-            //     sequence,
-            // };
             console.log(
                 `dispatch called, customAnswer: ${customAnswer.userInput}, ${customAnswer.selectableOptionId}`
             );

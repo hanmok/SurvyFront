@@ -13,7 +13,6 @@ import TextButton from "../components/TextButton";
 import { useNavigation } from "@react-navigation/native";
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
 import { CustomAnswer, initialize } from "../features/selector/selectorSlice";
-import { UserState, setUserInfo } from "../features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import {
@@ -22,6 +21,9 @@ import {
     postTextAnswer,
 } from "../API/AnswerAPI";
 import { API_BASE_URL } from "../API/API";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { load } from "../utils/Storage";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -32,9 +34,13 @@ function SurveyparticipateScreen({
 }: {
     route: RouteProp<RootStackParamList, "Participate">;
 }) {
-    const userId = useSelector((state: RootState) => {
-        return state.user.userId ?? 774;
-    });
+    // const userId = useSelector((state: RootState) => {
+    //     const ret = state.user.userId;
+    //     console.log(`inside SurveyParticipateScreen, userId: ${ret}`);
+    //     return ret ?? 414;
+    //     // return state.user.userId ?? 774;
+    // });
+
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const [selectableOptions, setSelectableOptions] = useState<
@@ -100,7 +106,10 @@ function SurveyparticipateScreen({
         );
     };
 
-    const postEachTextAnswer = async (customAnswer: CustomAnswer) => {
+    const postEachTextAnswer = async (
+        customAnswer: CustomAnswer,
+        userId: number
+    ) => {
         await postTextAnswer(customAnswer, userId);
     };
 
@@ -110,7 +119,8 @@ function SurveyparticipateScreen({
     };
 
     const buttonTapAction = async () => {
-        console.log("buttonTapAction called");
+        const userId = (await load()).userId;
+        console.log(`buttonTapAction called, userId: ${userId}`);
         const promises = [];
         for (let q = 0; q < questions.length; q++) {
             for (let i = 0; i < selectedIndexIds[q].length; i++) {
@@ -124,7 +134,7 @@ function SurveyparticipateScreen({
             }
         }
         for (let j = 0; j < textAnswers.length; j++) {
-            const apiCall = postEachTextAnswer(textAnswers[j]);
+            const apiCall = postEachTextAnswer(textAnswers[j], userId);
             promises.push(apiCall);
         }
 
@@ -196,7 +206,6 @@ function SurveyparticipateScreen({
                 }
 
                 dispatch(initialize(tempQuestions.length));
-                console.log("initialize called");
                 setIsLoading(false);
 
                 return {

@@ -16,32 +16,12 @@ import { ResponseForm } from "../interfaces/ResponseForm";
 // import { UserResponse, login } from "../API/API";
 import { UserResponse, login } from "../API/UserAPI";
 import { useDispatch } from "react-redux";
-import { UserState, setUserInfo } from "../features/user/userSlice";
+import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL } from "../API/API";
-
-const data = [
-    {
-        id: "1",
-        title: "Item 1",
-        currentParticipation: "10",
-        participationGoal: "100",
-    },
-    {
-        id: "2",
-        title: "Item 2",
-        currentParticipation: "10",
-        participationGoal: "100",
-    },
-    {
-        id: "3",
-        title: "Item 3",
-        currentParticipation: "10",
-        participationGoal: "100",
-    },
-    // ... 더 많은 아이템 추가 가능
-];
-
+import { saveUserState } from "../utils/Storage";
+// import AsyncStore
 const screenWidth = Dimensions.get("window").width;
+// import { MMKVstorage, StorageKeys } from "../utils/mmkv";
 
 function HomeView({
     navigation,
@@ -52,21 +32,26 @@ function HomeView({
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const setUser = async (userState: UserState) => {
+        await saveUserState(userState);
+    };
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const userResponse = await login("kkk@gmail.com", "kkkk");
-                console.log(
-                    `userResponse: ${userResponse.data.userId}, ${userResponse.data.accessToken}, ${userResponse.data.refreshToken}`
-                );
                 const { userId, accessToken, refreshToken } = userResponse.data;
                 const userState: UserState = {
                     userId,
                     accessToken,
                     refreshToken,
                 };
+                // await setUser(userState);
+                setUser(userState);
+                // MMKV.set('userId', userId)
+
                 // dispatch(setUserInfo({ userId, accessToken, refreshToken }));
-                dispatch(setUserInfo({ userState }));
+                // dispatch(setUserInfo({ userState }));
             } catch (error) {
                 // TODO: handle error
                 console.log(error);

@@ -101,7 +101,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 );
                 break;
             default:
-                // selectableOptionComponent = <TextInput>hi!!</TextInput>;
                 selectableOptionComponent = (
                     <View style={styles.textContainer}>
                         <TextInput
@@ -132,12 +131,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         }
     }
 
-    return (
-        <View style={styles.container}>
-            {selectableOptionComponent}
-            {/* <Text style={styles.textStyle}>{value}</Text> */}
-        </View>
-    );
+    return <View style={styles.container}>{selectableOptionComponent}</View>;
 };
 
 export default SelectableOptionBox;

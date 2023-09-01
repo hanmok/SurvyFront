@@ -13,6 +13,7 @@ import TextButton from "../components/TextButton";
 import { useNavigation } from "@react-navigation/native";
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
 import { CustomAnswer, initialize } from "../features/selector/selectorSlice";
+import { UserState, setUserInfo } from "../features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import {

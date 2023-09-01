@@ -110,6 +110,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             multiline
                             numberOfLines={5}
                             style={styles.textInput}
+                            autoCorrect={false}
                             value={text}
                             onChangeText={newText => setText(newText)}
                             onSubmitEditing={() => {

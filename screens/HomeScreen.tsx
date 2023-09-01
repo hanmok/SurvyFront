@@ -53,11 +53,6 @@ function HomeView({
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // login({ username: "kkk@gmail.com", password: "kkkk" });
-        // const userResponse: login("kkk@gmail.com", "kkkk");
-        // const userResponse: User = await login("kkk@gmail.com", "kkkk");
-        // const userResponse: UserResponse = await login('kkk@gmail.com', 'kkkk')
-
         const fetchUser = async () => {
             try {
                 const userResponse = await login("kkk@gmail.com", "kkkk");

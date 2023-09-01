@@ -6,6 +6,7 @@ import {
     selectSingleSelection,
     selectMultipleSelection,
     textInputAction,
+    CustomAnswer,
 } from "../features/selector/selectorSlice";
 import { useDispatch } from "react-redux";
 
@@ -22,13 +23,22 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     questionIndex,
     questionId,
 }) => {
-    const [selectedIndexIds, setSelectedIndexIds] = useState<number[]>([]);
-
     const dispatch = useDispatch();
 
-    // const handleUserInput = useCallback(userInput: string) => {
-    // 	dispatch(textInputAction({questionId, userInput})
-    // }
+    const handleUserInput = useCallback(
+        (userInput: string, index: number) => {
+            console.log(`handleUserInput called, input: ${userInput}`);
+            const selectableOptionId = selectableOptions[index].id;
+            const sequence = index;
+            const customAnswer: CustomAnswer = {
+                selectableOptionId,
+                userInput,
+                sequence,
+            };
+            dispatch(dispatch(textInputAction({ customAnswer })));
+        },
+        [dispatch]
+    );
 
     const handlePress = useCallback(
         (selectedIndex: number) => {
@@ -56,12 +66,6 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
         [dispatch, questionType, questionIndex]
     );
 
-    // const handleTextInput = useCallback(
-    // 	(userInput: string) => {
-    // 		dispatch(textInputAction({ questionId, userInput}))
-    // 	}, [dispatch]
-    // )
-
     return (
         <View>
             {selectableOptions.map((selectableOption, index) => {
@@ -70,7 +74,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                         {...selectableOption}
                         questionType={questionType}
                         onPress={() => handlePress(index)}
-                        // onTextInput={() => handleTextInput(asd)}
+                        handleUserInput={text => handleUserInput(text, index)}
                         questionIndex={questionIndex}
                         key={`${selectableOption.id}`}
                     />

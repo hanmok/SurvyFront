@@ -1,14 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-interface customAnswer {
-    questionId: number;
+export interface CustomAnswer {
+    // questionId: number;
+    selectableOptionId: number;
+    sequence: number;
     userInput: string;
 }
 
 interface SelectorState {
     selectedIndexIds: number[][];
-    textAnswers: customAnswer[];
+    textAnswers: CustomAnswer[];
+    // textAnswers:
 }
 
 const initialState: SelectorState = {
@@ -72,15 +75,27 @@ export const selectorSlice = createSlice({
         textInputAction: (
             state,
             action: PayloadAction<{
-                questionId: number;
-                userInput: string;
+                // questionId: number;
+                // selectableOptionId: number;
+                // sequence: number;
+                // userInput: string;
+                customAnswer: CustomAnswer;
             }>
         ) => {
-            const { questionId, userInput } = action.payload;
+            // const { questionId, userInput } = action.payload;
+            // const { selectableOptionId, sequence, userInput } = action.payload;
+            const customAnswer = action.payload.customAnswer;
             // question Id 도 알아야 하는거 아닌가? 맞을걸 ??
             // state.textAnswers;
-            const item: customAnswer = { questionId, userInput };
-            state.textAnswers.push(item);
+            // const item: CustomAnswer = {
+            //     selectableOptionId,
+            //     userInput,
+            //     sequence,
+            // };
+            console.log(
+                `dispatch called, customAnswer: ${customAnswer.userInput}, ${customAnswer.selectableOptionId}`
+            );
+            state.textAnswers.push(customAnswer);
         },
     },
 });

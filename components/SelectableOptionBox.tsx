@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TextInput,
+    NativeSyntheticEvent,
+    TextInputSubmitEditingEventData,
+} from "react-native";
 import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
 import { Button } from "react-native";
 import ImageButton from "./ImageButton";
@@ -16,6 +23,8 @@ interface SelectableOptionProps {
     value: string;
     questionType: string;
     onPress?: () => void;
+    // onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
+    handleUserInput?: (text: string) => void;
     questionIndex: number;
 }
 
@@ -26,9 +35,18 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     value,
     questionType,
     onPress,
+    handleUserInput,
     questionIndex,
 }) => {
     // const selectedIndexes = useSelector((state: RootState) => {
+    const textInputRef = useRef(null);
+
+    const handleFocusTextInput = () => {
+        if (textInputRef.current) {
+            textInputRef.current.focus();
+        }
+    };
+
     const [text, setText] = useState("");
     const selectedIndexIds = useSelector((state: RootState) => {
         return state.selector.selectedIndexIds;
@@ -91,14 +109,23 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 selectableOptionComponent = (
                     <View style={styles.textContainer}>
                         <TextInput
+                            ref={textInputRef}
                             placeholder="hi"
                             multiline
                             numberOfLines={5}
                             style={styles.textInput}
                             value={text}
                             onChangeText={newText => setText(newText)}
+                            onSubmitEditing={() => {
+                                console.log(text);
+                                handleUserInput(text);
+                            }} // 리턴 키 누를 때 호출
+                            returnKeyType="done"
                         />
-                        <Button title="submit"></Button>
+                        <Button
+                            title="submit"
+                            onPress={() => handleUserInput(text)}
+                        />
                     </View>
                 );
                 break;
@@ -133,6 +160,7 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         justifyContent: "center",
     },
+
     textInput: {
         borderWidth: 1,
         borderColor: "#ccc",

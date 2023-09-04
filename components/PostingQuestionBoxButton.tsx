@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     Touchable,
 } from "react-native";
+import { colors } from "../utils/colors";
 // Question 을 받도록, 전체가 버튼.
 
 interface QuestionButtonProps {
@@ -36,7 +37,7 @@ export default PostingQuestionBoxButton;
 const styles = StyleSheet.create({
     questionContainer: {
         padding: 10,
-        backgroundColor: "magenta",
+        backgroundColor: colors.gray3,
         borderRadius: 10,
         overflow: "hidden",
     },

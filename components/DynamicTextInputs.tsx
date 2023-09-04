@@ -65,7 +65,6 @@ const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
 
 const styles = StyleSheet.create({
     container: {
-        // backgroundColor: "magenta",
         flex: 1,
         padding: 20,
     },

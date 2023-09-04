@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import TextButton from "./TextButton";
 import { QuestionType, getQuestionType } from "../QuestionType";
@@ -8,23 +8,33 @@ import { borderSizes } from "../utils/sizes";
 interface QuestionTypeProps {
     index: number;
     // onPress: () => void;
+    isSelected: boolean;
+    onPress?: () => void;
 }
 
 // 하나의 버튼
-const QuestionTypeSelectionBox: React.FC<QuestionTypeProps> = ({ index }) => {
-    const [isSelected, setIsSelected] = useState(false);
+const QuestionTypeSelectionBox: React.FC<QuestionTypeProps> = ({
+    index,
+    isSelected,
+    onPress,
+}) => {
+    // const [isSelected, setIsSelected] = useState(false);
 
-    const toggleSelection = () => {
-        setIsSelected(!isSelected);
-    };
+    // const toggleSelection = () => {
+    //     setIsSelected(!isSelected);
+    // };
+
+    useEffect(() => {}, [isSelected]);
 
     const name = getQuestionType(index);
 
     return (
         <TextButton
+            // onPress={() => onPress}
+            onPress={onPress}
             // title={name}
             title={name}
-            onPress={toggleSelection}
+            // onPress={toggleSelection}
             textStyle={
                 isSelected
                     ? [styles.commonText, styles.selectedText]

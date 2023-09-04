@@ -171,7 +171,6 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
 const styles = StyleSheet.create({
     questionTextStyle: {
         marginTop: 60,
-        // backgroundColor: "magenta",
         textAlign: "center",
         fontSize: fontSizes.l24,
     },

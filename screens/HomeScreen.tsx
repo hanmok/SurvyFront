@@ -162,12 +162,9 @@ const styles = StyleSheet.create({
 
     floatingButtonContainer: {
         alignItems: "center",
-        // flex: 1,
         position: "absolute",
         bottom: 0,
         width: screenWidth,
-        // backgroundColor: "magenta",
-        // backgroundColor: "rgba(0,0,0,0)",
     },
 
     collectedMoney: {

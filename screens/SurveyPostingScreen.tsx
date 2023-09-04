@@ -139,7 +139,8 @@ export default function SurveyRequestScreen() {
                     <TextButton
                         // title="+"
                         title="질문 추가"
-                        onPress={() => console.log}
+                        // onPress={() => console.log}
+                        onPress={toggleModal}
                         textStyle={[
                             styles.plusButtonText,
                             { textAlignVertical: "center" },
@@ -150,12 +151,8 @@ export default function SurveyRequestScreen() {
                         ]}
                     />
                 </View>
-
-                {/* <PostingQuestionBox/></PostingQuestionBox> */}
-                {/* </ScrollView> */}
             </View>
-            {/* <Text style={styles.expectedTime}>예상 소요시간 2분</Text> */}
-            {/* Horizontal List 로 만들기. */}
+
             <TextButton
                 textStyle={styles.requestText}
                 backgroundStyle={styles.requestButtonBG}
@@ -175,12 +172,10 @@ const styles = StyleSheet.create({
     },
     subContainer: {
         marginHorizontal: marginSizes.l20,
-        // flexGrow: 1,
         marginVertical: marginSizes.m16,
     },
     questionContainer: {
         padding: 10,
-        backgroundColor: "magenta",
         borderRadius: 10,
         overflow: "hidden",
     },
@@ -191,7 +186,6 @@ const styles = StyleSheet.create({
         borderColor: colors.deepMainColor,
         borderWidth: 5,
         borderRadius: borderSizes.m10,
-        // marginHorizontal: marginSizes.m16,
         height: 50,
         marginTop: marginSizes.xxs4,
         marginBottom: marginSizes.xxs4,

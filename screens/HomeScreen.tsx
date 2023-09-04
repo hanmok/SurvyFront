@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL } from "../API/API";
 import { saveUserState } from "../utils/Storage";
+import { NavigationTitle } from "../utils/NavigationTitle";
 // import AsyncStore
 const screenWidth = Dimensions.get("window").width;
 // import { MMKVstorage, StorageKeys } from "../utils/mmkv";
@@ -26,8 +27,9 @@ const screenWidth = Dimensions.get("window").width;
 function HomeView({
     navigation,
 }: {
-    navigation: StackNavigationProp<RootStackParamList, "Home">;
+    navigation: StackNavigationProp<RootStackParamList, NavigationTitle.home>;
 }) {
+    const postingNavTitle = NavigationTitle.posting;
     const dispatch = useDispatch();
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -95,7 +97,8 @@ function HomeView({
             currentParticipation={item.currentParticipation}
             participationGoal={item.participationGoal}
             onPress={() =>
-                navigation.navigate("Participate", {
+                // navigation.navigate("Participate", {
+                navigation.navigate(NavigationTitle.participate, {
                     sectionId: item.initialSectionId,
                     surveyId: item.id,
                 })
@@ -130,7 +133,11 @@ function HomeView({
                 <View style={styles.floatingButtonContainer}>
                     <TextButton
                         title="설문요청"
-                        onPress={() => navigation.navigate("Posting")}
+                        onPress={() =>
+                            navigation.navigate(
+                                postingNavTitle as keyof RootStackParamList
+                            )
+                        }
                         backgroundStyle={styles.requestContainer}
                         textStyle={styles.requestText}
                     />

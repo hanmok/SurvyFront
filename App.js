@@ -1,21 +1,16 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-// import { SurveyRequestScreen } from "./screens/SurveyRequestScreen";
 import SurveyRequestScreen from "./screens/SurveyRequestScreen";
 const Stack = createStackNavigator();
 
-// import HomeView from "./screens/HomeScreen";
-// import MypageView from "./screens/SettingsScreen";
-
-// import { Ionicons } from "@expo/vector-icons";
 import MainTabs from "./screens/MainTabs";
 import SurveyParticipateScreen from "./screens/SurveyParticipateScreen";
 import { colors } from "./utils/colors";
 import { Provider } from "react-redux";
 import store from "./store";
+import { NavigationTitle } from "./utils/NavigationTitle";
 
 // const Tab = createBottomTabNavigator();
 
@@ -25,14 +20,14 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator>
                     <Stack.Screen
-                        name="MainTabs"
+                        name={NavigationTitle.mainTabs}
                         component={MainTabs}
                         options={{
                             headerShown: false,
                         }}
                     />
                     <Stack.Screen
-                        name="Participate"
+                        name={NavigationTitle.participate}
                         component={SurveyParticipateScreen}
                         options={{
                             headerBackTitleVisible: false,
@@ -42,7 +37,7 @@ export default function App() {
                         }}
                     />
                     <Stack.Screen
-                        name="Posting"
+                        name={NavigationTitle.posting}
                         component={SurveyRequestScreen}
                         options={{
                             headerBackTitleVisible: false,

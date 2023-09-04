@@ -24,6 +24,7 @@ import { API_BASE_URL } from "../API/API";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { load } from "../utils/Storage";
+import { NavigationTitle } from "../utils/NavigationTitle";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -32,7 +33,7 @@ interface Dictionary<T> {
 function SurveyparticipateScreen({
     route,
 }: {
-    route: RouteProp<RootStackParamList, "Participate">;
+    route: RouteProp<RootStackParamList, NavigationTitle.participate>;
 }) {
     // const userId = useSelector((state: RootState) => {
     //     const ret = state.user.userId;

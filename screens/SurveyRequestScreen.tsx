@@ -58,7 +58,7 @@ export default function SurveyRequestScreen() {
                 {/* Questions To Make. List 로 만들 것. */}
 
                 {/* 이거.. List 로 어떻게 뿌리지 ? Section List 써야할 것 같은데 ? */}
-                <SectionList
+                {/* <SectionList
                     sections={[
                         {
                             sectionIndex: 1,
@@ -78,16 +78,8 @@ export default function SurveyRequestScreen() {
                         </Text>
                     )}
                     keyExtractor={item => `basicListEntry-${item}`}
-                />
-                {/* <PostingQuestionBox index={customViews.length + 1} question /> */}
-
-                {/* <ImageButton
-                    img={require("../assets/plus.jpg")}
-                    imageStyle={styles.plusButtonText}
-                    backgroundStyle={styles.plusButtonBG}
-                    // size={30} // 왜 사이즈가 안변하냐 ?
-                    height={80}
                 /> */}
+
                 <View style={{ justifyContent: "center" }}>
                     <TextButton
                         title="+"
@@ -105,6 +97,7 @@ export default function SurveyRequestScreen() {
 
                 {/* <PostingQuestionBox/></PostingQuestionBox> */}
             </ScrollView>
+
             <Text style={styles.expectedTime}>예상 소요시간 2분</Text>
 
             <TextButton

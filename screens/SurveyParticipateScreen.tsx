@@ -35,13 +35,6 @@ function SurveyparticipateScreen({
 }: {
     route: RouteProp<RootStackParamList, NavigationTitle.participate>;
 }) {
-    // const userId = useSelector((state: RootState) => {
-    //     const ret = state.user.userId;
-    //     console.log(`inside SurveyParticipateScreen, userId: ${ret}`);
-    //     return ret ?? 414;
-    //     // return state.user.userId ?? 774;
-    // });
-
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const [selectableOptions, setSelectableOptions] = useState<

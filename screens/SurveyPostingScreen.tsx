@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     View,
     Text,
@@ -7,6 +7,10 @@ import {
     Image,
     ScrollView,
     SectionList,
+    FlatList,
+    ListRenderItem,
+    Modal,
+    TouchableOpacity,
 } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
@@ -17,24 +21,85 @@ import TextButton from "../components/TextButton";
 import ImageButton from "../components/ImageButton";
 import PostingQuestionBox from "../components/PostingQuestionBox";
 import { useState } from "react";
+import { QuestionType } from "../QuestionType";
+import { Question } from "../interfaces/Question";
+import { fakeQuestions } from "../fakeQuestion";
+import PostingQuestionBoxButton from "../components/PostingQuestionBoxButton";
+import { ConsoleFunction } from "../types/types";
 
 // Header, Footer 로 중첩 Scroll 해결하기.
 export default function SurveyRequestScreen() {
     const [customViews, setCustomViews] = useState([]);
+    const [questions, setQuestions] = useState([]);
+
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
     const handleAddCustomView = inputValue => {
         setCustomViews(prevViews => [...prevViews, inputValue]);
     };
 
+    useEffect(() => {
+        setQuestions(fakeQuestions);
+    }, []);
+
+    const fakeTitle = "내 설문조사 제목";
+
+    const myData = fakeQuestions;
+
+    // Need to be Button
+
+    const handleAction: ConsoleFunction = () => {
+        console.log("hi");
+        toggleModal();
+    };
+
+    const renderItem: ListRenderItem<Question> = ({ item }) => (
+        <PostingQuestionBoxButton question={item} onPress={handleAction} />
+    );
+
     return (
         <SafeAreaView style={styles.container} edges={[]}>
-            <ScrollView style={styles.questionList}>
-                {/* <ScrollView> */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisible}
+                onRequestClose={toggleModal}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text>This is a modal</Text>
+                        <TouchableOpacity onPress={toggleModal}>
+                            <Text>Close Modal</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
+            <View style={styles.subContainer}>
                 <TextInput
                     placeholder="설문 제목을 입력해주세요"
-                    style={styles.surveyTitle}
+                    style={styles.surveyTitleBox}
+                    value={fakeTitle}
                 />
-                <View style={styles.moduleContainer}>
+
+                <FlatList
+                    // data={fakeQuestions}
+                    // data={myData}
+                    data={questions}
+                    renderItem={renderItem}
+                    keyExtractor={item => `${item.id}`}
+                    ItemSeparatorComponent={() => (
+                        <View style={{ height: 12 }} />
+                    )}
+                    style={styles.questionList}
+                    // style={}
+                />
+
+                {/* <View style={styles.moduleContainer}>
                     <TextButton
                         backgroundStyle={styles.selectionButtonBG}
                         textStyle={styles.selectionButtonText}
@@ -42,10 +107,10 @@ export default function SurveyRequestScreen() {
                         onPress={console.log}
                     />
                     <Text>Targets</Text>
-                </View>
+                </View> */}
 
                 {/* Genre Module */}
-                <View style={[styles.moduleContainer, { marginBottom: 20 }]}>
+                {/* <View style={[styles.moduleContainer, { marginBottom: 20 }]}>
                     <TextButton
                         backgroundStyle={styles.selectionButtonBG}
                         textStyle={styles.selectionButtonText}
@@ -53,11 +118,12 @@ export default function SurveyRequestScreen() {
                         onPress={console.log}
                     />
                     <Text>Genres</Text>
-                </View>
+                </View> */}
 
                 {/* Questions To Make. List 로 만들 것. */}
 
                 {/* 이거.. List 로 어떻게 뿌리지 ? Section List 써야할 것 같은데 ? */}
+
                 {/* <SectionList
                     sections={[
                         {
@@ -78,11 +144,13 @@ export default function SurveyRequestScreen() {
                         </Text>
                     )}
                     keyExtractor={item => `basicListEntry-${item}`}
+                    style={{ backgroundColor: "magenta" }}
                 /> */}
 
                 <View style={{ justifyContent: "center" }}>
                     <TextButton
-                        title="+"
+                        // title="+"
+                        title="질문 추가"
                         onPress={() => console.log}
                         textStyle={[
                             styles.plusButtonText,
@@ -96,14 +164,15 @@ export default function SurveyRequestScreen() {
                 </View>
 
                 {/* <PostingQuestionBox/></PostingQuestionBox> */}
-            </ScrollView>
-
-            <Text style={styles.expectedTime}>예상 소요시간 2분</Text>
-
+                {/* </ScrollView> */}
+            </View>
+            {/* <Text style={styles.expectedTime}>예상 소요시간 2분</Text> */}
+            {/* Horizontal List 로 만들기. */}
             <TextButton
                 textStyle={styles.requestText}
                 backgroundStyle={styles.requestButtonBG}
-                title="설문 요청하기"
+                // title="설문 요청하기"
+                title="Section Area"
                 onPress={console.log}
             />
         </SafeAreaView>
@@ -116,11 +185,25 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         backgroundColor: colors.background,
     },
-    surveyTitle: {
+    subContainer: {
+        marginHorizontal: marginSizes.l20,
+        // flexGrow: 1,
+        marginVertical: marginSizes.m16,
+    },
+    questionContainer: {
+        padding: 10,
+        backgroundColor: "magenta",
+        borderRadius: 10,
+        overflow: "hidden",
+    },
+    questionWithIndex: {
+        flexDirection: "row",
+    },
+    surveyTitleBox: {
         borderColor: colors.deepMainColor,
         borderWidth: 5,
         borderRadius: borderSizes.m10,
-        marginHorizontal: marginSizes.m16,
+        // marginHorizontal: marginSizes.m16,
         height: 50,
         marginTop: marginSizes.xxs4,
         marginBottom: marginSizes.xxs4,
@@ -155,12 +238,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 
-    questionList: {
-        marginHorizontal: marginSizes.l20,
-        flexGrow: 1,
-        marginVertical: marginSizes.m16,
-    },
-
     sectionHeader: {
         marginLeft: marginSizes.xs8,
         fontWeight: "500",
@@ -184,14 +261,15 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         overflow: "hidden",
         justifyContent: "center",
-        height: 50,
+        height: 40,
     },
     plusButtonText: {
         color: colors.white,
         textAlign: "center",
         // fontSize: 60,
-        fontSize: 40,
-        fontWeight: "bold",
+        // fontSize: 40,
+        fontSize: fontSizes.m20,
+        fontWeight: "500",
         borderRadius: 40,
     },
 
@@ -203,11 +281,13 @@ const styles = StyleSheet.create({
     },
 
     requestButtonBG: {
-        marginHorizontal: marginSizes.l20,
+        // marginHorizontal: marginSizes.l20,
         backgroundColor: colors.deepMainColor,
         color: colors.white,
         borderRadius: borderSizes.m10,
-        padding: 10,
+        // padding: 10,
+        // padding: 20,
+        paddingVertical: 20,
         // backgroundColor: colors.inactiveBtnBG,
         marginBottom: marginSizes.l20,
     },
@@ -215,5 +295,20 @@ const styles = StyleSheet.create({
         color: colors.white,
         textAlign: "center",
         fontSize: 20,
+    },
+
+    questionList: {
+        marginVertical: marginSizes.xl24,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    modalContent: {
+        backgroundColor: "white",
+        padding: 20,
+        borderRadius: 10,
     },
 });

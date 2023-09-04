@@ -6,3 +6,10 @@ export interface Survey {
     rewardRange: string;
     initialSectionId: number;
 }
+
+// export interface Question {
+//     id: number;
+//     title: string;
+//     selectableOptionTitles: string[];
+//     isOptional: boolean;
+// }

@@ -6,7 +6,7 @@ const Tab = createBottomTabNavigator();
 import MypageView from "./SettingsScreen";
 import HomeView from "./HomeScreen";
 import SurveyParticipateScreen from "./SurveyParticipateScreen";
-import SurveyRequestScreen from "./SurveyRequestScreen";
+import SurveyRequestScreen from "./SurveyPostingScreen";
 
 export default function MainTabs() {
     return (

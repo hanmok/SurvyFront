@@ -18,7 +18,6 @@ import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spacer from "../components/Spacer";
 import TextButton from "../components/TextButton";
-import ImageButton from "../components/ImageButton";
 import PostingQuestionBox from "../components/PostingQuestionBox";
 import { useState } from "react";
 import { QuestionType } from "../QuestionType";

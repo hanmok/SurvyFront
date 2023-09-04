@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     commonBackground: {
         borderRadius: borderSizes.m10,
         overflow: "hidden",
-        width: 70,
+        width: 80,
         marginVertical: 10,
     },
     commonText: {

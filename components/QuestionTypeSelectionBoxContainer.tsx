@@ -19,7 +19,7 @@ const QuestionTypeSelectionBoxContainer = ({}) => {
             <QuestionTypeSelectionBox index={0} />
             <QuestionTypeSelectionBox index={1} />
             <QuestionTypeSelectionBox index={2} />
-            <QuestionTypeSelectionBox index={3} />
+            {/* <QuestionTypeSelectionBox index={3} /> */}
         </View>
     );
 };

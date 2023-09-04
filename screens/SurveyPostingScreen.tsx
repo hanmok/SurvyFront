@@ -26,6 +26,7 @@ import { Question } from "../interfaces/Question";
 import { fakeQuestions } from "../fakeQuestion";
 import PostingQuestionBoxButton from "../components/PostingQuestionBoxButton";
 import { ConsoleFunction } from "../types/types";
+import CreateQuestionModal from "../components/CreateQuestionModal";
 
 // Header, Footer 로 중첩 Scroll 해결하기.
 export default function SurveyRequestScreen() {
@@ -63,21 +64,11 @@ export default function SurveyRequestScreen() {
 
     return (
         <SafeAreaView style={styles.container} edges={[]}>
-            <Modal
-                animationType="slide"
-                transparent={true}
+            <CreateQuestionModal
                 visible={isModalVisible}
-                onRequestClose={toggleModal}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text>This is a modal</Text>
-                        <TouchableOpacity onPress={toggleModal}>
-                            <Text>Close Modal</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
+                onClose={toggleModal}
+            />
+            {/* <Text>This is Children</Text> */}
 
             <View style={styles.subContainer}>
                 <TextInput
@@ -87,8 +78,6 @@ export default function SurveyRequestScreen() {
                 />
 
                 <FlatList
-                    // data={fakeQuestions}
-                    // data={myData}
                     data={questions}
                     renderItem={renderItem}
                     keyExtractor={item => `${item.id}`}

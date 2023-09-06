@@ -14,18 +14,28 @@ import {
 } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
-import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
+import {
+    fontSizes,
+    marginSizes,
+    borderSizes,
+    paddingSizes,
+} from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spacer from "../components/Spacer";
 import TextButton from "../components/TextButton";
-import PostingQuestionBox from "../components/PostingQuestionBox";
+// import PostingQuestionBox from "../components/PostingQuestionBox";
 import { useState } from "react";
 import { QuestionType } from "../QuestionType";
 import { Question } from "../interfaces/Question";
 import { fakeQuestions } from "../fakeQuestion";
-import PostingQuestionBoxButton from "../components/PostingQuestionBoxButton";
+import PostingQuestionBoxButton from "../components/posting/PostingQuestionBoxButton";
 import { ConsoleFunction } from "../types/types";
-import CreateQuestionModal from "../components/CreateQuestionModal";
+import CreateQuestionModal from "../components/posting/CreateQuestionModal";
+import ImageButton from "../components/ImageButton";
+
+interface TestItem {
+    id: number;
+}
 
 // Header, Footer 로 중첩 Scroll 해결하기.
 export default function SurveyRequestScreen() {
@@ -57,8 +67,22 @@ export default function SurveyRequestScreen() {
         toggleModal();
     };
 
-    const renderItem: ListRenderItem<Question> = ({ item }) => (
+    const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => (
         <PostingQuestionBoxButton question={item} onPress={handleAction} />
+    );
+
+    const sectionBoxItem: ListRenderItem<TestItem> = ({ item }) => (
+        <View style={styles.sectionBoxItemStyle}>
+            <Text
+                style={{
+                    color: "black",
+                    marginHorizontal: 30,
+                    paddingVertical: 10,
+                }}
+            >
+                {item.id}
+            </Text>
+        </View>
     );
 
     return (
@@ -78,62 +102,13 @@ export default function SurveyRequestScreen() {
 
                 <FlatList
                     data={questions}
-                    renderItem={renderItem}
+                    renderItem={postingQuestionBoxItem}
                     keyExtractor={item => `${item.id}`}
                     ItemSeparatorComponent={() => (
                         <View style={{ height: 12 }} />
                     )}
                     style={styles.questionList}
-                    // style={}
                 />
-
-                {/* <View style={styles.moduleContainer}>
-                    <TextButton
-                        backgroundStyle={styles.selectionButtonBG}
-                        textStyle={styles.selectionButtonText}
-                        title="타겟층"
-                        onPress={console.log}
-                    />
-                    <Text>Targets</Text>
-                </View> */}
-
-                {/* Genre Module */}
-                {/* <View style={[styles.moduleContainer, { marginBottom: 20 }]}>
-                    <TextButton
-                        backgroundStyle={styles.selectionButtonBG}
-                        textStyle={styles.selectionButtonText}
-                        title="관심사"
-                        onPress={console.log}
-                    />
-                    <Text>Genres</Text>
-                </View> */}
-
-                {/* Questions To Make. List 로 만들 것. */}
-
-                {/* 이거.. List 로 어떻게 뿌리지 ? Section List 써야할 것 같은데 ? */}
-
-                {/* <SectionList
-                    sections={[
-                        {
-                            sectionIndex: 1,
-                            data: [customViews.length + 1],
-                        },
-                        {
-                            sectionIndex: 2,
-                            data: [customViews.length + 2],
-                        },
-                    ]}
-                    renderItem={({ item }) => (
-                        <PostingQuestionBox index={item} />
-                    )}
-                    renderSectionHeader={({ section }) => (
-                        <Text style={styles.sectionHeader} numberOfLines={1}>
-                            Section {section.sectionIndex}
-                        </Text>
-                    )}
-                    keyExtractor={item => `basicListEntry-${item}`}
-                    style={{ backgroundColor: "magenta" }}
-                /> */}
 
                 <View style={{ justifyContent: "center" }}>
                     <TextButton
@@ -153,13 +128,22 @@ export default function SurveyRequestScreen() {
                 </View>
             </View>
 
-            <TextButton
-                textStyle={styles.requestText}
-                backgroundStyle={styles.requestButtonBG}
-                // title="설문 요청하기"
-                title="Section Area"
-                onPress={console.log}
-            />
+            {/* 하단  */}
+            <View style={styles.bottomContainer}>
+                <FlatList
+                    renderItem={sectionBoxItem}
+                    data={[{ id: 1 }, { id: 2 }, { id: 3 }]}
+                    keyExtractor={item => `${item.id}`}
+                    horizontal={true}
+                    style={styles.flatListStyle}
+                    contentContainerStyle={{
+                        alignItems: "center",
+                        marginHorizontal: 5,
+                        justifyContent: "space-between",
+                    }}
+                />
+                <ImageButton img={require("../assets/smallPlusIcon.png")} />
+            </View>
         </SafeAreaView>
     );
 }
@@ -262,16 +246,17 @@ const styles = StyleSheet.create({
         textAlign: "right",
     },
 
-    requestButtonBG: {
-        // marginHorizontal: marginSizes.l20,
+    bottomContainer: {
         backgroundColor: colors.deepMainColor,
         color: colors.white,
         borderRadius: borderSizes.m10,
-        // padding: 10,
-        // padding: 20,
-        paddingVertical: 20,
-        // backgroundColor: colors.inactiveBtnBG,
+        flexDirection: "row",
+        height: 60,
         marginBottom: marginSizes.l20,
+        paddingVertical: 5,
+        // paddingHorizontal: paddingSizes.l20,
+        paddingHorizontal: paddingSizes.m16,
+        justifyContent: "space-between",
     },
     requestText: {
         color: colors.white,
@@ -292,5 +277,15 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         padding: 20,
         borderRadius: 10,
+    },
+    flatListStyle: {
+        flexGrow: 0.9,
+        // backgroundColor: 'magenta'
+    },
+    sectionBoxItemStyle: {
+        backgroundColor: "magenta",
+        marginHorizontal: 5,
+        borderRadius: 6,
+        overflow: "hidden",
     },
 });

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import TextButton from "./TextButton";
-import { fontSizes } from "../utils/sizes";
-import ImageButton from "./ImageButton";
+import TextButton from "../TextButton";
+import { fontSizes } from "../../utils/sizes";
+import ImageButton from "../ImageButton";
 
 // const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
 const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
@@ -52,7 +52,9 @@ const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
                         // onSubmitEditing={text => handleInputChange(text, index)}
                     />
                     <ImageButton
-                        img={require("../assets/minusIcon.png")}
+                        // img={require("../assets/minusIcon.png")}
+                        // img={require('../../')}
+                        img={require("../../assets/minusIcon.png")}
                         onPress={() => handleRemoveInput(index)}
                         backgroundStyle={{ marginLeft: 10 }}
                     />

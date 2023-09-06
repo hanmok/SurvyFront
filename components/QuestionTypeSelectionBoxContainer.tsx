@@ -1,10 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import QuestionTypeSelectionBox from "./QuestionTypeSelectionBox";
 
+interface QuestionTypeSelectionContainerProps {
+    preselectedIndex?: number;
+}
+
 // 어떤 버튼이 눌렸는지, 하나만 갖고 있을 것
-const QuestionTypeSelectionBoxContainer = ({}) => {
-    const [selectedIndex, setSelectedIndex] = useState<number>(undefined);
+// const QuestionTypeSelectionBoxContainer = ({ preselectedIndex: number }) => {
+
+const QuestionTypeSelectionBoxContainer: React.FC<
+    QuestionTypeSelectionContainerProps
+> = ({ preselectedIndex }) => {
+    // const [selectedIndex, setSelectedIndex] = useState<number>(undefined);
+    const [selectedIndex, setSelectedIndex] = useState<number | undefined>(
+        preselectedIndex !== undefined ? preselectedIndex : undefined
+    );
+
+    useEffect(() => {
+        console.log(`selectedIndex: ${preselectedIndex}`);
+        // if (preselectedIndex) {
+        //     setSelectedIndex(preselectedIndex);
+        // }
+        setSelectedIndex(preselectedIndex);
+    }, [preselectedIndex]);
 
     return (
         <View style={styles.container}>

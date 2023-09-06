@@ -9,10 +9,10 @@ import {
     StyleSheet,
     TextInput,
 } from "react-native";
-import TextButton from "./TextButton";
-import { fontSizes } from "../utils/sizes";
-import QuestionTypeSelectionBox from "./QuestionTypeSelectionBox";
-import QuestionTypeSelectionBoxContainer from "./QuestionTypeSelectionBoxContainer";
+import TextButton from "../TextButton";
+import { fontSizes } from "../../utils/sizes";
+import QuestionTypeSelectionBox from "../QuestionTypeSelectionBox";
+import QuestionTypeSelectionBoxContainer from "../QuestionTypeSelectionBoxContainer";
 import { Switch } from "react-native";
 import DynamicTextInputs from "./DynamicTextInputs";
 
@@ -26,19 +26,13 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
     onClose,
 }) => {
     const [questionTitle, setQuestionTitle] = useState("");
-    // const [optionTexts, setOptionTexts] = useState([]);
     const [isExtraOptionEnabled, setIsExtraOptionEnabled] = useState(false);
-    const [isRequiredEnabled, setIsRequiredEnabled] = useState(true);
-
     const [dynamicInputValues, setDynamicInputValues] = useState([""]);
 
     const toggleExtraOptionSwitch = () => {
         setIsExtraOptionEnabled(prev => !prev);
     };
 
-    const toggleRequiredSwitch = () => {
-        setIsRequiredEnabled(prev => !prev);
-    };
     const handleModalClose = () => {
         console.log(`dynamicInputValues: ${dynamicInputValues}`);
         onClose();
@@ -64,7 +58,7 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
                 <View style={styles.modalContent}>
                     <View>
                         <TextInput
-                            placeholder="질문 ?? "
+                            placeholder="질문을 입력해주세요 "
                             style={styles.questionTextStyle}
                             value={questionTitle}
                             onChangeText={setQuestionTitle}
@@ -121,25 +115,7 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
                                     justifyContent: "space-between",
                                     alignItems: "center",
                                 }}
-                            >
-                                <Text style={{ fontSize: fontSizes.m20 }}>
-                                    필수 입력
-                                </Text>
-                                <Switch
-                                    trackColor={{
-                                        false: "#767577",
-                                        true: "#81b0ff",
-                                    }}
-                                    thumbColor={
-                                        isRequiredEnabled
-                                            ? "#f5dd4b"
-                                            : "#f4f3f4"
-                                    }
-                                    ios_backgroundColor="#3e3e3e"
-                                    onValueChange={toggleRequiredSwitch}
-                                    value={isRequiredEnabled}
-                                />
-                            </View>
+                            ></View>
                         </View>
                     </View>
                     <View
@@ -176,14 +152,13 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         flex: 1,
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        backgroundColor: "rgba(0, 0, 0, 0.7)",
     },
     modalContent: {
         flexGrow: 1,
-        marginVertical: 40,
+        marginVertical: 40, // 전체 화면 관리
         marginHorizontal: 20,
         backgroundColor: "white",
-        padding: 20,
         borderRadius: 10,
         justifyContent: "space-between",
     },
@@ -191,7 +166,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexDirection: "row",
         justifyContent: "center",
-        borderTopColor: "magenta",
         borderWidth: 1,
         height: 40,
         alignItems: "center",

@@ -11,6 +11,7 @@ import {
     ListRenderItem,
     Modal,
     TouchableOpacity,
+    Animated,
 } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
@@ -39,6 +40,7 @@ interface TestItem {
 
 // Header, Footer 로 중첩 Scroll 해결하기.
 export default function SurveyRequestScreen() {
+    const [myData, setMyData] = useState(fakeQuestions);
     const [customViews, setCustomViews] = useState([]);
     const [questions, setQuestions] = useState([]);
 
@@ -58,18 +60,59 @@ export default function SurveyRequestScreen() {
 
     const fakeTitle = "내 설문조사 제목";
 
-    const myData = fakeQuestions;
+    // let myData = fakeQuestions;
 
-    // Need to be Button
-
-    const handleAction: ConsoleFunction = () => {
-        console.log("hi");
-        toggleModal();
+    const handleSwipeLeft = id => {
+        const newData = myData.filter(item => item.id !== id);
+        setMyData(newData);
+        // console.log(translate)
     };
 
-    const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => (
-        <PostingQuestionBoxButton question={item} onPress={handleAction} />
-    );
+    const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => {
+        const swipeableItem = new Animated.Value(0);
+
+        const handleSwipe = () => {
+            const str = JSON.stringify(translateX);
+            console.log(`translateX: ${str}`);
+
+            // Animated.timing(swipeableItem, {
+            Animated.spring(swipeableItem, {
+                // toValue: 1,
+                toValue: 100,
+                // duration: 300,
+                useNativeDriver: false,
+                // velocity: 2,
+                tension: 5,
+                friction: 10,
+            }).start(() => {
+                handleSwipeLeft(item.id);
+            });
+        };
+
+        const translateX = swipeableItem.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, -100],
+            // extrapolate: "clamp",
+        });
+        return (
+            // <PostingQuestionBoxButton question={item} onPress={handleAction} />
+            // <View
+            <Animated.View
+                style={[
+                    styles.itemContainer,
+                    { transform: [{ translateX: translateX }] },
+                ]}
+            >
+                <PostingQuestionBoxButton
+                    question={item}
+                    // onPress={() => {
+                    //     toggleModal(), handleSwipe();
+                    // }}
+                    onPress={handleSwipe}
+                />
+            </Animated.View>
+        );
+    };
 
     const sectionBoxItem: ListRenderItem<TestItem> = ({ item }) => (
         <View style={styles.sectionBoxItemStyle}>
@@ -157,6 +200,7 @@ const styles = StyleSheet.create({
     subContainer: {
         marginHorizontal: marginSizes.l20,
         marginVertical: marginSizes.m16,
+        // marginVertical: 8,
     },
     questionContainer: {
         padding: 10,
@@ -223,7 +267,7 @@ const styles = StyleSheet.create({
     plusButtonBG: {
         backgroundColor: colors.deepMainColor,
         marginBottom: marginSizes.xl24,
-        marginTop: marginSizes.s12,
+        // marginTop: marginSizes.s12,
         borderRadius: 12,
         overflow: "hidden",
         justifyContent: "center",
@@ -265,7 +309,8 @@ const styles = StyleSheet.create({
     },
 
     questionList: {
-        marginVertical: marginSizes.xl24,
+        marginTop: marginSizes.xl24,
+        marginBottom: marginSizes.m16,
     },
     modalContainer: {
         flex: 1,
@@ -287,5 +332,13 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         borderRadius: 6,
         overflow: "hidden",
+    },
+    itemContainer: {
+        // flexDirection: "row",
+        // alignItems: "center",
+        // justifyContent: "space-between",
+        // padding: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: "lightgray",
     },
 });

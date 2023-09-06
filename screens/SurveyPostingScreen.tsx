@@ -31,7 +31,7 @@ import { Question } from "../interfaces/Question";
 import { fakeQuestions } from "../fakeQuestion";
 import PostingQuestionBoxButton from "../components/posting/PostingQuestionBoxButton";
 import { ConsoleFunction } from "../types/types";
-import CreateQuestionModal from "../components/posting/CreateQuestionModal";
+import QuestionModal from "../components/posting/QuestionModal";
 import ImageButton from "../components/ImageButton";
 
 interface TestItem {
@@ -40,9 +40,8 @@ interface TestItem {
 
 // Header, Footer 로 중첩 Scroll 해결하기.
 export default function SurveyRequestScreen() {
-    const [myData, setMyData] = useState(fakeQuestions);
     const [customViews, setCustomViews] = useState([]);
-    const [questions, setQuestions] = useState([]);
+    const [questions, setQuestions] = useState<Question[]>([]);
 
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -62,55 +61,14 @@ export default function SurveyRequestScreen() {
 
     // let myData = fakeQuestions;
 
-    const handleSwipeLeft = id => {
-        const newData = myData.filter(item => item.id !== id);
-        setMyData(newData);
-        // console.log(translate)
-    };
-
     const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => {
-        const swipeableItem = new Animated.Value(0);
-
-        const handleSwipe = () => {
-            const str = JSON.stringify(translateX);
-            console.log(`translateX: ${str}`);
-
-            // Animated.timing(swipeableItem, {
-            Animated.spring(swipeableItem, {
-                // toValue: 1,
-                toValue: 100,
-                // duration: 300,
-                useNativeDriver: false,
-                // velocity: 2,
-                tension: 5,
-                friction: 10,
-            }).start(() => {
-                handleSwipeLeft(item.id);
-            });
-        };
-
-        const translateX = swipeableItem.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, -100],
-            // extrapolate: "clamp",
-        });
         return (
-            // <PostingQuestionBoxButton question={item} onPress={handleAction} />
-            // <View
-            <Animated.View
-                style={[
-                    styles.itemContainer,
-                    { transform: [{ translateX: translateX }] },
-                ]}
-            >
+            <View>
                 <PostingQuestionBoxButton
                     question={item}
-                    // onPress={() => {
-                    //     toggleModal(), handleSwipe();
-                    // }}
-                    onPress={handleSwipe}
+                    onPress={toggleModal}
                 />
-            </Animated.View>
+            </View>
         );
     };
 
@@ -130,10 +88,7 @@ export default function SurveyRequestScreen() {
 
     return (
         <SafeAreaView style={styles.container} edges={[]}>
-            <CreateQuestionModal
-                visible={isModalVisible}
-                onClose={toggleModal}
-            />
+            <QuestionModal visible={isModalVisible} onClose={toggleModal} />
             {/* <Text>This is Children</Text> */}
 
             <View style={styles.subContainer}>

@@ -30,6 +30,7 @@ const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
     // }, []);
 
     // dynamicInputValues 값이 변경될 때마다 부모 컴포넌트로 전달
+
     useEffect(() => {
         setDynamicInputValues(inputValues);
     }, [inputValues]);

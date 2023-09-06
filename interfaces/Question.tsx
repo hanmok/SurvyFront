@@ -5,8 +5,8 @@ export interface Question {
     id: number | undefined;
     position: number;
     text: string;
-    expectedTimeInSec: number;
-    required: number;
+    expectedTimeInSec: number | undefined;
+    required: number | undefined;
     questionType: QuestionType;
     selectableOptions: SelectableOption[];
 }

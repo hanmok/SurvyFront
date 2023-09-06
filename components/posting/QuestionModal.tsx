@@ -15,15 +15,18 @@ import QuestionTypeSelectionBox from "../QuestionTypeSelectionBox";
 import QuestionTypeSelectionBoxContainer from "../QuestionTypeSelectionBoxContainer";
 import { Switch } from "react-native";
 import DynamicTextInputs from "./DynamicTextInputs";
+import { Question } from "../../interfaces/Question";
 
 interface CreateQuestionModalProps {
     visible: boolean;
     onClose: () => void;
+    question?: Question;
 }
 
-const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
+const QuestionModal: React.FC<CreateQuestionModalProps> = ({
     visible,
     onClose,
+    question,
 }) => {
     const [questionTitle, setQuestionTitle] = useState("");
     const [isExtraOptionEnabled, setIsExtraOptionEnabled] = useState(false);
@@ -178,4 +181,4 @@ const styles = StyleSheet.create({
     topViewStyle: {},
 });
 
-export default CreateQuestionModal;
+export default QuestionModal;

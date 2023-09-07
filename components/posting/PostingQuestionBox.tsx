@@ -31,11 +31,6 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
 }) => {
     const questionTypeIndex = getQuestionTypeIndex(question.questionType);
 
-    switch ("asd") {
-        case "asd":
-            <View></View>;
-    }
-
     // const selectableViews: (): React.Node = () => {
     //     switch (question.questionType) {
     //         case QuestionType.SingleSelection:

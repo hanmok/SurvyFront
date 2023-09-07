@@ -10,13 +10,13 @@ export const fakeQuestions = [
         questionType: QuestionType.SingleSelection,
         selectableOptions: [
             {
-                id: 1,
+                id: 3,
                 questionId: 1,
                 value: "User Input Option 1",
                 position: 0,
             },
             {
-                id: 2,
+                id: 4,
                 questionId: 1,
                 value: "User Input Option 2",
                 position: 1,
@@ -32,13 +32,13 @@ export const fakeQuestions = [
         questionType: QuestionType.MultiSelection,
         selectableOptions: [
             {
-                id: 3,
+                id: 5,
                 questionId: 2,
                 value: "User Input Option 3",
                 position: 0,
             },
             {
-                id: 4,
+                id: 6,
                 questionId: 2,
                 value: "User Input Option 4",
                 position: 1,

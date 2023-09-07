@@ -35,7 +35,8 @@ import ImageButton from "../components/ImageButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackParamList";
 import { NavigationTitle } from "../utils/NavigationTitle";
-import { log } from "../utils/Log";
+import { log, logObject } from "../utils/Log";
+import ModifyQuestionModal from "../components/posting/ModifyQuestionModal";
 
 interface TestItem {
     id: number;
@@ -52,12 +53,23 @@ export default function SurveyPostingScreen({
 }) {
     const [customViews, setCustomViews] = useState([]);
     const [questions, setQuestions] = useState<Question[]>([]);
+    const [selectedIndex, setSelectedIndex] = useState<number>(undefined);
 
     const [isCreateQuestionModalVisible, setIsCreateQuestionModalVisible] =
         useState(false);
 
-    const toggleModal = () => {
+    const toggleCreateModal = () => {
         setIsCreateQuestionModalVisible(!isCreateQuestionModalVisible);
+    };
+
+    const [
+        isModifyingQuestionModalVisible,
+        setIsModifyingQuestionModalVisible,
+    ] = useState(false);
+
+    const toggleModifyingModal = () => {
+        setIsModifyingQuestionModalVisible(!isModifyingQuestionModalVisible);
+        // setSelectedIndex(null);
     };
 
     React.useLayoutEffect(() => {
@@ -97,6 +109,20 @@ export default function SurveyPostingScreen({
         setIsCreateQuestionModalVisible(!isCreateQuestionModalVisible);
     };
 
+    const modifyQuestion = (question: Question) => {
+        let newQuestions = questions;
+        const modifiedQuestionId = question.id;
+
+        const modifiedIdx = newQuestions.findIndex(q => {
+            return q.id === modifiedQuestionId;
+        });
+
+        newQuestions[modifiedIdx] = question;
+        setQuestions(newQuestions);
+        logObject(`newQuestions: `, questions);
+        setIsModifyingQuestionModalVisible(!isModifyingQuestionModalVisible);
+    };
+
     const handleAddCustomView = inputValue => {
         setCustomViews(prevViews => [...prevViews, inputValue]);
     };
@@ -112,7 +138,23 @@ export default function SurveyPostingScreen({
     const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => {
         return (
             <View>
-                <PostingQuestionBox question={item} onPress={toggleModal} />
+                {/* <PostingQuestionBox question={item} onPress={toggleCreateModal} /> */}
+                <PostingQuestionBox
+                    question={item}
+                    onPress={() => {
+                        toggleModifyingModal();
+
+                        let currentIdx = questions.findIndex(q => {
+                            log(`q.id: ${q.id}, item.id: ${item.id}`);
+                            return q.id === item.id;
+                        });
+
+                        setSelectedIndex(currentIdx);
+                        log(
+                            `QuestionBox tapped, currentIdx: ${currentIdx}, selectedIndex: ${selectedIndex}`
+                        );
+                    }}
+                />
             </View>
         );
     };
@@ -135,9 +177,16 @@ export default function SurveyPostingScreen({
         <SafeAreaView style={styles.container} edges={[]}>
             <CreateQuestionModal
                 isCreateQuestionModalVisible={isCreateQuestionModalVisible}
-                onClose={toggleModal}
+                onClose={toggleCreateModal}
                 onAdd={addQuestion}
                 position={questions.length}
+            />
+
+            <ModifyQuestionModal
+                isModifyQuestionModalVisible={isModifyingQuestionModalVisible}
+                onClose={toggleModifyingModal}
+                onModify={modifyQuestion}
+                selectedQuestion={questions[selectedIndex]}
             />
 
             <View style={styles.subContainer}>
@@ -162,7 +211,7 @@ export default function SurveyPostingScreen({
                         // title="+"
                         title="질문 추가"
                         // onPress={() => console.log}
-                        onPress={toggleModal}
+                        onPress={toggleCreateModal}
                         textStyle={[
                             styles.plusButtonText,
                             { textAlignVertical: "center" },

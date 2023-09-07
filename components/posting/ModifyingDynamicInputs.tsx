@@ -3,9 +3,16 @@ import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import TextButton from "../TextButton";
 import { fontSizes } from "../../utils/sizes";
 import ImageButton from "../ImageButton";
+import { log, logObject } from "../../utils/Log";
 
-const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
-    const [inputValues, setInputValues] = useState([""]); // 초기에 빈
+const ModifyingDynamicInputs = ({
+    parentInputValues,
+    setParentInputValues,
+    isModifyingModalVisible,
+    secondTexts,
+    setSecondTexts,
+}) => {
+    const [inputValues, setInputValues] = useState([""]); // 초기에 빈상태.
 
     // useEffect(() => {
     //     // if (inputValues !== dynamicInputValues) {
@@ -13,16 +20,39 @@ const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
     //     // }
     // }, [dynamicInputValues]);
 
-    useEffect(() => {
-        console.log(`dynamicTextInput renders, ${dynamicInputValues}`);
-    }, [dynamicInputValues]);
+    // useEffect(() => {
+    //     console.log(`dynamicTextInput renders, ${dynamicInputValues}`);
+    // }, [dynamicInputValues]);
+
+    // useEffect(() => {
+    //     setDynamicInputValues(inputValues);
+    // }, [inputValues]);
 
     useEffect(() => {
-        setDynamicInputValues(inputValues);
+        // log('dynamic input set to }')
+        logObject("dynamic input set to", inputValues);
+        setParentInputValues(inputValues);
+    }, [isModifyingModalVisible]);
+
+    useEffect(() => {
+        setSecondTexts(inputValues);
     }, [inputValues]);
 
     useEffect(() => {
-        setInputValues(dynamicInputValues);
+        setInputValues(parentInputValues);
+        console.log(`dynamicTextInput renders, ${parentInputValues}`);
+
+        return () => {
+            // setDynamicInputValues(inputValues);
+        };
+    }, [parentInputValues]);
+
+    useEffect(() => {
+        return () => {
+            // log(`current inputValues: ${}`)
+            logObject(`current input Values: `, inputValues);
+            setParentInputValues(inputValues);
+        };
     }, []);
 
     const handleAddInput = () => {
@@ -52,11 +82,8 @@ const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
                         value={value}
                         onChangeText={text => handleInputChange(text, index)}
                         autoComplete="off"
-                        // onSubmitEditing={text => handleInputChange(text, index)}
                     />
                     <ImageButton
-                        // img={require("../assets/minusIcon.png")}
-                        // img={require('../../')}
                         img={require("../../assets/minusIcon.png")}
                         onPress={() => handleRemoveInput(index)}
                         backgroundStyle={{ marginLeft: 10 }}
@@ -88,4 +115,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DynamicTextInputs;
+export default ModifyingDynamicInputs;

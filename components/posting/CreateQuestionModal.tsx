@@ -26,14 +26,14 @@ import { colors } from "../../utils/colors";
 import { screenWidth } from "../../utils/ScreenSize";
 
 interface CreateQuestionModalProps {
-    visible: boolean;
+    isCreateQuestionModalVisible: boolean;
     onClose: () => void;
     onAdd: (question: Question) => void;
     position: number;
 }
 
 const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
-    visible,
+    isCreateQuestionModalVisible,
     onClose,
     onAdd,
     position,
@@ -67,27 +67,21 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
             questionTitle !== ""
         ) {
             setSatisfied(true);
-            console.log(`satisfied: true, essay form`);
         } else {
-            console.log(`satisfied: false`);
             setSatisfied(false);
         }
     }, [questionType, questionTitle, dynamicInputValues]);
 
     useEffect(() => {
-        // Unamount 시 호출
-        return () => {
-            console.log(
-                `from createQuestionModal, dynamicInputValues: ${dynamicInputValues}`
-            );
-        };
-    }, []);
+        setDynamicInputValues([""]);
+        setQuestionTitle("");
+    }, [isCreateQuestionModalVisible]);
 
     return (
         <Modal
             animationType="slide"
             transparent={true}
-            visible={visible}
+            visible={isCreateQuestionModalVisible}
             onRequestClose={handleModalClose}
         >
             <View style={styles.modalContainer}>

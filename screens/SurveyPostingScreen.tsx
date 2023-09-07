@@ -42,19 +42,19 @@ export default function SurveyRequestScreen() {
     const [customViews, setCustomViews] = useState([]);
     const [questions, setQuestions] = useState<Question[]>([]);
 
-    const [isModalVisible, setModalVisible] = useState(false);
+    const [isCreateQuestionModalVisible, setIsCreateQuestionModalVisible] =
+        useState(false);
 
     const toggleModal = () => {
-        setModalVisible(!isModalVisible);
+        setIsCreateQuestionModalVisible(!isCreateQuestionModalVisible);
     };
 
     const addQuestion = (question: Question) => {
         // questions
         let newQuestions = questions;
         newQuestions.push(question);
-        // setQuestions(questions.push(question))
         setQuestions(newQuestions);
-        setModalVisible(!isModalVisible);
+        setIsCreateQuestionModalVisible(!isCreateQuestionModalVisible);
     };
 
     const handleAddCustomView = inputValue => {
@@ -94,7 +94,7 @@ export default function SurveyRequestScreen() {
     return (
         <SafeAreaView style={styles.container} edges={[]}>
             <CreateQuestionModal
-                visible={isModalVisible}
+                isCreateQuestionModalVisible={isCreateQuestionModalVisible}
                 onClose={toggleModal}
                 onAdd={addQuestion}
                 position={questions.length}

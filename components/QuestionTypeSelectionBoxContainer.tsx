@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import QuestionTypeSelectionBox from "./QuestionTypeSelectionBox";
+import { QuestionType, getQuestionType } from "../QuestionType";
 
 interface QuestionTypeSelectionContainerProps {
     preselectedIndex?: number;
+    handleSelect?: (questionType: QuestionType) => void;
 }
-
-// 어떤 버튼이 눌렸는지, 하나만 갖고 있을 것
-// const QuestionTypeSelectionBoxContainer = ({ preselectedIndex: number }) => {
 
 const QuestionTypeSelectionBoxContainer: React.FC<
     QuestionTypeSelectionContainerProps
-> = ({ preselectedIndex }) => {
-    // const [selectedIndex, setSelectedIndex] = useState<number>(undefined);
+> = ({ preselectedIndex, handleSelect }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | undefined>(
         preselectedIndex !== undefined ? preselectedIndex : undefined
     );
 
     useEffect(() => {
         console.log(`selectedIndex: ${preselectedIndex}`);
-        // if (preselectedIndex) {
-        //     setSelectedIndex(preselectedIndex);
-        // }
         setSelectedIndex(preselectedIndex);
     }, [preselectedIndex]);
 
@@ -30,17 +25,26 @@ const QuestionTypeSelectionBoxContainer: React.FC<
             <QuestionTypeSelectionBox
                 index={0}
                 isSelected={selectedIndex === 0}
-                onPress={() => setSelectedIndex(0)}
+                onPress={() => {
+                    setSelectedIndex(0);
+                    handleSelect(QuestionType.SingleSelection);
+                }}
             />
             <QuestionTypeSelectionBox
                 index={1}
                 isSelected={selectedIndex === 1}
-                onPress={() => setSelectedIndex(1)}
+                onPress={() => {
+                    setSelectedIndex(1);
+                    handleSelect(QuestionType.MultiSelection);
+                }}
             />
             <QuestionTypeSelectionBox
                 index={2}
                 isSelected={selectedIndex === 2}
-                onPress={() => setSelectedIndex(2)}
+                onPress={() => {
+                    setSelectedIndex(2);
+                    handleSelect(QuestionType.Essay);
+                }}
             />
             {/* <QuestionTypeSelectionBox index={3} /> */}
         </View>

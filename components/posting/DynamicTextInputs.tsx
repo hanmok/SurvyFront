@@ -4,7 +4,6 @@ import TextButton from "../TextButton";
 import { fontSizes } from "../../utils/sizes";
 import ImageButton from "../ImageButton";
 
-// const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
 const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
     const [inputValues, setInputValues] = useState([""]); // 초기에 빈 문자열 하나를 가진 배열
 
@@ -17,23 +16,26 @@ const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
         newInputValues[index] = text; // 해당 인덱스의 입력 값을 업데이트
         setInputValues(newInputValues);
         console.log(`inputValues: ${inputValues}`);
-        // setDynamicInputValues(inputValues);
-        // setDynamicInputValues(newInputValues);
     };
 
     // 컴포넌트가 언마운트 되는 시점에 업데이트 되지 않음.
+
     // useEffect(() => {
     //     return () => {
     //         setDynamicInputValues(inputValues);
     //         console.log(`from dynamicTextInputs, ${inputValues}`);
     //     };
-    // }, []);
+    // }, [dynamicInputValues]);
 
     // dynamicInputValues 값이 변경될 때마다 부모 컴포넌트로 전달
 
     useEffect(() => {
         setDynamicInputValues(inputValues);
     }, [inputValues]);
+
+    useEffect(() => {
+        setInputValues(dynamicInputValues);
+    }, []);
 
     const handleRemoveInput = index => {
         const newInputValues = [...inputValues];
@@ -50,6 +52,7 @@ const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
                         style={styles.input}
                         value={value}
                         onChangeText={text => handleInputChange(text, index)}
+                        autoComplete="off"
                         // onSubmitEditing={text => handleInputChange(text, index)}
                     />
                     <ImageButton

@@ -18,4 +18,5 @@ export const colors = {
     unselectedQuestionBoxBG: "#DCEAFF",
     selectedQuestionBoxBG: "#5094FD",
     unselectedQuestionBoxText: "#777777",
+    placeHolder: "#C5C5C5",
 };

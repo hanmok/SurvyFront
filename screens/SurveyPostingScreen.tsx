@@ -29,9 +29,8 @@ import { useState } from "react";
 import { QuestionType } from "../QuestionType";
 import { Question } from "../interfaces/Question";
 import { fakeQuestions } from "../fakeQuestion";
-import PostingQuestionBoxButton from "../components/posting/PostingQuestionBoxButton";
-import { ConsoleFunction } from "../types/types";
-import QuestionModal from "../components/posting/QuestionModal";
+import PostingQuestionBox from "../components/posting/PostingQuestionBox";
+import CreateQuestionModal from "../components/posting/CreateQuestionModal";
 import ImageButton from "../components/ImageButton";
 
 interface TestItem {
@@ -46,6 +45,15 @@ export default function SurveyRequestScreen() {
     const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+
+    const addQuestion = (question: Question) => {
+        // questions
+        let newQuestions = questions;
+        newQuestions.push(question);
+        // setQuestions(questions.push(question))
+        setQuestions(newQuestions);
         setModalVisible(!isModalVisible);
     };
 
@@ -64,10 +72,7 @@ export default function SurveyRequestScreen() {
     const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => {
         return (
             <View>
-                <PostingQuestionBoxButton
-                    question={item}
-                    onPress={toggleModal}
-                />
+                <PostingQuestionBox question={item} onPress={toggleModal} />
             </View>
         );
     };
@@ -88,8 +93,12 @@ export default function SurveyRequestScreen() {
 
     return (
         <SafeAreaView style={styles.container} edges={[]}>
-            <QuestionModal visible={isModalVisible} onClose={toggleModal} />
-            {/* <Text>This is Children</Text> */}
+            <CreateQuestionModal
+                visible={isModalVisible}
+                onClose={toggleModal}
+                onAdd={addQuestion}
+                position={questions.length}
+            />
 
             <View style={styles.subContainer}>
                 <TextInput

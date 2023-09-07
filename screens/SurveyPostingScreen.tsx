@@ -32,13 +32,24 @@ import { fakeQuestions } from "../fakeQuestion";
 import PostingQuestionBox from "../components/posting/PostingQuestionBox";
 import CreateQuestionModal from "../components/posting/CreateQuestionModal";
 import ImageButton from "../components/ImageButton";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../RootStackParamList";
+import { NavigationTitle } from "../utils/NavigationTitle";
+import { log } from "../utils/Log";
 
 interface TestItem {
     id: number;
 }
 
 // Header, Footer 로 중첩 Scroll 해결하기.
-export default function SurveyRequestScreen() {
+export default function SurveyPostingScreen({
+    navigation,
+}: {
+    navigation: StackNavigationProp<
+        RootStackParamList,
+        NavigationTitle.posting
+    >;
+}) {
     const [customViews, setCustomViews] = useState([]);
     const [questions, setQuestions] = useState<Question[]>([]);
 
@@ -48,6 +59,35 @@ export default function SurveyRequestScreen() {
     const toggleModal = () => {
         setIsCreateQuestionModalVisible(!isCreateQuestionModalVisible);
     };
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                // <Button onPress={() => log("hi")} title="Button" />
+                <View
+                    style={{
+                        flexDirection: "row",
+                        marginRight: 20,
+                    }}
+                >
+                    <ImageButton
+                        img={require("../assets/moreIcon.png")}
+                        onPress={() => {
+                            log("more tapped");
+                        }}
+                        backgroundStyle={{ marginHorizontal: 6 }}
+                    />
+                    <ImageButton
+                        img={require("../assets/sendIcon.png")}
+                        onPress={() => {
+                            log("send pressed");
+                        }}
+                        backgroundStyle={{ marginHorizontal: 6 }}
+                    />
+                </View>
+            ),
+        });
+    }, [navigation]);
 
     const addQuestion = (question: Question) => {
         // questions

@@ -24,7 +24,7 @@ import { NavigationTitle } from "../utils/NavigationTitle";
 const screenWidth = Dimensions.get("window").width;
 // import { MMKVstorage, StorageKeys } from "../utils/mmkv";
 
-function HomeView({
+function HomeScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.home>;
@@ -207,4 +207,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeView;
+export default HomeScreen;

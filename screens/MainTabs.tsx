@@ -3,9 +3,9 @@ import { Image, View, Text } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
-import MypageView from "./SettingsScreen";
+import MypageScreen from "./MypageScreen";
 import HomeScreen from "./HomeScreen";
-import SurveyParticipateScreen from "./SurveyParticipateScreen";
+import SurveyParticipateScreen from "./ParticipatingScreen";
 
 export default function MainTabs() {
     return (
@@ -54,7 +54,7 @@ export default function MainTabs() {
 
             <Tab.Screen
                 name="마이페이지"
-                component={MypageView}
+                component={MypageScreen}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return focused ? (

@@ -24,7 +24,7 @@ export async function postSelectionAnswer(
             },
             body: JSON.stringify(snakeData),
         });
-        response;
+
         if (!response.ok) {
             console.log("postSelectionAnswer error!!");
             throw new Error("postSelectionAnswer error!!");

@@ -4,7 +4,10 @@ import TextButton from "../TextButton";
 import { fontSizes } from "../../utils/sizes";
 import ImageButton from "../ImageButton";
 
-const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
+const DynamicTextInputsForCreation = ({
+    dynamicInputValues,
+    setDynamicInputValues,
+}) => {
     const [inputValues, setInputValues] = useState([""]); // 초기에 빈
 
     // useEffect(() => {
@@ -52,6 +55,7 @@ const DynamicTextInputs = ({ dynamicInputValues, setDynamicInputValues }) => {
                         value={value}
                         onChangeText={text => handleInputChange(text, index)}
                         autoComplete="off"
+                        autoCorrect={false}
                         // onSubmitEditing={text => handleInputChange(text, index)}
                     />
                     <ImageButton
@@ -88,4 +92,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DynamicTextInputs;
+export default DynamicTextInputsForCreation;

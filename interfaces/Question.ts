@@ -1,11 +1,11 @@
 import { QuestionType } from "../QuestionType";
-import { randomNumber } from "../utils/GetRandomNumber";
+import { makeRandomNumber, randomNumber } from "../utils/GetRandomNumber";
 import { SelectableOption } from "./SelectableOption";
 
 export interface Question {
     id: number | undefined;
     expectedTimeInSec: number | undefined;
-    required: number | undefined;
+    sectionId: number | undefined;
     position: number;
     text: string;
     questionType: QuestionType;
@@ -16,14 +16,17 @@ export const makeQuestion = (
     position: number,
     text: string,
     questionType: QuestionType,
+    sectionId: number,
     selectableOptions: SelectableOption[]
 ): Question => {
     const question: Question = {
         // id: Math.floor(Math.random() * 1000000),
-        id: randomNumber,
+        // id: randomNumber,
+
+        id: makeRandomNumber(),
         expectedTimeInSec: undefined,
-        required: 1,
         position: position,
+        sectionId: sectionId,
         text: text,
         questionType: questionType,
         selectableOptions: selectableOptions,

@@ -1,6 +1,7 @@
 export enum QuestionTypeEnum {
-    MultipleSelection = "MULTIPLE_SELECTION",
     SingleSelection = "SINGLE_SELECTION",
-    ShortText = "SHORT_TEXT",
-    LongText = "LONG_TEXT",
+    MultipleSelection = "MULTIPLE_SELECTION",
+    // ShortText = "SHORT_TEXT",
+    // LongText = "LONG_TEXT",
+    Essay = "ESSAY",
 }

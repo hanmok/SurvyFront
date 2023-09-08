@@ -5,32 +5,15 @@ import { fontSizes } from "../../utils/sizes";
 import ImageButton from "../ImageButton";
 import { log, logObject } from "../../utils/Log";
 
-const ModifyingDynamicInputs = ({
+const DynamicTextInputsForModification = ({
     parentInputValues,
     setParentInputValues,
     isModifyingModalVisible,
-    secondTexts,
     setSecondTexts,
 }) => {
     const [inputValues, setInputValues] = useState([""]); // 초기에 빈상태.
 
-    // useEffect(() => {
-    //     // if (inputValues !== dynamicInputValues) {
-    //     //     setInputValues(dynamicInputValues);
-    //     // }
-    // }, [dynamicInputValues]);
-
-    // useEffect(() => {
-    //     console.log(`dynamicTextInput renders, ${dynamicInputValues}`);
-    // }, [dynamicInputValues]);
-
-    // useEffect(() => {
-    //     setDynamicInputValues(inputValues);
-    // }, [inputValues]);
-
     useEffect(() => {
-        // log('dynamic input set to }')
-        logObject("dynamic input set to", inputValues);
         setParentInputValues(inputValues);
     }, [isModifyingModalVisible]);
 
@@ -82,6 +65,7 @@ const ModifyingDynamicInputs = ({
                         value={value}
                         onChangeText={text => handleInputChange(text, index)}
                         autoComplete="off"
+                        autoCorrect={false}
                     />
                     <ImageButton
                         img={require("../../assets/minusIcon.png")}
@@ -115,4 +99,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ModifyingDynamicInputs;
+export default DynamicTextInputsForModification;

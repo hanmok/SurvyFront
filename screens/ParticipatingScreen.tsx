@@ -30,7 +30,7 @@ interface Dictionary<T> {
     [key: number]: Set<T>;
 }
 
-function SurveyparticipateScreen({
+function ParticipatingScreen({
     route,
 }: {
     route: RouteProp<RootStackParamList, NavigationTitle.participate>;
@@ -157,7 +157,6 @@ function SurveyparticipateScreen({
                         id: item.id,
                         position: item.position,
                         text: item.text,
-                        required: item.required,
                         expectedTimeInSec: item.expectedTimeInSec,
                         questionType: item.questionType,
                     })
@@ -281,7 +280,7 @@ function SurveyparticipateScreen({
     );
 }
 
-export default SurveyparticipateScreen;
+export default ParticipatingScreen;
 // export default SurveyParticipateScreen;
 
 const styles = StyleSheet.create({

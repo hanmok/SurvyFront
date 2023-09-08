@@ -8,14 +8,12 @@ interface ParticipatingQuestionProps {
     position: number;
     id: number;
     text: string;
-    required: number;
 }
 
 const ParticipatingQuestionBox: React.FC<ParticipatingQuestionProps> = ({
     position,
     id,
     text,
-    required,
 }) => {
     return (
         <View style={styles.container}>

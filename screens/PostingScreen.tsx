@@ -30,20 +30,32 @@ import { QuestionType } from "../QuestionType";
 import { Question } from "../interfaces/Question";
 import { fakeQuestions } from "../fakeQuestion";
 import PostingQuestionBox from "../components/posting/PostingQuestionBox";
-import CreateQuestionModal from "../components/posting/CreateQuestionModal";
+import CreatingQuestionModal from "../modals/CreatingQuestionModal";
 import ImageButton from "../components/ImageButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackParamList";
 import { NavigationTitle } from "../utils/NavigationTitle";
 import { log, logObject } from "../utils/Log";
-import ModifyQuestionModal from "../components/posting/ModifyQuestionModal";
+import ModifyingQuestionModal from "../modals/ModifyingQuestionModal";
+import {
+    Menu,
+    MenuOption,
+    MenuOptions,
+    MenuProvider,
+    MenuTrigger,
+} from "react-native-popup-menu";
+import { Entypo } from "@expo/vector-icons";
+import { SelectableOption } from "../interfaces/SelectableOption";
+import { Section, makeSection } from "../interfaces/Section";
+import { Survey, makeSurvey } from "../interfaces/Survey";
+import { postWholeSurvey } from "../API/SurveyAPI";
 
 interface TestItem {
     id: number;
 }
 
 // Header, Footer 로 중첩 Scroll 해결하기.
-export default function SurveyPostingScreen({
+export default function PostingScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<
@@ -54,12 +66,13 @@ export default function SurveyPostingScreen({
     const [customViews, setCustomViews] = useState([]);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [selectedIndex, setSelectedIndex] = useState<number>(undefined);
+    const [surveyTitle, setSurveyTitle] = useState<string>("내 설문조사 제목");
 
-    const [isCreateQuestionModalVisible, setIsCreateQuestionModalVisible] =
+    const [isCreatingQuestionModalVisible, setIsCreatingQuestionModalVisible] =
         useState(false);
 
     const toggleCreateModal = () => {
-        setIsCreateQuestionModalVisible(!isCreateQuestionModalVisible);
+        setIsCreatingQuestionModalVisible(!isCreatingQuestionModalVisible);
     };
 
     const [
@@ -76,37 +89,99 @@ export default function SurveyPostingScreen({
         navigation.setOptions({
             headerRight: () => (
                 // <Button onPress={() => log("hi")} title="Button" />
-                <View
-                    style={{
-                        flexDirection: "row",
-                        marginRight: 20,
-                    }}
-                >
-                    <ImageButton
-                        img={require("../assets/moreIcon.png")}
-                        onPress={() => {
-                            log("more tapped");
-                        }}
-                        backgroundStyle={{ marginHorizontal: 6 }}
-                    />
+                <View style={styles.rightNavContainer}>
+                    <Menu style={styles.menu}>
+                        <MenuTrigger
+                            customStyles={{}}
+                            style={{ marginRight: 12 }}
+                        >
+                            <Entypo
+                                name="dots-three-horizontal"
+                                size={24}
+                                color="black"
+                            />
+                        </MenuTrigger>
+                        <MenuOptions
+                            customStyles={{
+                                optionsContainer: styles.optionContainer,
+                            }}
+                            optionsContainerStyle={{
+                                marginTop: 20,
+                                marginRight: 10,
+                            }}
+                        >
+                            <MenuOption onSelect={handleFirstOptionTapped}>
+                                <Text>option 1</Text>
+                            </MenuOption>
+                            <View style={styles.divider} />
+                            <MenuOption onSelect={handleSecondOptionTapped}>
+                                <Text>option 2</Text>
+                            </MenuOption>
+                        </MenuOptions>
+                    </Menu>
                     <ImageButton
                         img={require("../assets/sendIcon.png")}
-                        onPress={() => {
-                            log("send pressed");
-                        }}
-                        backgroundStyle={{ marginHorizontal: 6 }}
+                        onPress={handleSendButtonTapped}
+                        backgroundStyle={{ marginHorizontal: 8 }}
                     />
                 </View>
             ),
         });
     }, [navigation]);
 
+    const handleSendButtonTapped = async () => {
+        log("send pressed");
+        // const sectionId = 264;
+        let selectableOptions: SelectableOption[] = [];
+        let sections: Section[] = [];
+        const testSection = makeSection("sectionTitle", 100, 5);
+
+        sections.push(testSection);
+        logObject(`passing section:`, sections);
+
+        questions.forEach(q => {
+            q.selectableOptions.forEach(so => {
+                selectableOptions.push(so);
+            });
+            q.sectionId = testSection.id;
+        });
+        logObject(`passing questions:`, questions);
+        logObject(`passing selectableoptions:`, selectableOptions);
+
+        const userId = 4;
+        const participationGoal = 100;
+        const survey = makeSurvey(userId, surveyTitle, participationGoal);
+        log("hi111111");
+        // postWholeSurvey(survey, sections, questions, selectableOptions);
+        await postWholeSurvey(survey, sections, questions, selectableOptions);
+        log("hi222222");
+        // await postWholeSurvey(survey, sections, questions, selectableOptions);
+    };
+
+    // const postWholeSurvey = async (
+    //     survey: Survey,
+    //     sections: Section[],
+    //     questions: Question[],
+    //     selectableOptions: SelectableOption[]
+    // ) => {
+    //     await postWholeSurvey(survey, sections, questions, selectableOptions);
+    // };
+
+    const handleFirstOptionTapped = () => {
+        log("first option tapped");
+    };
+
+    const handleSecondOptionTapped = () => {
+        log("first option tapped");
+    };
+
     const addQuestion = (question: Question) => {
         // questions
         let newQuestions = questions;
         newQuestions.push(question);
         setQuestions(newQuestions);
-        setIsCreateQuestionModalVisible(!isCreateQuestionModalVisible);
+        logObject("after question add, ", questions);
+        setIsCreatingQuestionModalVisible(!isCreatingQuestionModalVisible);
     };
 
     const modifyQuestion = (question: Question) => {
@@ -130,8 +205,6 @@ export default function SurveyPostingScreen({
     useEffect(() => {
         setQuestions(fakeQuestions);
     }, []);
-
-    const fakeTitle = "내 설문조사 제목";
 
     // let myData = fakeQuestions;
 
@@ -175,15 +248,17 @@ export default function SurveyPostingScreen({
 
     return (
         <SafeAreaView style={styles.container} edges={[]}>
-            <CreateQuestionModal
-                isCreateQuestionModalVisible={isCreateQuestionModalVisible}
+            <CreatingQuestionModal
+                isCreatingQuestionModalVisible={isCreatingQuestionModalVisible}
                 onClose={toggleCreateModal}
                 onAdd={addQuestion}
                 position={questions.length}
             />
 
-            <ModifyQuestionModal
-                isModifyQuestionModalVisible={isModifyingQuestionModalVisible}
+            <ModifyingQuestionModal
+                isModifyingQuestionModalVisible={
+                    isModifyingQuestionModalVisible
+                }
                 onClose={toggleModifyingModal}
                 onModify={modifyQuestion}
                 selectedQuestion={questions[selectedIndex]}
@@ -193,7 +268,8 @@ export default function SurveyPostingScreen({
                 <TextInput
                     placeholder="설문 제목을 입력해주세요"
                     style={styles.surveyTitleBox}
-                    value={fakeTitle}
+                    value={surveyTitle}
+                    onChangeText={setSurveyTitle}
                 />
 
                 <FlatList
@@ -228,7 +304,7 @@ export default function SurveyPostingScreen({
             <View style={styles.bottomContainer}>
                 <FlatList
                     renderItem={sectionBoxItem}
-                    data={[{ id: 1 }, { id: 2 }, { id: 3 }]}
+                    data={[{ id: 11 }, { id: 12 }, { id: 13 }]}
                     keyExtractor={item => `${item.id}`}
                     horizontal={true}
                     style={styles.flatListStyle}
@@ -378,7 +454,6 @@ const styles = StyleSheet.create({
     },
     flatListStyle: {
         flexGrow: 0.9,
-        // backgroundColor: 'magenta'
     },
     sectionBoxItemStyle: {
         backgroundColor: "magenta",
@@ -393,5 +468,24 @@ const styles = StyleSheet.create({
         // padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: "lightgray",
+    },
+    divider: {
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: "#7F8487",
+    },
+    optionContainer: {
+        borderRadius: 10,
+        padding: 5,
+        marginTop: 25,
+        width: 100,
+        // marginRight: 100,
+    },
+    menu: {
+        // marginHorizontal: 8,
+        marginTop: 5,
+    },
+    rightNavContainer: {
+        flexDirection: "row",
+        marginRight: 20,
     },
 });

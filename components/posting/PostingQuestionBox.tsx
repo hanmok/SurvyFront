@@ -92,7 +92,6 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                                 marginTop: 5,
                                                 marginLeft: 10,
                                                 marginRight: 20,
-                                                backgroundColor: colors.magenta,
                                                 height: 1,
                                             }}
                                         ></View>

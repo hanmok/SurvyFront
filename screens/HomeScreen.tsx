@@ -109,7 +109,7 @@ function HomeScreen({
     if (isLoading) {
         return (
             <View>
-                <Text style={{ backgroundColor: "magenta" }}>loading..</Text>
+                <Text>loading..</Text>
             </View>
         );
     }
@@ -188,7 +188,6 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         marginHorizontal: marginSizes.m16,
         paddingBottom: 200,
-        backgroundColor: "magenta",
         // marginBottom: 200,
     },
 

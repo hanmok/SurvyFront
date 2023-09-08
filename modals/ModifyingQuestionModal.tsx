@@ -9,34 +9,32 @@ import {
     StyleSheet,
     TextInput,
 } from "react-native";
-import TextButton from "../TextButton";
-import { fontSizes } from "../../utils/sizes";
-import QuestionTypeSelectionBox from "../QuestionTypeSelectionBox";
-import QuestionTypeSelectionBoxContainer from "../QuestionTypeSelectionBoxContainer";
+import { fontSizes } from "../utils/sizes";
+import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
 import { Switch } from "react-native";
-import DynamicTextInputs from "./DynamicTextInputs";
-import { Question, makeQuestion } from "../../interfaces/Question";
-import { QuestionType } from "../../QuestionType";
+import { Question } from "../interfaces/Question";
+import { QuestionType, getQuestionTypeIndex } from "../QuestionType";
 import {
     SelectableOption,
     makeSelectableOption,
-} from "../../interfaces/SelectableOption";
-import { log } from "../../utils/Log";
-import { colors } from "../../utils/colors";
-import { screenWidth } from "../../utils/ScreenSize";
+} from "../interfaces/SelectableOption";
+import { log, logObject } from "../utils/Log";
+import { colors } from "../utils/colors";
+import { screenWidth } from "../utils/ScreenSize";
+import DynamicTextInputsForModification from "../components/posting/DynamicTextInputsForModification";
 
-interface CreateQuestionModalProps {
-    isCreateQuestionModalVisible: boolean;
+interface ModifyingQuestionModalProps {
+    isModifyingQuestionModalVisible: boolean;
     onClose: () => void;
-    onAdd: (question: Question) => void;
-    position: number;
+    onModify: (question: Question) => void;
+    selectedQuestion?: Question;
 }
 
-const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
-    isCreateQuestionModalVisible,
+const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
+    isModifyingQuestionModalVisible,
     onClose,
-    onAdd,
-    position,
+    onModify,
+    selectedQuestion,
 }) => {
     const [questionTitle, setQuestionTitle] = useState("");
     const [isExtraOptionEnabled, setIsExtraOptionEnabled] = useState(false);
@@ -44,15 +42,33 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
     const [questionType, setQuestionType] = useState<QuestionType>(undefined);
     const [satisfied, setSatisfied] = useState<boolean>(false);
     const [placeHolder, setPlaceHolder] = useState<string>("placeholder");
+    const [removingTexts, setRemovingText] = useState<boolean>(false);
+    const [secondTexts, setSecondTexts] = useState([""]);
 
     const toggleExtraOptionSwitch = () => {
         setIsExtraOptionEnabled(prev => !prev);
     };
 
     const handleModalClose = () => {
+        setRemovingText(true);
         console.log(`dynamicInputValues: ${dynamicInputValues}`);
         onClose();
     };
+
+    useEffect(() => {
+        if (selectedQuestion) {
+            logObject("currently selectedQuestion: ", selectedQuestion);
+            setQuestionType(selectedQuestion.questionType);
+
+            const texts = selectedQuestion.selectableOptions.map(
+                option => option.value
+            );
+            logObject("texts: ", texts); // 정상적으로 뜸. 그럼 문제는? dynamic 에 있겠군.
+
+            setDynamicInputValues(texts);
+            setQuestionTitle(selectedQuestion.text);
+        }
+    }, [selectedQuestion, isModifyingQuestionModalVisible]);
 
     useEffect(() => {
         if (
@@ -71,17 +87,13 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
             setSatisfied(false);
         }
     }, [questionType, questionTitle, dynamicInputValues]);
-
-    useEffect(() => {
-        setDynamicInputValues([""]);
-        setQuestionTitle("");
-    }, [isCreateQuestionModalVisible]);
+    // }, [questionType, questionTitle]);
 
     return (
         <Modal
             animationType="slide"
             transparent={true}
-            visible={isCreateQuestionModalVisible}
+            visible={isModifyingQuestionModalVisible}
             onRequestClose={handleModalClose}
         >
             <View style={styles.modalContainer}>
@@ -97,6 +109,9 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
                         <View style={{ height: 16 }} />
                         <QuestionTypeSelectionBoxContainer
                             handleSelect={setQuestionType}
+                            preselectedIndex={getQuestionTypeIndex(
+                                questionType
+                            )}
                         />
                     </View>
                     <View style={{ justifyContent: "space-between", flex: 1 }}>
@@ -127,9 +142,11 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
                                 />
                             </View>
                         ) : (
-                            <DynamicTextInputs
-                                dynamicInputValues={dynamicInputValues}
-                                setDynamicInputValues={setDynamicInputValues}
+                            <DynamicTextInputsForModification
+                                parentInputValues={dynamicInputValues}
+                                setParentInputValues={setDynamicInputValues}
+                                isModifyingModalVisible={removingTexts}
+                                setSecondTexts={setSecondTexts}
                             />
                         )}
 
@@ -195,48 +212,48 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
 
                         <TouchableOpacity
                             onPress={() => {
+                                setRemovingText(true);
                                 log(
                                     `dynamic input values: ${dynamicInputValues}`
                                 );
                                 let selectableOptions: SelectableOption[] = [];
 
-                                let question = makeQuestion(
-                                    position,
-                                    questionTitle,
-                                    questionType,
-                                    []
-                                );
                                 log(
-                                    `question made: ${JSON.stringify(question)}`
+                                    `question made: ${JSON.stringify(
+                                        selectedQuestion
+                                    )}`
                                 );
 
                                 if (questionType === QuestionType.Essay) {
                                     // selectableOptions
                                     const selectableOption =
                                         makeSelectableOption(
-                                            question.id,
+                                            selectedQuestion.id,
                                             0,
                                             placeHolder
                                         );
                                     selectableOptions.push(selectableOption);
                                 } else {
-                                    dynamicInputValues.map(
-                                        (optionText, index) => {
-                                            const selectableOption =
-                                                makeSelectableOption(
-                                                    question.id,
-                                                    index,
-                                                    optionText
-                                                );
-                                            selectableOptions.push(
-                                                selectableOption
+                                    log(`modify called`);
+                                    // dynamicInputValues.map(
+                                    secondTexts.map((optionText, index) => {
+                                        const selectableOption =
+                                            makeSelectableOption(
+                                                selectedQuestion.id,
+                                                index,
+                                                optionText
                                             );
-                                        }
-                                    );
+                                        selectableOptions.push(
+                                            selectableOption
+                                        );
+                                    });
                                 }
-                                question.selectableOptions = selectableOptions;
+                                selectedQuestion.text = questionTitle;
+                                selectedQuestion.questionType = questionType;
+                                selectedQuestion.selectableOptions =
+                                    selectableOptions;
 
-                                onAdd(question);
+                                onModify(selectedQuestion);
                             }}
                             style={
                                 satisfied
@@ -311,4 +328,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateQuestionModal;
+export default ModifyingQuestionModal;

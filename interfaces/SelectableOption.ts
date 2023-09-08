@@ -5,7 +5,7 @@
 //     value: string;
 // };
 
-import { randomNumber } from "../utils/GetRandomNumber";
+import { makeRandomNumber, randomNumber } from "../utils/GetRandomNumber";
 
 export interface SelectableOption {
     id: number | undefined;
@@ -20,7 +20,8 @@ export const makeSelectableOption = (
     value: string
 ): SelectableOption => {
     const selectableOption: SelectableOption = {
-        id: randomNumber,
+        // id: randomNumber,
+        id: makeRandomNumber(),
         questionId: questionId,
         position: position,
         value: value,

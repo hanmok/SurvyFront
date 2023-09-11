@@ -32,7 +32,10 @@ const ImageButton: React.FC<ImageButtonProps> = ({
             style={[styles.container, backgroundStyle]}
             onPress={onPress}
         >
-            <Image source={img} style={[imageStyle]} />
+            <Image
+                source={img}
+                style={[imageStyle, { aspectRatio: "1", height: size }]}
+            />
         </TouchableOpacity>
     );
 };

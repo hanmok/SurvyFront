@@ -56,6 +56,7 @@ export default function MainTabs() {
                 name="마이페이지"
                 component={MypageScreen}
                 options={{
+                    headerShown: false,
                     tabBarIcon: ({ focused }) => {
                         return focused ? (
                             <Image

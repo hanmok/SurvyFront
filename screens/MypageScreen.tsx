@@ -53,6 +53,10 @@ function MypageScreen({
             .catch(err => {});
     };
 
+    const navigateToSetting = () => {
+        navigation.navigate(NavigationTitle.setting);
+    };
+
     useEffect(() => {
         getNumbers();
         // console.log()
@@ -86,6 +90,7 @@ function MypageScreen({
                 <ImageButton
                     img={require("../assets/settingIcon.png")}
                     size={24}
+                    onPress={navigateToSetting}
                 />
             </View>
 

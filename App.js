@@ -17,6 +17,7 @@ import ImageButton from "./components/ImageButton";
 import { MenuProvider } from "react-native-popup-menu";
 import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
+import SettingScreen from "./screens/SettingScreen";
 
 // const Tab = createBottomTabNavigator();
 
@@ -75,6 +76,17 @@ export default function App() {
                         <Stack.Screen
                             name={NavigationTitle.postedSurveys}
                             component={PostedSurveysScreen}
+                            options={{
+                                headerBackTitleVisible: false,
+                                headerStyle: {
+                                    backgroundColor: colors.background,
+                                },
+                            }}
+                        />
+
+                        <Stack.Screen
+                            name={NavigationTitle.setting}
+                            component={SettingScreen}
                             options={{
                                 headerBackTitleVisible: false,
                                 headerStyle: {

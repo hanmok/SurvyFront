@@ -115,9 +115,6 @@ function HomeScreen({
 
     return (
         <SafeAreaView style={styles.container} edges={["top"]}>
-            {/* <Text style={styles.collectedMoney}>Collected Money</Text> */}
-            {/* <CollectedMoney amount={10000} style={styles.collectedMoney} /> */}
-            {/* <Counter /> */}
             <CollectedMoney amount={10000} />
             <View style={styles.subContainer}>
                 <FlatList
@@ -153,6 +150,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
     },
     subContainer: {
+        marginTop: 10,
         justifyContent: "flex-end",
         // alignItems: "center",
         alignItems: "stretch",

@@ -6,4 +6,5 @@ export enum NavigationTitle {
     mypage = "MyPage",
     participatedSurveys = "ParticipatedSurveys",
     postedSurveys = "PostedSurveys",
+    setting = "Setting",
 }

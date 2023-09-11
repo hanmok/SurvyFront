@@ -8,4 +8,5 @@ export type RootStackParamList = {
     MyPage: undefined;
     ParticipatedSurveys: undefined;
     PostedSurveys: undefined;
+    Setting: undefined;
 };

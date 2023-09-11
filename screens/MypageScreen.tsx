@@ -6,8 +6,15 @@ import ImageButton from "../components/ImageButton";
 import { Ionicons } from "@expo/vector-icons";
 import { screenWidth } from "../utils/ScreenSize";
 import { log } from "../utils/Log";
+import { RootStackParamList } from "../RootStackParamList";
+import { NavigationTitle } from "../utils/NavigationTitle";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-function MypageScreen() {
+function MypageScreen({
+    navigation,
+}: {
+    navigation: StackNavigationProp<RootStackParamList, NavigationTitle.mypage>;
+}) {
     const [numOfParticipatedSurveys, setNumOfParticiapatedSurveys] =
         useState<number>(0);
     const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
@@ -56,6 +63,9 @@ function MypageScreen() {
             >
                 <BlockView
                     onPress={() => {
+                        navigation.navigate(
+                            NavigationTitle.participatedSurveys
+                        );
                         handleClick(1);
                     }}
                 >
@@ -75,6 +85,7 @@ function MypageScreen() {
 
                 <BlockView
                     onPress={() => {
+                        navigation.navigate(NavigationTitle.postedSurveys);
                         handleClick(2);
                     }}
                 >

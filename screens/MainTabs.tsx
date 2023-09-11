@@ -30,27 +30,6 @@ export default function MainTabs() {
                     },
                 }}
             />
-            {/* <Tab.Screen
-                name="설문 요청"
-                component={SurveyRequestScreen}
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({ focused }) => {
-                        return focused ? (
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                // source={require("./assets/selectedMypageIcon.jpg")}
-                                source={require("../assets/selectedUploadIcon.jpg")}
-                            />
-                        ) : (
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                source={require("../assets/unselectedUploadIcon.jpg")}
-                            />
-                        );
-                    },
-                }}
-            /> */}
 
             <Tab.Screen
                 name="마이페이지"

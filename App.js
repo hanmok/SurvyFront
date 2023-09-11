@@ -15,6 +15,8 @@ import CustomNavButton from "./components/posting/CustomNavButton";
 import { log } from "./utils/Log";
 import ImageButton from "./components/ImageButton";
 import { MenuProvider } from "react-native-popup-menu";
+import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
+import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 
 // const Tab = createBottomTabNavigator();
 
@@ -52,17 +54,31 @@ export default function App() {
                                     backgroundColor: colors.background,
                                 },
                                 headerRight: () => {
-                                    // <CustomNavButton
-                                    //     img={require("../SurvyFront/assets/sendIcon.png")}
-                                    // />;
-                                    // <CustomNavButton
-                                    //     img={require("../SurvyFront/assets/sendIcon.png")}
-                                    //     onPress={log}
-                                    // />;
                                     <ImageButton
-                                        // img={require("../SurvyFront/assets/sendIcon.png")}
                                         img={require("./assets/selectedSingleSelection.png")}
                                     />;
+                                },
+                            }}
+                        />
+
+                        <Stack.Screen
+                            name={NavigationTitle.participatedSurveys}
+                            component={ParticipatedSurveysScreen}
+                            options={{
+                                headerBackTitleVisible: false,
+                                headerStyle: {
+                                    backgroundColor: colors.background,
+                                },
+                            }}
+                        />
+
+                        <Stack.Screen
+                            name={NavigationTitle.postedSurveys}
+                            component={PostedSurveysScreen}
+                            options={{
+                                headerBackTitleVisible: false,
+                                headerStyle: {
+                                    backgroundColor: colors.background,
                                 },
                             }}
                         />

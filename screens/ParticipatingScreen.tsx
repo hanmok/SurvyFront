@@ -23,7 +23,7 @@ import {
 import { API_BASE_URL } from "../API/API";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { load } from "../utils/Storage";
+import { loadUserState } from "../utils/Storage";
 import { NavigationTitle } from "../utils/NavigationTitle";
 
 interface Dictionary<T> {
@@ -113,7 +113,7 @@ function ParticipatingScreen({
     };
 
     const buttonTapAction = async () => {
-        const userId = (await load()).userId;
+        const userId = (await loadUserState()).userId;
         console.log(`buttonTapAction called, userId: ${userId}`);
         const promises = [];
         for (let q = 0; q < questions.length; q++) {

@@ -10,7 +10,7 @@ export const saveUserState = async (data: UserState) => {
     await storage.save({ key: "userInfo", data: data });
 };
 
-export const load = async (): Promise<UserState> => {
+export const loadUserState = async (): Promise<UserState> => {
     return await storage
         .load({
             key: "userInfo",

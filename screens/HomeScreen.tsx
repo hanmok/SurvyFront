@@ -20,9 +20,8 @@ import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL } from "../API/API";
 import { saveUserState } from "../utils/Storage";
 import { NavigationTitle } from "../utils/NavigationTitle";
-// import AsyncStore
+
 const screenWidth = Dimensions.get("window").width;
-// import { MMKVstorage, StorageKeys } from "../utils/mmkv";
 
 function HomeScreen({
     navigation,

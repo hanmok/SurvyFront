@@ -49,6 +49,7 @@ import { SelectableOption } from "../interfaces/SelectableOption";
 import { Section, makeSection } from "../interfaces/Section";
 import { Survey, makeSurvey } from "../interfaces/Survey";
 import { postWholeSurvey } from "../API/SurveyAPI";
+import { loadUserState } from "../utils/Storage";
 
 interface TestItem {
     id: number;
@@ -148,7 +149,7 @@ export default function PostingScreen({
         logObject(`passing questions:`, questions);
         logObject(`passing selectableoptions:`, selectableOptions);
 
-        const userId = 4;
+        const userId = (await loadUserState()).userId;
         const participationGoal = 100;
         const survey = makeSurvey(userId, surveyTitle, participationGoal);
         log("hi111111");

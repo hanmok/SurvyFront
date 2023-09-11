@@ -30,3 +30,32 @@ export async function login(
         throw error;
     }
 }
+
+export async function fetchParticipatedSurveys(
+    userId: number
+): Promise<number[]> {
+    const url = `${API_BASE_URL}/user/${userId}/participated-surveys`;
+
+    try {
+        console.log(`calling api: ${url}`);
+        const response = await fetch(url, {
+            method: "GET",
+            // headers: {
+            //     "Content-Type": "application/json",
+            // },
+        });
+
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        console.log(`response.json: ${response.json}`);
+        // const responseData: Promise<number[]> = await response.json();
+        const responseData: number[] = await response.json();
+        console.log(`fetched surveyIds: ${responseData}`);
+        // console.log(`userResponse id: ${responseData.data.userId}`);
+
+        return responseData;
+    } catch (error) {
+        throw error;
+    }
+}

@@ -1,27 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import BlockView from "../components/BlockView";
 import { fontSizes, paddingSizes } from "../utils/sizes";
 import ImageButton from "../components/ImageButton";
 import { Ionicons } from "@expo/vector-icons";
 import { screenWidth } from "../utils/ScreenSize";
-import { log } from "../utils/Log";
+import { log, logObject } from "../utils/Log";
 import { RootStackParamList } from "../RootStackParamList";
 import { NavigationTitle } from "../utils/NavigationTitle";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { loadUserState } from "../utils/Storage";
+import axios from "axios";
+import { API_BASE_URL } from "../API/API";
 
 function MypageScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.mypage>;
 }) {
-    const [numOfParticipatedSurveys, setNumOfParticiapatedSurveys] =
+    const [numOfParticipatedSurveys, setNumOfParticipatedSurveys] =
         useState<number>(0);
     const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
 
     const handleClick = (flag: number) => {
         log(`click ${flag}`);
     };
+
+    const getNumbers = async () => {
+        const myUserId = (await loadUserState()).userId;
+
+        axios({
+            method: "GET",
+            url: `${API_BASE_URL}/user/${myUserId}/participated-surveys`,
+        })
+            .then(res => {
+                console.log(res.data);
+                logObject(`participated surveys`, res.data);
+                return res.data;
+                // setNumOfParticipatedSurveys(res.data.data.length);
+            })
+            .then(res => {
+                setNumOfParticipatedSurveys(res.data.length);
+            })
+            .catch(err => {});
+
+        axios({
+            method: "GET",
+            url: `${API_BASE_URL}/user/${myUserId}/posted-surveys`,
+        })
+            .then(res => res.data)
+            .then(res => setNumOfPostedSurveys(res.data.length))
+            .catch(err => {});
+    };
+
+    useEffect(() => {
+        getNumbers();
+        // console.log()
+    }, [numOfParticipatedSurveys, numOfPostedSurveys]);
+
     return (
         <View style={{ flex: 1, alignItems: "center" }}>
             {/*  Navigation Bar */}

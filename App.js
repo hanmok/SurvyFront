@@ -18,6 +18,7 @@ import { MenuProvider } from "react-native-popup-menu";
 import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 import SettingScreen from "./screens/SettingScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 // const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,13 @@ export default function App() {
             <MenuProvider>
                 <NavigationContainer>
                     <Stack.Navigator>
+                        <Stack.Screen
+                            name={NavigationTitle.login}
+                            component={LoginScreen}
+                            options={{
+                                headerShown: false,
+                            }}
+                        />
                         <Stack.Screen
                             name={NavigationTitle.mainTabs}
                             component={MainTabs}
@@ -95,7 +103,6 @@ export default function App() {
                             }}
                         />
                     </Stack.Navigator>
-                    {/* <Text style={styles.requestButton}>ansdj</Text> */}
                 </NavigationContainer>
             </MenuProvider>
         </Provider>

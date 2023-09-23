@@ -1,4 +1,5 @@
 export enum NavigationTitle {
+    login = "Login",
     posting = "Posting",
     participate = "Participate",
     mainTabs = "MainTabs",

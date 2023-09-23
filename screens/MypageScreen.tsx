@@ -110,6 +110,19 @@ function MypageScreen({
                         handleClick(1);
                     }}
                 >
+                    <Text style={[styles.eachBoxTextStyle, { padding: 20 }]}>
+                        내 정보
+                    </Text>
+                </BlockView>
+
+                <BlockView
+                    onPress={() => {
+                        // navigation.navigate(
+                        //     NavigationTitle.participatedSurveys
+                        // );
+                        // handleClick(1);
+                    }}
+                >
                     <View
                         style={{
                             flexDirection: "row",

@@ -9,4 +9,5 @@ export type RootStackParamList = {
     ParticipatedSurveys: undefined;
     PostedSurveys: undefined;
     Setting: undefined;
+    Login: undefined;
 };

@@ -4,7 +4,7 @@ import BlockView from "../components/BlockView";
 import { fontSizes, paddingSizes } from "../utils/sizes";
 import ImageButton from "../components/ImageButton";
 import { Ionicons } from "@expo/vector-icons";
-import { screenWidth } from "../utils/ScreenSize";
+import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { log, logObject } from "../utils/Log";
 import { RootStackParamList } from "../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
@@ -65,6 +65,8 @@ function MypageScreen({
     useEffect(() => {
         getNumbers();
         // console.log()
+        console.log('[MypageScreen] screenWidth: ', screenWidth)
+        console.log('[MypageScreen] screenHeight: ', screenHeight)
     }, [numOfParticipatedSurveys, numOfPostedSurveys]);
 
     return (
@@ -76,6 +78,7 @@ function MypageScreen({
                     justifyContent: "space-between",
                     height: 90,
                     width: screenWidth,
+                    // width: 400,
                     backgroundColor: "white",
                     paddingHorizontal: paddingSizes.xl24,
                     paddingTop: 40,

@@ -61,12 +61,14 @@ export default function MainTabs() {
                             <Image
                                 style={{ width: 20, height: 20 }}
                                 // source={require("./assets/selectedMypageIcon.jpg")}
-                                source={require("../assets/selectedMypageIcon.jpg")}
+                                // source={require("../assets/selectedMypageIcon.jpg")}
+                                source={require("../assets/selectedMyPageIcon.png")}
                             />
                         ) : (
                             <Image
                                 style={{ width: 20, height: 20 }}
-                                source={require("../assets/unselectedMypageIcon.jpg")}
+                                // source={require("../assets/unselectedMypageIcon.jpg")}
+                                source={require("../assets/unselectedMyPageIcon.png")}
                             />
                         );
                     },

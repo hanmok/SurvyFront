@@ -2,7 +2,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
-import { View, Text, StyleSheet, TextInput, Image } from "react-native";
+import { View, Text, StyleSheet, TextInput, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { colors } from "../utils/colors";
 import TextButton from "../components/TextButton";
 import { screenWidth } from "../utils/ScreenSize";
@@ -37,6 +37,11 @@ export default function LoginScreen({
         setPassword("");
     }, []);
 
+    const handleDismissKeyboard = () => { 
+        console.log('dismiss keyboard called')
+        Keyboard.dismiss();
+    }
+
     const loginAction = async (username: string, password: string) => {
         console.log(
             `[LoginScreen] username: ${username}, password: ${password}`
@@ -70,6 +75,8 @@ export default function LoginScreen({
     return (
         // <View style={styles.mainContainer}>
         <SafeAreaView style={styles.mainContainer}>
+            <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
+                <View style={[styles.mainContainer]}>
             <Spacer size={40} />
             <View>
                 <Image source={require("../assets/coin.jpg")} />
@@ -152,6 +159,8 @@ export default function LoginScreen({
                     }}
                 />
             </View>
+            </View>
+            </TouchableWithoutFeedback>
         </SafeAreaView>
     );
 }

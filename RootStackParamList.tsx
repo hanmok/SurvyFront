@@ -10,4 +10,5 @@ export type RootStackParamList = {
     PostedSurveys: undefined;
     Setting: undefined;
     Login: undefined;
+    MainTabs: undefined;
 };

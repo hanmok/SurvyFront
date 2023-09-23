@@ -48,7 +48,14 @@ function SettingScreen({
                 >
                     {blockContainer({ text: "닉네임 변경" })}
                     {blockContainer({ text: "이용약관" })}
-                    {blockContainer({ text: "로그아웃" })}
+                    {/* {blockContainer({ text: "로그아웃" })} */}
+                    <TextButton
+                        title="로그아웃"
+                        onPress={() => {
+                            // Todo: 회원 정보, Token 초기화
+                            navigation.navigate(NavigationTitle.login);
+                        }}
+                    />
                 </View>
                 <View style={{ height: 300 }}></View>
                 <View style={{ alignItems: "center" }}>

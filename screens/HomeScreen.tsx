@@ -47,12 +47,7 @@ function HomeScreen({
                     accessToken,
                     refreshToken,
                 };
-                // await setUser(userState);
                 setUser(userState);
-                // MMKV.set('userId', userId)
-
-                // dispatch(setUserInfo({ userId, accessToken, refreshToken }));
-                // dispatch(setUserInfo({ userState }));
             } catch (error) {
                 // TODO: handle error
                 console.log(error);

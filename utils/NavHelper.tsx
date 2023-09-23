@@ -11,4 +11,18 @@ export type RootStackParamList = {
     Setting: undefined;
     Login: undefined;
     MainTabs: undefined;
+    MyInfo: undefined;
 };
+
+export enum NavigationTitle {
+    login = "Login",
+    posting = "Posting",
+    participate = "Participate",
+    mainTabs = "MainTabs",
+    home = "Home",
+    mypage = "MyPage",
+    participatedSurveys = "ParticipatedSurveys",
+    postedSurveys = "PostedSurveys",
+    setting = "Setting",
+    myinfo = "MyInfo",
+}

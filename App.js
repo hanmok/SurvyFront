@@ -10,7 +10,8 @@ import ParticipatingScreen from "./screens/ParticipatingScreen";
 import { colors } from "./utils/colors";
 import { Provider } from "react-redux";
 import store from "./store";
-import { NavigationTitle } from "./utils/NavigationTitle";
+// import { NavigationTitle } from "./utils/NavigationTitle";
+import { NavigationTitle } from "./utils/NavHelper";
 import CustomNavButton from "./components/posting/CustomNavButton";
 import { log } from "./utils/Log";
 import ImageButton from "./components/ImageButton";
@@ -19,6 +20,7 @@ import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 import SettingScreen from "./screens/SettingScreen";
 import LoginScreen from "./screens/LoginScreen";
+import MyinfoScreen from "./screens/MyinfoScreen";
 
 // const Tab = createBottomTabNavigator();
 
@@ -95,6 +97,17 @@ export default function App() {
                         <Stack.Screen
                             name={NavigationTitle.setting}
                             component={SettingScreen}
+                            options={{
+                                headerBackTitleVisible: false,
+                                headerStyle: {
+                                    backgroundColor: colors.background,
+                                },
+                            }}
+                        />
+
+                        <Stack.Screen
+                            name={NavigationTitle.myinfo}
+                            component={MyinfoScreen}
                             options={{
                                 headerBackTitleVisible: false,
                                 headerStyle: {

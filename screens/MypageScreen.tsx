@@ -6,8 +6,9 @@ import ImageButton from "../components/ImageButton";
 import { Ionicons } from "@expo/vector-icons";
 import { screenWidth } from "../utils/ScreenSize";
 import { log, logObject } from "../utils/Log";
-import { RootStackParamList } from "../RootStackParamList";
-import { NavigationTitle } from "../utils/NavigationTitle";
+import { RootStackParamList } from "../utils/NavHelper";
+// import { NavigationTitle } from "../utils/NavigationTitle";
+import { NavigationTitle } from "../utils/NavHelper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { loadUserState } from "../utils/Storage";
 import axios from "axios";
@@ -57,6 +58,10 @@ function MypageScreen({
         navigation.navigate(NavigationTitle.setting);
     };
 
+    const navigateToMyInfo = () => {
+        navigation.navigate(NavigationTitle.myinfo);
+    };
+
     useEffect(() => {
         getNumbers();
         // console.log()
@@ -104,9 +109,10 @@ function MypageScreen({
             >
                 <BlockView
                     onPress={() => {
-                        navigation.navigate(
-                            NavigationTitle.participatedSurveys
-                        );
+                        // navigation.navigate(
+                        //     NavigationTitle.participatedSurveys
+                        // );
+                        navigateToMyInfo();
                         handleClick(1);
                     }}
                 >

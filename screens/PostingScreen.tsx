@@ -33,8 +33,10 @@ import PostingQuestionBox from "../components/posting/PostingQuestionBox";
 import CreatingQuestionModal from "../modals/CreatingQuestionModal";
 import ImageButton from "../components/ImageButton";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../RootStackParamList";
-import { NavigationTitle } from "../utils/NavigationTitle";
+import { RootStackParamList } from "../utils/NavHelper";
+// import { NavigationTitle } from "../utils/NavigationTitle";
+import { NavigationTitle } from "../utils/NavHelper";
+
 import { log, logObject } from "../utils/Log";
 import ModifyingQuestionModal from "../modals/ModifyingQuestionModal";
 import {

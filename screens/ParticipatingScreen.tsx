@@ -4,7 +4,7 @@ import { colors } from "../utils/colors";
 import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../utils/NavHelper";
 import { Question } from "../interfaces/Question";
 import { SelectableOption } from "../interfaces/SelectableOption";
 import SelectableOptionBox from "../components/SelectableOptionBox";
@@ -24,7 +24,8 @@ import { API_BASE_URL } from "../API/API";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loadUserState } from "../utils/Storage";
-import { NavigationTitle } from "../utils/NavigationTitle";
+// import { NavigationTitle } from "../utils/NavigationTitle";
+import { NavigationTitle } from "../utils/NavHelper";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;

@@ -9,7 +9,7 @@ import CollectedMoney from "../components/CollectedMoney";
 import axios from "axios";
 import TextButton from "../components/TextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../utils/NavHelper";
 import { Survey } from "../interfaces/Survey";
 import { Counter } from "../features/counter/Counter";
 import { ResponseForm } from "../interfaces/ResponseForm";
@@ -19,7 +19,8 @@ import { useDispatch } from "react-redux";
 import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL } from "../API/API";
 import { saveUserState } from "../utils/Storage";
-import { NavigationTitle } from "../utils/NavigationTitle";
+// import { NavigationTitle } from "../utils/NavigationTitle";
+import { NavigationTitle } from "../utils/NavHelper";
 import ImageButton from "../components/ImageButton";
 
 const screenWidth = Dimensions.get("window").width;

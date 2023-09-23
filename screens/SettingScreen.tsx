@@ -1,6 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../RootStackParamList";
-import { NavigationTitle } from "../utils/NavigationTitle";
+import { RootStackParamList } from "../utils/NavHelper";
+// import { NavigationTitle } from "../utils/NavigationTitle";
+import { NavigationTitle } from "../utils/NavHelper";
 import { View, Text, StyleSheet } from "react-native";
 import BlockView from "../components/BlockView";
 import { ReactNode } from "react";

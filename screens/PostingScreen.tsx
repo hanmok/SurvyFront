@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
     bottomContainer: {
         backgroundColor: colors.deepMainColor,
         color: colors.white,
-        borderRadius: borderSizes.m10,
+        borderRadius: borderSizes.l20,
         flexDirection: "row",
         height: 60,
         marginBottom: marginSizes.l20,
@@ -431,6 +431,7 @@ const styles = StyleSheet.create({
         // paddingHorizontal: paddingSizes.l20,
         paddingHorizontal: paddingSizes.m16,
         justifyContent: "space-between",
+        marginHorizontal: 15,
     },
     requestText: {
         color: colors.white,

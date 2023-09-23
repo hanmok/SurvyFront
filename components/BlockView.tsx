@@ -36,7 +36,7 @@ const BlockView: React.FC<BlockProps> = ({
 const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
-        height: 80,
+        height: 60,
     },
     basicContainer: {
         borderRadius: 10,

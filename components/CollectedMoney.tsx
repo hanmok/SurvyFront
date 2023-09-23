@@ -42,8 +42,10 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: borderSizes.m10,
         width: 120,
-        marginRight: 12,
-        alignSelf: "flex-end", // 오른쪽으로 밀착
+        marginHorizontal: 12,
+        marginTop: 12,
+        // alignSelf: "flex-end", // 오른쪽으로 밀착
+        alignSelf: "flex-start",
         justifyContent: "center",
     },
     subContainer: {

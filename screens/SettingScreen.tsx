@@ -1,11 +1,12 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../RootStackParamList";
 import { NavigationTitle } from "../utils/NavigationTitle";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import BlockView from "../components/BlockView";
 import { ReactNode } from "react";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
+import { fontSizes } from "../utils/sizes";
 
 function SettingScreen({
     navigation,
@@ -46,18 +47,56 @@ function SettingScreen({
                         gap: 15,
                     }}
                 >
-                    {blockContainer({ text: "닉네임 변경" })}
-                    {blockContainer({ text: "이용약관" })}
+                    <BlockView
+                        onPress={() => {
+                            navigation.navigate(
+                                NavigationTitle.participatedSurveys
+                            );
+                        }}
+                    >
+                        <Text
+                            style={[styles.eachBoxTextStyle, { padding: 20 }]}
+                        >
+                            닉네임 변경
+                        </Text>
+                    </BlockView>
+
+                    <BlockView
+                        onPress={() => {
+                            navigation.navigate(
+                                NavigationTitle.participatedSurveys
+                            );
+                        }}
+                    >
+                        <Text
+                            style={[styles.eachBoxTextStyle, { padding: 20 }]}
+                        >
+                            이용약관
+                        </Text>
+                    </BlockView>
+
                     {/* {blockContainer({ text: "로그아웃" })} */}
-                    <TextButton
+                    <BlockView
+                        onPress={() => {
+                            navigation.navigate(NavigationTitle.login);
+                        }}
+                    >
+                        <Text
+                            style={[styles.eachBoxTextStyle, { padding: 20 }]}
+                        >
+                            로그아웃
+                        </Text>
+                    </BlockView>
+
+                    {/* <TextButton
                         title="로그아웃"
                         onPress={() => {
                             // Todo: 회원 정보, Token 초기화
                             navigation.navigate(NavigationTitle.login);
                         }}
-                    />
+                    /> */}
                 </View>
-                <View style={{ height: 300 }}></View>
+                <View style={{ height: 500 }}></View>
                 <View style={{ alignItems: "center" }}>
                     <TextButton
                         title="회원 탈퇴"
@@ -78,3 +117,7 @@ function SettingScreen({
 }
 
 export default SettingScreen;
+
+const styles = StyleSheet.create({
+    eachBoxTextStyle: { fontSize: fontSizes.m20 },
+});

@@ -20,6 +20,7 @@ import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL } from "../API/API";
 import { saveUserState } from "../utils/Storage";
 import { NavigationTitle } from "../utils/NavigationTitle";
+import ImageButton from "../components/ImageButton";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -91,7 +92,6 @@ function HomeScreen({
             currentParticipation={item.currentParticipation}
             participationGoal={item.participationGoal}
             onPress={() =>
-                // navigation.navigate("Participate", {
                 navigation.navigate(NavigationTitle.participate, {
                     sectionId: item.initialSectionId,
                     surveyId: item.id,
@@ -110,7 +110,42 @@ function HomeScreen({
 
     return (
         <SafeAreaView style={styles.container} edges={["top"]}>
-            <CollectedMoney amount={10000} />
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginHorizontal: 10,
+                    // justifyContent: "center",
+                }}
+            >
+                <CollectedMoney amount={10000} />
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        // backgroundColor: "magenta",
+                        marginRight: 20,
+                        paddingTop: 10,
+                        // height: 30,
+                    }}
+                >
+                    <ImageButton
+                        img={require("../assets/chatIcon.png")}
+                        onPress={() => {
+                            console.log("chat tapped");
+                        }}
+                        size={24}
+                    />
+                    <View style={{ width: 16 }} />
+                    <ImageButton
+                        img={require("../assets/bellIcon.png")}
+                        onPress={() => {
+                            console.log("bell tapped");
+                        }}
+                        size={24}
+                    />
+                </View>
+            </View>
             <View style={styles.subContainer}>
                 <FlatList
                     data={surveys}
@@ -121,7 +156,7 @@ function HomeScreen({
                     )}
                     style={styles.surveyListContainer}
                 />
-                <View style={styles.floatingButtonContainer}>
+                {/* <View style={styles.floatingButtonContainer}>
                     <TextButton
                         title="설문요청"
                         onPress={() =>
@@ -132,7 +167,7 @@ function HomeScreen({
                         backgroundStyle={styles.requestContainer}
                         textStyle={styles.requestText}
                     />
-                </View>
+                </View> */}
             </View>
         </SafeAreaView>
     );
@@ -145,7 +180,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
     },
     subContainer: {
-        marginTop: 10,
+        marginTop: 5,
         justifyContent: "flex-end",
         // alignItems: "center",
         alignItems: "stretch",

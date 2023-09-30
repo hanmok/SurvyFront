@@ -148,6 +148,7 @@ export default function PostingScreen({
             });
             q.sectionId = testSection.id;
         });
+
         logObject(`passing questions:`, questions);
         logObject(`passing selectableoptions:`, selectableOptions);
 

@@ -22,6 +22,7 @@ import { saveUserState } from "../utils/Storage";
 // import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
 import ImageButton from "../components/ImageButton";
+import { logObject } from "../utils/Log";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -37,6 +38,24 @@ function HomeScreen({
 
     const setUser = async (userState: UserState) => {
         await saveUserState(userState);
+    };
+
+    const fetchGreeting = async () => {
+        console.log("fetchGreeting called");
+        const response = await fetch(API_BASE_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: "query { greeting }",
+            }),
+        });
+
+        const { data } = await response.json();
+        // console.log(`data: `)
+        logObject("gql test, data: ", data);
+        return data.greeting;
     };
 
     useEffect(() => {
@@ -55,6 +74,7 @@ function HomeScreen({
                 console.log(error);
             }
         };
+        fetchGreeting();
         fetchUser();
     }, []);
 

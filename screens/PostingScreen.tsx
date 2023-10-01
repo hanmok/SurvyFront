@@ -75,15 +75,53 @@ export default function PostingScreen({
     const [isConfirmTapped, setConfirmTapped] = useState(false);
     const [isCreatingQuestionModalVisible, setIsCreatingQuestionModalVisible] =
         useState(false);
-
+    const [numberOfSections, setNumberOfSections] = useState(1);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [currentSection, setCurrentSection] = useState(1);
+
+    const addSection = () => {
+        setNumberOfSections(numberOfSections + 1);
+        console.log(
+            "[PostingScreen] current numberofSections: ",
+            numberOfSections
+        );
+    };
+
+    const renderSectionOptions = () => {
+        const sectionOptions = [];
+        for (let i = 1; i <= numberOfSections; i++) {
+            sectionOptions.push(
+                <MenuOption
+                    key={`section-option-${i}`}
+                    onSelect={() => {
+                        handleMenuOptionSelect(i);
+                    }}
+                    style={styles.option}
+                >
+                    <Text style={{ fontSize: fontSizes.s16 }}>
+                        Section Option {i}
+                    </Text>
+                </MenuOption>
+            );
+        }
+        return sectionOptions;
+    };
 
     const handleMenuPress = () => {
         setIsMenuOpen(true);
     };
 
-    const handleMenuOptionSelect = () => {
+    const handleMenuOptionSelect = (sectionIndex: number) => {
+        console.log(
+            "[PostingScreen] section menu tapped, idx:  " + sectionIndex
+        );
+        setCurrentSection(sectionIndex);
         setIsMenuOpen(false);
+    };
+
+    const handleAddMenu = () => {
+        setIsMenuOpen(false);
+        addSection();
     };
 
     const toggleCreateModal = () => {
@@ -123,18 +161,24 @@ export default function PostingScreen({
                         </MenuTrigger>
                         <MenuOptions
                             customStyles={{
-                                optionsContainer: styles.optionContainer,
+                                optionsContainer: styles.optionsContainer,
                             }}
                             optionsContainerStyle={{
                                 marginTop: 20,
                                 marginRight: 10,
                             }}
                         >
-                            <MenuOption onSelect={handleFirstOptionTapped}>
+                            <MenuOption
+                                onSelect={handleFirstOptionTapped}
+                                style={styles.option}
+                            >
                                 <Text>option 1</Text>
                             </MenuOption>
                             <View style={styles.divider} />
-                            <MenuOption onSelect={handleSecondOptionTapped}>
+                            <MenuOption
+                                onSelect={handleSecondOptionTapped}
+                                style={styles.option}
+                            >
                                 <Text>option 2</Text>
                             </MenuOption>
                         </MenuOptions>
@@ -330,30 +374,53 @@ export default function PostingScreen({
                 </View>
             </View>
             {/* <Menu style={styles.sectionMenu}> */}
-            <Menu style={styles.sectionMenu}>
-                <MenuTrigger
-                    onPress={handleMenuPress}
-                    customStyles={{
-                        triggerOuterWrapper: { flexDirection: "row" },
+            <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
+                <Menu style={styles.sectionMenu}>
+                    <MenuTrigger
+                        onPress={handleMenuPress}
+                        customStyles={{
+                            triggerOuterWrapper: { flexDirection: "row" },
+                        }}
+                    >
+                        <Foundation name="page-copy" size={30} />
+                    </MenuTrigger>
+                    <MenuOptions
+                        customStyles={{
+                            optionsContainer: styles.sectionOptionContainer,
+                        }}
+                        // optionsContainerStyle={{ marginop: 20, marginRight: 10 }}
+                        optionsContainerStyle={{ marginBottom: 70 }}
+                    >
+                        <Text
+                            style={{
+                                padding: 10,
+                                fontWeight: "bold",
+                                fontSize: fontSizes.s16,
+                            }}
+                        >
+                            Section
+                        </Text>
+
+                        {renderSectionOptions()}
+
+                        <MenuOption
+                            onSelect={handleAddMenu}
+                            style={styles.option}
+                        >
+                            <Text style={styles.optionText}>Add Section</Text>
+                        </MenuOption>
+                    </MenuOptions>
+                </Menu>
+                <Text
+                    style={{
+                        flexDirection: "row",
+                        marginBottom: 5,
+                        marginRight: 5,
                     }}
                 >
-                    <Foundation name="page-copy" size={30} />
-                </MenuTrigger>
-                <MenuOptions
-                    customStyles={{
-                        optionsContainer: styles.sectionOptionContainer,
-                    }}
-                    // optionsContainerStyle={{ marginop: 20, marginRight: 10 }}
-                    optionsContainerStyle={{ marginBottom: 70 }}
-                >
-                    <MenuOption onSelect={handleMenuOptionSelect}>
-                        <Text>Section Option 1</Text>
-                    </MenuOption>
-                    <MenuOption onSelect={handleMenuOptionSelect}>
-                        <Text>Section Option 2</Text>
-                    </MenuOption>
-                </MenuOptions>
-            </Menu>
+                    {currentSection}
+                </Text>
+            </View>
         </SafeAreaView>
     );
 }
@@ -511,25 +578,25 @@ const styles = StyleSheet.create({
         height: StyleSheet.hairlineWidth,
         backgroundColor: "#7F8487",
     },
-    optionContainer: {
+    optionsContainer: {
         borderRadius: 10,
         padding: 5,
         marginTop: 25,
         width: 100,
-        // marginRight: 100,
     },
     sectionOptionContainer: {
         borderRadius: 10,
-        // padding: 5,
-        // marginTop: 25,
-        // marginBottom: 150,
         width: 150,
-        position: "absolute",
-        top: 0,
-        right: 0,
+    },
+    option: {
+        paddingVertical: 10,
+        justifyContent: "center",
+        fontSize: fontSizes.m20,
+    },
+    optionText: {
+        fontSize: fontSizes.s16,
     },
     threeDotMenu: {
-        // marginHorizontal: 8,
         marginTop: 5,
     },
     rightNavContainer: {
@@ -537,7 +604,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
     },
     sectionMenu: {
-        alignSelf: "flex-end",
+        // alignSelf: "flex-end",
         margin: 20,
     },
 });

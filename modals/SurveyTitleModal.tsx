@@ -12,6 +12,7 @@ import { colors } from "../utils/colors";
 import TextButton from "../components/TextButton";
 import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 import { screenWidth } from "../utils/ScreenSize";
+import Spacer from "../components/Spacer";
 
 const SurveyTitleModal = ({
     setSurveyTitle,
@@ -32,12 +33,15 @@ const SurveyTitleModal = ({
             }}
         >
             {/* <Button title="모달 열기" onPress={() => setModalVisible(true)} /> */}
+            {/* <View> */}
             <TextButton
                 backgroundStyle={styles.modalBGStyle}
                 title={surveyTitle}
                 onPress={() => setModalVisible(true)}
                 textStyle={styles.modalTextStyle}
             />
+            {/* <Spacer size={30} /> */}
+            {/* </View> */}
 
             <Modal
                 animationType="fade"

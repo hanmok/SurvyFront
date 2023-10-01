@@ -46,7 +46,7 @@ import {
     MenuProvider,
     MenuTrigger,
 } from "react-native-popup-menu";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Foundation } from "@expo/vector-icons";
 import { SelectableOption } from "../interfaces/SelectableOption";
 import { Section, makeSection } from "../interfaces/Section";
 import { Survey, makeSurvey } from "../interfaces/Survey";
@@ -76,6 +76,16 @@ export default function PostingScreen({
     const [isCreatingQuestionModalVisible, setIsCreatingQuestionModalVisible] =
         useState(false);
 
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const handleMenuPress = () => {
+        setIsMenuOpen(true);
+    };
+
+    const handleMenuOptionSelect = () => {
+        setIsMenuOpen(false);
+    };
+
     const toggleCreateModal = () => {
         setIsCreatingQuestionModalVisible(!isCreatingQuestionModalVisible);
     };
@@ -86,7 +96,7 @@ export default function PostingScreen({
     ] = useState(false);
 
     useEffect(() => {
-        if (isConfirmTapped) {
+        if (isConfirmTapped && questions.length === 0) {
             setIsCreatingQuestionModalVisible(true);
         }
         setConfirmTapped(false);
@@ -99,9 +109,8 @@ export default function PostingScreen({
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                // <Button onPress={() => log("hi")} title="Button" />
                 <View style={styles.rightNavContainer}>
-                    <Menu style={styles.menu}>
+                    <Menu style={styles.threeDotMenu}>
                         <MenuTrigger
                             customStyles={{}}
                             style={{ marginRight: 12 }}
@@ -283,6 +292,7 @@ export default function PostingScreen({
                     value={surveyTitle}
                     onChangeText={setSurveyTitle}
                 /> */}
+
                 <Spacer size={30} />
                 <SurveyTitleModal
                     setSurveyTitle={setSurveyTitle}
@@ -291,7 +301,7 @@ export default function PostingScreen({
                     setTitleModalVisible={setTitleModalVisible}
                     setConfirmTapped={setConfirmTapped}
                 />
-
+                {/* <Spacer size={30} /> */}
                 <FlatList
                     data={questions}
                     renderItem={postingQuestionBoxItem}
@@ -319,8 +329,31 @@ export default function PostingScreen({
                     />
                 </View>
             </View>
-
-            {/* <SurveyTitleModal setSurveyTitle={setSurveyTitle} /> */}
+            {/* <Menu style={styles.sectionMenu}> */}
+            <Menu style={styles.sectionMenu}>
+                <MenuTrigger
+                    onPress={handleMenuPress}
+                    customStyles={{
+                        triggerOuterWrapper: { flexDirection: "row" },
+                    }}
+                >
+                    <Foundation name="page-copy" size={30} />
+                </MenuTrigger>
+                <MenuOptions
+                    customStyles={{
+                        optionsContainer: styles.sectionOptionContainer,
+                    }}
+                    // optionsContainerStyle={{ marginop: 20, marginRight: 10 }}
+                    optionsContainerStyle={{ marginBottom: 70 }}
+                >
+                    <MenuOption onSelect={handleMenuOptionSelect}>
+                        <Text>Section Option 1</Text>
+                    </MenuOption>
+                    <MenuOption onSelect={handleMenuOptionSelect}>
+                        <Text>Section Option 2</Text>
+                    </MenuOption>
+                </MenuOptions>
+            </Menu>
         </SafeAreaView>
     );
 }
@@ -334,6 +367,7 @@ const styles = StyleSheet.create({
     subContainer: {
         marginHorizontal: marginSizes.l20,
         marginVertical: marginSizes.m16,
+        gap: 20,
         // marginVertical: 8,
     },
     questionContainer: {
@@ -400,7 +434,7 @@ const styles = StyleSheet.create({
 
     plusButtonBG: {
         backgroundColor: colors.deepMainColor,
-        marginBottom: marginSizes.xl24,
+        // marginBottom: marginSizes.xl24,
         // marginTop: marginSizes.s12,
         borderRadius: 12,
         overflow: "hidden",
@@ -410,8 +444,6 @@ const styles = StyleSheet.create({
     plusButtonText: {
         color: colors.white,
         textAlign: "center",
-        // fontSize: 60,
-        // fontSize: 40,
         fontSize: fontSizes.m20,
         fontWeight: "500",
         borderRadius: 40,
@@ -486,12 +518,26 @@ const styles = StyleSheet.create({
         width: 100,
         // marginRight: 100,
     },
-    menu: {
+    sectionOptionContainer: {
+        borderRadius: 10,
+        // padding: 5,
+        // marginTop: 25,
+        // marginBottom: 150,
+        width: 150,
+        position: "absolute",
+        top: 0,
+        right: 0,
+    },
+    threeDotMenu: {
         // marginHorizontal: 8,
         marginTop: 5,
     },
     rightNavContainer: {
         flexDirection: "row",
         marginRight: 20,
+    },
+    sectionMenu: {
+        alignSelf: "flex-end",
+        margin: 20,
     },
 });

@@ -52,6 +52,7 @@ import { Section, makeSection } from "../interfaces/Section";
 import { Survey, makeSurvey } from "../interfaces/Survey";
 import { postWholeSurvey } from "../API/SurveyAPI";
 import { loadUserState } from "../utils/Storage";
+import SurveyTitleModal from "../modals/SurveyTitleModal";
 
 interface TestItem {
     id: number;
@@ -69,8 +70,9 @@ export default function PostingScreen({
     const [customViews, setCustomViews] = useState([]);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [selectedIndex, setSelectedIndex] = useState<number>(undefined);
-    const [surveyTitle, setSurveyTitle] = useState<string>("내 설문조사 제목");
-
+    const [surveyTitle, setSurveyTitle] = useState<string>("");
+    const [titleModalVisible, setTitleModalVisible] = useState(false);
+    const [isConfirmTapped, setConfirmTapped] = useState(false);
     const [isCreatingQuestionModalVisible, setIsCreatingQuestionModalVisible] =
         useState(false);
 
@@ -83,9 +85,15 @@ export default function PostingScreen({
         setIsModifyingQuestionModalVisible,
     ] = useState(false);
 
+    useEffect(() => {
+        if (isConfirmTapped) {
+            setIsCreatingQuestionModalVisible(true);
+        }
+        setConfirmTapped(false);
+    }, [isConfirmTapped]);
+
     const toggleModifyingModal = () => {
         setIsModifyingQuestionModalVisible(!isModifyingQuestionModalVisible);
-        // setSelectedIndex(null);
     };
 
     React.useLayoutEffect(() => {
@@ -162,15 +170,6 @@ export default function PostingScreen({
         // await postWholeSurvey(survey, sections, questions, selectableOptions);
     };
 
-    // const postWholeSurvey = async (
-    //     survey: Survey,
-    //     sections: Section[],
-    //     questions: Question[],
-    //     selectableOptions: SelectableOption[]
-    // ) => {
-    //     await postWholeSurvey(survey, sections, questions, selectableOptions);
-    // };
-
     const handleFirstOptionTapped = () => {
         log("first option tapped");
     };
@@ -207,15 +206,24 @@ export default function PostingScreen({
     };
 
     useEffect(() => {
-        setQuestions(fakeQuestions);
+        if (surveyTitle === "") {
+            setTitleModalVisible(true);
+        }
+        // setQuestions(fakeQuestions);
     }, []);
 
     // let myData = fakeQuestions;
 
+    const openTitleModal = () => {
+        console.log("[PostingScreen] surveyTitle:" + surveyTitle);
+        if (surveyTitle === "") {
+            setTitleModalVisible(true);
+        }
+    };
+
     const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => {
         return (
             <View>
-                {/* <PostingQuestionBox question={item} onPress={toggleCreateModal} /> */}
                 <PostingQuestionBox
                     question={item}
                     onPress={() => {
@@ -269,11 +277,19 @@ export default function PostingScreen({
             />
 
             <View style={styles.subContainer}>
-                <TextInput
+                {/* <TextInput
                     placeholder="설문 제목을 입력해주세요"
                     style={styles.surveyTitleBox}
                     value={surveyTitle}
                     onChangeText={setSurveyTitle}
+                /> */}
+                <Spacer size={30} />
+                <SurveyTitleModal
+                    setSurveyTitle={setSurveyTitle}
+                    surveyTitle={surveyTitle}
+                    titleModalVisible={titleModalVisible}
+                    setTitleModalVisible={setTitleModalVisible}
+                    setConfirmTapped={setConfirmTapped}
                 />
 
                 <FlatList
@@ -304,22 +320,7 @@ export default function PostingScreen({
                 </View>
             </View>
 
-            {/* 하단  */}
-            <View style={styles.bottomContainer}>
-                <FlatList
-                    renderItem={sectionBoxItem}
-                    data={[{ id: 11 }, { id: 12 }, { id: 13 }]}
-                    keyExtractor={item => `${item.id}`}
-                    horizontal={true}
-                    style={styles.flatListStyle}
-                    contentContainerStyle={{
-                        alignItems: "center",
-                        marginHorizontal: 5,
-                        justifyContent: "space-between",
-                    }}
-                />
-                <ImageButton img={require("../assets/smallPlusIcon.png")} />
-            </View>
+            {/* <SurveyTitleModal setSurveyTitle={setSurveyTitle} /> */}
         </SafeAreaView>
     );
 }

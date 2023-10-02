@@ -111,8 +111,11 @@ const styles = StyleSheet.create({
     questionContainer: {
         padding: 10,
         paddingLeft: 20,
-        backgroundColor: colors.gray3,
+        // backgroundColor: colors.gray3,
+        backgroundColor: "white",
         borderRadius: 10,
+        borderColor: colors.gray4,
+        borderWidth: 1,
         overflow: "hidden",
     },
     questionWithIndex: {

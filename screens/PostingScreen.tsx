@@ -230,6 +230,7 @@ export default function PostingScreen({
         log("first option tapped");
     };
 
+    // Question 을,, 해당 Section 에 추가해야함.
     const addQuestion = (question: Question) => {
         // questions
         let newQuestions = questions;
@@ -325,13 +326,6 @@ export default function PostingScreen({
             />
 
             <View style={styles.subContainer}>
-                {/* <TextInput
-                    placeholder="설문 제목을 입력해주세요"
-                    style={styles.surveyTitleBox}
-                    value={surveyTitle}
-                    onChangeText={setSurveyTitle}
-                /> */}
-
                 <Spacer size={30} />
                 <SurveyTitleModal
                     setSurveyTitle={setSurveyTitle}
@@ -345,6 +339,8 @@ export default function PostingScreen({
                     data={questions}
                     renderItem={postingQuestionBoxItem}
                     keyExtractor={item => `${item.id}`}
+                    // key={item => `${item.id}`}
+                    // key={id}
                     ItemSeparatorComponent={() => (
                         <View style={{ height: 12 }} />
                     )}

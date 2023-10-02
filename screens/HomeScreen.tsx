@@ -23,6 +23,7 @@ import { saveUserState } from "../utils/Storage";
 import { NavigationTitle } from "../utils/NavHelper";
 import ImageButton from "../components/ImageButton";
 import { logObject } from "../utils/Log";
+import { Ionicons } from "@expo/vector-icons";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -150,20 +151,26 @@ function HomeScreen({
                         // height: 30,
                     }}
                 >
-                    <ImageButton
+                    {/* <ImageButton
                         img={require("../assets/chatIcon.png")}
                         onPress={() => {
                             console.log("chat tapped");
                         }}
                         size={24}
-                    />
-                    <View style={{ width: 16 }} />
-                    <ImageButton
+                    /> */}
+                    {/* <View style={{ width: 16 }} /> */}
+
+                    {/* <ImageButton
                         img={require("../assets/bellIcon.png")}
                         onPress={() => {
                             console.log("bell tapped");
                         }}
                         size={24}
+                    /> */}
+                    <Ionicons
+                        name="md-notifications-outline"
+                        size={24}
+                        color="black"
                     />
                 </View>
             </View>

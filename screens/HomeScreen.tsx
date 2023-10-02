@@ -171,6 +171,9 @@ function HomeScreen({
                         name="md-notifications-outline"
                         size={24}
                         color="black"
+                        onPress={() => {
+                            console.log("[HomeScreen] notification btn tapped");
+                        }}
                     />
                 </View>
             </View>

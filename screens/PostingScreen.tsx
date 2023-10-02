@@ -67,17 +67,20 @@ export default function PostingScreen({
         NavigationTitle.posting
     >;
 }) {
-    const [customViews, setCustomViews] = useState([]);
     const [questions, setQuestions] = useState<Question[]>([]);
-    const [selectedIndex, setSelectedIndex] = useState<number>(undefined);
+    const [sections, setSections] = useState<Section[]>([]);
+
+    const [selectedQuestionIndex, setSelectedQuestionIndex] =
+        useState<number>(undefined);
     const [surveyTitle, setSurveyTitle] = useState<string>("");
+    const [currentSection, setCurrentSection] = useState(1);
+
+    const [numberOfSections, setNumberOfSections] = useState(1);
     const [titleModalVisible, setTitleModalVisible] = useState(false);
     const [isConfirmTapped, setConfirmTapped] = useState(false);
     const [isCreatingQuestionModalVisible, setIsCreatingQuestionModalVisible] =
         useState(false);
-    const [numberOfSections, setNumberOfSections] = useState(1);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [currentSection, setCurrentSection] = useState(1);
 
     const addSection = () => {
         setNumberOfSections(numberOfSections + 1);
@@ -195,9 +198,9 @@ export default function PostingScreen({
 
     const handleSendButtonTapped = async () => {
         log("send pressed");
-        // const sectionId = 264;
         let selectableOptions: SelectableOption[] = [];
         let sections: Section[] = [];
+        // Section 을 안만들어두었구나?
         const testSection = makeSection("sectionTitle", 100, 5);
 
         sections.push(testSection);
@@ -216,11 +219,7 @@ export default function PostingScreen({
         const userId = (await loadUserState()).userId;
         const participationGoal = 100;
         const survey = makeSurvey(userId, surveyTitle, participationGoal);
-        log("hi111111");
-        // postWholeSurvey(survey, sections, questions, selectableOptions);
         await postWholeSurvey(survey, sections, questions, selectableOptions);
-        log("hi222222");
-        // await postWholeSurvey(survey, sections, questions, selectableOptions);
     };
 
     const handleFirstOptionTapped = () => {
@@ -254,10 +253,6 @@ export default function PostingScreen({
         setIsModifyingQuestionModalVisible(!isModifyingQuestionModalVisible);
     };
 
-    const handleAddCustomView = inputValue => {
-        setCustomViews(prevViews => [...prevViews, inputValue]);
-    };
-
     useEffect(() => {
         if (surveyTitle === "") {
             setTitleModalVisible(true);
@@ -287,9 +282,9 @@ export default function PostingScreen({
                             return q.id === item.id;
                         });
 
-                        setSelectedIndex(currentIdx);
+                        setSelectedQuestionIndex(currentIdx);
                         log(
-                            `QuestionBox tapped, currentIdx: ${currentIdx}, selectedIndex: ${selectedIndex}`
+                            `QuestionBox tapped, currentIdx: ${currentIdx}, selectedIndex: ${selectedQuestionIndex}`
                         );
                     }}
                 />
@@ -326,7 +321,7 @@ export default function PostingScreen({
                 }
                 onClose={toggleModifyingModal}
                 onModify={modifyQuestion}
-                selectedQuestion={questions[selectedIndex]}
+                selectedQuestion={questions[selectedQuestionIndex]}
             />
 
             <View style={styles.subContainer}>

@@ -1,6 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, View, Text } from "react-native";
-
+import { Octicons } from "@expo/vector-icons";
+import { Foundation } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
 
 import MypageScreen from "./MypageScreen";
@@ -17,15 +19,11 @@ export default function MainTabs() {
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => {
-                        return focused ? (
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                source={require("../assets/selectedHomeIcon.jpg")}
-                            />
-                        ) : (
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                source={require("../assets/unselectedHomeIcon.jpg")}
+                        return (
+                            <Foundation
+                                name="home"
+                                size={24}
+                                color={focused ? "black" : "gray"}
                             />
                         );
                     },
@@ -37,15 +35,11 @@ export default function MainTabs() {
                 options={{
                     // headerShown: false,
                     tabBarIcon: ({ focused }) => {
-                        return focused ? (
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                source={require("../assets/selectedUploadIcon.png")}
-                            />
-                        ) : (
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                source={require("../assets/unselectedUploadIcon.png")}
+                        return (
+                            <Octicons
+                                name="upload"
+                                size={24}
+                                color={focused ? "black" : "gray"}
                             />
                         );
                     },
@@ -57,18 +51,11 @@ export default function MainTabs() {
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => {
-                        return focused ? (
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                // source={require("./assets/selectedMypageIcon.jpg")}
-                                // source={require("../assets/selectedMypageIcon.jpg")}
-                                source={require("../assets/selectedMyPageIcon.png")}
-                            />
-                        ) : (
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                // source={require("../assets/unselectedMypageIcon.jpg")}
-                                source={require("../assets/unselectedMyPageIcon.png")}
+                        return (
+                            <Ionicons
+                                name="person"
+                                size={24}
+                                color={focused ? "black" : "gray"}
                             />
                         );
                     },

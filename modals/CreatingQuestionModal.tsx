@@ -70,6 +70,9 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
         } else {
             setSatisfied(false);
         }
+        console.log(
+            `questionTitle: ${questionTitle}, questionType: ${questionType}, dynamicInputValues: ${dynamicInputValues}`
+        );
     }, [questionType, questionTitle, dynamicInputValues]);
 
     useEffect(() => {
@@ -130,6 +133,9 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                             <DynamicTextInputsForCreation
                                 dynamicInputValues={dynamicInputValues}
                                 setDynamicInputValues={setDynamicInputValues}
+                                keys={dynamicInputValues.map((_, index) =>
+                                    index.toString()
+                                )}
                             />
                         )}
 
@@ -293,9 +299,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexDirection: "row",
         justifyContent: "center",
-        // borderWidth: 1,
         borderTopWidth: 1,
-        // borderRightWidth: 1,
         height: 40,
         alignItems: "center",
         margin: 0,

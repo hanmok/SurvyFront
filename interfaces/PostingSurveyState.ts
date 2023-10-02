@@ -4,8 +4,6 @@ import { SelectableOption } from "./SelectableOption";
 import { Survey } from "./Survey";
 
 export interface PostingSurveyState {
-    survey: Survey;
+    surveyTitle: string;
     sections: Section[];
-    questions: Question[];
-    selectableOptions: SelectableOption[];
 }

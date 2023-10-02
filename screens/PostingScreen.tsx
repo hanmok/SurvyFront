@@ -51,8 +51,13 @@ import { SelectableOption } from "../interfaces/SelectableOption";
 import { Section, makeSection } from "../interfaces/Section";
 import { Survey, makeSurvey } from "../interfaces/Survey";
 import { postWholeSurvey } from "../API/SurveyAPI";
-import { loadUserState } from "../utils/Storage";
+import {
+    loadPostingSurvey,
+    loadUserState,
+    savePostingSurvey,
+} from "../utils/Storage";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
+import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 
 interface TestItem {
     id: number;
@@ -73,7 +78,7 @@ export default function PostingScreen({
     const [selectedQuestionIndex, setSelectedQuestionIndex] =
         useState<number>(undefined);
     const [surveyTitle, setSurveyTitle] = useState<string>("");
-    const [currentSection, setCurrentSection] = useState(1);
+    const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 
     const [numberOfSections, setNumberOfSections] = useState(1);
     const [titleModalVisible, setTitleModalVisible] = useState(false);
@@ -118,7 +123,7 @@ export default function PostingScreen({
         console.log(
             "[PostingScreen] section menu tapped, idx:  " + sectionIndex
         );
-        setCurrentSection(sectionIndex);
+        setCurrentSectionIndex(sectionIndex);
         setIsMenuOpen(false);
     };
 
@@ -135,6 +140,15 @@ export default function PostingScreen({
         isModifyingQuestionModalVisible,
         setIsModifyingQuestionModalVisible,
     ] = useState(false);
+
+    // Section 존재하지 않을 시, sequence 0 으로 추가 후 sections 등록.
+    useEffect(() => {
+        if (sections.length === 0) {
+            const newSection = makeSection(0);
+            setSections([newSection]);
+        }
+    });
+    useEffect(() => {}, []);
 
     useEffect(() => {
         if (isConfirmTapped && questions.length === 0) {
@@ -175,14 +189,14 @@ export default function PostingScreen({
                                 onSelect={handleFirstOptionTapped}
                                 style={styles.option}
                             >
-                                <Text>option 1</Text>
+                                <Text>순서 바꾸기</Text>
                             </MenuOption>
                             <View style={styles.divider} />
                             <MenuOption
                                 onSelect={handleSecondOptionTapped}
                                 style={styles.option}
                             >
-                                <Text>option 2</Text>
+                                <Text>초기화</Text>
                             </MenuOption>
                         </MenuOptions>
                     </Menu>
@@ -201,7 +215,8 @@ export default function PostingScreen({
         let selectableOptions: SelectableOption[] = [];
         let sections: Section[] = [];
         // Section 을 안만들어두었구나?
-        const testSection = makeSection("sectionTitle", 100, 5);
+        // const testSection = makeSection("sectionTitle", 100, 5);
+        const testSection = makeSection(1);
 
         sections.push(testSection);
         logObject(`passing section:`, sections);
@@ -226,18 +241,46 @@ export default function PostingScreen({
         log("first option tapped");
     };
 
-    const handleSecondOptionTapped = () => {
+    const handleSecondOptionTapped = async () => {
         log("first option tapped");
+        setQuestions([]);
+        setSections([]);
+        setSurveyTitle("");
     };
 
-    // Question 을,, 해당 Section 에 추가해야함.
-    const addQuestion = (question: Question) => {
-        // questions
-        let newQuestions = questions;
-        newQuestions.push(question);
-        setQuestions(newQuestions);
-        logObject("after question add, ", questions);
-        setIsCreatingQuestionModalVisible(!isCreatingQuestionModalVisible);
+    const addQuestion = async (newQuestion: Question) => {
+        let prevQuestions = questions;
+        newQuestion.sectionId = sections[currentSectionIndex].id;
+        // console.log('[PostingScreen] questions: ')
+        logObject("[PostingScreen] questions:", questions);
+        console.log("[PostingScreen] flag 1");
+        logObject("sections: ", sections);
+        logObject("currentSection: ", sections[currentSectionIndex]);
+        logObject("questions: ", sections[currentSectionIndex].questions);
+
+        logObject("after question add flag 1, ", questions);
+        sections[currentSectionIndex].questions.push(newQuestion);
+        // console.log("[PostingScreen] flag 2");
+        logObject("after question add flag 2, ", questions);
+        prevQuestions.push(newQuestion);
+        logObject("after question add flag 3, ", questions);
+        setQuestions(prevQuestions);
+        // 여기서 중복 일어남
+        logObject("after question add flag 4, ", questions);
+        // setIsCreatingQuestionModalVisible(!isCreatingQuestionModalVisible);
+        setIsCreatingQuestionModalVisible(false);
+
+        const postingSurvey: PostingSurveyState = {
+            surveyTitle,
+            sections,
+        };
+        await savePosting(postingSurvey);
+        console.log("[PostingScreen] savePosting ended");
+        logObject("questions: ", questions);
+    };
+
+    const savePosting = async (postingSurvey: PostingSurveyState) => {
+        await savePostingSurvey(postingSurvey);
     };
 
     const modifyQuestion = (question: Question) => {
@@ -258,10 +301,16 @@ export default function PostingScreen({
         if (surveyTitle === "") {
             setTitleModalVisible(true);
         }
-        // setQuestions(fakeQuestions);
-    }, []);
+        console.log("PostingSurvey loaded");
+        loadPostingSurvey().then(result => {
+            setSections(result.sections);
+            setSurveyTitle(result.surveyTitle);
 
-    // let myData = fakeQuestions;
+            const sections = result.sections;
+            const firstSectionQuestions = sections[0].questions;
+            setQuestions(firstSectionQuestions);
+        });
+    }, []);
 
     const openTitleModal = () => {
         console.log("[PostingScreen] surveyTitle:" + surveyTitle);
@@ -270,10 +319,31 @@ export default function PostingScreen({
         }
     };
 
+    const listFooter = () => {
+        return (
+            <View style={{ justifyContent: "center" }}>
+                <TextButton
+                    // title="+"
+                    title="질문 추가"
+                    // onPress={() => console.log}
+                    onPress={toggleCreateModal}
+                    textStyle={[
+                        styles.plusButtonText,
+                        { textAlignVertical: "center" },
+                    ]}
+                    backgroundStyle={[
+                        styles.plusButtonBG,
+                        { justifyContent: "center" },
+                    ]}
+                />
+            </View>
+        );
+    };
     const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => {
         return (
             <View>
                 <PostingQuestionBox
+                    key={item.id}
                     question={item}
                     onPress={() => {
                         toggleModifyingModal();
@@ -336,7 +406,9 @@ export default function PostingScreen({
                 />
                 {/* <Spacer size={30} /> */}
                 <FlatList
-                    data={questions}
+                    data={questions.filter(
+                        q => q.sectionId === sections[currentSectionIndex].id
+                    )}
                     renderItem={postingQuestionBoxItem}
                     keyExtractor={item => `${item.id}`}
                     // key={item => `${item.id}`}
@@ -345,24 +417,9 @@ export default function PostingScreen({
                         <View style={{ height: 12 }} />
                     )}
                     style={styles.questionList}
+                    ListFooterComponent={listFooter}
+                    ListFooterComponentStyle={{ marginTop: 30 }}
                 />
-
-                <View style={{ justifyContent: "center" }}>
-                    <TextButton
-                        // title="+"
-                        title="질문 추가"
-                        // onPress={() => console.log}
-                        onPress={toggleCreateModal}
-                        textStyle={[
-                            styles.plusButtonText,
-                            { textAlignVertical: "center" },
-                        ]}
-                        backgroundStyle={[
-                            styles.plusButtonBG,
-                            { justifyContent: "center" },
-                        ]}
-                    />
-                </View>
             </View>
             {/* <Menu style={styles.sectionMenu}> */}
             <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
@@ -409,7 +466,7 @@ export default function PostingScreen({
                         marginRight: 5,
                     }}
                 >
-                    {currentSection}
+                    {currentSectionIndex + 1}
                 </Text>
             </View>
         </SafeAreaView>

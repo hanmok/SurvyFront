@@ -1,24 +1,32 @@
 import { makeRandomNumber } from "../utils/GetRandomNumber";
+import { Question } from "./Question";
 
 export interface Section {
     id: number | undefined;
     surveyId: number | undefined;
-    title: string | undefined;
-    expectedTimeInSec: number;
-    reward: number;
+    expectedTimeInSec: number | undefined;
+    reward: number | undefined;
+    sequence: number;
+    questions: Question[] | undefined;
+    // title: string | undefined;
 }
-
+// Section 을 처음 만들 땐, reward, expectedTimeInSec 모두 없음. Title 도 일단 보류.
 export const makeSection = (
-    title: string,
-    reward: number,
-    expectedTimeInSec: number
+    sequence: number
+    // title: string,
+    // reward: number,
+    // expectedTimeInSec: number,
 ): Section => {
     const section: Section = {
         id: makeRandomNumber(),
-        title: title,
-        reward: reward,
         surveyId: undefined,
-        expectedTimeInSec: expectedTimeInSec,
+        sequence: sequence,
+        reward: undefined,
+        expectedTimeInSec: undefined,
+        questions: [],
+        // title: title,
+        // reward: reward,
+        // expectedTimeInSec: expectedTimeInSec,
     };
     return section;
 };

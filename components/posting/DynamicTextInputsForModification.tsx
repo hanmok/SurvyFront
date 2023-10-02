@@ -23,7 +23,7 @@ const DynamicTextInputsForModification = ({
 
     useEffect(() => {
         setInputValues(parentInputValues);
-        console.log(`dynamicTextInput renders, ${parentInputValues}`);
+        // console.log(`dynamicTextInput renders, ${parentInputValues}`);
 
         return () => {
             // setDynamicInputValues(inputValues);

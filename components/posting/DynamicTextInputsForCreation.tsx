@@ -15,11 +15,12 @@ import ImageButton from "../ImageButton";
 const DynamicTextInputsForCreation = ({
     dynamicInputValues,
     setDynamicInputValues,
+    keys,
 }) => {
     const [inputValues, setInputValues] = useState([""]);
 
     useEffect(() => {
-        console.log(`dynamicTextInput renders, ${dynamicInputValues}`);
+        // console.log(`dynamicTextInput renders, ${dynamicInputValues}`);
     }, [dynamicInputValues]);
 
     useEffect(() => {
@@ -58,6 +59,7 @@ const DynamicTextInputsForCreation = ({
                 {inputValues.map((value, index) => (
                     <View key={index} style={styles.inputContainer}>
                         <TextInput
+                            key={keys[index]}
                             placeholder={`옵션 ${index + 1}`}
                             style={styles.input}
                             value={value}

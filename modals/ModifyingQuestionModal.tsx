@@ -77,7 +77,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
             dynamicInputValues[0] !== ""
         ) {
             setSatisfied(true);
-            console.log(`satisfied: true`);
+            // console.log(`satisfied: true`);
         } else if (
             questionType === QuestionType.Essay &&
             questionTitle !== ""

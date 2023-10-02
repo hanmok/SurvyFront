@@ -46,7 +46,12 @@ import {
     MenuProvider,
     MenuTrigger,
 } from "react-native-popup-menu";
-import { Entypo, Foundation } from "@expo/vector-icons";
+import {
+    Entypo,
+    Feather,
+    Foundation,
+    SimpleLineIcons,
+} from "@expo/vector-icons";
 import { SelectableOption } from "../interfaces/SelectableOption";
 import { Section, makeSection } from "../interfaces/Section";
 import { Survey, makeSurvey } from "../interfaces/Survey";
@@ -59,11 +64,6 @@ import {
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 
-interface TestItem {
-    id: number;
-}
-
-// Header, Footer 로 중첩 Scroll 해결하기.
 export default function PostingScreen({
     navigation,
 }: {
@@ -80,11 +80,9 @@ export default function PostingScreen({
         useState<number>(undefined);
     const [surveyTitle, setSurveyTitle] = useState<string>("");
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-
-    // const [numberOfSections, setNumberOfSections] = useState(1);
     const [titleModalVisible, setTitleModalVisible] = useState(false);
     const [isConfirmTapped, setConfirmTapped] = useState(false);
-    const [isCreatingQuestionModalVisible, setIsCreatingQuestionModalVisible] =
+    const [creatingQuestionModalVisible, setCreatingQuestionModalVisible] =
         useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
@@ -123,6 +121,10 @@ export default function PostingScreen({
         [sections]
     );
 
+    const handleTargetSelection = () => {
+        log("target called");
+    };
+
     const handleMenuPress = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -141,7 +143,7 @@ export default function PostingScreen({
     };
 
     const toggleCreateModal = () => {
-        setIsCreatingQuestionModalVisible(!isCreatingQuestionModalVisible);
+        setCreatingQuestionModalVisible(!creatingQuestionModalVisible);
     };
 
     const [
@@ -159,7 +161,7 @@ export default function PostingScreen({
 
     useEffect(() => {
         if (isConfirmTapped && questions.length === 0) {
-            setIsCreatingQuestionModalVisible(true);
+            setCreatingQuestionModalVisible(true);
         }
         setConfirmTapped(false);
     }, [isConfirmTapped]);
@@ -217,23 +219,13 @@ export default function PostingScreen({
                                 triggerOuterWrapper: { flexDirection: "row" },
                             }}
                         >
-                            <Foundation name="page-copy" size={30} />
+                            <Foundation name="page-copy" size={24} />
                         </MenuTrigger>
                         <MenuOptions
                             customStyles={{
                                 optionsContainer: styles.sectionOptionContainer,
                             }}
-                            // optionsContainerStyle={{ marginBottom: 70 }}
                         >
-                            {/* <Text
-                                style={{
-                                    padding: 10,
-                                    fontWeight: "bold",
-                                    fontSize: fontSizes.s16,
-                                }}
-                            >
-                                Section
-                            </Text> */}
                             <TextButton
                                 title="Section"
                                 textStyle={{
@@ -259,14 +251,26 @@ export default function PostingScreen({
                             </MenuOption>
                         </MenuOptions>
                     </Menu>
+                    <Feather
+                        name="target"
+                        size={24}
+                        color="black"
+                        onPress={handleTargetSelection}
+                    />
 
-                    <ImageButton
+                    {/* <ImageButton
                         img={require("../assets/sendIcon.png")}
                         onPress={handleSendButtonTapped}
                         // onPress={handleAddSection}
                         backgroundStyle={{ marginHorizontal: 8 }}
+                    /> */}
+                    <SimpleLineIcons
+                        name="paper-plane"
+                        size={24}
+                        color="black"
+                        onPress={handleSendButtonTapped}
                     />
-                    <Text>{sections.length}</Text>
+                    {/* <Text>{sections.length}</Text> */}
                 </View>
             ),
         });
@@ -340,7 +344,7 @@ export default function PostingScreen({
         // 여기서 중복 일어남
         logObject("after question add flag 4, ", questions);
         // setIsCreatingQuestionModalVisible(!isCreatingQuestionModalVisible);
-        setIsCreatingQuestionModalVisible(false);
+        setCreatingQuestionModalVisible(false);
 
         const postingSurvey: PostingSurveyState = {
             surveyTitle,
@@ -465,24 +469,10 @@ export default function PostingScreen({
         );
     };
 
-    const sectionBoxItem: ListRenderItem<TestItem> = ({ item }) => (
-        <View style={styles.sectionBoxItemStyle}>
-            <Text
-                style={{
-                    color: "black",
-                    marginHorizontal: 30,
-                    paddingVertical: 10,
-                }}
-            >
-                {item.id}
-            </Text>
-        </View>
-    );
-
     return (
         <SafeAreaView style={styles.container} edges={[]}>
             <CreatingQuestionModal
-                isCreatingQuestionModalVisible={isCreatingQuestionModalVisible}
+                isCreatingQuestionModalVisible={creatingQuestionModalVisible}
                 onClose={toggleCreateModal}
                 onAdd={addQuestion}
                 position={questions.length}

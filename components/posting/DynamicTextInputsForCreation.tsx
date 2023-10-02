@@ -8,13 +8,7 @@ const DynamicTextInputsForCreation = ({
     dynamicInputValues,
     setDynamicInputValues,
 }) => {
-    const [inputValues, setInputValues] = useState([""]); // 초기에 빈
-
-    // useEffect(() => {
-    //     // if (inputValues !== dynamicInputValues) {
-    //     //     setInputValues(dynamicInputValues);
-    //     // }
-    // }, [dynamicInputValues]);
+    const [inputValues, setInputValues] = useState([""]);
 
     useEffect(() => {
         console.log(`dynamicTextInput renders, ${dynamicInputValues}`);
@@ -56,7 +50,12 @@ const DynamicTextInputsForCreation = ({
                         onChangeText={text => handleInputChange(text, index)}
                         autoComplete="off"
                         autoCorrect={false}
-                        // onSubmitEditing={text => handleInputChange(text, index)}
+                        onSubmitEditing={() => {
+                            console.log(`index: ${index}`); // 첫번째꺼 0
+                            if (index + 1 === inputValues.length) {
+                                handleAddInput();
+                            }
+                        }}
                     />
                     <ImageButton
                         // img={require("../assets/minusIcon.png")}

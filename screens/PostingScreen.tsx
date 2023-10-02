@@ -81,11 +81,11 @@ export default function PostingScreen({
     const [surveyTitle, setSurveyTitle] = useState<string>("");
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const [titleModalVisible, setTitleModalVisible] = useState(false);
-    const [isConfirmTapped, setConfirmTapped] = useState(false);
     const [creatingQuestionModalVisible, setCreatingQuestionModalVisible] =
         useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
+    const [isConfirmTapped, setConfirmTapped] = useState(false);
     const addSection = () => {
         const newSection = makeSection(sections.length);
         setSections(prev => [...prev, newSection]);
@@ -125,20 +125,20 @@ export default function PostingScreen({
         log("target called");
     };
 
-    const handleMenuPress = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
+    // const handleMenuPress = () => {
+    //     setIsMenuOpen(!isMenuOpen);
+    // };
 
     const handleMenuOptionSelect = (sectionIndex: number) => {
         console.log(
             "[PostingScreen] section menu tapped, idx:  " + sectionIndex
         );
         setCurrentSectionIndex(sectionIndex);
-        setIsMenuOpen(false);
+        // setIsMenuOpen(false);
     };
 
     const handleAddSection = () => {
-        setIsMenuOpen(false);
+        // setIsMenuOpen(false);
         addSection();
     };
 
@@ -177,7 +177,7 @@ export default function PostingScreen({
                     {/* three-dot menu */}
                     <Menu style={styles.threeDotMenu}>
                         <MenuTrigger
-                            customStyles={{}}
+                            // customStyles={{}}
                             style={{ marginRight: 12 }}
                         >
                             <Entypo
@@ -214,7 +214,7 @@ export default function PostingScreen({
                     {/*  */}
                     <Menu style={styles.sectionMenu}>
                         <MenuTrigger
-                            onPress={handleMenuPress}
+                            // onPress={handleMenuPress}
                             customStyles={{
                                 triggerOuterWrapper: { flexDirection: "row" },
                             }}
@@ -235,7 +235,7 @@ export default function PostingScreen({
                                 }}
                                 onPress={() => {
                                     console.log("section tapped");
-                                    handleMenuPress();
+                                    // handleMenuPress();
                                 }}
                             />
 
@@ -579,7 +579,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 16,
     },
-
     sectionHeader: {
         marginLeft: marginSizes.xs8,
         fontWeight: "500",
@@ -591,15 +590,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         width: 90,
         textAlign: "center",
-        // width: 200,
-        // whiteSpace: "nowrap",
-        // textOverflow: "ellipsis",
     },
 
     plusButtonBG: {
         backgroundColor: colors.deepMainColor,
-        // marginBottom: marginSizes.xl24,
-        // marginTop: marginSizes.s12,
         borderRadius: 12,
         overflow: "hidden",
         justifyContent: "center",
@@ -649,11 +643,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
-    modalContent: {
-        backgroundColor: "white",
-        padding: 20,
-        borderRadius: 10,
-    },
+    // modalContent: {
+    //     backgroundColor: "white",
+    //     padding: 20,
+    //     borderRadius: 10,
+    // },
     flatListStyle: {
         flexGrow: 0.9,
     },
@@ -682,8 +676,7 @@ const styles = StyleSheet.create({
         width: 100,
     },
     sectionOptionContainer: {
-        // borderRadius: 10,
-        // width: 150,
+        borderRadius: 10,
     },
     option: {
         paddingVertical: 10,

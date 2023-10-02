@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import {
+    View,
+    Text,
+    TextInput,
+    Button,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    Keyboard,
+} from "react-native";
 import TextButton from "../TextButton";
 import { fontSizes } from "../../utils/sizes";
 import ImageButton from "../ImageButton";
@@ -39,35 +47,44 @@ const DynamicTextInputsForCreation = ({
         setInputValues(newInputValues);
     };
 
+    const handleDismissKeyboard = () => {
+        console.log("dismiss keyboard called");
+        Keyboard.dismiss();
+    };
+
     return (
-        <View style={styles.container}>
-            {inputValues.map((value, index) => (
-                <View key={index} style={styles.inputContainer}>
-                    <TextInput
-                        placeholder={`옵션 ${index + 1}`}
-                        style={styles.input}
-                        value={value}
-                        onChangeText={text => handleInputChange(text, index)}
-                        autoComplete="off"
-                        autoCorrect={false}
-                        onSubmitEditing={() => {
-                            console.log(`index: ${index}`); // 첫번째꺼 0
-                            if (index + 1 === inputValues.length) {
-                                handleAddInput();
+        <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
+            <View style={styles.container}>
+                {inputValues.map((value, index) => (
+                    <View key={index} style={styles.inputContainer}>
+                        <TextInput
+                            placeholder={`옵션 ${index + 1}`}
+                            style={styles.input}
+                            value={value}
+                            onChangeText={text =>
+                                handleInputChange(text, index)
                             }
-                        }}
-                    />
-                    <ImageButton
-                        // img={require("../assets/minusIcon.png")}
-                        // img={require('../../')}
-                        img={require("../../assets/minusIcon.png")}
-                        onPress={() => handleRemoveInput(index)}
-                        backgroundStyle={{ marginLeft: 10 }}
-                    />
-                </View>
-            ))}
-            <Button title="Add Input" onPress={handleAddInput} />
-        </View>
+                            autoComplete="off"
+                            autoCorrect={false}
+                            onSubmitEditing={() => {
+                                console.log(`index: ${index}`); // 첫번째꺼 0
+                                if (index + 1 === inputValues.length) {
+                                    handleAddInput();
+                                }
+                            }}
+                        />
+                        <ImageButton
+                            // img={require("../assets/minusIcon.png")}
+                            // img={require('../../')}
+                            img={require("../../assets/minusIcon.png")}
+                            onPress={() => handleRemoveInput(index)}
+                            backgroundStyle={{ marginLeft: 10 }}
+                        />
+                    </View>
+                ))}
+                <Button title="Add Input" onPress={handleAddInput} />
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 

@@ -87,37 +87,41 @@ export default function PostingScreen({
     const [isCreatingQuestionModalVisible, setIsCreatingQuestionModalVisible] =
         useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+    const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
     const addSection = () => {
         const newSection = makeSection(sections.length);
-        const newSections = [...sections, newSection];
-        setSections(newSections);
-        // setSections(prevSections => [...prevSections, newSection])
-        // setSections(sections);
+        setSections(prev => [...prev, newSection]);
+
         console.log("addSection tapped, numberOfSections: " + sections.length);
     };
 
-    // useEffect(() => {
-    //     // renderSectionOptions()
-    // }, [sections]);
+    useEffect(() => {
+        console.log(`section changed, current length: ${sections.length}`);
+    }, [sections]);
 
-    const renderSectionOptions = (mysections: Section[]) => {
-        const sectionOptions = [];
-        for (let i = 1; i <= mysections.length; i++) {
-            sectionOptions.push(
-                <MenuOption
-                    key={`section-option-${i}`}
-                    onSelect={() => {
-                        handleMenuOptionSelect(i - 1);
-                    }}
-                    style={styles.option}
-                >
-                    <Text style={{ fontSize: fontSizes.s16 }}>Section {i}</Text>
-                </MenuOption>
-            );
-        }
-        return sectionOptions;
-    };
+    // const renderSectionOptions = (mysections: Section[]) => {
+    const renderSectionOptions = React.useCallback(
+        (mysections: Section[]) => {
+            const sectionOptions = [];
+            for (let i = 1; i <= mysections.length; i++) {
+                sectionOptions.push(
+                    <MenuOption
+                        key={`section-option-${i}`}
+                        onSelect={() => {
+                            handleMenuOptionSelect(i - 1);
+                        }}
+                        style={styles.option}
+                    >
+                        <Text style={{ fontSize: fontSizes.s16 }}>
+                            Section {i}
+                        </Text>
+                    </MenuOption>
+                );
+            }
+            return sectionOptions;
+        },
+        [sections]
+    );
 
     const handleMenuPress = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -147,9 +151,9 @@ export default function PostingScreen({
 
     // Section 존재하지 않을 시, sequence 0 으로 추가 후 sections 등록.
     useEffect(() => {
-        if (sections.length === 0) {
-            const newSection = makeSection(0);
-            setSections([newSection]);
+        if (sections.length < 2) {
+            const newSection = makeSection(sections.length);
+            setSections([...sections, newSection]);
         }
     });
 
@@ -259,8 +263,10 @@ export default function PostingScreen({
                     <ImageButton
                         img={require("../assets/sendIcon.png")}
                         onPress={handleSendButtonTapped}
+                        // onPress={handleAddSection}
                         backgroundStyle={{ marginHorizontal: 8 }}
                     />
+                    <Text>{sections.length}</Text>
                 </View>
             ),
         });
@@ -292,6 +298,9 @@ export default function PostingScreen({
         await postWholeSurvey(survey, sections, questions, selectableOptions);
     };
 
+    useEffect(() => {
+        updateQuestions();
+    }, [currentSectionIndex]);
     const handleFirstOptionTapped = () => {
         log("first option tapped");
     };
@@ -384,14 +393,22 @@ export default function PostingScreen({
 
     // TODO: Unique Question 의 Index 정리하기.
     useEffect(() => {
+        updateQuestions();
+    }, [questions]);
+
+    const updateQuestions = () => {
         if (questions.length !== 0) {
             const uniques = questions.filter(
                 (question, index, arr) =>
                     arr.findIndex(t => t.id === question.id) === index
             );
             setUniqueQuestions(uniques);
+            const toShow = uniques.filter(
+                q => q.sectionId === sections[currentSectionIndex].id
+            );
+            setQuestionsToShow(toShow);
         }
-    }, [questions]);
+    };
 
     const listHeader = () => {
         return (
@@ -481,28 +498,34 @@ export default function PostingScreen({
             />
 
             <View style={styles.subContainer}>
-                <FlatList
-                    data={uniqueQuestions.filter(
-                        q => q.sectionId === sections[currentSectionIndex].id
-                    )}
-                    renderItem={postingQuestionBoxItem}
-                    keyExtractor={item => `${item.id}`}
-                    ItemSeparatorComponent={() => (
-                        <View style={{ height: 12 }} />
-                    )}
-                    style={styles.questionList}
-                    ListFooterComponent={listFooter}
-                    ListFooterComponentStyle={{
-                        marginTop: 30,
-                        marginBottom: 20,
-                        marginHorizontal: marginSizes.l20,
-                    }}
-                    ListHeaderComponent={listHeader}
-                    ListHeaderComponentStyle={{
-                        marginTop: 20,
-                        marginBottom: 20,
-                    }}
-                />
+                {uniqueQuestions.length === 0 ? (
+                    <Text>Empty</Text>
+                ) : (
+                    <FlatList
+                        // data={uniqueQuestions.filter(
+                        //     q =>
+                        //         q.sectionId === sections[currentSectionIndex].id
+                        // )}
+                        data={questionsToShow}
+                        renderItem={postingQuestionBoxItem}
+                        keyExtractor={item => `${item.id}`}
+                        ItemSeparatorComponent={() => (
+                            <View style={{ height: 12 }} />
+                        )}
+                        style={styles.questionList}
+                        ListFooterComponent={listFooter}
+                        ListFooterComponentStyle={{
+                            marginTop: 30,
+                            marginBottom: 20,
+                            marginHorizontal: marginSizes.l20,
+                        }}
+                        ListHeaderComponent={listHeader}
+                        ListHeaderComponentStyle={{
+                            marginTop: 20,
+                            marginBottom: 20,
+                        }}
+                    />
+                )}
             </View>
         </SafeAreaView>
     );

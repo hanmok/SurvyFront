@@ -8,6 +8,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from "react-native";
 import TextButton from "../components/TextButton";
 import { fontSizes } from "../utils/sizes";
@@ -78,7 +80,13 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
     useEffect(() => {
         setDynamicInputValues([""]);
         setQuestionTitle("");
+        setPlaceHolder("");
+        setQuestionType(undefined);
     }, [isCreatingQuestionModalVisible]);
+
+    const handleDismissKeyboard = () => {
+        Keyboard.dismiss();
+    };
 
     return (
         <Modal
@@ -87,181 +95,200 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
             visible={isCreatingQuestionModalVisible}
             onRequestClose={handleModalClose}
         >
-            <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <View>
-                        <TextInput
-                            placeholder="질문을 입력해주세요 "
-                            style={styles.questionTextStyle}
-                            value={questionTitle}
-                            onChangeText={setQuestionTitle}
-                            autoComplete="off"
-                        />
-                        <View style={{ height: 16 }} />
-                        <QuestionTypeSelectionBoxContainer
-                            handleSelect={setQuestionType}
-                        />
-                    </View>
-                    <View style={{ justifyContent: "space-between", flex: 1 }}>
-                        {questionType === QuestionType.Essay ? (
-                            <View
-                                style={{
-                                    width: screenWidth - 80,
-                                    marginTop: 60,
-                                    marginLeft: 20,
-                                }}
-                            >
-                                <TextInput
-                                    placeholder={placeHolder}
-                                    style={{
-                                        fontSize: fontSizes.m20,
-                                        color: colors.gray3,
-                                    }}
-                                    onChangeText={setPlaceHolder}
-                                    value={placeHolder}
-                                    autoComplete="off"
-                                />
-                                <View
-                                    style={{
-                                        backgroundColor: colors.gray2,
-                                        height: 1,
-                                        marginTop: 5,
-                                    }}
-                                />
-                            </View>
-                        ) : (
-                            <DynamicTextInputsForCreation
-                                dynamicInputValues={dynamicInputValues}
-                                setDynamicInputValues={setDynamicInputValues}
-                                keys={dynamicInputValues.map((_, index) =>
-                                    index.toString()
-                                )}
+            <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <View>
+                            <TextInput
+                                placeholder="질문을 입력해주세요 "
+                                style={styles.questionTextStyle}
+                                value={questionTitle}
+                                onChangeText={setQuestionTitle}
+                                autoComplete="off"
                             />
-                        )}
-
-                        <View></View>
-
-                        {/*  Two Switches */}
+                            <View style={{ height: 16 }} />
+                            <QuestionTypeSelectionBoxContainer
+                                handleSelect={setQuestionType}
+                            />
+                        </View>
                         <View
-                            style={{ marginHorizontal: 30, marginBottom: 30 }}
+                            style={{ justifyContent: "space-between", flex: 1 }}
                         >
                             {questionType === QuestionType.Essay ? (
-                                <View />
+                                <View
+                                    style={{
+                                        width: screenWidth - 80,
+                                        marginTop: 60,
+                                        marginLeft: 20,
+                                    }}
+                                >
+                                    <TextInput
+                                        placeholder="placeHolder"
+                                        style={{
+                                            fontSize: fontSizes.m20,
+                                            color: colors.gray3,
+                                        }}
+                                        onChangeText={setPlaceHolder}
+                                        value={placeHolder}
+                                        autoComplete="off"
+                                    />
+                                    <View
+                                        style={{
+                                            backgroundColor: colors.gray2,
+                                            height: 1,
+                                            marginTop: 5,
+                                        }}
+                                    />
+                                </View>
                             ) : (
+                                <DynamicTextInputsForCreation
+                                    dynamicInputValues={dynamicInputValues}
+                                    setDynamicInputValues={
+                                        setDynamicInputValues
+                                    }
+                                    keys={dynamicInputValues.map((_, index) =>
+                                        index.toString()
+                                    )}
+                                />
+                            )}
+
+                            <View></View>
+
+                            {/*  Two Switches */}
+                            <View
+                                style={{
+                                    marginHorizontal: 30,
+                                    marginBottom: 30,
+                                }}
+                            >
+                                {questionType === QuestionType.Essay ? (
+                                    <View />
+                                ) : (
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            // justifyContent: "center",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Text
+                                            style={{ fontSize: fontSizes.m20 }}
+                                        >
+                                            기타 옵션 추가
+                                        </Text>
+                                        <Switch
+                                            trackColor={{
+                                                false: "#767577",
+                                                true: "#81b0ff",
+                                            }}
+                                            thumbColor={
+                                                isExtraOptionEnabled
+                                                    ? "#f5dd4b"
+                                                    : "#f4f3f4"
+                                            }
+                                            ios_backgroundColor="#3e3e3e"
+                                            onValueChange={
+                                                toggleExtraOptionSwitch
+                                            }
+                                            value={isExtraOptionEnabled}
+                                        />
+                                    </View>
+                                )}
+
+                                <View style={{ height: 20 }} />
                                 <View
                                     style={{
                                         flexDirection: "row",
-                                        // justifyContent: "center",
                                         justifyContent: "space-between",
                                         alignItems: "center",
                                     }}
-                                >
-                                    <Text style={{ fontSize: fontSizes.m20 }}>
-                                        기타 옵션 추가
-                                    </Text>
-                                    <Switch
-                                        trackColor={{
-                                            false: "#767577",
-                                            true: "#81b0ff",
-                                        }}
-                                        thumbColor={
-                                            isExtraOptionEnabled
-                                                ? "#f5dd4b"
-                                                : "#f4f3f4"
-                                        }
-                                        ios_backgroundColor="#3e3e3e"
-                                        onValueChange={toggleExtraOptionSwitch}
-                                        value={isExtraOptionEnabled}
-                                    />
-                                </View>
-                            )}
+                                ></View>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <TouchableOpacity
+                                onPress={handleModalClose}
+                                style={styles.bottomLeftButtonTextContainer}
+                            >
+                                <Text style={styles.bottomTextStyle}>취소</Text>
+                            </TouchableOpacity>
 
-                            <View style={{ height: 20 }} />
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
+                            <TouchableOpacity
+                                onPress={() => {
+                                    log(
+                                        `dynamic input values: ${dynamicInputValues}`
+                                    );
+                                    let selectableOptions: SelectableOption[] =
+                                        [];
+                                    const sectionId = 264;
+                                    let question = makeQuestion(
+                                        position,
+                                        questionTitle,
+                                        questionType,
+                                        sectionId,
+                                        []
+                                    );
+                                    log(
+                                        `question made: ${JSON.stringify(
+                                            question
+                                        )}`
+                                    );
+
+                                    if (questionType === QuestionType.Essay) {
+                                        // selectableOptions
+                                        const selectableOption =
+                                            makeSelectableOption(
+                                                question.id,
+                                                0,
+                                                placeHolder
+                                            );
+                                        selectableOptions.push(
+                                            selectableOption
+                                        );
+                                    } else {
+                                        dynamicInputValues.map(
+                                            (optionText, index) => {
+                                                const selectableOption =
+                                                    makeSelectableOption(
+                                                        question.id,
+                                                        index,
+                                                        optionText
+                                                    );
+                                                selectableOptions.push(
+                                                    selectableOption
+                                                );
+                                            }
+                                        );
+                                    }
+                                    question.selectableOptions =
+                                        selectableOptions;
+
+                                    onAdd(question);
                                 }}
-                            ></View>
+                                style={
+                                    satisfied
+                                        ? [
+                                              styles.bottomRightButtonTextContainer,
+                                              styles.activatedStyle,
+                                          ]
+                                        : [
+                                              styles.bottomRightButtonTextContainer,
+                                              styles.inactivatedStyle,
+                                          ]
+                                }
+                            >
+                                <Text style={styles.bottomTextStyle}>확인</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={handleModalClose}
-                            style={styles.bottomLeftButtonTextContainer}
-                        >
-                            <Text style={styles.bottomTextStyle}>취소</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => {
-                                log(
-                                    `dynamic input values: ${dynamicInputValues}`
-                                );
-                                let selectableOptions: SelectableOption[] = [];
-                                const sectionId = 264;
-                                let question = makeQuestion(
-                                    position,
-                                    questionTitle,
-                                    questionType,
-                                    sectionId,
-                                    []
-                                );
-                                log(
-                                    `question made: ${JSON.stringify(question)}`
-                                );
-
-                                if (questionType === QuestionType.Essay) {
-                                    // selectableOptions
-                                    const selectableOption =
-                                        makeSelectableOption(
-                                            question.id,
-                                            0,
-                                            placeHolder
-                                        );
-                                    selectableOptions.push(selectableOption);
-                                } else {
-                                    dynamicInputValues.map(
-                                        (optionText, index) => {
-                                            const selectableOption =
-                                                makeSelectableOption(
-                                                    question.id,
-                                                    index,
-                                                    optionText
-                                                );
-                                            selectableOptions.push(
-                                                selectableOption
-                                            );
-                                        }
-                                    );
-                                }
-                                question.selectableOptions = selectableOptions;
-
-                                onAdd(question);
-                            }}
-                            style={
-                                satisfied
-                                    ? [
-                                          styles.bottomRightButtonTextContainer,
-                                          styles.activatedStyle,
-                                      ]
-                                    : [
-                                          styles.bottomRightButtonTextContainer,
-                                          styles.inactivatedStyle,
-                                      ]
-                            }
-                        >
-                            <Text style={styles.bottomTextStyle}>확인</Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         </Modal>
     );
 };

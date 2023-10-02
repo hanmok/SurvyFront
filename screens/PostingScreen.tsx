@@ -73,6 +73,7 @@ export default function PostingScreen({
     >;
 }) {
     const [questions, setQuestions] = useState<Question[]>([]);
+    const [uniqueQuestions, setUniqueQuestions] = useState<Question[]>([]);
     const [sections, setSections] = useState<Section[]>([]);
 
     const [selectedQuestionIndex, setSelectedQuestionIndex] =
@@ -251,7 +252,7 @@ export default function PostingScreen({
     const addQuestion = async (newQuestion: Question) => {
         let prevQuestions = questions;
         newQuestion.sectionId = sections[currentSectionIndex].id;
-        // console.log('[PostingScreen] questions: ')
+
         logObject("[PostingScreen] questions:", questions);
         console.log("[PostingScreen] flag 1");
         logObject("sections: ", sections);
@@ -262,7 +263,15 @@ export default function PostingScreen({
         sections[currentSectionIndex].questions.push(newQuestion);
         // console.log("[PostingScreen] flag 2");
         logObject("after question add flag 2, ", questions);
-        prevQuestions.push(newQuestion);
+
+        if (
+            prevQuestions.findIndex(
+                question => question.id === newQuestion.id
+            ) === -1
+        ) {
+            prevQuestions.push(newQuestion);
+        }
+
         logObject("after question add flag 3, ", questions);
         setQuestions(prevQuestions);
         // 여기서 중복 일어남
@@ -319,6 +328,26 @@ export default function PostingScreen({
         }
     };
 
+    useEffect(() => {
+        // setUniqueQuestions(questions.filter((question) => ))
+        const uniques = questions.filter(
+            (question, index, arr) =>
+                arr.findIndex(t => t.id === question.id) === index
+        );
+        setUniqueQuestions(uniques);
+    }, [questions]);
+
+    const listHeader = () => {
+        return (
+            <SurveyTitleModal
+                setSurveyTitle={setSurveyTitle}
+                surveyTitle={surveyTitle}
+                titleModalVisible={titleModalVisible}
+                setTitleModalVisible={setTitleModalVisible}
+                setConfirmTapped={setConfirmTapped}
+            />
+        );
+    };
     const listFooter = () => {
         return (
             <View style={{ justifyContent: "center" }}>
@@ -341,7 +370,7 @@ export default function PostingScreen({
     };
     const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => {
         return (
-            <View>
+            <View style={{ marginHorizontal: marginSizes.l20 }}>
                 <PostingQuestionBox
                     key={item.id}
                     question={item}
@@ -396,17 +425,9 @@ export default function PostingScreen({
             />
 
             <View style={styles.subContainer}>
-                <Spacer size={30} />
-                <SurveyTitleModal
-                    setSurveyTitle={setSurveyTitle}
-                    surveyTitle={surveyTitle}
-                    titleModalVisible={titleModalVisible}
-                    setTitleModalVisible={setTitleModalVisible}
-                    setConfirmTapped={setConfirmTapped}
-                />
                 {/* <Spacer size={30} /> */}
                 <FlatList
-                    data={questions.filter(
+                    data={uniqueQuestions.filter(
                         q => q.sectionId === sections[currentSectionIndex].id
                     )}
                     renderItem={postingQuestionBoxItem}
@@ -418,7 +439,16 @@ export default function PostingScreen({
                     )}
                     style={styles.questionList}
                     ListFooterComponent={listFooter}
-                    ListFooterComponentStyle={{ marginTop: 30 }}
+                    ListFooterComponentStyle={{
+                        marginTop: 30,
+                        marginBottom: 20,
+                        marginHorizontal: marginSizes.l20,
+                    }}
+                    ListHeaderComponent={listHeader}
+                    ListHeaderComponentStyle={{
+                        marginTop: 20,
+                        marginBottom: 20,
+                    }}
                 />
             </View>
             {/* <Menu style={styles.sectionMenu}> */}
@@ -476,13 +506,14 @@ export default function PostingScreen({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "space-between",
+        // justifyContent: "space-between",
         backgroundColor: colors.background,
     },
     subContainer: {
-        marginHorizontal: marginSizes.l20,
-        marginVertical: marginSizes.m16,
-        gap: 20,
+        // marginHorizontal: marginSizes.l20,
+        // backgroundColor: "magenta",
+        // marginVertical: marginSizes.m16,
+        // gap: 20,
         // marginVertical: 8,
     },
     questionContainer: {
@@ -591,8 +622,9 @@ const styles = StyleSheet.create({
     },
 
     questionList: {
-        marginTop: marginSizes.xl24,
-        marginBottom: marginSizes.m16,
+        // marginHorizontal: marginSizes.l20,
+        // marginTop: marginSizes.xl24,
+        // marginBottom: marginSizes.m16,
     },
     modalContainer: {
         flex: 1,
@@ -609,7 +641,7 @@ const styles = StyleSheet.create({
         flexGrow: 0.9,
     },
     sectionBoxItemStyle: {
-        backgroundColor: "magenta",
+        // backgroundColor: "magenta",
         marginHorizontal: 5,
         borderRadius: 6,
         overflow: "hidden",

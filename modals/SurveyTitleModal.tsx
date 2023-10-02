@@ -124,6 +124,8 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: "gray",
         borderWidth: 1,
+        borderRadius: 10,
+        overflow: "hidden",
         width: 300,
         paddingLeft: 10,
         marginVertical: 20,

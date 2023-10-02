@@ -81,7 +81,7 @@ export default function PostingScreen({
     const [surveyTitle, setSurveyTitle] = useState<string>("");
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 
-    const [numberOfSections, setNumberOfSections] = useState(1);
+    // const [numberOfSections, setNumberOfSections] = useState(1);
     const [titleModalVisible, setTitleModalVisible] = useState(false);
     const [isConfirmTapped, setConfirmTapped] = useState(false);
     const [isCreatingQuestionModalVisible, setIsCreatingQuestionModalVisible] =
@@ -89,27 +89,30 @@ export default function PostingScreen({
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const addSection = () => {
-        setNumberOfSections(numberOfSections + 1);
-        console.log(
-            "[PostingScreen] current numberofSections: ",
-            numberOfSections
-        );
+        const newSection = makeSection(sections.length);
+        const newSections = [...sections, newSection];
+        setSections(newSections);
+        // setSections(prevSections => [...prevSections, newSection])
+        // setSections(sections);
+        console.log("addSection tapped, numberOfSections: " + sections.length);
     };
 
-    const renderSectionOptions = () => {
+    // useEffect(() => {
+    //     // renderSectionOptions()
+    // }, [sections]);
+
+    const renderSectionOptions = (mysections: Section[]) => {
         const sectionOptions = [];
-        for (let i = 1; i <= numberOfSections; i++) {
+        for (let i = 1; i <= mysections.length; i++) {
             sectionOptions.push(
                 <MenuOption
                     key={`section-option-${i}`}
                     onSelect={() => {
-                        handleMenuOptionSelect(i);
+                        handleMenuOptionSelect(i - 1);
                     }}
                     style={styles.option}
                 >
-                    <Text style={{ fontSize: fontSizes.s16 }}>
-                        Section Option {i}
-                    </Text>
+                    <Text style={{ fontSize: fontSizes.s16 }}>Section {i}</Text>
                 </MenuOption>
             );
         }
@@ -117,7 +120,7 @@ export default function PostingScreen({
     };
 
     const handleMenuPress = () => {
-        setIsMenuOpen(true);
+        setIsMenuOpen(!isMenuOpen);
     };
 
     const handleMenuOptionSelect = (sectionIndex: number) => {
@@ -128,7 +131,7 @@ export default function PostingScreen({
         setIsMenuOpen(false);
     };
 
-    const handleAddMenu = () => {
+    const handleAddSection = () => {
         setIsMenuOpen(false);
         addSection();
     };
@@ -149,7 +152,6 @@ export default function PostingScreen({
             setSections([newSection]);
         }
     });
-    useEffect(() => {}, []);
 
     useEffect(() => {
         if (isConfirmTapped && questions.length === 0) {
@@ -166,6 +168,7 @@ export default function PostingScreen({
         navigation.setOptions({
             headerRight: () => (
                 <View style={styles.rightNavContainer}>
+                    {/* three-dot menu */}
                     <Menu style={styles.threeDotMenu}>
                         <MenuTrigger
                             customStyles={{}}
@@ -194,13 +197,65 @@ export default function PostingScreen({
                             </MenuOption>
                             <View style={styles.divider} />
                             <MenuOption
-                                onSelect={handleSecondOptionTapped}
+                                onSelect={handleInitializeTapped}
                                 style={styles.option}
                             >
                                 <Text>초기화</Text>
                             </MenuOption>
                         </MenuOptions>
                     </Menu>
+
+                    {/*  */}
+                    <Menu style={styles.sectionMenu}>
+                        <MenuTrigger
+                            onPress={handleMenuPress}
+                            customStyles={{
+                                triggerOuterWrapper: { flexDirection: "row" },
+                            }}
+                        >
+                            <Foundation name="page-copy" size={30} />
+                        </MenuTrigger>
+                        <MenuOptions
+                            customStyles={{
+                                optionsContainer: styles.sectionOptionContainer,
+                            }}
+                            // optionsContainerStyle={{ marginBottom: 70 }}
+                        >
+                            {/* <Text
+                                style={{
+                                    padding: 10,
+                                    fontWeight: "bold",
+                                    fontSize: fontSizes.s16,
+                                }}
+                            >
+                                Section
+                            </Text> */}
+                            <TextButton
+                                title="Section"
+                                textStyle={{
+                                    padding: 10,
+                                    fontWeight: "bold",
+                                    fontSize: fontSizes.s16,
+                                }}
+                                onPress={() => {
+                                    console.log("section tapped");
+                                    handleMenuPress();
+                                }}
+                            />
+
+                            {renderSectionOptions(sections)}
+
+                            <MenuOption
+                                onSelect={handleAddSection}
+                                style={styles.option}
+                            >
+                                <Text style={styles.optionText}>
+                                    Add Section
+                                </Text>
+                            </MenuOption>
+                        </MenuOptions>
+                    </Menu>
+
                     <ImageButton
                         img={require("../assets/sendIcon.png")}
                         onPress={handleSendButtonTapped}
@@ -215,8 +270,7 @@ export default function PostingScreen({
         log("send pressed");
         let selectableOptions: SelectableOption[] = [];
         let sections: Section[] = [];
-        // Section 을 안만들어두었구나?
-        // const testSection = makeSection("sectionTitle", 100, 5);
+
         const testSection = makeSection(1);
 
         sections.push(testSection);
@@ -242,7 +296,7 @@ export default function PostingScreen({
         log("first option tapped");
     };
 
-    const handleSecondOptionTapped = async () => {
+    const handleInitializeTapped = async () => {
         log("first option tapped");
         setQuestions([]);
         setSections([]);
@@ -328,13 +382,15 @@ export default function PostingScreen({
         }
     };
 
+    // TODO: Unique Question 의 Index 정리하기.
     useEffect(() => {
-        // setUniqueQuestions(questions.filter((question) => ))
-        const uniques = questions.filter(
-            (question, index, arr) =>
-                arr.findIndex(t => t.id === question.id) === index
-        );
-        setUniqueQuestions(uniques);
+        if (questions.length !== 0) {
+            const uniques = questions.filter(
+                (question, index, arr) =>
+                    arr.findIndex(t => t.id === question.id) === index
+            );
+            setUniqueQuestions(uniques);
+        }
     }, [questions]);
 
     const listHeader = () => {
@@ -425,15 +481,12 @@ export default function PostingScreen({
             />
 
             <View style={styles.subContainer}>
-                {/* <Spacer size={30} /> */}
                 <FlatList
                     data={uniqueQuestions.filter(
                         q => q.sectionId === sections[currentSectionIndex].id
                     )}
                     renderItem={postingQuestionBoxItem}
                     keyExtractor={item => `${item.id}`}
-                    // key={item => `${item.id}`}
-                    // key={id}
                     ItemSeparatorComponent={() => (
                         <View style={{ height: 12 }} />
                     )}
@@ -450,54 +503,6 @@ export default function PostingScreen({
                         marginBottom: 20,
                     }}
                 />
-            </View>
-            {/* <Menu style={styles.sectionMenu}> */}
-            <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
-                <Menu style={styles.sectionMenu}>
-                    <MenuTrigger
-                        onPress={handleMenuPress}
-                        customStyles={{
-                            triggerOuterWrapper: { flexDirection: "row" },
-                        }}
-                    >
-                        <Foundation name="page-copy" size={30} />
-                    </MenuTrigger>
-                    <MenuOptions
-                        customStyles={{
-                            optionsContainer: styles.sectionOptionContainer,
-                        }}
-                        // optionsContainerStyle={{ marginop: 20, marginRight: 10 }}
-                        optionsContainerStyle={{ marginBottom: 70 }}
-                    >
-                        <Text
-                            style={{
-                                padding: 10,
-                                fontWeight: "bold",
-                                fontSize: fontSizes.s16,
-                            }}
-                        >
-                            Section
-                        </Text>
-
-                        {renderSectionOptions()}
-
-                        <MenuOption
-                            onSelect={handleAddMenu}
-                            style={styles.option}
-                        >
-                            <Text style={styles.optionText}>Add Section</Text>
-                        </MenuOption>
-                    </MenuOptions>
-                </Menu>
-                <Text
-                    style={{
-                        flexDirection: "row",
-                        marginBottom: 5,
-                        marginRight: 5,
-                    }}
-                >
-                    {currentSectionIndex + 1}
-                </Text>
             </View>
         </SafeAreaView>
     );
@@ -594,7 +599,6 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         borderRadius: 40,
     },
-
     expectedTime: {
         flexBasis: 24,
         height: 24,
@@ -665,8 +669,8 @@ const styles = StyleSheet.create({
         width: 100,
     },
     sectionOptionContainer: {
-        borderRadius: 10,
-        width: 150,
+        // borderRadius: 10,
+        // width: 150,
     },
     option: {
         paddingVertical: 10,
@@ -681,10 +685,13 @@ const styles = StyleSheet.create({
     },
     rightNavContainer: {
         flexDirection: "row",
-        marginRight: 20,
+        // marginRight: 20,
+        marginRight: 12,
+        justifyContent: "space-around",
+        gap: 10,
     },
     sectionMenu: {
         // alignSelf: "flex-end",
-        margin: 20,
+        // margin: 20,
     },
 });

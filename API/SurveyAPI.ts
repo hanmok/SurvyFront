@@ -40,7 +40,6 @@ export async function postWholeSurvey(
         });
         if (!response.ok) {
             console.log(`posting whole survey error!!`);
-            // 여기 에러
             throw new Error("posting whole survey error!!!!");
         }
         const responseData: ApiResponse = await response.json();

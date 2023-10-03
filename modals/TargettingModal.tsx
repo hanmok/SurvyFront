@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Text,
     TextInput,
+    TouchableOpacity,
     TouchableWithoutFeedback,
     View,
 } from "react-native";
@@ -14,11 +15,14 @@ import { fontSizes } from "../utils/sizes";
 import SelectableTextButton from "../components/SelectableTextButton";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AgeSlider from "../components/posting/AgeSlider";
 import GenderSelection from "../components/posting/GenderSelection";
 import { Entypo } from "@expo/vector-icons";
 import Spacer from "../components/Spacer";
+import CategorySelectionModal from "./CategorySelectionModal";
+import { logObject } from "../utils/Log";
+import { CustomLocation } from "../utils/Geo";
 
 interface TargettingModalProps {
     // isCreatingQuestionModalVisible: boolean;
@@ -34,10 +38,40 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
     onConfirm,
     isTargettingModalVisible,
 }) => {
+    const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
+    const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
+    const [ageRange, setAgeRange] = useState<number[]>([20, 30]);
+    const [selectedLocations, setSelectedLocations] = useState<
+        CustomLocation[]
+    >([]);
+    const [satisfied, setSatisfied] = useState(false);
+
+    const toggleCategoryModal = () => {
+        setCategoryModalVisible(!isCategoryModalVisible);
+    };
+
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
-    const [satisfied, setSatisfied] = useState(false);
+
+    useEffect(() => {
+        const isConditionSatisfied =
+            selectedLocations.length !== 0 && selectedGenres.length !== 0;
+
+        setSatisfied(isConditionSatisfied);
+    }, [ageRange, , selectedGenres]);
+    const categorySelectionConfirmAction = (genres: Genre[]) => {
+        toggleCategoryModal();
+
+        setSelectedGenres(genres);
+
+        logObject("genres: ", genres);
+        // 아래에 보이도록 해야지..??
+    };
+
+    // useEffect(() => {
+
+    // }, [selectedGenres])
 
     const locationItem = ({ item }: { item: string }) => {
         return (
@@ -51,20 +85,43 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
             />
         );
     };
+
+    const genreItem = ({ item }: { item: Genre }) => {
+        return (
+            <View
+                style={{
+                    borderColor: "black",
+                    borderRadius: 5,
+                    overflow: "hidden",
+                    borderWidth: 1,
+                    height: 30,
+                    marginHorizontal: 5,
+                    width: 50,
+                }}
+            >
+                <Text>{item.name}</Text>
+            </View>
+        );
+    };
+
     return (
         <Modal transparent={true} visible={isTargettingModalVisible}>
+            <CategorySelectionModal
+                onClose={toggleCategoryModal}
+                onCategorySelection={categorySelectionConfirmAction}
+                isCategorySelectionModalVisible={isCategoryModalVisible}
+            />
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
-                        {/* 나이 */}
-                        <AgeSlider />
+                        {/* Age */}
+                        <AgeSlider setAgeRange={setAgeRange} />
 
                         {/* 성별 */}
                         <View>
                             <Text
                                 style={{
                                     marginBottom: 20,
-                                    // alignSelf: "center",
                                     fontSize: fontSizes.m20,
                                 }}
                             >
@@ -75,10 +132,17 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                         {/* 지역 */}
 
                         <View
-                            style={{ margin: 10, marginTop: 0, height: 300 }}
+                            style={{ margin: 10, marginTop: 30, height: 320 }}
                             // style={{ margin: 10, marginTop: 30, flex: 1 }}
                         >
-                            <Text style={styles.locationTitle}>지역</Text>
+                            <Text
+                                style={[
+                                    styles.locationTitle,
+                                    { marginBottom: 10 },
+                                ]}
+                            >
+                                지역
+                            </Text>
 
                             <FlatList
                                 data={Geo[1]}
@@ -93,7 +157,8 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                                 }}
                             />
                         </View>
-                        <View>
+                        {/* Category */}
+                        <View style={{ flex: 1 }}>
                             <Text
                                 style={{
                                     fontSize: fontSizes.m20,
@@ -105,7 +170,8 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                             </Text>
                             {/* Horizontal Search*/}
                             <View style={{ flexDirection: "row" }}>
-                                <TextInput
+                                <TouchableOpacity
+                                    onPress={toggleCategoryModal}
                                     style={{
                                         borderRadius: 10,
                                         backgroundColor: "white",
@@ -122,6 +188,20 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                                     color="black"
                                 />
                             </View>
+                            {selectedGenres.length !== 0 && (
+                                <FlatList
+                                    data={selectedGenres}
+                                    renderItem={genreItem}
+                                    keyExtractor={item => `${item.id}`}
+                                    numColumns={5}
+                                    style={{
+                                        height: 40,
+                                        marginTop: 10,
+                                        width: "100%",
+                                        backgroundColor: "magenta",
+                                    }}
+                                />
+                            )}
                         </View>
                         <View style={styles.bottomContainer}>
                             <TextButton

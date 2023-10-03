@@ -1,3 +1,8 @@
+export interface CustomLocation {
+    name: string;
+    code: number;
+}
+
 const 서울: string[] = [
     "종로구",
     "중구",

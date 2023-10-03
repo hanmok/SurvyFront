@@ -3,3 +3,8 @@ interface ApiResponse<T = any> {
     message: string;
     data?: T;
 }
+
+interface Genre {
+    id: number;
+    name: string;
+}

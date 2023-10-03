@@ -4,15 +4,26 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { fontSizes } from "../../utils/sizes";
 import { colors } from "../../utils/colors";
 
-const AgeSlider = () => {
-    const [values, setValues] = useState([20, 30]);
+interface AgeSliderProps {
+    // ageRange: number[];
+    setAgeRange: (ages: number[]) => void;
+}
+
+// const AgeSlider = (ages: number[]) => {
+const AgeSlider: React.FC<AgeSliderProps> = ({
+    // ageRange,
+    // setAgeRange
+    setAgeRange,
+}) => {
+    const [ages, setAges] = useState([20, 30]);
 
     const handleSliderChange = values => {
-        setValues(values);
+        setAges(values);
+        setAgeRange(values);
+        // setAgeRange(values);
     };
 
     return (
-        // <View style={{ backgroundColor: "magenta" }}>
         <View>
             <Text
                 style={{
@@ -24,7 +35,7 @@ const AgeSlider = () => {
             </Text>
 
             <MultiSlider
-                values={values}
+                values={ages}
                 sliderLength={250}
                 onValuesChange={handleSliderChange}
                 min={16}
@@ -40,7 +51,7 @@ const AgeSlider = () => {
                 }}
             />
             <Text style={{ alignSelf: "center" }}>
-                {values[0]} ~ {values[1]}
+                {ages[0]} ~ {ages[1]}
             </Text>
         </View>
     );

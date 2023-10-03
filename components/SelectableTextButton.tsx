@@ -27,6 +27,7 @@ const SelectableTextButton: React.FC<TextButtonProps> = ({
         setIsSelected(!isSelected);
         onPress();
     };
+
     return (
         <TouchableOpacity
             // style={[styles.container, backgroundStyle]}
@@ -45,7 +46,15 @@ const SelectableTextButton: React.FC<TextButtonProps> = ({
             }
             onPress={handleSelection}
         >
-            <Text style={textStyle}>{title}</Text>
+            <Text
+                style={
+                    isSelected
+                        ? [textStyle, { color: "white" }]
+                        : [textStyle, { color: "black" }]
+                }
+            >
+                {title}
+            </Text>
         </TouchableOpacity>
     );
 };
@@ -54,7 +63,6 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
     },
-    text: {},
 });
 
 export default SelectableTextButton;

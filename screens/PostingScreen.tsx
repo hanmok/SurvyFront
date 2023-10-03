@@ -15,7 +15,6 @@ import {
 } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
-import Geolocation from "@react-native-community/geolocation";
 import {
     fontSizes,
     marginSizes,
@@ -125,7 +124,7 @@ export default function PostingScreen({
 
     const handleTargetSelection = () => {
         log("target called");
-        printLocation();
+        // printLocation();
         // toggleTargettingModal();
     };
 
@@ -167,15 +166,15 @@ export default function PostingScreen({
         }
     });
 
-    const printLocation = () => {
-        console.log("hi");
-        Geolocation.getCurrentPosition(position => {
-            const currentLongiture = position.coords.longitude;
-            const latitude = position.coords.latitude;
-            console.log("current longitude: " + currentLongiture);
-            console.log("current latitude: " + latitude);
-        });
-    };
+    // const printLocation = () => {
+    //     console.log("hi");
+    //     Geolocation.getCurrentPosition(position => {
+    //         const currentLongiture = position.coords.longitude;
+    //         const latitude = position.coords.latitude;
+    //         console.log("current longitude: " + currentLongiture);
+    //         console.log("current latitude: " + latitude);
+    //     });
+    // };
 
     useEffect(() => {
         if (isConfirmTapped && questions.length === 0) {

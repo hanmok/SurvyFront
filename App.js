@@ -76,13 +76,15 @@ export default function App() {
                     {/* <GreetingComponent /> */}
                     <NavigationContainer>
                         <Stack.Navigator>
-                            <Stack.Screen
+                            {/* 테스트 용으로 막아둠 */}
+                            {/* <Stack.Screen
                                 name={NavigationTitle.login}
                                 component={LoginScreen}
                                 options={{
                                     headerShown: false,
                                 }}
-                            />
+                            /> */}
+
                             <Stack.Screen
                                 name={NavigationTitle.mainTabs}
                                 component={MainTabs}

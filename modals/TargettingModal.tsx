@@ -1,5 +1,6 @@
 import {
     Button,
+    FlatList,
     Keyboard,
     Modal,
     StyleSheet,
@@ -8,6 +9,7 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+import Geo from "../utils/Geo";
 import { fontSizes } from "../utils/sizes";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
@@ -36,6 +38,18 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
     };
     const [satisfied, setSatisfied] = useState(false);
 
+    const locationItem = ({ item }: { item: string }) => {
+        return (
+            <TextButton
+                title={item}
+                textStyle={{ alignSelf: "center" }}
+                backgroundStyle={styles.locationContainer}
+                onPress={() => {
+                    console.log("selected location: " + item);
+                }}
+            />
+        );
+    };
     return (
         <Modal transparent={true} visible={isTargettingModalVisible}>
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -58,10 +72,25 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                             <GenderSelection />
                         </View>
                         {/* 지역 */}
-                        <View>
-                            <Text style={{ fontSize: fontSizes.m20 }}>
-                                지역
-                            </Text>
+
+                        {/* height 지정 안할 시  */}
+                        <View
+                            style={{ margin: 10, marginTop: 30, height: 300 }}
+                            // style={{ margin: 10, marginTop: 30, flex: 1 }}
+                        >
+                            <Text style={styles.locationTitle}>지역</Text>
+
+                            <FlatList
+                                data={Geo[1]}
+                                renderItem={locationItem}
+                                keyExtractor={item => `${item[0]}`}
+                                numColumns={5}
+                                style={{
+                                    backgroundColor: "magenta",
+                                    // height: 150,
+                                    width: "100%",
+                                }}
+                            />
                         </View>
                         <View>
                             <Text
@@ -178,5 +207,19 @@ const styles = StyleSheet.create({
     },
     activatedStyle: {
         backgroundColor: colors.white,
+    },
+    locationContainer: {
+        width: 60,
+        height: 30,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: "black",
+        overflow: "hidden",
+        margin: 5,
+        justifyContent: "center",
+    },
+    locationTitle: {
+        fontSize: fontSizes.m20,
+        marginLeft: 50,
     },
 });

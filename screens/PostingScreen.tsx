@@ -91,32 +91,24 @@ export default function PostingScreen({
     const [isConfirmTapped, setConfirmTapped] = useState(false);
     const [location, setLocation] = useState();
 
-    useEffect(() => {
-        const getPermissions = async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== "granted") {
-                console.log("Please grant location permissions");
-                return;
-            }
+    /** use in mymage */
+    // useEffect(() => {
+    //     const getPermissions = async () => {
+    //         let { status } = await Location.requestForegroundPermissionsAsync();
+    //         if (status !== "granted") {
+    //             console.log("Please grant location permissions");
+    //             return;
+    //         }
 
-            let currentLocation = await Location.getCurrentPositionAsync({});
+    //         let currentLocation = await Location.getCurrentPositionAsync({});
+    //         logObject("current location: ", currentLocation);
+    //         const longitude = currentLocation.coords.longitude;
+    //         const latitude = currentLocation.coords.latitude;
 
-            logObject("current location: ", currentLocation);
-            // setLocation(currentLocation)
-            const longitude = currentLocation.coords.longitude;
-            const latitude = currentLocation.coords.latitude;
-
-            // const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84`;
-            // const restKEY = "5973832cf035c04ef3cd75c15c90c7cc";
-
-            // GET
-            // Header Authorization: KakaoAK restKey
-            // Content-type: application/json;charset=UTF-8
-
-            getAddress(longitude, latitude);
-        };
-        getPermissions();
-    }, []);
+    //         getAddress(longitude, latitude);
+    //     };
+    //     getPermissions();
+    // }, []);
 
     const addSection = () => {
         const newSection = makeSection(sections.length);
@@ -156,7 +148,7 @@ export default function PostingScreen({
     const handleTargetSelection = () => {
         log("target called");
         // printLocation();
-        // toggleTargettingModal();
+        toggleTargettingModal();
     };
 
     // const handleMenuPress = () => {

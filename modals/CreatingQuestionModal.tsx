@@ -23,7 +23,7 @@ import {
     SelectableOption,
     makeSelectableOption,
 } from "../interfaces/SelectableOption";
-import { log } from "../utils/Log";
+import { log, logObject } from "../utils/Log";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
 
@@ -47,6 +47,37 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
     const [satisfied, setSatisfied] = useState<boolean>(false);
     const [placeHolder, setPlaceHolder] = useState<string>("placeholder");
 
+    const handleConfirm = () => {
+        let selectableOptions: SelectableOption[] = [];
+        let question = makeQuestion(
+            position,
+            questionTitle,
+            questionType,
+            [] // selectableOptions
+        );
+        log(`question made: ${JSON.stringify(question)}`);
+
+        if (questionType === QuestionType.Essay) {
+            const selectableOption = makeSelectableOption(
+                question.id,
+                0,
+                placeHolder
+            );
+            selectableOptions.push(selectableOption);
+        } else {
+            dynamicInputValues.map((optionText, index) => {
+                const selectableOption = makeSelectableOption(
+                    question.id,
+                    index,
+                    optionText
+                );
+                selectableOptions.push(selectableOption);
+            });
+        }
+        question.selectableOptions = selectableOptions;
+        logObject("question added", question);
+        onAdd(question);
+    };
     const toggleExtraOptionSwitch = () => {
         setIsExtraOptionEnabled(prev => !prev);
     };
@@ -212,65 +243,17 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 justifyContent: "space-between",
                             }}
                         >
-                            <TouchableOpacity
+                            <TextButton
+                                title="취소"
+                                textStyle={styles.bottomTextStyle}
                                 onPress={handleModalClose}
-                                style={styles.bottomLeftButtonTextContainer}
-                            >
-                                <Text style={styles.bottomTextStyle}>취소</Text>
-                            </TouchableOpacity>
+                                backgroundStyle={
+                                    styles.bottomLeftButtonTextContainer
+                                }
+                            />
 
-                            <TouchableOpacity
-                                onPress={() => {
-                                    log(
-                                        `dynamic input values: ${dynamicInputValues}`
-                                    );
-                                    let selectableOptions: SelectableOption[] =
-                                        [];
-                                    const sectionId = 264;
-                                    let question = makeQuestion(
-                                        position,
-                                        questionTitle,
-                                        questionType,
-                                        sectionId,
-                                        []
-                                    );
-                                    log(
-                                        `question made: ${JSON.stringify(
-                                            question
-                                        )}`
-                                    );
-
-                                    if (questionType === QuestionType.Essay) {
-                                        // selectableOptions
-                                        const selectableOption =
-                                            makeSelectableOption(
-                                                question.id,
-                                                0,
-                                                placeHolder
-                                            );
-                                        selectableOptions.push(
-                                            selectableOption
-                                        );
-                                    } else {
-                                        dynamicInputValues.map(
-                                            (optionText, index) => {
-                                                const selectableOption =
-                                                    makeSelectableOption(
-                                                        question.id,
-                                                        index,
-                                                        optionText
-                                                    );
-                                                selectableOptions.push(
-                                                    selectableOption
-                                                );
-                                            }
-                                        );
-                                    }
-                                    question.selectableOptions =
-                                        selectableOptions;
-
-                                    onAdd(question);
-                                }}
+                            {/* <TouchableOpacity
+                                onPress={handleConfirm}
                                 style={
                                     satisfied
                                         ? [
@@ -284,7 +267,24 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 }
                             >
                                 <Text style={styles.bottomTextStyle}>확인</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
+
+                            <TextButton
+                                onPress={handleConfirm}
+                                title="확인"
+                                backgroundStyle={
+                                    satisfied
+                                        ? [
+                                              styles.bottomRightButtonTextContainer,
+                                              styles.activatedStyle,
+                                          ]
+                                        : [
+                                              styles.bottomRightButtonTextContainer,
+                                              styles.inactivatedStyle,
+                                          ]
+                                }
+                                textStyle={styles.bottomTextStyle}
+                            />
                         </View>
                     </View>
                 </View>
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         flexGrow: 1,
-        marginVertical: 40, // 전체 화면 관리
+        marginVertical: 60, // 전체 화면 관리
         marginHorizontal: 20,
         backgroundColor: "white",
         borderRadius: 10,

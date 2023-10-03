@@ -16,7 +16,7 @@ export const makeQuestion = (
     position: number,
     text: string,
     questionType: QuestionType,
-    sectionId: number,
+    // sectionId: number | undefined,
     selectableOptions: SelectableOption[]
 ): Question => {
     const question: Question = {
@@ -25,8 +25,9 @@ export const makeQuestion = (
 
         id: makeRandomNumber(),
         expectedTimeInSec: undefined,
+        sectionId: undefined,
         position: position,
-        sectionId: sectionId,
+        // sectionId: sectionId || undefined,
         text: text,
         questionType: questionType,
         selectableOptions: selectableOptions,

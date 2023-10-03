@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
+import Geolocation from "@react-native-community/geolocation";
 import {
     fontSizes,
     marginSizes,
@@ -63,6 +64,7 @@ import {
 } from "../utils/Storage";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
+import TargettingModal from "../modals/TargettingModal";
 
 export default function PostingScreen({
     navigation,
@@ -83,7 +85,7 @@ export default function PostingScreen({
     const [titleModalVisible, setTitleModalVisible] = useState(false);
     const [creatingQuestionModalVisible, setCreatingQuestionModalVisible] =
         useState(false);
-    // const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [targettingModalVisible, setTargettingModalVisible] = useState(false);
     const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
     const [isConfirmTapped, setConfirmTapped] = useState(false);
     const addSection = () => {
@@ -123,6 +125,8 @@ export default function PostingScreen({
 
     const handleTargetSelection = () => {
         log("target called");
+        printLocation();
+        // toggleTargettingModal();
     };
 
     // const handleMenuPress = () => {
@@ -146,6 +150,10 @@ export default function PostingScreen({
         setCreatingQuestionModalVisible(!creatingQuestionModalVisible);
     };
 
+    const toggleTargettingModal = () => {
+        setTargettingModalVisible(!targettingModalVisible);
+    };
+
     const [
         isModifyingQuestionModalVisible,
         setIsModifyingQuestionModalVisible,
@@ -158,6 +166,16 @@ export default function PostingScreen({
             setSections([...sections, newSection]);
         }
     });
+
+    const printLocation = () => {
+        console.log("hi");
+        Geolocation.getCurrentPosition(position => {
+            const currentLongiture = position.coords.longitude;
+            const latitude = position.coords.latitude;
+            console.log("current longitude: " + currentLongiture);
+            console.log("current latitude: " + latitude);
+        });
+    };
 
     useEffect(() => {
         if (isConfirmTapped && questions.length === 0) {
@@ -305,6 +323,7 @@ export default function PostingScreen({
     useEffect(() => {
         updateQuestions();
     }, [currentSectionIndex]);
+
     const handleFirstOptionTapped = () => {
         log("first option tapped");
     };
@@ -320,11 +339,10 @@ export default function PostingScreen({
         let prevQuestions = questions;
         newQuestion.sectionId = sections[currentSectionIndex].id;
 
-        logObject("[PostingScreen] questions:", questions);
-        console.log("[PostingScreen] flag 1");
-        logObject("sections: ", sections);
-        logObject("currentSection: ", sections[currentSectionIndex]);
-        logObject("questions: ", sections[currentSectionIndex].questions);
+        // logObject("[PostingScreen] questions:", questions);
+        // logObject("sections: ", sections);
+        // logObject("currentSection: ", sections[currentSectionIndex]);
+        // logObject("questions: ", sections[currentSectionIndex].questions);
 
         logObject("after question add flag 1, ", questions);
         sections[currentSectionIndex].questions.push(newQuestion);
@@ -343,13 +361,13 @@ export default function PostingScreen({
         setQuestions(prevQuestions);
         // 여기서 중복 일어남
         logObject("after question add flag 4, ", questions);
-        // setIsCreatingQuestionModalVisible(!isCreatingQuestionModalVisible);
         setCreatingQuestionModalVisible(false);
 
         const postingSurvey: PostingSurveyState = {
             surveyTitle,
             sections,
         };
+        updateQuestions();
         await savePosting(postingSurvey);
         console.log("[PostingScreen] savePosting ended");
         logObject("questions: ", questions);
@@ -485,6 +503,12 @@ export default function PostingScreen({
                 onClose={toggleModifyingModal}
                 onModify={modifyQuestion}
                 selectedQuestion={questions[selectedQuestionIndex]}
+            />
+
+            <TargettingModal
+                onClose={toggleTargettingModal}
+                onConfirm={toggleTargettingModal}
+                isTargettingModalVisible={targettingModalVisible}
             />
 
             <View style={styles.subContainer}>

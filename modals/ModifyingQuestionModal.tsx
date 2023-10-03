@@ -308,8 +308,9 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0, 0, 0, 0.7)",
     },
     modalContent: {
+        // 전체 화면 관리
         flexGrow: 1,
-        marginVertical: 40, // 전체 화면 관리
+        marginVertical: 60,
         marginHorizontal: 20,
         backgroundColor: "white",
         borderRadius: 10,

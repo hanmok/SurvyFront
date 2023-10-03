@@ -46,6 +46,7 @@ import {
     MenuProvider,
     MenuTrigger,
 } from "react-native-popup-menu";
+import * as Location from "expo-location";
 import {
     Entypo,
     Feather,
@@ -64,6 +65,7 @@ import {
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import TargettingModal from "../modals/TargettingModal";
+import { getAddress } from "../API/GeoAPI";
 
 export default function PostingScreen({
     navigation,
@@ -87,6 +89,35 @@ export default function PostingScreen({
     const [targettingModalVisible, setTargettingModalVisible] = useState(false);
     const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
     const [isConfirmTapped, setConfirmTapped] = useState(false);
+    const [location, setLocation] = useState();
+
+    useEffect(() => {
+        const getPermissions = async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== "granted") {
+                console.log("Please grant location permissions");
+                return;
+            }
+
+            let currentLocation = await Location.getCurrentPositionAsync({});
+
+            logObject("current location: ", currentLocation);
+            // setLocation(currentLocation)
+            const longitude = currentLocation.coords.longitude;
+            const latitude = currentLocation.coords.latitude;
+
+            // const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84`;
+            // const restKEY = "5973832cf035c04ef3cd75c15c90c7cc";
+
+            // GET
+            // Header Authorization: KakaoAK restKey
+            // Content-type: application/json;charset=UTF-8
+
+            getAddress(longitude, latitude);
+        };
+        getPermissions();
+    }, []);
+
     const addSection = () => {
         const newSection = makeSection(sections.length);
         setSections(prev => [...prev, newSection]);

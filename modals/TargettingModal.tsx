@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import Geo from "../utils/Geo";
 import { fontSizes } from "../utils/sizes";
+import SelectableTextButton from "../components/SelectableTextButton";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
 import { useState } from "react";
@@ -40,7 +41,7 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
 
     const locationItem = ({ item }: { item: string }) => {
         return (
-            <TextButton
+            <SelectableTextButton
                 title={item}
                 textStyle={{ alignSelf: "center" }}
                 backgroundStyle={styles.locationContainer}
@@ -73,9 +74,8 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                         </View>
                         {/* 지역 */}
 
-                        {/* height 지정 안할 시  */}
                         <View
-                            style={{ margin: 10, marginTop: 30, height: 300 }}
+                            style={{ margin: 10, marginTop: 0, height: 300 }}
                             // style={{ margin: 10, marginTop: 30, flex: 1 }}
                         >
                             <Text style={styles.locationTitle}>지역</Text>
@@ -86,7 +86,8 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                                 keyExtractor={item => `${item[0]}`}
                                 numColumns={5}
                                 style={{
-                                    backgroundColor: "magenta",
+                                    // backgroundColor: "magenta",
+                                    backgroundColor: colors.gray4,
                                     // height: 150,
                                     width: "100%",
                                 }}

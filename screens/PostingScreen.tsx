@@ -456,22 +456,25 @@ export default function PostingScreen({
 
     const listHeader = () => {
         return (
-            <SurveyTitleModal
-                setSurveyTitle={setSurveyTitle}
-                surveyTitle={surveyTitle}
-                titleModalVisible={titleModalVisible}
-                setTitleModalVisible={setTitleModalVisible}
-                setConfirmTapped={setConfirmTapped}
-            />
+            <View style={styles.listHeaderStyle}>
+                <SurveyTitleModal
+                    setSurveyTitle={setSurveyTitle}
+                    surveyTitle={surveyTitle}
+                    titleModalVisible={titleModalVisible}
+                    setTitleModalVisible={setTitleModalVisible}
+                    setConfirmTapped={setConfirmTapped}
+                />
+            </View>
         );
     };
     const listFooter = () => {
         return (
-            <View style={{ justifyContent: "center" }}>
+            <View
+                // style={[styles.listFooterStyle, { justifyContent: "center" }]}
+                style={styles.listFooterStyle}
+            >
                 <TextButton
-                    // title="+"
                     title="질문 추가"
-                    // onPress={() => console.log}
                     onPress={toggleCreateModal}
                     textStyle={[
                         styles.plusButtonText,
@@ -535,31 +538,21 @@ export default function PostingScreen({
 
             <View style={styles.subContainer}>
                 {uniqueQuestions.length === 0 ? (
-                    <Text>Empty</Text>
+                    <View style={{ marginVertical: 30 }}>
+                        {listHeader()}
+                        <View style={{ height: 50 }} />
+                        {listFooter()}
+                    </View>
                 ) : (
                     <FlatList
-                        // data={uniqueQuestions.filter(
-                        //     q =>
-                        //         q.sectionId === sections[currentSectionIndex].id
-                        // )}
                         data={questionsToShow}
                         renderItem={postingQuestionBoxItem}
                         keyExtractor={item => `${item.id}`}
                         ItemSeparatorComponent={() => (
                             <View style={{ height: 12 }} />
                         )}
-                        style={styles.questionList}
                         ListFooterComponent={listFooter}
-                        ListFooterComponentStyle={{
-                            marginTop: 30,
-                            marginBottom: 20,
-                            marginHorizontal: marginSizes.l20,
-                        }}
                         ListHeaderComponent={listHeader}
-                        ListHeaderComponentStyle={{
-                            marginTop: 20,
-                            marginBottom: 20,
-                        }}
                     />
                 )}
             </View>
@@ -678,11 +671,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
 
-    questionList: {
-        // marginHorizontal: marginSizes.l20,
-        // marginTop: marginSizes.xl24,
-        // marginBottom: marginSizes.m16,
-    },
     modalContainer: {
         flex: 1,
         justifyContent: "center",
@@ -745,5 +733,15 @@ const styles = StyleSheet.create({
     sectionMenu: {
         // alignSelf: "flex-end",
         // margin: 20,
+    },
+    listHeaderStyle: {
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    listFooterStyle: {
+        marginTop: 30,
+        marginBottom: 20,
+        marginHorizontal: marginSizes.l20,
+        justifyContent: "center",
     },
 });

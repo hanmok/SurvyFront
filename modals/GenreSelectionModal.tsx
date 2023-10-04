@@ -18,16 +18,16 @@ import { getAllGenres } from "../API/GenreAPI";
 import { log, logObject } from "../utils/Log";
 import { screenWidth } from "../utils/ScreenSize";
 
-interface CategorySelectionModalProps {
+interface GenreSelectionModalProps {
     onClose: () => void;
-    onCategorySelection: (selectedGenres: Genre[]) => void;
-    isCategorySelectionModalVisible: boolean;
+    onGenreSelection: (selectedGenres: Genre[]) => void;
+    isGenreSelectionModalVisible: boolean;
 }
 
-const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
+const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
     onClose,
-    onCategorySelection,
-    isCategorySelectionModalVisible,
+    onGenreSelection,
+    isGenreSelectionModalVisible,
 }) => {
     const dismissKeyboard = () => {
         Keyboard.dismiss();
@@ -80,7 +80,7 @@ const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
     };
 
     return (
-        <Modal transparent={true} visible={isCategorySelectionModalVisible}>
+        <Modal transparent={true} visible={isGenreSelectionModalVisible}>
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
@@ -92,7 +92,7 @@ const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
                                 textAlign: "center",
                             }}
                         >
-                            Category Modal
+                            Genre Modal
                         </Text>
                         <View
                             style={{
@@ -137,7 +137,7 @@ const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
                             />
                             <TextButton
                                 onPress={() => {
-                                    onCategorySelection(selectedGenres);
+                                    onGenreSelection(selectedGenres);
                                 }}
                                 title="확인"
                                 backgroundStyle={
@@ -160,7 +160,7 @@ const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
         </Modal>
     );
 };
-export default CategorySelectionModal;
+export default GenreSelectionModal;
 
 const styles = StyleSheet.create({
     modalContainer: {

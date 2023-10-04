@@ -20,8 +20,8 @@ import AgeSlider from "../components/posting/AgeSlider";
 import GenderSelection from "../components/posting/GenderSelection";
 import { Entypo } from "@expo/vector-icons";
 import Spacer from "../components/Spacer";
-import CategorySelectionModal from "./CategorySelectionModal";
-import { logObject } from "../utils/Log";
+import GenreSelectionModal from "./GenreSelectionModal";
+import { log, logObject } from "../utils/Log";
 import { CustomLocation } from "../utils/Geo";
 
 interface TargettingModalProps {
@@ -38,7 +38,7 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
     onConfirm,
     isTargettingModalVisible,
 }) => {
-    const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
+    const [isGenreModalVisible, setGenreModalVisible] = useState(false);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
     const [ageRange, setAgeRange] = useState<number[]>([20, 30]);
     const [selectedLocations, setSelectedLocations] = useState<
@@ -46,8 +46,8 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
     >([]);
     const [satisfied, setSatisfied] = useState(false);
 
-    const toggleCategoryModal = () => {
-        setCategoryModalVisible(!isCategoryModalVisible);
+    const toggleGenreModal = () => {
+        setGenreModalVisible(!isGenreModalVisible);
     };
 
     const dismissKeyboard = () => {
@@ -57,21 +57,20 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
     useEffect(() => {
         const isConditionSatisfied =
             selectedLocations.length !== 0 && selectedGenres.length !== 0;
-
         setSatisfied(isConditionSatisfied);
-    }, [ageRange, , selectedGenres]);
-    const categorySelectionConfirmAction = (genres: Genre[]) => {
-        toggleCategoryModal();
+        logObject("selectedLocations: ", selectedLocations);
+        logObject("selectedGenres: ", selectedGenres);
+    }, [selectedLocations, , selectedGenres]);
 
+    useEffect(() => {
+        log("satisfied value changed to : " + satisfied);
+    }, [satisfied]);
+
+    const genreSelectionConfirmAction = (genres: Genre[]) => {
+        toggleGenreModal();
         setSelectedGenres(genres);
-
         logObject("genres: ", genres);
-        // 아래에 보이도록 해야지..??
     };
-
-    // useEffect(() => {
-
-    // }, [selectedGenres])
 
     const locationItem = ({ item }: { item: string }) => {
         return (
@@ -106,17 +105,16 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
 
     return (
         <Modal transparent={true} visible={isTargettingModalVisible}>
-            <CategorySelectionModal
-                onClose={toggleCategoryModal}
-                onCategorySelection={categorySelectionConfirmAction}
-                isCategorySelectionModalVisible={isCategoryModalVisible}
+            <GenreSelectionModal
+                onClose={toggleGenreModal}
+                onGenreSelection={genreSelectionConfirmAction}
+                isGenreSelectionModalVisible={isGenreModalVisible}
             />
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         {/* Age */}
                         <AgeSlider setAgeRange={setAgeRange} />
-
                         {/* 성별 */}
                         <View>
                             <Text
@@ -157,7 +155,7 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                                 }}
                             />
                         </View>
-                        {/* Category */}
+                        {/* Genre */}
                         <View style={{ flex: 1 }}>
                             <Text
                                 style={{
@@ -166,12 +164,12 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                                     marginBottom: 10,
                                 }}
                             >
-                                Category
+                                Genre
                             </Text>
                             {/* Horizontal Search*/}
                             <View style={{ flexDirection: "row" }}>
                                 <TouchableOpacity
-                                    onPress={toggleCategoryModal}
+                                    onPress={toggleGenreModal}
                                     style={{
                                         borderRadius: 10,
                                         backgroundColor: "white",

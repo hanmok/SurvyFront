@@ -23,6 +23,7 @@ import Spacer from "../components/Spacer";
 import GenreSelectionModal from "./GenreSelectionModal";
 import { log, logObject } from "../utils/Log";
 import { CustomLocation } from "../utils/Geo";
+import CostGuideModal from "./CostGuideModal";
 
 interface TargettingModalProps {
     // isCreatingQuestionModalVisible: boolean;
@@ -45,9 +46,14 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
         CustomLocation[]
     >([]);
     const [satisfied, setSatisfied] = useState(false);
+    const [isCostModalVisible, setCostModalVisible] = useState(false);
 
     const toggleGenreModal = () => {
         setGenreModalVisible(!isGenreModalVisible);
+    };
+
+    const toggleCostGuideModal = () => {
+        setCostModalVisible(!isCostModalVisible);
     };
 
     const dismissKeyboard = () => {
@@ -79,6 +85,14 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                 textStyle={{ alignSelf: "center" }}
                 backgroundStyle={styles.locationContainer}
                 onPress={() => {
+                    let idx = selectedLocations.indexOf({ item });
+                    if (idx === -1) {
+                        setSelectedLocations(prev => [...prev, { item }]);
+                    } else {
+                        let prev = selectedLocations;
+                        prev.splice(idx, 1);
+                        setSelectedLocations(prev);
+                    }
                     console.log("selected location: " + item);
                 }}
             />
@@ -110,6 +124,13 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                 onGenreSelection={genreSelectionConfirmAction}
                 isGenreSelectionModalVisible={isGenreModalVisible}
             />
+
+            <CostGuideModal
+                onClose={toggleCostGuideModal}
+                onConfirm={toggleCostGuideModal}
+                isCostGuideModalVisible={isCostModalVisible}
+            />
+
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
@@ -211,7 +232,8 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                                 }
                             />
                             <TextButton
-                                onPress={onConfirm}
+                                // onPress={onConfirm}
+                                onPress={toggleCostGuideModal}
                                 title="다음"
                                 backgroundStyle={
                                     satisfied

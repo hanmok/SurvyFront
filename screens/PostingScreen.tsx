@@ -147,13 +147,8 @@ export default function PostingScreen({
 
     const handleTargetSelection = () => {
         log("target called");
-        // printLocation();
         toggleTargettingModal();
     };
-
-    // const handleMenuPress = () => {
-    //     setIsMenuOpen(!isMenuOpen);
-    // };
 
     const handleMenuOptionSelect = (sectionIndex: number) => {
         console.log(

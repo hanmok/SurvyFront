@@ -1,6 +1,7 @@
 export interface CustomLocation {
-    name: string;
-    code: number;
+    // name: string;
+    item: string;
+    // code: number;
 }
 
 const 서울: string[] = [

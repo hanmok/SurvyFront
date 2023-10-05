@@ -70,6 +70,10 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
             <SelectableTextButton
                 title={item.name}
                 textStyle={{ alignSelf: "center" }}
+                selectedTextColor={colors.white}
+                unselectedTextColor="black"
+                selectedBackgroundColor={colors.magenta}
+                unselectedBackgroundColor={colors.transparent}
                 backgroundStyle={styles.locationContainer}
                 onPress={() => {
                     toggleGenreSelection(item);

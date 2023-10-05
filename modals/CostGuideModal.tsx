@@ -8,6 +8,7 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+
 import { fontSizes } from "../utils/sizes";
 import SelectableTextButton from "../components/SelectableTextButton";
 import TextButton from "../components/TextButton";
@@ -17,24 +18,53 @@ import { Entypo } from "@expo/vector-icons";
 import { getAllGenres } from "../API/GenreAPI";
 import { log, logObject } from "../utils/Log";
 import { screenWidth } from "../utils/ScreenSize";
+import { commonStyles } from "../utils/CommonStyles";
+import CostSelectionContainer from "../CostSelectionContainer";
+import * as accounting from "accounting";
+// const accounting = require("accounting");
 
 interface CostGuideModalProps {
     onClose: () => void;
     onConfirm: () => void;
     isCostGuideModalVisible: boolean;
+    expectedTimeInMin: number;
 }
 
 const CostGuideModal: React.FC<CostGuideModalProps> = ({
     onClose,
     onConfirm,
     isCostGuideModalVisible,
+    expectedTimeInMin,
 }) => {
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
+    const [isFree, setIsFree] = useState(true);
+    const [participationGoal, setParticipationGoal] = useState("10");
+    const [price, setPrice] = useState("0");
 
-    const [participationGoal, setParticipationGoal] = useState(undefined);
-    const [satisfied, setSatisfied] = useState(false);
+    useEffect(() => {
+        console.log(`[CostGuideModal], isFree: ${isFree}, price: ${price}`);
+        if (isFree) {
+            setPrice("0");
+        } else {
+            const value = parseInt(participationGoal) * 300 * expectedTimeInMin;
+            const numWithComma = accounting.formatMoney(value, {
+                symbol: "",
+                precision: 0,
+                thousand: ",",
+            });
+
+            setPrice(`${numWithComma}`);
+        }
+    }, [price, isFree, isCostGuideModalVisible]);
+
+    // 아래꺼가.. 업데이트 되지 않는 상황. 무료인지 유료인지 판별하는 친구가 맛이 갔음.
+
+    const toggleFreeState = (free: boolean) => {
+        // setIsFree(!isFree);
+        setIsFree(free);
+    };
 
     const toggleCostGuideSelection = () => {};
 
@@ -57,26 +87,41 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                         <View style={{ height: 300, width: 300 }}>
                             <View style={styles.mainContent}>
                                 <View style={styles.rowContainer}>
-                                    <Text>설문 인원</Text>
+                                    <Text style={commonStyles.font16}>
+                                        설문 인원
+                                    </Text>
                                     <TextInput
                                         value={participationGoal}
                                         onChangeText={setParticipationGoal}
                                         keyboardType="number-pad"
                                         placeholder="10"
+                                        style={commonStyles.font20}
                                     />
                                 </View>
                                 <View style={styles.rowContainer}>
-                                    <Text>예상 소요 시간</Text>
-                                    <Text> 5분 </Text>
+                                    <Text style={commonStyles.font16}>
+                                        예상 소요 시간
+                                    </Text>
+                                    <Text style={commonStyles.font16}>
+                                        {" "}
+                                        {expectedTimeInMin} 분{" "}
+                                    </Text>
                                 </View>
                                 <View style={styles.rowContainer}>
-                                    <Text>가격</Text>
-                                    <Text>
-                                        {parseInt(participationGoal || "10") *
-                                            5 *
-                                            300}
-                                        원
+                                    <Text style={commonStyles.font16}>
+                                        가격
                                     </Text>
+                                    <Text style={commonStyles.font16}>
+                                        {/* {parseInt(participationGoal || "10") * 5 * 300}{" "}원 */}
+                                        {price} 원
+                                    </Text>
+                                </View>
+                                <View style={{ alignItems: "center" }}>
+                                    <CostSelectionContainer
+                                        initialIndex={isFree ? 0 : 1}
+                                        // toggleFreeState={toggleFreeState}
+                                        toggleFreeState={toggleFreeState}
+                                    />
                                 </View>
                             </View>
                         </View>
@@ -93,17 +138,10 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                             <TextButton
                                 onPress={onConfirm}
                                 title="확인"
-                                backgroundStyle={
-                                    satisfied
-                                        ? [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.activatedStyle,
-                                          ]
-                                        : [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.inactivatedStyle,
-                                          ]
-                                }
+                                backgroundStyle={[
+                                    styles.bottomRightButtonTextContainer,
+                                    styles.activatedStyle,
+                                ]}
                                 textStyle={styles.bottomTextStyle}
                             />
                         </View>
@@ -118,7 +156,7 @@ export default CostGuideModal;
 const styles = StyleSheet.create({
     modalContainer: {
         flex: 1,
-        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
         borderColor: "black",
         borderRadius: 20,
@@ -128,8 +166,10 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         marginVertical: 240, // 전체 화면 관리
         marginHorizontal: 40,
-        backgroundColor: colors.gray4,
+        backgroundColor: colors.background,
         borderRadius: 10,
+        overflow: "hidden",
+
         justifyContent: "space-between",
         alignItems: "center",
     },
@@ -173,7 +213,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     mainContent: {
-        backgroundColor: "magenta",
+        // backgroundColor: "magenta",
         flexDirection: "column",
         // justifyContent: "flex-start",
         justifyContent: "center",

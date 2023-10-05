@@ -56,7 +56,7 @@ import {
 import { SelectableOption } from "../interfaces/SelectableOption";
 import { Section, makeSection } from "../interfaces/Section";
 import { Survey, makeSurvey } from "../interfaces/Survey";
-import { postWholeSurvey } from "../API/SurveyAPI";
+import { createSurvey, postWholeSurvey } from "../API/SurveyAPI";
 import {
     loadPostingSurvey,
     loadUserState,
@@ -64,7 +64,8 @@ import {
 } from "../utils/Storage";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
-import TargettingModal from "../modals/TargettingModal";
+// import TargettingModal from "../components/usedOnce/TargettingModal";
+// import TargettingModal from "../components/usedOnce/TargettingModal";
 import { getAddress } from "../API/GeoAPI";
 
 export default function PostingScreen({
@@ -86,7 +87,7 @@ export default function PostingScreen({
     const [titleModalVisible, setTitleModalVisible] = useState(false);
     const [creatingQuestionModalVisible, setCreatingQuestionModalVisible] =
         useState(false);
-    const [targettingModalVisible, setTargettingModalVisible] = useState(false);
+    // const [targettingModalVisible, setTargettingModalVisible] = useState(false);
     const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
     const [isConfirmTapped, setConfirmTapped] = useState(false);
     const [location, setLocation] = useState();
@@ -147,7 +148,7 @@ export default function PostingScreen({
 
     const handleTargetSelection = () => {
         log("target called");
-        toggleTargettingModal();
+        // toggleTargettingModal();
     };
 
     const handleMenuOptionSelect = (sectionIndex: number) => {
@@ -167,9 +168,9 @@ export default function PostingScreen({
         setCreatingQuestionModalVisible(!creatingQuestionModalVisible);
     };
 
-    const toggleTargettingModal = () => {
-        setTargettingModalVisible(!targettingModalVisible);
-    };
+    // const toggleTargettingModal = () => {
+    //     setTargettingModalVisible(!targettingModalVisible);
+    // };
 
     const [
         isModifyingQuestionModalVisible,
@@ -286,12 +287,12 @@ export default function PostingScreen({
                             </MenuOption>
                         </MenuOptions>
                     </Menu>
-                    <Feather
+                    {/* <Feather
                         name="target"
                         size={24}
                         color="black"
                         onPress={handleTargetSelection}
-                    />
+                    /> */}
 
                     {/* <ImageButton
                         img={require("../assets/sendIcon.png")}
@@ -305,50 +306,17 @@ export default function PostingScreen({
                         color="black"
                         onPress={handleSendButtonTapped}
                     />
-                    {/* <Text>{sections.length}</Text> */}
                 </View>
             ),
         });
     }, [navigation]);
 
-    const handleSendButtonTapped = async () => {
-        log("send pressed");
-        let selectableOptions: SelectableOption[] = [];
-        let sections: Section[] = [];
-
-        const testSection = makeSection(1);
-
-        sections.push(testSection);
-        logObject(`passing section:`, sections);
-
-        questions.forEach(q => {
-            q.selectableOptions.forEach(so => {
-                selectableOptions.push(so);
-            });
-            q.sectionId = testSection.id;
-        });
-
-        logObject(`passing questions:`, questions);
-        logObject(`passing selectableoptions:`, selectableOptions);
-
-        const userId = (await loadUserState()).userId;
-        const participationGoal = 100;
-
-        const geoCode = 1100000000;
-        const [targetMinAge, targetMaxAge] = [20, 100];
-        const genreIds = [84];
-
-        const survey = makeSurvey(
-            userId,
-            surveyTitle,
-            participationGoal,
-            geoCode,
-            targetMinAge,
-            targetMaxAge,
-            genreIds
-        );
-
-        await postWholeSurvey(survey, sections, questions, selectableOptions);
+    // 뭐하는 함수여? 이거 일단, 지금 정상적으로 작동하지 않을거야.
+    // const handleSendButtonTapped = async () => {
+    const handleSendButtonTapped = () => {
+        console.log("handle tapped");
+        navigation.navigate(NavigationTitle.targetting);
+        // await createSurvey(surveyTitle, sections, questions)
     };
 
     useEffect(() => {
@@ -539,11 +507,11 @@ export default function PostingScreen({
                 selectedQuestion={questions[selectedQuestionIndex]}
             />
 
-            <TargettingModal
+            {/* <TargettingModal
                 onClose={toggleTargettingModal}
                 onConfirm={toggleTargettingModal}
                 isTargettingModalVisible={targettingModalVisible}
-            />
+            /> */}
 
             <View style={styles.subContainer}>
                 {uniqueQuestions.length === 0 ? (

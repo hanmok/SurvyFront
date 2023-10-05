@@ -6,9 +6,45 @@ import { logObject } from "../utils/Log";
 import { printObject } from "../utils/printObject";
 import { API_BASE_URL } from "./API";
 import _ from "lodash";
+import { loadUserState } from "./../utils/Storage";
+import { makeSurvey } from "../interfaces/Survey";
 
 function convertToSnakeCase(obj) {
     return _.mapKeys(obj, (value, key) => _.snakeCase(key));
+}
+
+export async function createSurvey(
+    surveyTitle: string,
+    sections: Section[],
+    questions: Question[]
+) {
+    let dummySelectableOptions: SelectableOption[] = [];
+    let dummySections: Section[] = [];
+
+    questions.forEach(q => {
+        q.selectableOptions.forEach(so => {
+            dummySelectableOptions.push(so);
+        });
+    });
+
+    const userId = (await loadUserState()).userId;
+    const participationGoal = 100;
+
+    const geoCode = 1100000000;
+    const [targetMinAge, targetMaxAge] = [20, 100];
+    const genreIds = [84];
+
+    const survey = makeSurvey(
+        userId,
+        surveyTitle,
+        participationGoal,
+        geoCode,
+        targetMinAge,
+        targetMaxAge,
+        genreIds
+    );
+
+    await postWholeSurvey(survey, sections, questions, dummySelectableOptions);
 }
 
 export async function postWholeSurvey(

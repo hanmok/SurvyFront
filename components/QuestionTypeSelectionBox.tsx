@@ -7,7 +7,6 @@ import { borderSizes } from "../utils/sizes";
 
 interface QuestionTypeProps {
     index: number;
-    // onPress: () => void;
     isSelected: boolean;
     onPress?: () => void;
 }
@@ -18,12 +17,6 @@ const QuestionTypeSelectionBox: React.FC<QuestionTypeProps> = ({
     isSelected,
     onPress,
 }) => {
-    // const [isSelected, setIsSelected] = useState(false);
-
-    // const toggleSelection = () => {
-    //     setIsSelected(!isSelected);
-    // };
-
     useEffect(() => {}, [isSelected]);
 
     const name = getQuestionType(index);

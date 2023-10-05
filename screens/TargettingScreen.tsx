@@ -1,102 +1,61 @@
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../utils/NavHelper";
+// import { NavigationTitle } from "../utils/NavigationTitle";
+import { NavigationTitle } from "../utils/NavHelper";
+import CostGuideModal from "../modals/CostGuideModal";
+import { View, Text, StyleSheet } from "react-native";
+import BlockView from "../components/BlockView";
+import { ReactNode } from "react";
+import TextButton from "../components/TextButton";
+import { colors } from "../utils/colors";
+import { fontSizes } from "../utils/sizes";
+import React from "react";
+import { SimpleLineIcons } from "@expo/vector-icons";
 import {
     Button,
     FlatList,
     Keyboard,
     Modal,
-    StyleSheet,
-    Text,
     TextInput,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    View,
 } from "react-native";
 import Geo from "../utils/Geo";
-import { fontSizes } from "../utils/sizes";
+
 import SelectableTextButton from "../components/SelectableTextButton";
-import TextButton from "../components/TextButton";
-import { colors } from "../utils/colors";
+
 import { useEffect, useState } from "react";
 import AgeSlider from "../components/posting/AgeSlider";
 import GenderSelection from "../components/posting/GenderSelection";
 import { Entypo } from "@expo/vector-icons";
 import Spacer from "../components/Spacer";
-import GenreSelectionModal from "./GenreSelectionModal";
+
 import { log, logObject } from "../utils/Log";
 import { CustomLocation } from "../utils/Geo";
-import CostGuideModal from "./CostGuideModal";
 
-interface TargettingModalProps {
-    // isCreatingQuestionModalVisible: boolean;
-    onClose: () => void;
-    isTargettingModalVisible: boolean;
-    onConfirm: () => void;
-    // onAdd: (question: Question) => void;
-    // position: number;
-}
+function TargettingScreen({
+    navigation,
+}: {
+    navigation: StackNavigationProp<
+        RootStackParamList,
+        NavigationTitle.targetting
+    >;
+}) {
+    const handleSendButtonTapped = () => {
+        // console.log("send button tapped");
+        toggleCostGuideModal();
+    };
 
-const TargettingModal: React.FC<TargettingModalProps> = ({
-    onClose,
-    onConfirm,
-    isTargettingModalVisible,
-}) => {
+    const [isCostModalVisible, setCostModalVisible] = useState(false);
     const [isGenreModalVisible, setGenreModalVisible] = useState(false);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
     const [ageRange, setAgeRange] = useState<number[]>([20, 30]);
     const [selectedLocations, setSelectedLocations] = useState<
         CustomLocation[]
     >([]);
-    const [satisfied, setSatisfied] = useState(false);
-    const [isCostModalVisible, setCostModalVisible] = useState(false);
-
-    const toggleGenreModal = () => {
-        setGenreModalVisible(!isGenreModalVisible);
-    };
 
     const toggleCostGuideModal = () => {
         setCostModalVisible(!isCostModalVisible);
-    };
-
-    const dismissKeyboard = () => {
-        Keyboard.dismiss();
-    };
-
-    useEffect(() => {
-        const isConditionSatisfied =
-            selectedLocations.length !== 0 && selectedGenres.length !== 0;
-        setSatisfied(isConditionSatisfied);
-        logObject("selectedLocations: ", selectedLocations);
-        logObject("selectedGenres: ", selectedGenres);
-    }, [selectedLocations, , selectedGenres]);
-
-    useEffect(() => {
-        log("satisfied value changed to : " + satisfied);
-    }, [satisfied]);
-
-    const genreSelectionConfirmAction = (genres: Genre[]) => {
-        toggleGenreModal();
-        setSelectedGenres(genres);
-        logObject("genres: ", genres);
-    };
-
-    const locationItem = ({ item }: { item: string }) => {
-        return (
-            <SelectableTextButton
-                title={item}
-                textStyle={{ alignSelf: "center" }}
-                backgroundStyle={styles.locationContainer}
-                onPress={() => {
-                    let idx = selectedLocations.indexOf({ item });
-                    if (idx === -1) {
-                        setSelectedLocations(prev => [...prev, { item }]);
-                    } else {
-                        let prev = selectedLocations;
-                        prev.splice(idx, 1);
-                        setSelectedLocations(prev);
-                    }
-                    console.log("selected location: " + item);
-                }}
-            />
-        );
     };
 
     const genreItem = ({ item }: { item: Genre }) => {
@@ -116,21 +75,73 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
             </View>
         );
     };
+    const toggleGenreModal = () => {
+        setGenreModalVisible(!isGenreModalVisible);
+    };
+    const blockContainer = ({ text }: { text: string }) => {
+        return (
+            <BlockView>
+                <Text>{text}</Text>
+            </BlockView>
+        );
+    };
+
+    const handleResign = () => {
+        console.log("resign tapped");
+    };
+
+    const dismissKeyboard = () => {
+        Keyboard.dismiss();
+    };
+
+    const locationItem = ({ item }: { item: string }) => {
+        return (
+            <SelectableTextButton
+                title={item}
+                textStyle={{ alignSelf: "center" }}
+                backgroundStyle={styles.locationContainer}
+                selectedTextColor="white"
+                unselectedTextColor="black"
+                selectedBackgroundColor="magenta"
+                unselectedBackgroundColor={colors.transparent}
+                onPress={() => {
+                    let idx = selectedLocations.indexOf({ item });
+                    if (idx === -1) {
+                        setSelectedLocations(prev => [...prev, { item }]);
+                    } else {
+                        let prev = selectedLocations;
+                        prev.splice(idx, 1);
+                        setSelectedLocations(prev);
+                    }
+                    console.log("selected location: " + item);
+                }}
+            />
+        );
+    };
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ marginRight: 10 }}>
+                    <SimpleLineIcons
+                        name="paper-plane"
+                        size={24}
+                        color="black"
+                        onPress={handleSendButtonTapped}
+                    />
+                </View>
+            ),
+        });
+    });
 
     return (
-        <Modal transparent={true} visible={isTargettingModalVisible}>
-            <GenreSelectionModal
-                onClose={toggleGenreModal}
-                onGenreSelection={genreSelectionConfirmAction}
-                isGenreSelectionModalVisible={isGenreModalVisible}
-            />
-
+        <>
             <CostGuideModal
                 onClose={toggleCostGuideModal}
                 onConfirm={toggleCostGuideModal}
                 isCostGuideModalVisible={isCostModalVisible}
+                expectedTimeInMin={5}
             />
-
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
@@ -222,52 +233,27 @@ const TargettingModal: React.FC<TargettingModalProps> = ({
                                 />
                             )}
                         </View>
-                        <View style={styles.bottomContainer}>
-                            <TextButton
-                                title="취소"
-                                textStyle={styles.bottomTextStyle}
-                                onPress={onClose}
-                                backgroundStyle={
-                                    styles.bottomLeftButtonTextContainer
-                                }
-                            />
-                            <TextButton
-                                // onPress={onConfirm}
-                                onPress={toggleCostGuideModal}
-                                title="다음"
-                                backgroundStyle={
-                                    satisfied
-                                        ? [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.activatedStyle,
-                                          ]
-                                        : [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.inactivatedStyle,
-                                          ]
-                                }
-                                textStyle={styles.bottomTextStyle}
-                            />
-                        </View>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
-        </Modal>
+        </>
     );
-};
-export default TargettingModal;
+}
+
+export default TargettingScreen;
 
 const styles = StyleSheet.create({
+    eachBoxTextStyle: { fontSize: fontSizes.m20 },
     modalContainer: {
         flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.7)",
     },
     modalContent: {
         flexGrow: 1,
-        marginVertical: 60, // 전체 화면 관리
-        marginHorizontal: 20,
+        // marginVertical: 60, // 전체 화면 관리
+        // marginHorizontal: 20,
         backgroundColor: "white",
-        borderRadius: 10,
+        // borderRadius: 10,
         justifyContent: "space-between",
         alignItems: "center",
         paddingTop: 20,

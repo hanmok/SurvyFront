@@ -33,6 +33,7 @@ import { gql, useQuery } from "@apollo/client";
 import { ApolloProvider } from "./ApolloProvider";
 import { API_BASE_URL, GQL_URL } from "./API/API";
 import { useEffect } from "react";
+import TargettingScreen from "./screens/TargettingScreen";
 
 // const client = new ApolloClient({
 //     uri: API_BASE_URL,
@@ -133,6 +134,11 @@ export default function App() {
                                         backgroundColor: colors.background,
                                     },
                                 }}
+                            />
+                            <Stack.Screen
+                                name={NavigationTitle.targetting}
+                                component={TargettingScreen}
+                                options={{ headerBackTitleVisible: false }}
                             />
                         </Stack.Navigator>
                     </NavigationContainer>

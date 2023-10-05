@@ -8,7 +8,7 @@ import {
     TextStyle,
 } from "react-native";
 
-interface TextButtonProps {
+interface SingleSelectionButtonProps {
     title: string;
     onPress: () => void;
     textStyle?: StyleProp<TextStyle>;
@@ -17,30 +17,32 @@ interface TextButtonProps {
     selectedBackgroundColor: string;
     unselectedTextColor: string;
     unselectedBackgroundColor: string;
+    selectedIndex: number;
+    index: number;
 }
 
-const SelectableTextButton: React.FC<TextButtonProps> = ({
+const SingleSelectionButton: React.FC<SingleSelectionButtonProps> = ({
     title,
     onPress,
     textStyle,
     backgroundStyle,
-
     selectedTextColor,
     selectedBackgroundColor,
     unselectedTextColor,
     unselectedBackgroundColor,
+    selectedIndex,
+    index,
 }) => {
     const [isSelected, setIsSelected] = useState(false);
 
     const handleSelection = () => {
-        setIsSelected(!isSelected);
         onPress();
     };
 
     return (
         <TouchableOpacity
             style={
-                isSelected
+                selectedIndex === index
                     ? [
                           styles.container,
                           backgroundStyle,
@@ -52,11 +54,11 @@ const SelectableTextButton: React.FC<TextButtonProps> = ({
                           { backgroundColor: unselectedBackgroundColor },
                       ]
             }
-            onPress={handleSelection}
+            onPress={onPress}
         >
             <Text
                 style={
-                    isSelected
+                    selectedIndex === index
                         ? [textStyle, { color: selectedTextColor }]
                         : [textStyle, { color: unselectedTextColor }]
                 }
@@ -73,4 +75,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SelectableTextButton;
+export default SingleSelectionButton;

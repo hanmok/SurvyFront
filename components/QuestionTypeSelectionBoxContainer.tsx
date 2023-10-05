@@ -23,26 +23,26 @@ const QuestionTypeSelectionBoxContainer: React.FC<
     return (
         <View style={styles.container}>
             <QuestionTypeSelectionBox
-                index={0}
-                isSelected={selectedIndex === 0}
+                index={100}
+                isSelected={selectedIndex === 100}
                 onPress={() => {
-                    setSelectedIndex(0);
+                    setSelectedIndex(100);
                     handleSelect(QuestionType.SingleSelection);
                 }}
             />
             <QuestionTypeSelectionBox
-                index={1}
-                isSelected={selectedIndex === 1}
+                index={200}
+                isSelected={selectedIndex === 200}
                 onPress={() => {
-                    setSelectedIndex(1);
+                    setSelectedIndex(200);
                     handleSelect(QuestionType.MultiSelection);
                 }}
             />
             <QuestionTypeSelectionBox
-                index={2}
-                isSelected={selectedIndex === 2}
+                index={300}
+                isSelected={selectedIndex === 300}
                 onPress={() => {
-                    setSelectedIndex(2);
+                    setSelectedIndex(300);
                     handleSelect(QuestionType.Essay);
                 }}
             />

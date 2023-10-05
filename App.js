@@ -32,7 +32,6 @@ import MyinfoScreen from "./screens/MyinfoScreen";
 import { gql, useQuery } from "@apollo/client";
 import { ApolloProvider } from "./ApolloProvider";
 import { API_BASE_URL, GQL_URL } from "./API/API";
-import GreetingComponent from "./GreetingComponent";
 import { useEffect } from "react";
 
 // const client = new ApolloClient({
@@ -40,40 +39,12 @@ import { useEffect } from "react";
 //     cache: new InMemoryCache(),
 // });
 
-async function fetchGreeting() {
-    // const response = await fetch("http://localhost:4000/graphql", {
-    const response = await fetch(GQL_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            query: "query { greeting }",
-        }),
-    });
-    const { data } = await response.json();
-    return data.greeting;
-}
-
 export default function App() {
-    useEffect(() => {
-        console.log("hi");
-        fetchGreeting()
-            .then(greeting => {
-                console.log(`fetchGreeting called, fetched: ${greeting}`);
-                console.log(greeting);
-            })
-            .catch(err => {
-                console.log(`fetchGreeting called, error: ${err.message}`);
-            });
-    });
-
     return (
         // <ApolloProvider client={{ client }}>
         <ApolloProvider>
             <Provider store={store}>
                 <MenuProvider>
-                    {/* <GreetingComponent /> */}
                     <NavigationContainer>
                         <Stack.Navigator>
                             {/* 테스트 용으로 막아둠 */}

@@ -333,7 +333,21 @@ export default function PostingScreen({
 
         const userId = (await loadUserState()).userId;
         const participationGoal = 100;
-        const survey = makeSurvey(userId, surveyTitle, participationGoal);
+
+        const geoCode = 1100000000;
+        const [targetMinAge, targetMaxAge] = [20, 100];
+        const genreIds = [84];
+
+        const survey = makeSurvey(
+            userId,
+            surveyTitle,
+            participationGoal,
+            geoCode,
+            targetMinAge,
+            targetMaxAge,
+            genreIds
+        );
+
         await postWholeSurvey(survey, sections, questions, selectableOptions);
     };
 

@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
     },
-
     bottomTextStyle: {
         textAlign: "center",
         fontSize: fontSizes.s16,

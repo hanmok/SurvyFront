@@ -17,12 +17,11 @@ export async function postWholeSurvey(
     questions: Question[],
     selectableOptions: SelectableOption[]
 ): Promise<ApiResponse> {
-    // ) {
     console.log("hello!!");
     const url = `${API_BASE_URL}/survey/whole`;
     const data = { survey, sections, questions, selectableOptions };
     printObject(data, "before post whole survey");
-    // const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
+
     const snakeData = {
         survey: convertToSnakeCase(survey),
         sections: sections.map(convertToSnakeCase),

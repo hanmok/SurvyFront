@@ -34,32 +34,6 @@ import {
     ApolloClient,
 } from "@apollo/client";
 import { GraphQLClient, gql } from "graphql-request";
-import GreetingComponent from "../GreetingComponent";
-
-// const {client} = new
-// const client = new ApolloClient({
-//     uri: API_BASE_URL,
-//     cache: new InMemoryCache(),
-// });
-
-// const client = new GraphQLClient(API_BASE_URL);
-
-// const getGreeting = async () => {
-//     const query = gql`
-//         query {
-//             greeting
-//         }
-//     `;
-//     const some = await client.request(query);
-//     logObject("gql test,", some);
-//     return some;
-// };
-
-// const get_greeting = gql`
-//     query {
-//         greeting
-//     }
-// `;
 
 export default function LoginScreen({
     navigation,
@@ -97,28 +71,7 @@ export default function LoginScreen({
         Keyboard.dismiss();
     };
 
-    // const fetchGreeting = async () => {
-    //     console.log("fetchGreeting called");
-    //     const response = await fetch(API_BASE_URL, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //             query: "query { greeting }",
-    //         }),
-    //     });
-
-    //     const { data } = await response.json();
-    //     // console.log(`data: `)
-    //     logObject("gql test, data: ", data);
-    //     return data.greeting;
-    // };
-
     const loginAction = async (username: string, password: string) => {
-        // await fetchGreeting();
-        // await getGreeting();
-
         console.log(
             `[LoginScreen] username: ${username}, password: ${password}`
         );
@@ -157,9 +110,7 @@ export default function LoginScreen({
                     <View>
                         <Image source={require("../assets/coin.jpg")} />
                     </View>
-                    <GreetingComponent />
 
-                    {/* <View style={{ height: 20 }} /> */}
                     <View>
                         <View style={styles.loginInfoContainer}>
                             <TextInput

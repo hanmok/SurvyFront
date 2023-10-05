@@ -41,24 +41,6 @@ function HomeScreen({
         await saveUserState(userState);
     };
 
-    const fetchGreeting = async () => {
-        console.log("fetchGreeting called");
-        const response = await fetch(API_BASE_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                query: "query { greeting }",
-            }),
-        });
-
-        const { data } = await response.json();
-        // console.log(`data: `)
-        logObject("gql test, data: ", data);
-        return data.greeting;
-    };
-
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -75,7 +57,6 @@ function HomeScreen({
                 console.log(error);
             }
         };
-        fetchGreeting();
         fetchUser();
     }, []);
 
@@ -83,6 +64,10 @@ function HomeScreen({
         try {
             await fetch(`${API_BASE_URL}/survey`)
                 .then(response => response.json())
+                .then(jsonData => {
+                    logObject("fetching survey result: ", jsonData);
+                    return jsonData;
+                })
                 .then(jsonData =>
                     jsonData.data.map((item: Survey) => ({
                         title: item.title,
@@ -90,7 +75,7 @@ function HomeScreen({
                         currentParticipation: item.currentParticipation,
                         participationGoal: item.participationGoal,
                         initialSectionId: item.initialSectionId,
-                        rewardRange: item.rewardRange,
+                        // rewardRange: item.rewardRange,
                     }))
                 )
                 .then(surveys => {

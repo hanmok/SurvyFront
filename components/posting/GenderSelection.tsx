@@ -10,7 +10,8 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
 }) => {
     const [selectedGender, setSelectedGender] = useState(2);
 
-    const genderOptions = ["남성", "여성", "무관"];
+    // const genderOptions = ["남성", "여성", "무관"];
+    const genderOptions = ["여성", "남성", "무관"];
 
     return (
         <View style={styles.container}>

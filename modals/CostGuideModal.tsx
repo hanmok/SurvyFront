@@ -28,7 +28,8 @@ interface CostGuideModalProps {
     onConfirm: () => void;
     isCostGuideModalVisible: boolean;
     expectedTimeInMin: number;
-    setParticipationGoal: (number) => void;
+    participationGoal: string;
+    setParticipationGoal: (string) => void;
     setIsFree: (boolean) => void;
     isFree: boolean;
     price: string;
@@ -44,12 +45,14 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
     isFree,
     price,
     setPrice,
+    setParticipationGoal,
+    participationGoal,
 }) => {
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
 
-    const [participationGoal, setParticipationGoal] = useState("10");
+    // const [participationGoal, setParticipationGoal] = useState("10");
 
     useEffect(() => {
         console.log(`[CostGuideModal], isFree: ${isFree}, price: ${price}`);

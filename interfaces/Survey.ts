@@ -12,7 +12,7 @@ export interface Survey {
     targetMinAge: number;
     targetMaxAge: number;
     genreIds: number[];
-    isTargetMale: boolean | null;
+    isTargetMale: number | null;
     reward: number;
     cost: number;
 }
@@ -25,7 +25,7 @@ export const makeSurvey = (
     targetMinAge: number,
     targetMaxAge: number,
     genreIds: number[],
-    isTargetMale: boolean | undefined,
+    isTargetMale: number | undefined,
     reward: number,
     cost: number
 ) => {

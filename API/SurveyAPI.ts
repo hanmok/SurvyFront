@@ -21,7 +21,7 @@ export async function createSurvey(
     genreIds: number[],
     sections: Section[],
     questions: Question[],
-    isTargetMale: boolean | undefined,
+    isTargetMale: number | undefined,
     reward: number,
     cost: number
 ) {

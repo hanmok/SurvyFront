@@ -52,6 +52,7 @@ import {
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import { getAddress } from "../API/GeoAPI";
+import { commonStyles } from "../utils/CommonStyles";
 
 export default function PostingScreen({
     navigation,
@@ -64,7 +65,7 @@ export default function PostingScreen({
     const [questions, setQuestions] = useState<Question[]>([]);
     const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
     const [sections, setSections] = useState<Section[]>([]);
-
+    const [numOfSections, setNumOfSections] = useState<number>(1);
     const [selectedQuestionIndex, setSelectedQuestionIndex] =
         useState<number>(undefined);
     const [surveyTitle, setSurveyTitle] = useState<string>("");
@@ -75,52 +76,73 @@ export default function PostingScreen({
     const [isConfirmTapped, setConfirmTapped] = useState(false);
     const [isSendButtonTapped, setIsSendButtonTapped] = useState(false);
 
+    const [isAddingSectionTapped, setIsAddingSectionTapped] = useState(false);
+
     const addSection = () => {
         const newSection = makeSection(sections.length);
-        setSections(prev => [...prev, newSection]);
-
         console.log("addSection tapped, numberOfSections: " + sections.length);
+        setSections(prev => [...prev, newSection]);
     };
+
+    useEffect(() => {
+        if (isAddingSectionTapped) {
+            addSection();
+            setIsAddingSectionTapped(false);
+        }
+        setNumOfSections(sections.length);
+    }, [sections, isAddingSectionTapped]);
 
     useEffect(() => {
         setIsSendButtonTapped(false);
     });
+
     useEffect(() => {
         console.log(`section changed, current length: ${sections.length}`);
     }, [sections]);
 
-    const renderSectionOptions = React.useCallback(
-        (mysections: Section[]) => {
-            const sectionOptions = [];
-            for (let i = 1; i <= mysections.length; i++) {
-                sectionOptions.push(
-                    <MenuOption
-                        key={`section-option-${i}`}
-                        onSelect={() => {
-                            handleMenuOptionSelect(i - 1);
-                        }}
-                        style={styles.option}
-                    >
-                        <Text style={{ fontSize: fontSizes.s16 }}>
-                            Section {i}
-                        </Text>
-                    </MenuOption>
-                );
-            }
-            return sectionOptions;
-        },
-        [sections]
-    );
+    const renderSectionItem = ({ item }: { item: Section[] }) => {
+        const views = [];
+        for (let i = 0; i <= item.length; i++) {
+            views.push(
+                <MenuOption
+                    key={`section-option-${i}`}
+                    style={styles.option}
+                    onSelect={() => {
+                        handleMenuOptionSelect(i - 1);
+                    }}
+                >
+                    <Text style={{ fontSize: fontSizes.s16 }}>
+                        Section {i}{" "}
+                    </Text>
+                </MenuOption>
+            );
+        }
+        return views;
+    };
+
+    const renderSectionOptions = React.useCallback(() => {
+        const sectionOptions = [];
+        for (let i = 1; i <= sections.length; i++) {
+            sectionOptions.push(
+                <MenuOption
+                    key={`section-option-${i}`}
+                    onSelect={() => {
+                        handleMenuOptionSelect(i - 1);
+                    }}
+                    style={styles.option}
+                >
+                    <Text style={{ fontSize: fontSizes.s16 }}>Section {i}</Text>
+                </MenuOption>
+            );
+        }
+        return sectionOptions;
+    }, [sections, isAddingSectionTapped]);
 
     const handleMenuOptionSelect = (sectionIndex: number) => {
         console.log(
             "[PostingScreen] section menu tapped, idx:  " + sectionIndex
         );
         setCurrentSectionIndex(sectionIndex);
-    };
-
-    const handleAddSection = () => {
-        addSection();
     };
 
     const toggleCreateModal = () => {
@@ -142,6 +164,10 @@ export default function PostingScreen({
     });
 
     useEffect(() => {
+        renderSectionOptions();
+    }, [sections]);
+
+    useEffect(() => {
         if (isConfirmTapped && questions.length === 0) {
             setCreatingQuestionModalVisible(true);
         }
@@ -158,10 +184,7 @@ export default function PostingScreen({
                 <View style={styles.rightNavContainer}>
                     {/* three-dot menu */}
                     <Menu style={styles.threeDotMenu}>
-                        <MenuTrigger
-                            // customStyles={{}}
-                            style={{ marginRight: 12 }}
-                        >
+                        <MenuTrigger style={{ marginRight: 12 }}>
                             <Entypo
                                 name="dots-three-horizontal"
                                 size={24}
@@ -205,7 +228,12 @@ export default function PostingScreen({
                         </MenuTrigger>
                         <MenuOptions
                             customStyles={{
-                                optionsContainer: styles.sectionOptionContainer,
+                                optionsContainer: [
+                                    styles.sectionOptionContainer,
+                                ],
+                                // optionsContainer: {
+                                //     borderRadius: numOfSections,
+                                // },
                             }}
                         >
                             <TextButton
@@ -220,11 +248,12 @@ export default function PostingScreen({
                                     // handleMenuPress();
                                 }}
                             />
-
-                            {renderSectionOptions(sections)}
-
+                            {/* {renderSectionOptions(sections)} */}
+                            {renderSectionOptions()}
                             <MenuOption
-                                onSelect={handleAddSection}
+                                onSelect={() => {
+                                    setIsAddingSectionTapped(true);
+                                }}
                                 style={styles.option}
                             >
                                 <Text style={styles.optionText}>
@@ -248,6 +277,7 @@ export default function PostingScreen({
 
     // Survey Object 하나를 Pass 시키면 안돼?
     // 아직 설정되지 않은 값들은 undefined 로 하고...
+
     useEffect(() => {
         logObject("[PostingScreen] navigating value:", {
             surveyTitle,
@@ -355,6 +385,7 @@ export default function PostingScreen({
     // }, []);
 
     // TODO: Unique Question 의 Index 정리하기.
+
     useEffect(() => {
         console.log("questions updated! updateQuestions called");
         updateQuestions();
@@ -418,6 +449,30 @@ export default function PostingScreen({
             </View>
         );
     };
+
+    const sectionBoxItem: ListRenderItem<Section> = ({ item }) => {
+        return (
+            <TextButton
+                title={`${item.sequence}`}
+                onPress={() => {
+                    setCurrentSectionIndex(item.sequence);
+                    console.log(`section with ${item.sequence} tapped`);
+                }}
+                backgroundStyle={[
+                    commonStyles.border,
+                    {
+                        width: 30,
+                        height: 30,
+                        backgroundColor:
+                            currentSectionIndex === item.sequence
+                                ? "magenta"
+                                : "white",
+                    },
+                ]}
+            />
+        );
+    };
+
     const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => {
         return (
             <View style={{ marginHorizontal: marginSizes.l20 }}>
@@ -426,7 +481,6 @@ export default function PostingScreen({
                     question={item}
                     onPress={() => {
                         toggleModifyingModal();
-
                         let currentIdx = questions.findIndex(q => {
                             log(`q.id: ${q.id}, item.id: ${item.id}`);
                             return q.id === item.id;
@@ -470,6 +524,11 @@ export default function PostingScreen({
                 {questionsToShow.length === 0 ? (
                     <View style={{ marginVertical: 30 }}>
                         {listHeader()}
+                        {/* {sections.map((section, index) => (
+                            <View key={index}>
+                                <Text>{index + 1}</Text>
+                            </View>
+                        ))} */}
                         <View style={{ height: 50 }} />
                         {listFooter()}
                     </View>
@@ -485,6 +544,18 @@ export default function PostingScreen({
                         ListHeaderComponent={listHeader}
                     />
                 )}
+                <View>
+                    {/* <Text>{sections.length}</Text> */}
+                    <FlatList
+                        data={sections}
+                        renderItem={sectionBoxItem}
+                        keyExtractor={item => `${item.sequence}`}
+                        horizontal={true}
+                        ItemSeparatorComponent={() => (
+                            <View style={{ width: 20 }} />
+                        )}
+                    />
+                </View>
             </View>
         </SafeAreaView>
     );

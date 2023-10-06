@@ -61,7 +61,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     };
 
     // 여기에서 모두 처리해버리기.
-    const [participationGoal, setParticipationGoal] = useState(10);
+    const [participationGoal, setParticipationGoal] = useState("10");
     const { surveyTitle, sections, questions } = route.params;
 
     const [isCostModalVisible, setCostModalVisible] = useState(false);
@@ -102,6 +102,10 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         price,
     ]);
 
+    useEffect(() => {
+        logObject("participationGoal changed to ", participationGoal);
+    }, [participationGoal]);
+
     const expectedTimeInMin = Math.ceil(
         questions
             .map(q => {
@@ -129,8 +133,15 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     const finalConfirmAction = async (): Promise<ApiResponse> => {
         setIsSendPressed(false);
         setCostModalVisible(!isCostModalVisible);
+
         const genreIds = selectedGenres.map(genre => genre.id);
-        const isTargetMale = false;
+
+        let isTargetMale: number | null = null;
+
+        if (selectedGenderIndex < 2) {
+            isTargetMale = selectedGenderIndex % 2;
+        }
+
         const targetMinAge = ageRange[0];
         const targetMaxAge = ageRange[1];
         const costWithComma = price;
@@ -139,7 +150,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
 
         return createSurvey(
             surveyTitle,
-            participationGoal,
+            parseInt(participationGoal),
             targetMinAge,
             targetMaxAge,
             genreIds,
@@ -234,6 +245,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                 setParticipationGoal={setParticipationGoal}
                 price={price}
                 setPrice={setPrice}
+                participationGoal={participationGoal}
             />
             <GenreSelectionModal
                 onClose={toggleGenreModal}

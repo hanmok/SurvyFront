@@ -1,3 +1,6 @@
+import { Question } from "./Question";
+import { Section } from "./Section";
+
 export interface Survey {
     id: number | undefined;
     userId: number | undefined;
@@ -37,9 +40,9 @@ export const makeSurvey = (
     };
     return survey;
 };
-// export interface Question {
-//     id: number;
-//     title: string;
-//     selectableOptionTitles: string[];
-//     isOptional: boolean;
-// }
+
+export interface SurveyProps {
+    surveyTitle: string;
+    sections: Section[];
+    questions: Question[];
+}

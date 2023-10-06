@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     TextInput,
@@ -14,7 +14,15 @@ import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 import { screenWidth } from "../utils/ScreenSize";
 import Spacer from "../components/Spacer";
 
-const SurveyTitleModal = ({
+interface SurveyTitleModalProps {
+    setSurveyTitle: (string) => void;
+    surveyTitle: string;
+    titleModalVisible: boolean;
+    setTitleModalVisible: (boolean) => void;
+    setConfirmTapped: (boolean) => void;
+}
+
+const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
     setSurveyTitle,
     surveyTitle,
     titleModalVisible,
@@ -24,6 +32,10 @@ const SurveyTitleModal = ({
     const [title, setTitle] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
 
+    useEffect(() => {
+        console.log("modalVisible changed");
+    }, [modalVisible]);
+
     return (
         <View
             style={{
@@ -32,16 +44,13 @@ const SurveyTitleModal = ({
                 alignItems: "center",
             }}
         >
-            {/* <Button title="모달 열기" onPress={() => setModalVisible(true)} /> */}
-            {/* <View> */}
+            {/* Parent View 에 보이는 것 */}
             <TextButton
                 backgroundStyle={styles.modalBGStyle}
                 title={surveyTitle}
                 onPress={() => setModalVisible(true)}
                 textStyle={styles.modalTextStyle}
             />
-            {/* <Spacer size={30} /> */}
-            {/* </View> */}
 
             <Modal
                 animationType="fade"
@@ -58,7 +67,8 @@ const SurveyTitleModal = ({
                         </Text>
                         <TextInput
                             style={styles.textInput}
-                            onChangeText={inputText => setTitle(inputText)}
+                            // onChangeText={setSurveyTitle}
+                            onChangeText={setTitle}
                             value={title}
                             placeholder="텍스트를 입력하세요"
                         />
@@ -74,6 +84,7 @@ const SurveyTitleModal = ({
                             <TextButton
                                 title="확인"
                                 onPress={() => {
+                                    // setSurveyTitle(title);
                                     setSurveyTitle(title);
                                     setModalVisible(false);
                                     setConfirmTapped(true);
@@ -102,8 +113,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         flex: 1, // 화면 모두 가리기
-        // backgroundColor: colors.modalBackground,
-        // backgroundColor: "rgba(0, 0, 0, 0.5)", // 투명한 배경색
         backgroundColor: colors.modalBackground,
     },
     coreContainer: {
@@ -154,6 +163,7 @@ const styles = StyleSheet.create({
         marginBottom: marginSizes.xxs4,
         // width: screenWidth,
         width: screenWidth - marginSizes.l20 * 2,
+        // backgroundColor: "magenta",
         // marginHorizontal: marginSizes.l20,
     },
     modalTextStyle: {

@@ -256,15 +256,17 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                         log(`modify called`);
                                         // dynamicInputValues.map(
                                         secondTexts.map((optionText, index) => {
-                                            const selectableOption =
-                                                makeSelectableOption(
-                                                    selectedQuestion.id,
-                                                    index,
-                                                    optionText
+                                            if (optionText !== "") {
+                                                const selectableOption =
+                                                    makeSelectableOption(
+                                                        selectedQuestion.id,
+                                                        index,
+                                                        optionText
+                                                    );
+                                                selectableOptions.push(
+                                                    selectableOption
                                                 );
-                                            selectableOptions.push(
-                                                selectableOption
-                                            );
+                                            }
                                         });
                                     }
                                     selectedQuestion.text = questionTitle;

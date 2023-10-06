@@ -18,6 +18,7 @@ export async function createSurvey(
     sections: Section[],
     questions: Question[]
 ) {
+    console.log(`createSurvey called`);
     let dummySelectableOptions: SelectableOption[] = [];
     let dummySections: Section[] = [];
 
@@ -43,8 +44,14 @@ export async function createSurvey(
         targetMaxAge,
         genreIds
     );
+    logObject("made survey from createSurvey: ", survey);
 
-    await postWholeSurvey(survey, sections, questions, dummySelectableOptions);
+    return await postWholeSurvey(
+        survey,
+        sections,
+        questions,
+        dummySelectableOptions
+    );
 }
 
 export async function postWholeSurvey(

@@ -1,6 +1,8 @@
 // import { NavigationTitle } from "./utils/NavigationTitle";
 // import { NavigationTitle } from "./utils/NavigationTitle";
 
+import { SurveyProps } from "../interfaces/Survey";
+
 export type RootStackParamList = {
     Home: undefined;
     Participate: { sectionId: number; surveyId: number };
@@ -12,7 +14,7 @@ export type RootStackParamList = {
     Login: undefined;
     MainTabs: undefined;
     MyInfo: undefined;
-    Targetting: undefined;
+    Targetting: SurveyProps;
 };
 
 export enum NavigationTitle {

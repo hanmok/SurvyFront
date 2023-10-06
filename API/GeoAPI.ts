@@ -64,3 +64,13 @@ interface GeoResponse {
         };
     }[];
 }
+
+// const printLocation = () => {
+//     console.log("hi");
+//     Geolocation.getCurrentPosition(position => {
+//         const currentLongiture = position.coords.longitude;
+//         const latitude = position.coords.latitude;
+//         console.log("current longitude: " + currentLongiture);
+//         console.log("current latitude: " + latitude);
+//     });
+// };

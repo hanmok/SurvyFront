@@ -5,6 +5,7 @@ import { NavigationTitle } from "../utils/NavHelper";
 import CostGuideModal from "../modals/CostGuideModal";
 import { View, Text, StyleSheet } from "react-native";
 import BlockView from "../components/BlockView";
+
 import { ReactNode } from "react";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
@@ -32,20 +33,32 @@ import Spacer from "../components/Spacer";
 
 import { log, logObject } from "../utils/Log";
 import { CustomLocation } from "../utils/Geo";
+import { createSurvey } from "../API/SurveyAPI";
+import { RouteProp } from "@react-navigation/native";
 
-function TargettingScreen({
+type TargettingScreenNavigationProp = StackNavigationProp<
+    RootStackParamList,
+    NavigationTitle.targetting
+>;
+type TargettingScreenRouteProp = RouteProp<
+    RootStackParamList,
+    NavigationTitle.targetting
+>;
+
+interface TargettingScreenProps {
+    navigation: TargettingScreenNavigationProp;
+    route: TargettingScreenRouteProp;
+}
+
+const TargettingScreen: React.FC<TargettingScreenProps> = ({
     navigation,
-}: {
-    navigation: StackNavigationProp<
-        RootStackParamList,
-        NavigationTitle.targetting
-    >;
-}) {
+    route,
+}) => {
     const handleSendButtonTapped = () => {
         // console.log("send button tapped");
         toggleCostGuideModal();
     };
-
+    const { surveyTitle, sections, questions } = route.params;
     const [isCostModalVisible, setCostModalVisible] = useState(false);
     const [isGenreModalVisible, setGenreModalVisible] = useState(false);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
@@ -56,6 +69,13 @@ function TargettingScreen({
 
     const toggleCostGuideModal = () => {
         setCostModalVisible(!isCostModalVisible);
+    };
+
+    const finalConfirmAction = async (): Promise<ApiResponse> => {
+        setCostModalVisible(!isCostModalVisible);
+        // 뒤 화면으로 가기. 또는 다른 화면
+
+        return createSurvey(surveyTitle, sections, questions);
     };
 
     const genreItem = ({ item }: { item: Genre }) => {
@@ -138,7 +158,7 @@ function TargettingScreen({
         <>
             <CostGuideModal
                 onClose={toggleCostGuideModal}
-                onConfirm={toggleCostGuideModal}
+                onConfirm={finalConfirmAction}
                 isCostGuideModalVisible={isCostModalVisible}
                 expectedTimeInMin={5}
             />
@@ -238,7 +258,7 @@ function TargettingScreen({
             </TouchableWithoutFeedback>
         </>
     );
-}
+};
 
 export default TargettingScreen;
 

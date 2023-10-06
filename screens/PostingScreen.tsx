@@ -1,18 +1,5 @@
 import React, { useEffect } from "react";
-import {
-    View,
-    Text,
-    TextInput,
-    Button,
-    Image,
-    ScrollView,
-    SectionList,
-    FlatList,
-    ListRenderItem,
-    Modal,
-    TouchableOpacity,
-    Animated,
-} from "react-native";
+import { View, Text, FlatList, ListRenderItem } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import {
@@ -55,7 +42,7 @@ import {
 } from "@expo/vector-icons";
 import { SelectableOption } from "../interfaces/SelectableOption";
 import { Section, makeSection } from "../interfaces/Section";
-import { Survey, makeSurvey } from "../interfaces/Survey";
+import { Survey, SurveyProps, makeSurvey } from "../interfaces/Survey";
 import { createSurvey, postWholeSurvey } from "../API/SurveyAPI";
 import {
     loadPostingSurvey,
@@ -64,8 +51,6 @@ import {
 } from "../utils/Storage";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
-// import TargettingModal from "../components/usedOnce/TargettingModal";
-// import TargettingModal from "../components/usedOnce/TargettingModal";
 import { getAddress } from "../API/GeoAPI";
 
 export default function PostingScreen({
@@ -77,7 +62,7 @@ export default function PostingScreen({
     >;
 }) {
     const [questions, setQuestions] = useState<Question[]>([]);
-    const [uniqueQuestions, setUniqueQuestions] = useState<Question[]>([]);
+    const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
     const [sections, setSections] = useState<Section[]>([]);
 
     const [selectedQuestionIndex, setSelectedQuestionIndex] =
@@ -87,29 +72,8 @@ export default function PostingScreen({
     const [titleModalVisible, setTitleModalVisible] = useState(false);
     const [creatingQuestionModalVisible, setCreatingQuestionModalVisible] =
         useState(false);
-    // const [targettingModalVisible, setTargettingModalVisible] = useState(false);
-    const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
     const [isConfirmTapped, setConfirmTapped] = useState(false);
-    const [location, setLocation] = useState();
-
-    /** use in mymage */
-    // useEffect(() => {
-    //     const getPermissions = async () => {
-    //         let { status } = await Location.requestForegroundPermissionsAsync();
-    //         if (status !== "granted") {
-    //             console.log("Please grant location permissions");
-    //             return;
-    //         }
-
-    //         let currentLocation = await Location.getCurrentPositionAsync({});
-    //         logObject("current location: ", currentLocation);
-    //         const longitude = currentLocation.coords.longitude;
-    //         const latitude = currentLocation.coords.latitude;
-
-    //         getAddress(longitude, latitude);
-    //     };
-    //     getPermissions();
-    // }, []);
+    const [isSendButtonTapped, setIsSendButtonTapped] = useState(false);
 
     const addSection = () => {
         const newSection = makeSection(sections.length);
@@ -119,10 +83,12 @@ export default function PostingScreen({
     };
 
     useEffect(() => {
+        setIsSendButtonTapped(false);
+    });
+    useEffect(() => {
         console.log(`section changed, current length: ${sections.length}`);
     }, [sections]);
 
-    // const renderSectionOptions = (mysections: Section[]) => {
     const renderSectionOptions = React.useCallback(
         (mysections: Section[]) => {
             const sectionOptions = [];
@@ -146,21 +112,14 @@ export default function PostingScreen({
         [sections]
     );
 
-    const handleTargetSelection = () => {
-        log("target called");
-        // toggleTargettingModal();
-    };
-
     const handleMenuOptionSelect = (sectionIndex: number) => {
         console.log(
             "[PostingScreen] section menu tapped, idx:  " + sectionIndex
         );
         setCurrentSectionIndex(sectionIndex);
-        // setIsMenuOpen(false);
     };
 
     const handleAddSection = () => {
-        // setIsMenuOpen(false);
         addSection();
     };
 
@@ -168,32 +127,19 @@ export default function PostingScreen({
         setCreatingQuestionModalVisible(!creatingQuestionModalVisible);
     };
 
-    // const toggleTargettingModal = () => {
-    //     setTargettingModalVisible(!targettingModalVisible);
-    // };
-
     const [
         isModifyingQuestionModalVisible,
         setIsModifyingQuestionModalVisible,
     ] = useState(false);
 
     // Section 존재하지 않을 시, sequence 0 으로 추가 후 sections 등록.
+
     useEffect(() => {
-        if (sections.length < 2) {
-            const newSection = makeSection(sections.length);
-            setSections([...sections, newSection]);
+        if (sections.length === 0) {
+            const newSection = makeSection(0);
+            setSections([newSection]);
         }
     });
-
-    // const printLocation = () => {
-    //     console.log("hi");
-    //     Geolocation.getCurrentPosition(position => {
-    //         const currentLongiture = position.coords.longitude;
-    //         const latitude = position.coords.latitude;
-    //         console.log("current longitude: " + currentLongiture);
-    //         console.log("current latitude: " + latitude);
-    //     });
-    // };
 
     useEffect(() => {
         if (isConfirmTapped && questions.length === 0) {
@@ -287,37 +233,47 @@ export default function PostingScreen({
                             </MenuOption>
                         </MenuOptions>
                     </Menu>
-                    {/* <Feather
-                        name="target"
-                        size={24}
-                        color="black"
-                        onPress={handleTargetSelection}
-                    /> */}
-
-                    {/* <ImageButton
-                        img={require("../assets/sendIcon.png")}
-                        onPress={handleSendButtonTapped}
-                        // onPress={handleAddSection}
-                        backgroundStyle={{ marginHorizontal: 8 }}
-                    /> */}
                     <SimpleLineIcons
                         name="paper-plane"
                         size={24}
                         color="black"
-                        onPress={handleSendButtonTapped}
+                        onPress={() => {
+                            setIsSendButtonTapped(true);
+                            // handleSendButtonTapped({
+                            //     surveyTitle,
+                            //     sections,
+                            //     questions,
+                            // });
+                        }}
                     />
                 </View>
             ),
         });
     }, [navigation]);
 
-    // 뭐하는 함수여? 이거 일단, 지금 정상적으로 작동하지 않을거야.
-    // const handleSendButtonTapped = async () => {
-    const handleSendButtonTapped = () => {
-        console.log("handle tapped");
-        navigation.navigate(NavigationTitle.targetting);
-        // await createSurvey(surveyTitle, sections, questions)
+    const handleSendButtonTapped = (surveyProps: SurveyProps) => {
+        console.log("handleSendButton Tapped");
+        const surveyObject: SurveyProps = surveyProps;
+        logObject("passing surveyProps: ", surveyObject);
+
+        navigation.navigate(NavigationTitle.targetting, surveyObject);
     };
+
+    useEffect(() => {
+        logObject("[PostingScreen] navigating value:", {
+            surveyTitle,
+            sections,
+            questions,
+        });
+
+        if (isSendButtonTapped) {
+            navigation.navigate(NavigationTitle.targetting, {
+                surveyTitle,
+                sections,
+                questions,
+            });
+        }
+    }, [isSendButtonTapped, surveyTitle, sections, questions]);
 
     useEffect(() => {
         updateQuestions();
@@ -330,7 +286,8 @@ export default function PostingScreen({
     const handleInitializeTapped = async () => {
         log("first option tapped");
         setQuestions([]);
-        setSections([]);
+        const firstSection = sections[0];
+        setSections([firstSection]);
         setSurveyTitle("");
     };
 
@@ -367,12 +324,12 @@ export default function PostingScreen({
             sections,
         };
         updateQuestions();
-        await savePosting(postingSurvey);
+        // await savePosting(postingSurvey);
         console.log("[PostingScreen] savePosting ended");
         logObject("questions: ", questions);
     };
 
-    const savePosting = async (postingSurvey: PostingSurveyState) => {
+    const savePostingToLocal = async (postingSurvey: PostingSurveyState) => {
         await savePostingSurvey(postingSurvey);
     };
 
@@ -390,46 +347,51 @@ export default function PostingScreen({
         setIsModifyingQuestionModalVisible(!isModifyingQuestionModalVisible);
     };
 
-    useEffect(() => {
-        if (surveyTitle === "") {
-            setTitleModalVisible(true);
-        }
-        console.log("PostingSurvey loaded");
-        loadPostingSurvey().then(result => {
-            setSections(result.sections);
-            setSurveyTitle(result.surveyTitle);
+    // TODO: 나중에 처리하기.
+    // useEffect(() => {
+    //     if (surveyTitle === "") {
+    //         setTitleModalVisible(true);
+    //     }
+    //     console.log("PostingSurvey loaded");
 
-            const sections = result.sections;
-            const firstSectionQuestions = sections[0].questions;
-            setQuestions(firstSectionQuestions);
-        });
-    }, []);
+    //     loadPostingSurvey().then(result => {
+    //         setSections(result.sections);
+    //         setSurveyTitle(result.surveyTitle);
 
-    const openTitleModal = () => {
-        console.log("[PostingScreen] surveyTitle:" + surveyTitle);
-        if (surveyTitle === "") {
-            setTitleModalVisible(true);
-        }
-    };
+    //         const sections = result.sections;
+    //         const firstSectionQuestions = sections[0].questions;
+    //         setQuestions(firstSectionQuestions);
+    //     });
+    // }, []);
 
     // TODO: Unique Question 의 Index 정리하기.
     useEffect(() => {
+        console.log("questions updated! updateQuestions called");
         updateQuestions();
     }, [questions]);
 
     const updateQuestions = () => {
         if (questions.length !== 0) {
-            const uniques = questions.filter(
-                (question, index, arr) =>
-                    arr.findIndex(t => t.id === question.id) === index
-            );
-            setUniqueQuestions(uniques);
-            const toShow = uniques.filter(
+            // const uniques = questions.filter(
+            //     (question, index, arr) =>
+            //         arr.findIndex(t => t.id === question.id) === index // 중복 제거
+            // );
+
+            // setUniqueQuestions(uniques);
+
+            const toShow = questions.filter(
                 q => q.sectionId === sections[currentSectionIndex].id
             );
+
             setQuestionsToShow(toShow);
+        } else {
+            setQuestionsToShow([]);
         }
     };
+
+    useEffect(() => {
+        console.log(`[PostingScreen] surveyTitle changed to ${surveyTitle}`);
+    }, [surveyTitle]);
 
     const listHeader = () => {
         return (
@@ -444,6 +406,7 @@ export default function PostingScreen({
             </View>
         );
     };
+
     const listFooter = () => {
         return (
             <View
@@ -514,7 +477,7 @@ export default function PostingScreen({
             /> */}
 
             <View style={styles.subContainer}>
-                {uniqueQuestions.length === 0 ? (
+                {questionsToShow.length === 0 ? (
                     <View style={{ marginVertical: 30 }}>
                         {listHeader()}
                         <View style={{ height: 50 }} />

@@ -66,12 +66,14 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
             selectableOptions.push(selectableOption);
         } else {
             dynamicInputValues.map((optionText, index) => {
-                const selectableOption = makeSelectableOption(
-                    question.id,
-                    index,
-                    optionText
-                );
-                selectableOptions.push(selectableOption);
+                if (optionText !== "") {
+                    const selectableOption = makeSelectableOption(
+                        question.id,
+                        index,
+                        optionText
+                    );
+                    selectableOptions.push(selectableOption);
+                }
             });
         }
         question.selectableOptions = selectableOptions;
@@ -251,23 +253,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                     styles.bottomLeftButtonTextContainer
                                 }
                             />
-
-                            {/* <TouchableOpacity
-                                onPress={handleConfirm}
-                                style={
-                                    satisfied
-                                        ? [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.activatedStyle,
-                                          ]
-                                        : [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.inactivatedStyle,
-                                          ]
-                                }
-                            >
-                                <Text style={styles.bottomTextStyle}>확인</Text>
-                            </TouchableOpacity> */}
 
                             <TextButton
                                 onPress={handleConfirm}

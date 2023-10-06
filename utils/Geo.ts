@@ -305,3 +305,22 @@ const retSample = {
         },
     ],
 };
+
+/** use in mymage */
+// useEffect(() => {
+//     const getPermissions = async () => {
+//         let { status } = await Location.requestForegroundPermissionsAsync();
+//         if (status !== "granted") {
+//             console.log("Please grant location permissions");
+//             return;
+//         }
+
+//         let currentLocation = await Location.getCurrentPositionAsync({});
+//         logObject("current location: ", currentLocation);
+//         const longitude = currentLocation.coords.longitude;
+//         const latitude = currentLocation.coords.latitude;
+
+//         getAddress(longitude, latitude);
+//     };
+//     getPermissions();
+// }, []);

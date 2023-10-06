@@ -1,3 +1,4 @@
+import { numberOfQuetsions } from "./../types/types";
 import { Question } from "../interfaces/Question";
 import { Section } from "../interfaces/Section";
 import { SelectableOption } from "../interfaces/SelectableOption";
@@ -37,7 +38,7 @@ export async function createSurvey(
 
     const userId = (await loadUserState()).userId;
     const geoCode = 1100000000;
-
+    const numOfSections = sections.length;
     const survey = makeSurvey(
         userId,
         surveyTitle,
@@ -48,7 +49,8 @@ export async function createSurvey(
         genreIds,
         isTargetMale,
         reward,
-        cost
+        cost,
+        numOfSections
     );
 
     logObject("made survey from createSurvey: ", survey);

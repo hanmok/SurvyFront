@@ -42,7 +42,7 @@ import {
 } from "@expo/vector-icons";
 import { SelectableOption } from "../interfaces/SelectableOption";
 import { Section, makeSection } from "../interfaces/Section";
-import { Survey, SurveyProps, makeSurvey } from "../interfaces/Survey";
+
 import { createSurvey, postWholeSurvey } from "../API/SurveyAPI";
 import {
     loadPostingSurvey,

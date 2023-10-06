@@ -15,6 +15,7 @@ export interface Survey {
     isTargetMale: number | null;
     reward: number;
     cost: number;
+    numOfSections: number;
 }
 
 export const makeSurvey = (
@@ -27,7 +28,8 @@ export const makeSurvey = (
     genreIds: number[],
     isTargetMale: number | undefined,
     reward: number,
-    cost: number
+    cost: number,
+    numOfSections: number
 ) => {
     const survey: Survey = {
         id: undefined,
@@ -44,6 +46,7 @@ export const makeSurvey = (
         isTargetMale: isTargetMale,
         reward: reward,
         cost: cost,
+        numOfSections,
     };
     return survey;
 };

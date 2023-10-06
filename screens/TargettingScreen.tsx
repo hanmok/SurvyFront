@@ -145,6 +145,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         const targetMinAge = ageRange[0];
         const targetMaxAge = ageRange[1];
         const costWithComma = price;
+
         const cost = parseInt(costWithComma.replace(/,/g, ""), 10);
         const reward = Math.floor(cost / 3);
 

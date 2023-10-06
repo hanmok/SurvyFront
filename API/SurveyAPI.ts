@@ -15,8 +15,15 @@ function convertToSnakeCase(obj) {
 
 export async function createSurvey(
     surveyTitle: string,
+    participationGoal: number,
+    targetMinAge: number,
+    targetMaxAge: number,
+    genreIds: number[],
     sections: Section[],
-    questions: Question[]
+    questions: Question[],
+    isTargetMale: boolean | undefined,
+    reward: number,
+    cost: number
 ) {
     console.log(`createSurvey called`);
     let dummySelectableOptions: SelectableOption[] = [];
@@ -29,11 +36,7 @@ export async function createSurvey(
     });
 
     const userId = (await loadUserState()).userId;
-    const participationGoal = 100;
-
     const geoCode = 1100000000;
-    const [targetMinAge, targetMaxAge] = [20, 100];
-    const genreIds = [84];
 
     const survey = makeSurvey(
         userId,
@@ -42,8 +45,12 @@ export async function createSurvey(
         geoCode,
         targetMinAge,
         targetMaxAge,
-        genreIds
+        genreIds,
+        isTargetMale,
+        reward,
+        cost
     );
+
     logObject("made survey from createSurvey: ", survey);
 
     return await postWholeSurvey(
@@ -71,7 +78,9 @@ export async function postWholeSurvey(
         questions: questions.map(convertToSnakeCase),
         selectable_options: selectableOptions.map(convertToSnakeCase),
     };
-    printObject(snakeData, "after post whole survey");
+
+    printObject(snakeData, "after converting to snake case,");
+
     try {
         const response = await fetch(url, {
             method: "POST",

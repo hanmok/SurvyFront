@@ -12,14 +12,15 @@ import { Button } from "react-native";
 import ImageButton from "./ImageButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
+// import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
+import { QuestionTypeId } from "../QuestionType";
 
 interface SelectableOptionProps {
     id: number;
     questionId: number;
     position: number;
     value: string;
-    questionType: string;
+    questionTypeId: number;
     onPress?: () => void;
     handleUserInput?: (text: string) => void;
     questionIndex: number;
@@ -30,7 +31,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     questionId,
     position,
     value,
-    questionType,
+    questionTypeId,
     onPress,
     handleUserInput,
     questionIndex,
@@ -54,8 +55,9 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     }
 
     {
-        switch (questionType) {
-            case QuestionTypeEnum.SingleSelection:
+        switch (questionTypeId) {
+            // case QuestionTypeEnum.SingleSelection:
+            case QuestionTypeId.SingleSelection:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
@@ -77,7 +79,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 );
                 break;
 
-            case QuestionTypeEnum.MultipleSelection:
+            case QuestionTypeId.MultipleSelection:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (

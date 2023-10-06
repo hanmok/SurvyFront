@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-const GenderSelection = () => {
+interface GenderSelectionProps {
+    onGenderIndexSelection: (number) => void;
+}
+
+const GenderSelection: React.FC<GenderSelectionProps> = ({
+    onGenderIndexSelection,
+}) => {
     const [selectedGender, setSelectedGender] = useState(2);
 
     const genderOptions = ["남성", "여성", "무관"];
@@ -17,7 +23,10 @@ const GenderSelection = () => {
                             selectedGender === index &&
                                 styles.selectedOptionButton,
                         ]}
-                        onPress={() => setSelectedGender(index)}
+                        onPress={() => {
+                            setSelectedGender(index);
+                            onGenderIndexSelection(index);
+                        }}
                     >
                         <Text>{option}</Text>
                     </TouchableOpacity>

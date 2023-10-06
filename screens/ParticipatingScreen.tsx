@@ -159,7 +159,7 @@ function ParticipatingScreen({
                         position: item.position,
                         text: item.text,
                         expectedTimeInSec: item.expectedTimeInSec,
-                        questionType: item.questionType,
+                        questionTypeId: item.questionTypeId,
                     })
                 );
 
@@ -240,7 +240,7 @@ function ParticipatingScreen({
             item.selectableOptions.length > 0 ? (
                 <SelectableOptionContainer
                     selectableOptions={item.selectableOptions}
-                    questionType={item.questionType}
+                    questionTypeId={item.questionTypeId}
                     questionIndex={item.position}
                     questionId={item.id}
                 />

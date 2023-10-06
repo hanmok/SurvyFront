@@ -7,12 +7,8 @@ import {
     Touchable,
 } from "react-native";
 import { commonStyles } from "./utils/CommonStyles";
-import SelectableTextButton from "./components/SelectableTextButton";
 import { colors } from "./utils/colors";
 import SingleSelectionButton from "./components/SingleSelectionButton";
-// import { Slider } from 'react-native-gesture-handler';
-// import { Slider}
-// import Slider from "@react-native-community/slider";
 
 interface CostSelectionProps {
     initialIndex: number;

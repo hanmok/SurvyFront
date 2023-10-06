@@ -15,7 +15,8 @@ import { fontSizes } from "../utils/sizes";
 import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
 import { Switch } from "react-native";
 import { Question } from "../interfaces/Question";
-import { QuestionType, getQuestionTypeIndex } from "../QuestionType";
+// import { QuestionTypeId, getQuestionTypeIndex } from "../QuestionType";
+import { QuestionTypeId } from "../QuestionType";
 import {
     SelectableOption,
     makeSelectableOption,
@@ -41,7 +42,8 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
     const [questionTitle, setQuestionTitle] = useState("");
     const [isExtraOptionEnabled, setIsExtraOptionEnabled] = useState(false);
     const [dynamicInputValues, setDynamicInputValues] = useState([""]);
-    const [questionType, setQuestionType] = useState<QuestionType>(undefined);
+    const [questionTypeId, setQuestionTypeId] =
+        useState<QuestionTypeId>(undefined);
     const [satisfied, setSatisfied] = useState<boolean>(false);
     const [placeHolder, setPlaceHolder] = useState<string>("placeholder");
     const [removingTexts, setRemovingText] = useState<boolean>(false);
@@ -64,7 +66,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
     useEffect(() => {
         if (selectedQuestion) {
             logObject("currently selectedQuestion: ", selectedQuestion);
-            setQuestionType(selectedQuestion.questionType);
+            setQuestionTypeId(selectedQuestion.questionTypeId);
 
             const texts = selectedQuestion.selectableOptions.map(
                 option => option.value
@@ -78,21 +80,21 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
 
     useEffect(() => {
         if (
-            questionType !== undefined &&
+            questionTypeId !== undefined &&
             questionTitle !== "" &&
             dynamicInputValues[0] !== ""
         ) {
             setSatisfied(true);
             // console.log(`satisfied: true`);
         } else if (
-            questionType === QuestionType.Essay &&
+            questionTypeId === QuestionTypeId.Essay &&
             questionTitle !== ""
         ) {
             setSatisfied(true);
         } else {
             setSatisfied(false);
         }
-    }, [questionType, questionTitle, dynamicInputValues]);
+    }, [questionTypeId, questionTitle, dynamicInputValues]);
     // }, [questionType, questionTitle]);
 
     return (
@@ -115,16 +117,17 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                             />
                             <View style={{ height: 16 }} />
                             <QuestionTypeSelectionBoxContainer
-                                handleSelect={setQuestionType}
-                                preselectedIndex={getQuestionTypeIndex(
-                                    questionType
-                                )}
+                                handleSelect={setQuestionTypeId}
+                                // preselectedIndex={getQuestionTypeIndex(
+                                //     questionTypeId
+                                // )}
+                                preselectedIndex={questionTypeId}
                             />
                         </View>
                         <View
                             style={{ justifyContent: "space-between", flex: 1 }}
                         >
-                            {questionType === QuestionType.Essay ? (
+                            {questionTypeId === QuestionTypeId.Essay ? (
                                 <View
                                     style={{
                                         width: screenWidth - 80,
@@ -168,7 +171,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                     marginBottom: 30,
                                 }}
                             >
-                                {questionType === QuestionType.Essay ? (
+                                {questionTypeId === QuestionTypeId.Essay ? (
                                     <View />
                                 ) : (
                                     <View
@@ -241,7 +244,9 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                         )}`
                                     );
 
-                                    if (questionType === QuestionType.Essay) {
+                                    if (
+                                        questionTypeId === QuestionTypeId.Essay
+                                    ) {
                                         // selectableOptions
                                         const selectableOption =
                                             makeSelectableOption(
@@ -270,8 +275,8 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                         });
                                     }
                                     selectedQuestion.text = questionTitle;
-                                    selectedQuestion.questionType =
-                                        questionType;
+                                    selectedQuestion.questionTypeId =
+                                        questionTypeId;
                                     selectedQuestion.selectableOptions =
                                         selectableOptions;
 

@@ -5,15 +5,16 @@ export interface Survey {
     id: number | undefined;
     userId: number | undefined;
     title: string;
-
     participationGoal: number;
     currentParticipation: number;
-    // rewardRange: string | undefined;
     initialSectionId: number | undefined;
     geoCode: number;
     targetMinAge: number;
     targetMaxAge: number;
     genreIds: number[];
+    isTargetMale: boolean | null;
+    reward: number;
+    cost: number;
 }
 
 export const makeSurvey = (
@@ -23,7 +24,10 @@ export const makeSurvey = (
     geoCode: number,
     targetMinAge: number,
     targetMaxAge: number,
-    genreIds: number[]
+    genreIds: number[],
+    isTargetMale: boolean | undefined,
+    reward: number,
+    cost: number
 ) => {
     const survey: Survey = {
         id: undefined,
@@ -37,6 +41,9 @@ export const makeSurvey = (
         targetMinAge: targetMinAge,
         targetMaxAge: targetMaxAge,
         genreIds: genreIds,
+        isTargetMale: isTargetMale,
+        reward: reward,
+        cost: cost,
     };
     return survey;
 };

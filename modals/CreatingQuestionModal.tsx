@@ -18,7 +18,7 @@ import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelecti
 import { Switch } from "react-native";
 import DynamicTextInputsForCreation from "../components/posting/DynamicTextInputsForCreation";
 import { Question, makeQuestion } from "../interfaces/Question";
-import { QuestionType } from "../QuestionType";
+import { QuestionType, QuestionTypeId } from "../QuestionType";
 import {
     SelectableOption,
     makeSelectableOption,
@@ -43,7 +43,9 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
     const [questionTitle, setQuestionTitle] = useState("");
     const [isExtraOptionEnabled, setIsExtraOptionEnabled] = useState(false);
     const [dynamicInputValues, setDynamicInputValues] = useState([""]);
-    const [questionType, setQuestionType] = useState<QuestionType>(undefined);
+    // const [questionType, setQuestionType] = useState<QuestionType>(undefined);
+    const [questionTypeId, SetQuestionTypeId] =
+        useState<QuestionTypeId>(undefined);
     const [satisfied, setSatisfied] = useState<boolean>(false);
     const [placeHolder, setPlaceHolder] = useState<string>("placeholder");
 
@@ -52,12 +54,12 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
         let question = makeQuestion(
             position,
             questionTitle,
-            questionType,
+            questionTypeId,
             [] // selectableOptions
         );
         log(`question made: ${JSON.stringify(question)}`);
 
-        if (questionType === QuestionType.Essay) {
+        if (questionTypeId === QuestionTypeId.Essay) {
             const selectableOption = makeSelectableOption(
                 question.id,
                 0,
@@ -91,30 +93,31 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
 
     useEffect(() => {
         if (
-            questionType !== undefined &&
+            questionTypeId !== undefined &&
             questionTitle !== "" &&
             dynamicInputValues[0] !== ""
         ) {
             setSatisfied(true);
             console.log(`satisfied: true`);
         } else if (
-            questionType === QuestionType.Essay &&
+            questionTypeId === QuestionTypeId.Essay &&
             questionTitle !== ""
         ) {
             setSatisfied(true);
         } else {
             setSatisfied(false);
         }
-        console.log(
-            `questionTitle: ${questionTitle}, questionType: ${questionType}, dynamicInputValues: ${dynamicInputValues}`
-        );
-    }, [questionType, questionTitle, dynamicInputValues]);
+        // console.log(
+        //     `questionTitle: ${questionTitle}, questionType: ${questionType}, dynamicInputValues: ${dynamicInputValues}`
+        // );
+    }, [questionTypeId, questionTitle, dynamicInputValues]);
 
     useEffect(() => {
         setDynamicInputValues([""]);
         setQuestionTitle("");
         setPlaceHolder("");
-        setQuestionType(undefined);
+        // setQuestionType(undefined);
+        SetQuestionTypeId(undefined);
     }, [isCreatingQuestionModalVisible]);
 
     const handleDismissKeyboard = () => {
@@ -141,13 +144,13 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                             />
                             <View style={{ height: 16 }} />
                             <QuestionTypeSelectionBoxContainer
-                                handleSelect={setQuestionType}
+                                handleSelect={SetQuestionTypeId}
                             />
                         </View>
                         <View
                             style={{ justifyContent: "space-between", flex: 1 }}
                         >
-                            {questionType === QuestionType.Essay ? (
+                            {questionTypeId === QuestionTypeId.Essay ? (
                                 <View
                                     style={{
                                         width: screenWidth - 80,
@@ -194,7 +197,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                     marginBottom: 30,
                                 }}
                             >
-                                {questionType === QuestionType.Essay ? (
+                                {questionTypeId === QuestionTypeId.Essay ? (
                                     <View />
                                 ) : (
                                     <View

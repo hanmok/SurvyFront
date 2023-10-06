@@ -12,8 +12,9 @@ import { colors } from "../../utils/colors";
 import QuestionTypeSelectionBoxContainer from "../QuestionTypeSelectionBoxContainer";
 import {
     QuestionType,
+    QuestionTypeId,
     getQuestionType,
-    getQuestionTypeIndex,
+    // getQuestionTypeIndex,
 } from "../../QuestionType";
 import { fontSizes } from "../../utils/sizes";
 import { screenWidth } from "../../utils/ScreenSize";
@@ -29,21 +30,7 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
     question,
     onPress,
 }) => {
-    const questionTypeIndex = getQuestionTypeIndex(question.questionType);
-
-    // const selectableViews: (): React.Node = () => {
-    //     switch (question.questionType) {
-    //         case QuestionType.SingleSelection:
-    //             return <View></View>
-
-    //         default:
-    //             return <View></View>
-    //     }
-    // }
-
-    // const sth = <View></View>
-
-    // const selectable = <View>{switch (question.questionType)}</View>
+    // const questionTypeIndex = getQuestionTypeIndex(question.questionType);
 
     return (
         <TouchableOpacity style={styles.questionContainer} onPress={onPress}>
@@ -55,8 +42,10 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
             {question.selectableOptions.map(option => (
                 <>
                     {(() => {
-                        switch (question.questionType) {
-                            case QuestionType.SingleSelection:
+                        // switch (question.questionType) {
+                        //     case QuestionType.SingleSelection:
+                        switch (question.questionTypeId) {
+                            case QuestionTypeId.SingleSelection:
                                 return (
                                     <View style={styles.rowContainer}>
                                         <ImageButton
@@ -66,7 +55,8 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                         <Text>{option.value}</Text>
                                     </View>
                                 );
-                            case QuestionType.MultiSelection:
+                            // case QuestionType.MultiSelection:
+                            case QuestionTypeId.MultipleSelection:
                                 return (
                                     <View style={styles.rowContainer}>
                                         <ImageButton
@@ -76,7 +66,8 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                         <Text>{option.value}</Text>
                                     </View>
                                 );
-                            case QuestionType.Essay:
+                            // case QuestionType.Essay:
+                            case QuestionTypeId.Essay:
                                 return (
                                     <View>
                                         <Text

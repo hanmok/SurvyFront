@@ -5,20 +5,26 @@ export enum QuestionType {
     Essay = "서술형",
 }
 
-export function getQuestionTypeIndex(questionType: string): number {
-    switch (questionType) {
-        case QuestionType.SingleSelection:
-            // return 0;
-            return 100;
-        case QuestionType.MultiSelection:
-            // return 1;
-            return 200;
-        case QuestionType.Essay:
-            // return 2;
-            return 300;
-    }
-    return 0;
+export enum QuestionTypeId {
+    SingleSelection = 100,
+    MultipleSelection = 200,
+    Essay = 300,
 }
+
+// export function getQuestionTypeIndex(questionType: string): number {
+//     switch (questionType) {
+//         case QuestionType.SingleSelection:
+//             // return 0;
+//             return 100;
+//         case QuestionType.MultiSelection:
+//             // return 1;
+//             return 200;
+//         case QuestionType.Essay:
+//             // return 2;
+//             return 300;
+//     }
+//     return 0;
+// }
 
 export function getQuestionType(index: number): string {
     switch (index) {

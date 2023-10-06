@@ -8,14 +8,16 @@ export interface Question {
     sectionId: number | undefined;
     position: number;
     text: string;
-    questionType: QuestionType;
+    // questionType: QuestionType;
+    questionTypeId: number;
     selectableOptions: SelectableOption[];
 }
 
 export const makeQuestion = (
     position: number,
     text: string,
-    questionType: QuestionType,
+    // questionType: QuestionType,
+    questionTypeId: number,
     // sectionId: number | undefined,
     selectableOptions: SelectableOption[]
 ): Question => {
@@ -29,7 +31,8 @@ export const makeQuestion = (
         position: position,
         // sectionId: sectionId || undefined,
         text: text,
-        questionType: questionType,
+        // questionType: questionType,
+        questionTypeId: questionTypeId,
         selectableOptions: selectableOptions,
     };
     return question;

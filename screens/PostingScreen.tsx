@@ -239,11 +239,6 @@ export default function PostingScreen({
                         color="black"
                         onPress={() => {
                             setIsSendButtonTapped(true);
-                            // handleSendButtonTapped({
-                            //     surveyTitle,
-                            //     sections,
-                            //     questions,
-                            // });
                         }}
                     />
                 </View>
@@ -251,14 +246,8 @@ export default function PostingScreen({
         });
     }, [navigation]);
 
-    const handleSendButtonTapped = (surveyProps: SurveyProps) => {
-        console.log("handleSendButton Tapped");
-        const surveyObject: SurveyProps = surveyProps;
-        logObject("passing surveyProps: ", surveyObject);
-
-        navigation.navigate(NavigationTitle.targetting, surveyObject);
-    };
-
+    // Survey Object 하나를 Pass 시키면 안돼?
+    // 아직 설정되지 않은 값들은 undefined 로 하고...
     useEffect(() => {
         logObject("[PostingScreen] navigating value:", {
             surveyTitle,
@@ -273,6 +262,7 @@ export default function PostingScreen({
                 questions,
             });
         }
+        // Sections 에 SelectableOption 까지 모두 들어가는데 ? 굳이 Questions 도 따로 넣어야해?
     }, [isSendButtonTapped, surveyTitle, sections, questions]);
 
     useEffect(() => {

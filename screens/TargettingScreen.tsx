@@ -35,6 +35,7 @@ import { log, logObject } from "../utils/Log";
 import { CustomLocation } from "../utils/Geo";
 import { createSurvey } from "../API/SurveyAPI";
 import { RouteProp } from "@react-navigation/native";
+import GenreSelectionModal from "../modals/GenreSelectionModal";
 
 type TargettingScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -58,25 +59,99 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         // console.log("send button tapped");
         toggleCostGuideModal();
     };
+
+    // 여기에서 모두 처리해버리기.
+    const [participationGoal, setParticipationGoal] = useState(10);
     const { surveyTitle, sections, questions } = route.params;
+
     const [isCostModalVisible, setCostModalVisible] = useState(false);
     const [isGenreModalVisible, setGenreModalVisible] = useState(false);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
+    const [isSendPressed, setIsSendPressed] = useState(false);
     const [ageRange, setAgeRange] = useState<number[]>([20, 30]);
+    const [price, setPrice] = useState<string>("0");
     const [selectedLocations, setSelectedLocations] = useState<
         CustomLocation[]
     >([]);
+
+    const [isFree, setIsFree] = useState(true);
+    const [selectedGenderIndex, setSelectedGender] = useState(2);
+
+    useEffect(() => {
+        console.log(`gender selection: ${selectedGenderIndex}`);
+    }, [selectedGenderIndex]);
+
+    useEffect(() => {
+        logObject("ageRange:", ageRange);
+    }, [ageRange]);
+
+    useEffect(() => {
+        logObject("selectedGenres:", selectedGenres);
+    }, [selectedGenres]);
+
+    useEffect(() => {
+        if (isSendPressed) {
+            finalConfirmAction();
+        }
+    }, [
+        isSendPressed,
+        ageRange,
+        participationGoal,
+        selectedGenderIndex,
+        selectedGenres,
+        price,
+    ]);
+
+    const expectedTimeInMin = Math.ceil(
+        questions
+            .map(q => {
+                switch (q.questionTypeId) {
+                    case 100:
+                        return 5;
+                    case 200:
+                        return 10;
+                    case 300:
+                        return 20;
+                    default:
+                        return 0;
+                }
+            })
+            .reduce(
+                (accumulator, currentValue) => accumulator + currentValue,
+                0
+            ) / 60
+    );
 
     const toggleCostGuideModal = () => {
         setCostModalVisible(!isCostModalVisible);
     };
 
     const finalConfirmAction = async (): Promise<ApiResponse> => {
+        setIsSendPressed(false);
         setCostModalVisible(!isCostModalVisible);
-        // 뒤 화면으로 가기. 또는 다른 화면
+        const genreIds = selectedGenres.map(genre => genre.id);
+        const isTargetMale = false;
+        const targetMinAge = ageRange[0];
+        const targetMaxAge = ageRange[1];
+        const costWithComma = price;
+        const cost = parseInt(costWithComma.replace(/,/g, ""), 10);
+        const reward = Math.floor(cost / 3);
 
-        return createSurvey(surveyTitle, sections, questions);
+        return createSurvey(
+            surveyTitle,
+            participationGoal,
+            targetMinAge,
+            targetMaxAge,
+            genreIds,
+            sections,
+            questions,
+            isTargetMale,
+            reward,
+            cost
+        );
     };
+
+    useEffect(() => {}, []);
 
     const genreItem = ({ item }: { item: Genre }) => {
         return (
@@ -97,13 +172,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     };
     const toggleGenreModal = () => {
         setGenreModalVisible(!isGenreModalVisible);
-    };
-    const blockContainer = ({ text }: { text: string }) => {
-        return (
-            <BlockView>
-                <Text>{text}</Text>
-            </BlockView>
-        );
     };
 
     const handleResign = () => {
@@ -159,8 +227,18 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             <CostGuideModal
                 onClose={toggleCostGuideModal}
                 onConfirm={finalConfirmAction}
+                isFree={isFree}
+                setIsFree={setIsFree}
                 isCostGuideModalVisible={isCostModalVisible}
-                expectedTimeInMin={5}
+                expectedTimeInMin={expectedTimeInMin} // 이거.. 구해야 할 것 같은데?
+                setParticipationGoal={setParticipationGoal}
+                price={price}
+                setPrice={setPrice}
+            />
+            <GenreSelectionModal
+                onClose={toggleGenreModal}
+                onGenreSelection={setSelectedGenres}
+                isGenreSelectionModalVisible={isGenreModalVisible}
             />
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
@@ -177,7 +255,9 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                             >
                                 성별
                             </Text>
-                            <GenderSelection />
+                            <GenderSelection
+                                onGenderIndexSelection={setSelectedGender}
+                            />
                         </View>
                         {/* 지역 */}
 

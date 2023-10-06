@@ -28,6 +28,11 @@ interface CostGuideModalProps {
     onConfirm: () => void;
     isCostGuideModalVisible: boolean;
     expectedTimeInMin: number;
+    setParticipationGoal: (number) => void;
+    setIsFree: (boolean) => void;
+    isFree: boolean;
+    price: string;
+    setPrice: (string) => void;
 }
 
 const CostGuideModal: React.FC<CostGuideModalProps> = ({
@@ -35,13 +40,16 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
     onConfirm,
     isCostGuideModalVisible,
     expectedTimeInMin,
+    setIsFree,
+    isFree,
+    price,
+    setPrice,
 }) => {
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
-    const [isFree, setIsFree] = useState(true);
+
     const [participationGoal, setParticipationGoal] = useState("10");
-    const [price, setPrice] = useState("0");
 
     useEffect(() => {
         console.log(`[CostGuideModal], isFree: ${isFree}, price: ${price}`);
@@ -57,14 +65,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
 
             setPrice(`${numWithComma}`);
         }
-    }, [price, isFree, isCostGuideModalVisible]);
-
-    // 아래꺼가.. 업데이트 되지 않는 상황. 무료인지 유료인지 판별하는 친구가 맛이 갔음.
-
-    const toggleFreeState = (free: boolean) => {
-        // setIsFree(!isFree);
-        setIsFree(free);
-    };
+    }, [price, isFree, isCostGuideModalVisible, participationGoal]);
 
     const toggleCostGuideSelection = () => {};
 
@@ -119,8 +120,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                 <View style={{ alignItems: "center" }}>
                                     <CostSelectionContainer
                                         initialIndex={isFree ? 0 : 1}
-                                        // toggleFreeState={toggleFreeState}
-                                        toggleFreeState={toggleFreeState}
+                                        toggleFreeState={setIsFree}
                                     />
                                 </View>
                             </View>

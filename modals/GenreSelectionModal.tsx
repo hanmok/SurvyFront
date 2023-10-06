@@ -142,6 +142,7 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                             <TextButton
                                 onPress={() => {
                                     onGenreSelection(selectedGenres);
+                                    onClose();
                                 }}
                                 title="확인"
                                 backgroundStyle={

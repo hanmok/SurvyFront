@@ -10,17 +10,18 @@ import {
 } from "../features/selector/selectorSlice";
 import { useDispatch } from "react-redux";
 import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
+import { QuestionTypeId } from "../QuestionType";
 
 interface SelectablContainerProps {
     selectableOptions: SelectableOption[];
-    questionType: string;
+    questionTypeId: number;
     questionIndex: number; // questionId 를 알아야 하는건 아냐?
     questionId: number;
 }
 
 const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     selectableOptions,
-    questionType,
+    questionTypeId,
     questionIndex,
     questionId,
 }) => {
@@ -43,8 +44,8 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
 
     const handlePress = useCallback(
         (selectedIndex: number) => {
-            switch (questionType) {
-                case QuestionTypeEnum.SingleSelection:
+            switch (questionTypeId) {
+                case QuestionTypeId.SingleSelection:
                     dispatch(
                         selectSingleSelection({
                             questionIndex,
@@ -53,7 +54,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                         })
                     );
                     break;
-                case QuestionTypeEnum.MultipleSelection:
+                case QuestionTypeId.MultipleSelection:
                     dispatch(
                         selectMultipleSelection({
                             questionIndex,
@@ -72,7 +73,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     break;
             }
         },
-        [dispatch, questionType, questionIndex]
+        [dispatch, questionTypeId, questionIndex]
     );
 
     return (
@@ -81,7 +82,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                 return (
                     <SelectableOptionBox
                         {...selectableOption}
-                        questionType={questionType}
+                        questionTypeId={questionTypeId}
                         onPress={() => handlePress(index)}
                         handleUserInput={text => handleUserInput(text, index)}
                         questionIndex={questionIndex}

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import QuestionTypeSelectionBox from "./QuestionTypeSelectionBox";
-import { QuestionType, getQuestionType } from "../QuestionType";
+import { QuestionTypeId, getQuestionType } from "../QuestionType";
 
 interface QuestionTypeSelectionContainerProps {
     preselectedIndex?: number;
-    handleSelect?: (questionType: QuestionType) => void;
+    handleSelect?: (questionTypeId: QuestionTypeId) => void;
 }
 
 const QuestionTypeSelectionBoxContainer: React.FC<
@@ -27,7 +27,7 @@ const QuestionTypeSelectionBoxContainer: React.FC<
                 isSelected={selectedIndex === 100}
                 onPress={() => {
                     setSelectedIndex(100);
-                    handleSelect(QuestionType.SingleSelection);
+                    handleSelect(QuestionTypeId.SingleSelection);
                 }}
             />
             <QuestionTypeSelectionBox
@@ -35,7 +35,7 @@ const QuestionTypeSelectionBoxContainer: React.FC<
                 isSelected={selectedIndex === 200}
                 onPress={() => {
                     setSelectedIndex(200);
-                    handleSelect(QuestionType.MultiSelection);
+                    handleSelect(QuestionTypeId.MultipleSelection);
                 }}
             />
             <QuestionTypeSelectionBox
@@ -43,7 +43,7 @@ const QuestionTypeSelectionBoxContainer: React.FC<
                 isSelected={selectedIndex === 300}
                 onPress={() => {
                     setSelectedIndex(300);
-                    handleSelect(QuestionType.Essay);
+                    handleSelect(QuestionTypeId.Essay);
                 }}
             />
             {/* <QuestionTypeSelectionBox index={3} /> */}

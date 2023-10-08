@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, FlatList, Dimensions } from "react-native";
+import { getPostedSurveys, getSurvey } from "../API/gqlAPI";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { borderSizes, marginSizes } from "../utils/sizes";
@@ -17,13 +18,16 @@ import { ResponseForm } from "../interfaces/ResponseForm";
 import { UserResponse, login } from "../API/UserAPI";
 import { useDispatch } from "react-redux";
 import { UserState } from "../interfaces/UserState";
-import { API_BASE_URL } from "../API/API";
+import { API_BASE_URL, GQL_URL } from "../API/API";
 import { saveUserState } from "../utils/Storage";
 // import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
 import ImageButton from "../components/ImageButton";
 import { logObject } from "../utils/Log";
 import { Ionicons } from "@expo/vector-icons";
+import GreetingComponent from "../GreetingComponent";
+// import { getAllPostedSurveys } from "../API/gqlAPI";
+import { getSurveyQuery } from "../API/gqlQuery";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -88,9 +92,32 @@ function HomeScreen({
         }
     };
 
+    // working code
+    // async function fetchGreeting() {
+    //     // const response = await fetch("http://localhost:3000/graphql", {
+    //     const response = await fetch(GQL_URL, {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //             // query: fetchAllPostedSurveys2,
+    //             query: postedSurveyUsingUserIdQuery(804),
+    //         }),
+    //     });
+    //     const { data } = await response.json();
+    //     const result = JSON.stringify(data);
+    //     logObject(`[HomeScreen] fetch ㅅㅂqq: `, result);
+    //     logObject("[HomeScreen] fetch data: ", data);
+    //     return data;
+    // }
+
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {
         fetchSurveys();
+        // getSurveyQuery(804);
+        getPostedSurveys(774);
+        // getAllPostedSurveys(0);
     }, []);
 
     const renderItem = ({ item }: { item: Survey }) => (
@@ -117,6 +144,7 @@ function HomeScreen({
 
     return (
         <SafeAreaView style={styles.container} edges={["top"]}>
+            {/* <GreetingComponent /> */}
             <View
                 style={{
                     flexDirection: "row",

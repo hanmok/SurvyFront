@@ -129,7 +129,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             onChangeText={newText => setText(newText)}
                             onSubmitEditing={() => {
                                 console.log(text);
-                                handleUserInput(text);
+                                // handleUserInput(text);
                             }} // 리턴 키 누를 때 호출
                             returnKeyType="done"
                         />

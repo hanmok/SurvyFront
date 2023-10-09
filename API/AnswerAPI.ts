@@ -11,7 +11,6 @@ export async function postSelectionAnswer(
 ): Promise<ApiResponse> {
     const url = `${API_BASE_URL}/answer`;
     const data = { surveyId, userId, questionId, selectableOptionId };
-    printObject(data, "postSelectionAnswer");
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
     printObject(snakeData, "postSelectionAnswer snake");
 
@@ -49,9 +48,7 @@ export async function postTextAnswer(
     const { selectableOptionId, sequence, answerText } = customAnswer;
     const data = { selectableOptionId, sequence, answerText, userId };
     // console.log(`data from postTextAnswer: ${data}`);
-    printObject(data, "postTextAnswer");
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
-    // console.log(`snakeData form postTextAnswer: ${snakeData}`);
     printObject(snakeData, "postTextAnswer snake");
     try {
         const response = await fetch(url, {
@@ -64,12 +61,14 @@ export async function postTextAnswer(
 
         if (!response.ok) {
             console.log("postTextAnswer error!!");
+            // console.error
             throw new Error("postTextAnswer Network response was not ok");
         }
         const responseData: ApiResponse = await response.json();
         return responseData;
     } catch (error) {
-        console.log("postTextAnswer error");
+        // console.log("postTextAnswer error");
+        console.error("postTextAnswer Error", error);
         throw error;
     }
 }

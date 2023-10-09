@@ -47,7 +47,8 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
             };
             dispatch(dispatch(textInputAction({ customAnswer })));
         },
-        [dispatch]
+        [textInputAction]
+        // [dispatch]
     );
 
     const handlePress = useCallback(

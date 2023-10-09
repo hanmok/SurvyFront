@@ -69,8 +69,27 @@ export const selectorSlice = createSlice({
                 customAnswer: CustomAnswer;
             }>
         ) => {
+            // const customAnswer = action.payload.customAnswer;
+            // console.log("[selectorSlice] customAnswer added");
+            // state.textAnswers.push(customAnswer);
             const customAnswer = action.payload.customAnswer;
-            state.textAnswers.push(customAnswer);
+            const existingAnswerIndex = state.textAnswers.findIndex(
+                answer =>
+                    answer.selectableOptionId ===
+                    customAnswer.selectableOptionId
+            );
+
+            if (existingAnswerIndex === -1) {
+                console.log("[selectorSlice] customAnswer added");
+                state.textAnswers.push(customAnswer);
+            } else {
+                // 이미 존재하는 경우, 해당 인덱스의 customAnswer를 교체하거나 무시할 수 있습니다.
+                // state.textAnswers[existingAnswerIndex] = customAnswer;
+                // 또는 무시하거나 오류 메시지를 출력할 수 있습니다.
+                console.log(
+                    "[selectorSlice] Custom answer already exists for this selectableOptionId"
+                );
+            }
         },
     },
 });

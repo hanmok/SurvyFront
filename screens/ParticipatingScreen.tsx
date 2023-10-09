@@ -97,6 +97,8 @@ function ParticipatingScreen({
             dispatch(initialize(currentSection.questions.length));
             setIsLoading(false);
         }
+        console.log("currentSectionIndex changed to " + currentSectionIndex);
+        console.log("number of sections:", currentSurvey.sections.length);
         // setQuestions(currentSurvey.sections[currentSectionIndex].questions);
     }, [currentSectionIndex, data]);
 
@@ -175,6 +177,7 @@ function ParticipatingScreen({
                 promises.push(apiCall);
             }
         }
+
         for (let j = 0; j < textAnswers.length; j++) {
             const apiCall = postEachTextAnswer(textAnswers[j], userId);
             promises.push(apiCall);
@@ -185,13 +188,23 @@ function ParticipatingScreen({
             //     createParticipate(surveyId, userId);
             // })
             .then(() => {
-                if (currentSectionIndex === currentSurvey.numOfSections - 1) {
+                console.log(
+                    `currentSectionIndex: ${currentSectionIndex}, number of sections: ${currentSurvey.sections.length}`
+                );
+                if (currentSectionIndex === currentSurvey.sections.length - 1) {
                     shouldGoBack.current = true;
+                    console.log(
+                        "currentSectionIndex === currentSurvey.numOfSections - 1"
+                    );
                     createParticipate(surveyId, userId).then(() => {
                         handleNextScreen();
                     });
                 } else {
                     // dispatch(initialize())
+                    console.log(
+                        "currentSectionIndex !== currentSurvey.numOfSections - 1"
+                    );
+
                     dispatch(
                         initialize(
                             currentSurvey.sections[currentSectionIndex + 1]

@@ -1,3 +1,3 @@
-export type numberOfQuetsions = number;
+export type numberOfQuestions = number;
 
 export type ConsoleFunction = () => void;

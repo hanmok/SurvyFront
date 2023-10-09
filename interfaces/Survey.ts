@@ -16,6 +16,7 @@ export interface Survey {
     reward: number;
     cost: number;
     numOfSections: number;
+    sections: Section[];
 }
 
 export const makeSurvey = (
@@ -47,6 +48,7 @@ export const makeSurvey = (
         reward: reward,
         cost: cost,
         numOfSections,
+        sections: [],
     };
     return survey;
 };

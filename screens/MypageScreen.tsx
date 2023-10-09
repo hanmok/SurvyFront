@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import BlockView from "../components/BlockView";
-import { fontSizes, paddingSizes } from "../utils/sizes";
+import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
 import ImageButton from "../components/ImageButton";
 import { Ionicons } from "@expo/vector-icons";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
@@ -65,8 +65,8 @@ function MypageScreen({
     useEffect(() => {
         getNumbers();
         // console.log()
-        console.log('[MypageScreen] screenWidth: ', screenWidth)
-        console.log('[MypageScreen] screenHeight: ', screenHeight)
+        console.log("[MypageScreen] screenWidth: ", screenWidth);
+        console.log("[MypageScreen] screenHeight: ", screenHeight);
     }, [numOfParticipatedSurveys, numOfPostedSurveys]);
 
     return (
@@ -105,9 +105,9 @@ function MypageScreen({
             <View
                 style={{
                     alignSelf: "stretch",
-                    marginHorizontal: 20,
+                    marginHorizontal: marginSizes.l20,
                     rowGap: 20,
-                    marginTop: 30,
+                    marginTop: marginSizes.xxl28,
                 }}
             >
                 <BlockView
@@ -126,9 +126,9 @@ function MypageScreen({
 
                 <BlockView
                     onPress={() => {
-                        // navigation.navigate(
-                        //     NavigationTitle.participatedSurveys
-                        // );
+                        navigation.navigate(
+                            NavigationTitle.participatedSurveys
+                        );
                         // handleClick(1);
                     }}
                 >

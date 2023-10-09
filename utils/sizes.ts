@@ -5,6 +5,7 @@ export const marginSizes = {
     m16: 16,
     l20: 20,
     xl24: 24,
+    xxl28: 28,
 };
 
 export const paddingSizes = {

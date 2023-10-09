@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { SelectableOption } from "../interfaces/SelectableOption";
 import SelectableOptionBox from "./SelectableOptionBox";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
     selectSingleSelection,
     selectMultipleSelection,
@@ -11,6 +11,7 @@ import {
 import { useDispatch } from "react-redux";
 import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";
+import { logObject } from "../utils/Log";
 
 interface SelectablContainerProps {
     selectableOptions: SelectableOption[];
@@ -26,7 +27,10 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     questionId,
 }) => {
     const dispatch = useDispatch();
-
+    useEffect(() => {
+        logObject("passed selectableOptions:", selectableOptions);
+        logObject("questionTypeId: ", questionTypeId);
+    }, []);
     const handleUserInput = useCallback(
         (userInput: string, index: number) => {
             console.log(`handleUserInput called, input: ${userInput}`);

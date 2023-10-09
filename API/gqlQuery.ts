@@ -9,28 +9,49 @@ export const greeting = gql`
 
 // export const greeting = "query { greeting }";
 
-export const getSurveyQuery = (surveyId: number) => {
-    return `query {
-		survey(id: "${surveyId}") {
-		  sections {
-			id
-			sequence
-			questions {
-			  id
-			  text
-			}
-		  }
-		} 
-	  }`;
-};
+export const participatedSurveyQuery = gql`
+    query ParticipatedSurveys($userId: ID!) {
+        user(id: $userId) {
+            participatedSurveys {
+                title
+                reward
+                id
+            }
+        }
+    }
+`;
 
-export const getPostedSurveysQuery = (userId: number) => {
-    return `query { 
-		user(id: "${userId}") {
-			postedSurveys {
-			  title
-			  created_at
-			}
-		  }
-	}`;
-};
+// 이렇게 사용하기!
+export const postedSurveyQuery = gql`
+    query postedSurveys($userId: ID!) {
+        user(id: $userId) {
+            postedSurveys {
+                title
+                created_at
+                participation_goal
+                current_participation
+                code
+            }
+        }
+    }
+`;
+
+export const getSurveyQuery = gql`
+    query Survey($surveyId: ID!) {
+        survey(id: $surveyId) {
+            sections {
+                sequence
+                questions {
+                    position
+                    text
+                    question_type_id
+                    selectable_options {
+                        id
+                        position
+                        value
+                    }
+                }
+            }
+        }
+    }
+`;

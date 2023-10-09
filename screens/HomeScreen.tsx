@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, FlatList, Dimensions } from "react-native";
-import { getPostedSurveys, getSurvey } from "../API/gqlAPI";
+// import { getPostedSurveys, getSurvey } from "../API/gqlAPI";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { borderSizes, marginSizes } from "../utils/sizes";
@@ -116,7 +116,7 @@ function HomeScreen({
     useEffect(() => {
         fetchSurveys();
         // getSurveyQuery(804);
-        getPostedSurveys(774);
+        // getPostedSurveys(774);
         // getAllPostedSurveys(0);
     }, []);
 

@@ -26,9 +26,22 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loadUserState } from "../utils/Storage";
 // import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
+import {
+    convertKeysToCamelCaseRecursive,
+    removeTypenameAndConvertToCamelCase,
+} from "../utils/SnakeToCamel";
+import { useApollo } from "../ApolloProvider";
+import { useQuery } from "@apollo/client";
+import { Survey } from "../interfaces/Survey";
+import { getSurveyQuery } from "../API/gqlQuery";
+import { logObject } from "../utils/Log";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
+}
+
+interface SurveyResponse {
+    survey: Survey;
 }
 
 function ParticipatingScreen({
@@ -36,12 +49,18 @@ function ParticipatingScreen({
 }: {
     route: RouteProp<RootStackParamList, NavigationTitle.participate>;
 }) {
+    const client = useApollo();
+    const { loading, error, data } = useQuery<SurveyResponse>(getSurveyQuery, {
+        client,
+        variables: { surveyId: route.params.surveyId },
+    });
+    const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const [selectableOptions, setSelectableOptions] = useState<
         SelectableOption[]
     >([]);
-    // const [shouldGoBack, setShouldGoBack] = useState(false);
+
     const shouldGoBack = useRef(false);
     const { sectionId, surveyId } = route.params;
     const dispatch = useDispatch();
@@ -54,6 +73,33 @@ function ParticipatingScreen({
 
     const navigation = useNavigation();
 
+    // const currentSurvey: Survey = removeTypenameAndConvertToCamelCase(
+    //     data?.survey
+    // );
+
+    const [currentSurvey, setCurrentSurvey] = useState<Survey | null>(null);
+
+    useEffect(() => {
+        console.log("passed survey id:", surveyId);
+        logObject("currentSurvey", currentSurvey);
+
+        // if (currentSurvey) {
+        if (data?.survey) {
+            const updatedSurvey: Survey = removeTypenameAndConvertToCamelCase(
+                data.survey
+            );
+            setCurrentSurvey(updatedSurvey); // currentSurvey 상태를 업데이트
+            const currentSection = updatedSurvey.sections.find(
+                s => s.sequence === currentSectionIndex
+            );
+            logObject("currentSection:", currentSection);
+            setQuestions(currentSection.questions);
+            dispatch(initialize(currentSection.questions.length));
+            setIsLoading(false);
+        }
+        // setQuestions(currentSurvey.sections[currentSectionIndex].questions);
+    }, [currentSectionIndex, data]);
+
     useEffect(() => {
         // 뒤로가기 버튼 누를 때 호출될 함수
         const unsubscribe = navigation.addListener("beforeRemove", e => {
@@ -62,7 +108,6 @@ function ParticipatingScreen({
                 showAlertAndGoBack();
             }
         });
-
         return unsubscribe;
     }, [navigation]);
 
@@ -145,85 +190,6 @@ function ParticipatingScreen({
                 console.log(error);
             });
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const questionsResponse = await fetch(
-                    `${API_BASE_URL}/section/${sectionId}/questions`
-                );
-                const questionsData = await questionsResponse.json();
-                const questionsArray = questionsData.data.map(
-                    (item: Question) => ({
-                        id: item.id,
-                        position: item.position,
-                        text: item.text,
-                        expectedTimeInSec: item.expectedTimeInSec,
-                        questionTypeId: item.questionTypeId,
-                    })
-                );
-
-                const selectableOptionsResponse = await fetch(
-                    `${API_BASE_URL}/section/${sectionId}/selectable-options`
-                );
-                const selectableOptionsData =
-                    await selectableOptionsResponse.json();
-                const selectableOptionsArray = selectableOptionsData.data.map(
-                    (item: SelectableOption) => ({
-                        id: item.id,
-                        position: item.position,
-                        value: item.value,
-                        questionId: item.questionId,
-                    })
-                );
-
-                const myDic: Dictionary<SelectableOption> = {};
-                questionsArray.forEach(question => {
-                    myDic[question.id] = new Set<SelectableOption>();
-                });
-
-                selectableOptionsArray.forEach(item => {
-                    myDic[item.questionId].add(item);
-                });
-
-                const tempQuestions: Question[] = [];
-                for (const key in myDic) {
-                    const targetQuestion = questionsArray.find(
-                        q => q.id === parseInt(key)
-                    );
-
-                    targetQuestion.selectableOptions = Array.from(
-                        myDic[targetQuestion.id]
-                    );
-
-                    tempQuestions.push(targetQuestion);
-                }
-
-                dispatch(initialize(tempQuestions.length));
-                setIsLoading(false);
-
-                return {
-                    questions: tempQuestions,
-                    selectableOptions: selectableOptionsArray,
-                };
-            } catch (error) {
-                console.log(`Error fetching data: ${error.message}`);
-                setIsLoading(false);
-                return null;
-            }
-        };
-
-        const fetchDataAndSetData = async () => {
-            const fetchDataResult = await fetchData();
-
-            if (fetchDataResult) {
-                setQuestions(fetchDataResult.questions);
-                setSelectableOptions(fetchDataResult.selectableOptions);
-            }
-        };
-
-        fetchDataAndSetData();
-    }, []);
 
     if (isLoading) {
         return (

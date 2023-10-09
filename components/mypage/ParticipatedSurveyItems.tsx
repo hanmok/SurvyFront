@@ -1,0 +1,80 @@
+import { useQuery } from "@apollo/client";
+import { participatedSurveyQuery, postedSurveyQuery } from "../../API/gqlQuery";
+import { View, Text } from "react-native";
+import { StyleSheet } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { useApollo } from "../../ApolloProvider";
+import { commonStyles } from "../../utils/CommonStyles";
+import { fontSizes, marginSizes } from "../../utils/sizes";
+
+interface ParticipatedSurveyItem {
+    title: string;
+    reward: number;
+    id: number;
+}
+
+interface ParticipatedSurveyResponse {
+    user: {
+        participatedSurveys: ParticipatedSurveyItem[];
+    };
+}
+
+const ParticipatedSurveyItems = ({ userId }) => {
+    const client = useApollo();
+    const { loading, error, data } = useQuery<ParticipatedSurveyResponse>(
+        participatedSurveyQuery,
+        { client, variables: { userId: userId } }
+    );
+
+    const participatedSurveys: ParticipatedSurveyItem[] =
+        data?.user.participatedSurveys || [];
+
+    if (loading) {
+        return <Text>Loading...</Text>;
+    }
+
+    if (error) {
+        return <Text>Error: {error.message}</Text>;
+    }
+
+    return (
+        <FlatList
+            data={participatedSurveys}
+            renderItem={({ item }) => (
+                <View
+                    style={[
+                        commonStyles.border,
+                        {
+                            marginHorizontal: marginSizes.m16,
+                            borderRadius: 10,
+                            marginBottom: 12,
+                            padding: 8,
+                            gap: 6,
+                        },
+                    ]}
+                >
+                    <Text
+                        style={{ fontSize: fontSizes.m20, fontWeight: "bold" }}
+                    >
+                        {item.title}
+                    </Text>
+                    {/* <Text>{convertTime(parseInt(item.created_at))}</Text> */}
+                    <Text>
+                        {item.reward}
+                        {/* {item.current_participation} / {item.participation_goal} */}
+                    </Text>
+                </View>
+            )}
+            // keyExtractor={item => `${item.code}${item.created_at}`}
+
+            keyExtractor={item => `${item.id}`}
+        />
+    );
+};
+
+const convertTime = (number: number) => {
+    const date = new Date(number);
+    return date.toLocaleDateString().split("/").reverse().join(".");
+};
+
+export default ParticipatedSurveyItems;

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { numberOfQuetsions } from "../../types/types";
+import { numberOfQuestions } from "../../types/types";
 
 export interface CustomAnswer {
     selectableOptionId: number;
@@ -22,7 +22,7 @@ export const selectorSlice = createSlice({
     name: "selector",
     initialState,
     reducers: {
-        initialize: (state, action: PayloadAction<numberOfQuetsions>) => {
+        initialize: (state, action: PayloadAction<numberOfQuestions>) => {
             const numberOfQuestions = action.payload;
 
             let outer: number[][] = [];
@@ -38,7 +38,6 @@ export const selectorSlice = createSlice({
                 selectedIndexId: number;
             }>
         ) => {
-            // questionIndex, selectedIndex
             const { questionIndex, selectedIndexId } = action.payload;
 
             state.selectedIndexIds[questionIndex] = [selectedIndexId];

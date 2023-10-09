@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     View,
     Text,
@@ -36,6 +36,10 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     handleUserInput,
     questionIndex,
 }) => {
+    useEffect(() => {
+        console.log("selectableOption value:", value);
+        console.log("question type id:", questionTypeId);
+    }, []);
     const textInputRef = useRef(null);
 
     const handleFocusTextInput = () => {
@@ -50,6 +54,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     });
 
     let selectableOptionComponent;
+
     if (selectedIndexIds == null) {
         return <Text>selectedIndexes: null </Text>;
     }
@@ -61,6 +66,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
+                    // selectableOptionComponent = true ? (
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/selectedSingleSelection.png")}
@@ -74,15 +80,17 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             img={require("../assets/unselectedSingleSelection.png")}
                             onPress={onPress}
                         />
-                        <Text style={styles.textStyle}>{value}</Text>
+                        <Text style={styles.textStyle}>
+                            {value} {}
+                        </Text>
                     </View>
                 );
                 break;
 
             case QuestionTypeId.MultipleSelection:
-                selectableOptionComponent = selectedIndexIds[
-                    questionIndex
-                ].includes(id) ? (
+                // selectableOptionComponent = selectedIndexIds[questionIndex].includes(id) ? (
+                selectableOptionComponent = true ? (
+                    // true ? (
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/selectedMultipleSelection.png")}

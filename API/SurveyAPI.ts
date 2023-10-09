@@ -1,4 +1,4 @@
-import { numberOfQuetsions } from "./../types/types";
+import { numberOfQuestions } from "./../types/types";
 import { Question } from "../interfaces/Question";
 import { Section } from "../interfaces/Section";
 import { SelectableOption } from "../interfaces/SelectableOption";

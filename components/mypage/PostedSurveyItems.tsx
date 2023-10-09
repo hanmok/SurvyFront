@@ -21,7 +21,7 @@ interface PostedSurveyItem {
 
 interface PostedSurveyResponse {
     user: {
-        postedSurveys: PostedSurveyItem[];
+        posted_surveys: PostedSurveyItem[];
     };
 }
 
@@ -34,7 +34,7 @@ const PostedSurveyItems = ({ userId }) => {
     );
 
     const postedSurveys: PostedSurveyItem[] =
-        data?.user.postedSurveys.map(item => convertKeysToCamelCase(item)) ||
+        data?.user.posted_surveys.map(item => convertKeysToCamelCase(item)) ||
         [];
 
     if (loading) {

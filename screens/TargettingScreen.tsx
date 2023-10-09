@@ -151,7 +151,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         const costWithComma = price;
 
         const cost = parseInt(costWithComma.replace(/,/g, ""), 10);
-        const reward = Math.floor(cost / 3);
+        const reward = Math.floor(cost / 3 / parseInt(participationGoal));
 
         return createSurvey(
             surveyTitle,

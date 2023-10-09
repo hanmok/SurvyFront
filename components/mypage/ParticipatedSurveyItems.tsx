@@ -6,6 +6,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { useApollo } from "../../ApolloProvider";
 import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
+import { convertKeysToCamelCase } from "../../utils/SnakeToCamel";
 
 interface ParticipatedSurveyItem {
     title: string;
@@ -15,7 +16,7 @@ interface ParticipatedSurveyItem {
 
 interface ParticipatedSurveyResponse {
     user: {
-        participatedSurveys: ParticipatedSurveyItem[];
+        participated_surveys: ParticipatedSurveyItem[];
     };
 }
 
@@ -27,7 +28,9 @@ const ParticipatedSurveyItems = ({ userId }) => {
     );
 
     const participatedSurveys: ParticipatedSurveyItem[] =
-        data?.user.participatedSurveys || [];
+        data?.user.participated_surveys.map(item =>
+            convertKeysToCamelCase(item)
+        ) || [];
 
     if (loading) {
         return <Text>Loading...</Text>;
@@ -53,16 +56,26 @@ const ParticipatedSurveyItems = ({ userId }) => {
                         },
                     ]}
                 >
-                    <Text
-                        style={{ fontSize: fontSizes.m20, fontWeight: "bold" }}
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                        }}
                     >
-                        {item.title}
-                    </Text>
-                    {/* <Text>{convertTime(parseInt(item.created_at))}</Text> */}
-                    <Text>
-                        {item.reward}
-                        {/* {item.current_participation} / {item.participation_goal} */}
-                    </Text>
+                        <Text
+                            style={{
+                                fontSize: fontSizes.m20,
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {item.title}
+                        </Text>
+                        <Text>
+                            +{item.reward}
+                            {/* {item.current_participation} / {item.participation_goal} */}
+                        </Text>
+                    </View>
                 </View>
             )}
             // keyExtractor={item => `${item.code}${item.created_at}`}

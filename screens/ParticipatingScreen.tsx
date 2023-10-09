@@ -73,10 +73,6 @@ function ParticipatingScreen({
 
     const navigation = useNavigation();
 
-    // const currentSurvey: Survey = removeTypenameAndConvertToCamelCase(
-    //     data?.survey
-    // );
-
     const [currentSurvey, setCurrentSurvey] = useState<Survey | null>(null);
 
     useEffect(() => {

@@ -12,7 +12,7 @@ export const greeting = gql`
 export const participatedSurveyQuery = gql`
     query ParticipatedSurveys($userId: ID!) {
         user(id: $userId) {
-            participatedSurveys {
+            participated_surveys {
                 title
                 reward
                 id
@@ -25,12 +25,12 @@ export const participatedSurveyQuery = gql`
 export const postedSurveyQuery = gql`
     query postedSurveys($userId: ID!) {
         user(id: $userId) {
-            postedSurveys {
+            posted_surveys {
+                code
                 title
                 created_at
                 participation_goal
                 current_participation
-                code
             }
         }
     }

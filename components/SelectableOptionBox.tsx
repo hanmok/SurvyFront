@@ -49,11 +49,16 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     };
 
     const [text, setText] = useState("");
+
     const selectedIndexIds = useSelector((state: RootState) => {
         return state.selector.selectedIndexIds;
     });
 
     let selectableOptionComponent;
+
+    if (!selectedIndexIds[questionIndex]) {
+        return <Text>Selected indexes are empty</Text>;
+    }
 
     if (selectedIndexIds == null) {
         return <Text>selectedIndexes: null </Text>;
@@ -88,9 +93,9 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 break;
 
             case QuestionTypeId.MultipleSelection:
-                // selectableOptionComponent = selectedIndexIds[questionIndex].includes(id) ? (
-                selectableOptionComponent = true ? (
-                    // true ? (
+                selectableOptionComponent = selectedIndexIds[
+                    questionIndex
+                ].includes(id) ? (
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/selectedMultipleSelection.png")}

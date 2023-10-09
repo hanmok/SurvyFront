@@ -114,7 +114,7 @@ function ParticipatingScreen({
     const showAlertAndGoBack = () => {
         Alert.alert(
             "경고",
-            "정말로 뒤로가시겠습니까?",
+            "정말 뒤로가시겠습니까?",
             [
                 {
                     text: "취소",
@@ -162,6 +162,8 @@ function ParticipatingScreen({
         const userId = (await loadUserState()).userId;
         console.log(`buttonTapAction called, userId: ${userId}`);
         const promises = [];
+        // section Idx 도 있어야 할 것 같은데?
+        // 한번에 다 처리하고 싶은거 아니야? 맞아.
         for (let q = 0; q < questions.length; q++) {
             for (let i = 0; i < selectedIndexIds[q].length; i++) {
                 const apiCall = postEachSelectionAnswer(
@@ -179,12 +181,27 @@ function ParticipatingScreen({
         }
 
         await Promise.all(promises)
+            // .then(() => {
+            //     createParticipate(surveyId, userId);
+            // })
             .then(() => {
-                createParticipate(surveyId, userId, sectionId);
-            })
-            .then(() => {
-                shouldGoBack.current = true;
-                handleNextScreen();
+                if (currentSectionIndex === currentSurvey.numOfSections - 1) {
+                    shouldGoBack.current = true;
+                    createParticipate(surveyId, userId).then(() => {
+                        handleNextScreen();
+                    });
+                } else {
+                    // dispatch(initialize())
+                    dispatch(
+                        initialize(
+                            currentSurvey.sections[currentSectionIndex + 1]
+                                .questions.length
+                        )
+                    );
+                    setCurrentSectionIndex(currentSectionIndex + 1);
+                    // dispatch(initialize(currentSection.questions.length))
+                    // dispatch(initialize())
+                }
             })
             .catch(error => {
                 console.log(error);
@@ -228,8 +245,11 @@ function ParticipatingScreen({
             />
 
             <TextButton
-                title="Finish"
-                // onPress={() => console.log("")}
+                title={
+                    currentSectionIndex === currentSurvey.numOfSections - 1
+                        ? "Finish"
+                        : "Next"
+                }
                 onPress={buttonTapAction}
                 // textStyle={if (selectedIndexes) styles.finishButtonText}
                 textStyle={

@@ -42,6 +42,7 @@ export const getSurveyQuery = gql`
             sections {
                 sequence
                 questions {
+                    id
                     position
                     text
                     question_type_id

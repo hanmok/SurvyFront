@@ -150,6 +150,7 @@ function HomeScreen({
                     flexDirection: "row",
                     justifyContent: "space-between",
                     marginHorizontal: 10,
+                    height: 30,
                     // justifyContent: "center",
                 }}
             >
@@ -164,22 +165,6 @@ function HomeScreen({
                         // height: 30,
                     }}
                 >
-                    {/* <ImageButton
-                        img={require("../assets/chatIcon.png")}
-                        onPress={() => {
-                            console.log("chat tapped");
-                        }}
-                        size={24}
-                    /> */}
-                    {/* <View style={{ width: 16 }} /> */}
-
-                    {/* <ImageButton
-                        img={require("../assets/bellIcon.png")}
-                        onPress={() => {
-                            console.log("bell tapped");
-                        }}
-                        size={24}
-                    /> */}
                     <Ionicons
                         name="md-notifications-outline"
                         size={24}
@@ -198,20 +183,9 @@ function HomeScreen({
                     ItemSeparatorComponent={() => (
                         <View style={{ height: 16 }} />
                     )}
+                    contentContainerStyle={{ justifyContent: "flex-start" }}
                     style={styles.surveyListContainer}
                 />
-                {/* <View style={styles.floatingButtonContainer}>
-                    <TextButton
-                        title="설문요청"
-                        onPress={() =>
-                            navigation.navigate(
-                                postingNavTitle as keyof RootStackParamList
-                            )
-                        }
-                        backgroundStyle={styles.requestContainer}
-                        textStyle={styles.requestText}
-                    />
-                </View> */}
             </View>
         </SafeAreaView>
     );
@@ -220,8 +194,10 @@ function HomeScreen({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "space-between",
+        // justifyContent: "space-between",
+        justifyContent: "flex-start",
         backgroundColor: colors.background,
+        gap: 10,
     },
     subContainer: {
         marginTop: 5,
@@ -260,6 +236,8 @@ const styles = StyleSheet.create({
         marginHorizontal: marginSizes.m16,
         paddingBottom: 200,
         // marginBottom: 200,
+        // justifyContent: "flex-start",
+        backgroundColor: "magenta",
     },
 
     requestText: {

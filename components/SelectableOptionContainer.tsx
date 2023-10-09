@@ -27,10 +27,14 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     questionId,
 }) => {
     const dispatch = useDispatch();
+
     useEffect(() => {
         logObject("passed selectableOptions:", selectableOptions);
+        logObject("questionIndex", questionIndex);
+
         logObject("questionTypeId: ", questionTypeId);
     }, []);
+
     const handleUserInput = useCallback(
         (userInput: string, index: number) => {
             console.log(`handleUserInput called, input: ${userInput}`);

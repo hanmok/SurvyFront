@@ -142,6 +142,10 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             isTargetMale = selectedGenderIndex % 2;
         }
 
+        // navigation.navigate(NavigationTitle.posting, {}, {replace: true})
+
+        navigation.navigate(NavigationTitle.posting);
+
         const targetMinAge = ageRange[0];
         const targetMaxAge = ageRange[1];
         const costWithComma = price;

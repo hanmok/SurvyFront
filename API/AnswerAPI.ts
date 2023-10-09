@@ -11,7 +11,6 @@ export async function postSelectionAnswer(
 ): Promise<ApiResponse> {
     const url = `${API_BASE_URL}/answer`;
     const data = { surveyId, userId, questionId, selectableOptionId };
-    // console.log(`data from postSelectionAnswer: ${data}`);
     printObject(data, "postSelectionAnswer");
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
     printObject(snakeData, "postSelectionAnswer snake");
@@ -77,11 +76,12 @@ export async function postTextAnswer(
 
 export async function createParticipate(
     surveyId: number,
-    userId: number,
-    sectionId: number
+    userId: number
+    // sectionId: number
 ): Promise<ApiResponse> {
     const url = `${API_BASE_URL}/participating`;
-    const data = { surveyId, userId, sectionId };
+    // const data = { surveyId, userId, sectionId };
+    const data = { surveyId, userId };
 
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
 

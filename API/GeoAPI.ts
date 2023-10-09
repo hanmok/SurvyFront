@@ -48,7 +48,7 @@ export async function getAddress(
         logObject(`geo response:`, apiResponse);
         return apiResponse;
     } catch (error) {
-        console.log(`Getting GEO error`);
+        console.error(`Getting GEO error`, error);
         throw error;
     }
 }

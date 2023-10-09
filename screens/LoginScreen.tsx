@@ -97,7 +97,7 @@ export default function LoginScreen({
                 "Wrong Login Info",
                 "Check Username or Password Again"
             );
-            console.log("[LoginScreen], login error:", error);
+            console.error("[LoginScreen], login error:", error);
         }
     };
 

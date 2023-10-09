@@ -99,7 +99,7 @@ export async function postWholeSurvey(
         logObject("response:", responseData);
         return responseData;
     } catch (error) {
-        console.log(`posting whole survey error`);
+        console.error(`posting whole survey error`, error);
         throw error;
     }
 }

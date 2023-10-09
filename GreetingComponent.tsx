@@ -3,12 +3,6 @@ import { useApollo } from "./ApolloProvider";
 import { Text } from "react-native";
 import { greeting } from "./API/gqlQuery";
 
-// const GET_GREETING = gql`
-//     query {
-//         greeting
-//     }
-// `;
-
 function GreetingComponent() {
     const client = useApollo();
     const { loading, error, data } = useQuery(greeting, { client });

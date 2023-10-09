@@ -10,11 +10,8 @@ import { convertKeysToCamelCase } from "../../utils/SnakeToCamel";
 
 interface PostedSurveyItem {
     title: string;
-    // created_at: string;
     createdAt: string;
     code: string;
-    // current_participation: number;
-    // participation_goal: number;
     currentParticipation: number;
     participationGoal: number;
 }

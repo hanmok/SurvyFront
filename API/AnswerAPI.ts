@@ -33,8 +33,7 @@ export async function postSelectionAnswer(
 
         return responseData;
     } catch (error) {
-        console.log("postSelectionAnswer error!");
-        console.log(error);
+        console.error("postSelectionAnswer error!", error);
         throw error;
     }
 }
@@ -67,7 +66,6 @@ export async function postTextAnswer(
         const responseData: ApiResponse = await response.json();
         return responseData;
     } catch (error) {
-        // console.log("postTextAnswer error");
         console.error("postTextAnswer Error", error);
         throw error;
     }
@@ -103,7 +101,7 @@ export async function createParticipate(
 
         return responseData;
     } catch (error) {
-        console.log("createParticipate error");
+        console.error("createParticipate error", error);
         throw error;
     }
 }

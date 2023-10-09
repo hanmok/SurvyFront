@@ -21,7 +21,7 @@ export async function getAllGenres(): Promise<ApiResponse<[Genre]>> {
         logObject("genre response", responseData);
         return responseData;
     } catch (error) {
-        console.log("error fetching all genres");
+        console.error("error fetching all genres", error);
         throw error;
     }
 }

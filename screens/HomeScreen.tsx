@@ -57,8 +57,9 @@ function HomeScreen({
                 };
                 setUser(userState);
             } catch (error) {
+                console.error("fetch User", error);
                 // TODO: handle error
-                console.log(error);
+                // console.log(error);
             }
         };
         fetchUser();
@@ -88,7 +89,8 @@ function HomeScreen({
                     setSurveys(surveys);
                 });
         } catch (error) {
-            console.log("Error fetching data: ", error.message);
+            console.error("error fetching surveys", error);
+            // console.log("Error fetching data: ", error.message);
         }
     };
 

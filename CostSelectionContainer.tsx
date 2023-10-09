@@ -58,9 +58,6 @@ const CostSelectionContainer: React.FC<CostSelectionProps> = ({
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        // [
-        // commonStyles.border,
-        // backgroundColor: "magenta",
         borderRadius: 5,
         height: 40,
         width: 80,

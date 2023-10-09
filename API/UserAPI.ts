@@ -27,6 +27,7 @@ export async function login(
 
         return responseData;
     } catch (error) {
+        console.error("login error", error);
         throw error;
     }
 }
@@ -56,6 +57,7 @@ export async function fetchParticipatedSurveys(
 
         return responseData;
     } catch (error) {
+        console.error("fetch participated surveys", error);
         throw error;
     }
 }

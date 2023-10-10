@@ -1,0 +1,14 @@
+만들 것
+1. Section 편집 ( 제거 )
+
+관련된 DB List
+
+answer
+custom_answer
+question
+question_type
+section
+selectable_option
+survey
+user
+

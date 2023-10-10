@@ -7,7 +7,6 @@ export const colors = {
     deepMainColor: "#66A1FF",
     lightMainColor: "#B8D4FF",
     blurredGray: "#E5E5E5",
-    buttonBlue: "#007AFF",
     inactiveBtnBG: "#C9C9C9",
     white: "#fff",
     black: "#000",
@@ -22,4 +21,5 @@ export const colors = {
     selectedQuestionBoxBG: "#5094FD",
     unselectedQuestionBoxText: "#777777",
     placeHolder: "#C5C5C5",
+    buttonText: "#0074F9",
 };

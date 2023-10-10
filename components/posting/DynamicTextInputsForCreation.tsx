@@ -11,6 +11,7 @@ import {
 import TextButton from "../TextButton";
 import { fontSizes } from "../../utils/sizes";
 import ImageButton from "../ImageButton";
+import { colors } from "../../utils/colors";
 
 const DynamicTextInputsForCreation = ({
     dynamicInputValues,
@@ -76,15 +77,28 @@ const DynamicTextInputsForCreation = ({
                             }}
                         />
                         <ImageButton
-                            // img={require("../assets/minusIcon.png")}
-                            // img={require('../../')}
                             img={require("../../assets/minusIcon.png")}
                             onPress={() => handleRemoveInput(index)}
                             backgroundStyle={{ marginLeft: 10 }}
                         />
                     </View>
                 ))}
-                <Button title="Add Input" onPress={handleAddInput} />
+                <TextButton
+                    title="Add Input"
+                    backgroundStyle={{
+                        borderRadius: 8,
+                        borderWidth: 1,
+                        borderColor: colors.gray4,
+                        overflow: "hidden",
+                        height: 30,
+                    }}
+                    textStyle={{
+                        color: colors.buttonText,
+                        textAlign: "center",
+                        fontSize: fontSizes.m20,
+                    }}
+                    onPress={handleAddInput}
+                />
             </View>
         </TouchableWithoutFeedback>
     );

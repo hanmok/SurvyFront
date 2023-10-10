@@ -4,7 +4,7 @@ import TextButton from "../TextButton";
 import { fontSizes } from "../../utils/sizes";
 import ImageButton from "../ImageButton";
 import { log, logObject } from "../../utils/Log";
-
+import { colors } from "../../utils/colors";
 const DynamicTextInputsForModification = ({
     parentInputValues,
     setParentInputValues,
@@ -74,7 +74,22 @@ const DynamicTextInputsForModification = ({
                     />
                 </View>
             ))}
-            <Button title="Add Input" onPress={handleAddInput} />
+            <TextButton
+                title="Add Input"
+                backgroundStyle={{
+                    borderRadius: 8,
+                    borderWidth: 1,
+                    borderColor: colors.gray4,
+                    overflow: "hidden",
+                    height: 30,
+                }}
+                textStyle={{
+                    color: colors.buttonText,
+                    textAlign: "center",
+                    fontSize: fontSizes.m20,
+                }}
+                onPress={handleAddInput}
+            />
         </View>
     );
 };

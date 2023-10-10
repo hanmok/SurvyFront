@@ -53,6 +53,7 @@ import SurveyTitleModal from "../modals/SurveyTitleModal";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import { getAddress } from "../API/GeoAPI";
 import { commonStyles } from "../utils/CommonStyles";
+import { screenWidth } from "../utils/ScreenSize";
 
 export default function PostingScreen({
     navigation,
@@ -216,52 +217,6 @@ export default function PostingScreen({
                         </MenuOptions>
                     </Menu>
 
-                    {/*  */}
-                    <Menu style={styles.sectionMenu}>
-                        <MenuTrigger
-                            // onPress={handleMenuPress}
-                            customStyles={{
-                                triggerOuterWrapper: { flexDirection: "row" },
-                            }}
-                        >
-                            <Foundation name="page-copy" size={24} />
-                        </MenuTrigger>
-                        <MenuOptions
-                            customStyles={{
-                                optionsContainer: [
-                                    styles.sectionOptionContainer,
-                                ],
-                                // optionsContainer: {
-                                //     borderRadius: numOfSections,
-                                // },
-                            }}
-                        >
-                            <TextButton
-                                title="Section"
-                                textStyle={{
-                                    padding: 10,
-                                    fontWeight: "bold",
-                                    fontSize: fontSizes.s16,
-                                }}
-                                onPress={() => {
-                                    console.log("section tapped");
-                                    // handleMenuPress();
-                                }}
-                            />
-                            {/* {renderSectionOptions(sections)} */}
-                            {renderSectionOptions()}
-                            <MenuOption
-                                onSelect={() => {
-                                    setIsAddingSectionTapped(true);
-                                }}
-                                style={styles.option}
-                            >
-                                <Text style={styles.optionText}>
-                                    Add Section
-                                </Text>
-                            </MenuOption>
-                        </MenuOptions>
-                    </Menu>
                     <SimpleLineIcons
                         name="paper-plane"
                         size={24}
@@ -453,16 +408,21 @@ export default function PostingScreen({
     const sectionBoxItem: ListRenderItem<Section> = ({ item }) => {
         return (
             <TextButton
-                title={`${item.sequence}`}
+                title={`${item.sequence + 1}`}
                 onPress={() => {
                     setCurrentSectionIndex(item.sequence);
                     console.log(`section with ${item.sequence} tapped`);
                 }}
+                textStyle={{ textAlign: "center" }}
                 backgroundStyle={[
                     commonStyles.border,
+
                     {
-                        width: 30,
-                        height: 30,
+                        borderRadius: 8,
+                        marginVertical: 2,
+                        // width: 30,
+                        // height: 30,
+                        width: 40,
                         backgroundColor:
                             currentSectionIndex === item.sequence
                                 ? "magenta"
@@ -514,46 +474,65 @@ export default function PostingScreen({
                 selectedQuestion={questions[selectedQuestionIndex]}
             />
 
-            {/* <TargettingModal
-                onClose={toggleTargettingModal}
-                onConfirm={toggleTargettingModal}
-                isTargettingModalVisible={targettingModalVisible}
-            /> */}
-
             <View style={styles.subContainer}>
-                {questionsToShow.length === 0 ? (
-                    <View style={{ marginVertical: 30 }}>
-                        {listHeader()}
-                        {/* {sections.map((section, index) => (
-                            <View key={index}>
-                                <Text>{index + 1}</Text>
-                            </View>
-                        ))} */}
-                        <View style={{ height: 50 }} />
-                        {listFooter()}
-                    </View>
-                ) : (
-                    <FlatList
-                        data={questionsToShow}
-                        renderItem={postingQuestionBoxItem}
-                        keyExtractor={item => `${item.id}`}
-                        ItemSeparatorComponent={() => (
-                            <View style={{ height: 12 }} />
-                        )}
-                        ListFooterComponent={listFooter}
-                        ListHeaderComponent={listHeader}
-                    />
-                )}
-                <View>
-                    {/* <Text>{sections.length}</Text> */}
+                {/* Survey Title(Header) + 질문 추가(Footer) */}
+                <>
+                    {questionsToShow.length === 0 ? (
+                        <View style={{ marginVertical: 30 }}>
+                            {listHeader()}
+                            <View style={{ height: 50 }} />
+                            {listFooter()}
+                        </View>
+                    ) : (
+                        <FlatList
+                            data={questionsToShow}
+                            renderItem={postingQuestionBoxItem}
+                            keyExtractor={item => `${item.id}`}
+                            ItemSeparatorComponent={() => (
+                                <View style={{ height: 12 }} />
+                            )}
+                            ListFooterComponent={listFooter}
+                            ListHeaderComponent={listHeader}
+                        />
+                    )}
+                </>
+
+                <View
+                    style={{
+                        // backgroundColor: "magenta",
+                        flexDirection: "row",
+                        // padding: 20,
+                        // flex: 1,
+                        marginBottom: 12,
+                        height: 40,
+                    }}
+                >
                     <FlatList
                         data={sections}
                         renderItem={sectionBoxItem}
                         keyExtractor={item => `${item.sequence}`}
                         horizontal={true}
                         ItemSeparatorComponent={() => (
-                            <View style={{ width: 20 }} />
+                            <View style={{ width: 12 }} />
                         )}
+                        style={{
+                            // width: screenWidth - 200,
+                            backgroundColor: "yellow",
+                            paddingHorizontal: marginSizes.s12,
+                        }}
+                    />
+
+                    <Foundation
+                        name="page-add"
+                        size={30}
+                        style={{
+                            width: 40,
+                            height: 40,
+                            // backgroundColor: "magenta",
+                            alignSelf: "center",
+                            justifyContent: "center",
+                        }}
+                        onPress={addSection}
                     />
                 </View>
             </View>
@@ -564,15 +543,12 @@ export default function PostingScreen({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: "space-between",
         backgroundColor: colors.background,
     },
     subContainer: {
-        // marginHorizontal: marginSizes.l20,
-        // backgroundColor: "magenta",
-        // marginVertical: marginSizes.m16,
-        // gap: 20,
-        // marginVertical: 8,
+        // justifyContent: "space-between",
+        flex: 1,
+        justifyContent: "space-between",
     },
     questionContainer: {
         padding: 10,
@@ -593,7 +569,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
     },
-
     addButton: {
         backgroundColor: "black",
         color: "white",
@@ -612,12 +587,6 @@ const styles = StyleSheet.create({
         borderRadius: borderSizes.m10,
         overflow: "hidden",
         marginHorizontal: 10,
-    },
-    selectionButtonText: {
-        color: colors.buttonBlue,
-        textAlign: "center",
-        fontWeight: "bold",
-        fontSize: 16,
     },
     sectionHeader: {
         marginLeft: marginSizes.xs8,
@@ -678,25 +647,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
-    // modalContent: {
-    //     backgroundColor: "white",
-    //     padding: 20,
-    //     borderRadius: 10,
-    // },
     flatListStyle: {
         flexGrow: 0.9,
     },
     sectionBoxItemStyle: {
-        // backgroundColor: "magenta",
         marginHorizontal: 5,
         borderRadius: 6,
         overflow: "hidden",
     },
     itemContainer: {
-        // flexDirection: "row",
-        // alignItems: "center",
-        // justifyContent: "space-between",
-        // padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: "lightgray",
     },
@@ -726,7 +685,6 @@ const styles = StyleSheet.create({
     },
     rightNavContainer: {
         flexDirection: "row",
-        // marginRight: 20,
         marginRight: 12,
         justifyContent: "space-around",
         gap: 10,

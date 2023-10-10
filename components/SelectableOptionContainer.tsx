@@ -6,8 +6,9 @@ import {
     selectSingleSelection,
     selectMultipleSelection,
     textInputAction,
-    CustomAnswer,
+    // CustomAnswer,
 } from "../features/selector/selectorSlice";
+import { CustomAnswer } from "../interfaces/Answer";
 import { useDispatch } from "react-redux";
 import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";

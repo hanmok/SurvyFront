@@ -85,17 +85,22 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 placeholder="기타"
                                 value={userInput}
                                 onChangeText={setUserInput}
-                                style={{
-                                    backgroundColor: colors.lightMainTrans,
-                                    marginLeft: marginSizes.s12,
-                                    fontSize: fontSizes.s16,
-                                    paddingVertical: 5,
-                                    paddingLeft: 5,
-                                    width: 200,
-                                }}
+                                style={styles.extraInput}
                                 // return 누른 후 호출되는거 확인함.
                                 onSubmitEditing={() => {
                                     console.log(`${userInput} has submitted`);
+                                }}
+                                // onKeyPress={() => {
+                                //     onPress();
+                                //     console.log("기타 tapped");
+                                // }}
+                                // onPressIn={() => {
+                                //     onPress();
+                                //     console.log("기타 tapped");
+                                // }}
+                                onFocus={() => {
+                                    onPress();
+                                    console.log("기타 tapped");
                                 }}
                             />
                         ) : (
@@ -109,7 +114,25 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             img={require("../assets/unselectedSingleSelection.png")}
                             onPress={onPress}
                         />
-                        <Text style={styles.textStyle}>{value}</Text>
+                        {isExtra === 1 ? (
+                            <TextInput
+                                placeholder="기타"
+                                value={userInput}
+                                onChangeText={setUserInput}
+                                style={styles.extraInput}
+                                // return 누른 후 호출되는거 확인함.
+                                onSubmitEditing={() => {
+                                    console.log(`${userInput} has submitted`);
+                                }}
+                                onFocus={() => {
+                                    onPress();
+                                    console.log("기타 tapped");
+                                }}
+                            />
+                        ) : (
+                            // </View>
+                            <Text style={styles.textStyle}>{value}</Text>
+                        )}
                     </View>
                 );
                 break;
@@ -129,17 +152,14 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 placeholder="기타"
                                 value={userInput}
                                 onChangeText={setUserInput}
-                                style={{
-                                    backgroundColor: colors.lightMainTrans,
-                                    marginLeft: marginSizes.s12,
-                                    fontSize: fontSizes.s16,
-                                    paddingVertical: 5,
-                                    paddingLeft: 5,
-                                    width: 200,
-                                }}
+                                style={styles.extraInput}
                                 // return 누른 후 호출되는거 확인함.
                                 onSubmitEditing={() => {
                                     console.log(`${userInput} has submitted`);
+                                }}
+                                onFocus={() => {
+                                    onPress();
+                                    console.log("기타 tapped");
                                 }}
                             />
                         ) : (
@@ -159,17 +179,14 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 placeholder="기타"
                                 value={userInput}
                                 onChangeText={setUserInput}
-                                style={{
-                                    backgroundColor: colors.lightMainTrans,
-                                    marginLeft: marginSizes.s12,
-                                    fontSize: fontSizes.s16,
-                                    paddingVertical: 5,
-                                    paddingLeft: 5,
-                                    width: 200,
-                                }}
+                                style={styles.extraInput}
                                 // return 누른 후 호출되는거 확인함.
                                 onSubmitEditing={() => {
                                     console.log(`${userInput} has submitted`);
+                                }}
+                                onFocus={() => {
+                                    onPress();
+                                    console.log("기타 tapped");
                                 }}
                             />
                         ) : (
@@ -226,7 +243,6 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.s16,
         marginLeft: marginSizes.s12,
     },
-
     textContainer: {
         flex: 1,
         // padding: 16,
@@ -240,5 +256,14 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 16,
         textAlignVertical: "top", // 텍스트 상단 정렬
+    },
+
+    extraInput: {
+        backgroundColor: colors.lightMainTrans,
+        marginLeft: marginSizes.s12,
+        fontSize: fontSizes.s16,
+        paddingVertical: 5,
+        paddingLeft: 5,
+        width: 200,
     },
 });

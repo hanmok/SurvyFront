@@ -12,13 +12,15 @@ import ParticipatingQuestionBox from "../components/ParticipatingQuestionBox";
 import TextButton from "../components/TextButton";
 import { useNavigation } from "@react-navigation/native";
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
-import { CustomAnswer, initialize } from "../features/selector/selectorSlice";
+import { initialize } from "../features/selector/selectorSlice";
+import { CustomAnswer } from "../interfaces/Answer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import {
-    postSelectionAnswer,
+    // postSelectionAnswer,
     createParticipate,
-    postTextAnswer,
+    // postTextAnswer,
+    postAnswer,
 } from "../API/AnswerAPI";
 import { API_BASE_URL } from "../API/API";
 
@@ -140,19 +142,32 @@ function ParticipatingScreen({
         questionId: number,
         selectableOptionId: number
     ) => {
-        await postSelectionAnswer(
-            surveyId,
-            userId,
-            questionId,
-            selectableOptionId
-        );
+        // await postSelectionAnswer(
+        //     surveyId,
+        //     userId,
+        //     questionId,
+        //     selectableOptionId
+        // );
+
+        await postAnswer(surveyId, questionId, selectableOptionId, "", userId);
     };
 
     const postEachTextAnswer = async (
         customAnswer: CustomAnswer,
         userId: number
     ) => {
-        await postTextAnswer(customAnswer, userId);
+        // export interface CustomAnswer {
+        //     selectableOptionId: number;
+        //     sequence: number;
+        //     answerText: string;
+        // }
+        const { selectableOptionId, sequence, answerText } = customAnswer;
+
+        // await postTextAnswer(customAnswer, userId);
+        // await postAnswer()
+
+        // 1: QuestionId
+        await postAnswer(surveyId, 1, selectableOptionId, answerText, userId);
     };
 
     const handleNextScreen = () => {
@@ -164,8 +179,11 @@ function ParticipatingScreen({
         const userId = (await loadUserState()).userId;
         console.log(`buttonTapAction called, userId: ${userId}`);
         const promises = [];
+
         // section Idx 도 있어야 할 것 같은데?
         // 한번에 다 처리하고 싶은거 아니야? 맞아.
+        // Selection 이든, Text 든 하나로 처리해.
+        // 논리부터 파악해야해.
         for (let q = 0; q < questions.length; q++) {
             for (let i = 0; i < selectedIndexIds[q].length; i++) {
                 const apiCall = postEachSelectionAnswer(

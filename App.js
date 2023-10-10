@@ -34,11 +34,14 @@ import { ApolloProvider } from "./ApolloProvider";
 import { API_BASE_URL, GQL_URL } from "./API/API";
 import { useEffect } from "react";
 import TargettingScreen from "./screens/TargettingScreen";
+import { TextInput } from "react-native-gesture-handler";
 
 // const client = new ApolloClient({
 //     uri: API_BASE_URL,
 //     cache: new InMemoryCache(),
 // });
+
+TextInput.defaultProps.autoCorrect = false;
 
 export default function App() {
     return (

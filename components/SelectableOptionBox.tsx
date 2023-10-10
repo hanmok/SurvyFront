@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 // import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";
+import { colors } from "../utils/colors";
 
 interface SelectableOptionProps {
     id: number;
@@ -24,6 +25,7 @@ interface SelectableOptionProps {
     onPress?: () => void;
     handleUserInput?: (text: string) => void;
     questionIndex: number;
+    isExtra: number;
 }
 
 const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
@@ -35,6 +37,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     onPress,
     handleUserInput,
     questionIndex,
+    isExtra,
 }) => {
     useEffect(() => {
         console.log("selectableOption value:", value);
@@ -49,6 +52,8 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     };
 
     const [text, setText] = useState("");
+
+    const [userInput, setUserInput] = useState("");
 
     const selectedIndexIds = useSelector((state: RootState) => {
         return state.selector.selectedIndexIds;
@@ -66,18 +71,37 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
 
     {
         switch (questionTypeId) {
-            // case QuestionTypeEnum.SingleSelection:
             case QuestionTypeId.SingleSelection:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
-                    // selectableOptionComponent = true ? (
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/selectedSingleSelection.png")}
                             onPress={onPress}
                         />
-                        <Text style={styles.textStyle}>{value}</Text>
+                        {isExtra === 1 ? (
+                            <TextInput
+                                placeholder="기타"
+                                value={userInput}
+                                onChangeText={setUserInput}
+                                style={{
+                                    backgroundColor: colors.lightMainTrans,
+                                    marginLeft: marginSizes.s12,
+                                    fontSize: fontSizes.s16,
+                                    paddingVertical: 5,
+                                    paddingLeft: 5,
+                                    width: 200,
+                                }}
+                                // return 누른 후 호출되는거 확인함.
+                                onSubmitEditing={() => {
+                                    console.log(`${userInput} has submitted`);
+                                }}
+                            />
+                        ) : (
+                            // </View>
+                            <Text style={styles.textStyle}>{value}</Text>
+                        )}
                     </View>
                 ) : (
                     <View style={styles.container}>
@@ -85,9 +109,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             img={require("../assets/unselectedSingleSelection.png")}
                             onPress={onPress}
                         />
-                        <Text style={styles.textStyle}>
-                            {value} {}
-                        </Text>
+                        <Text style={styles.textStyle}>{value}</Text>
                     </View>
                 );
                 break;
@@ -102,7 +124,28 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             backgroundStyle={{ justifyContent: "center" }}
                             onPress={onPress}
                         />
-                        <Text style={styles.textStyle}>{value}</Text>
+                        {isExtra === 1 ? (
+                            <TextInput
+                                placeholder="기타"
+                                value={userInput}
+                                onChangeText={setUserInput}
+                                style={{
+                                    backgroundColor: colors.lightMainTrans,
+                                    marginLeft: marginSizes.s12,
+                                    fontSize: fontSizes.s16,
+                                    paddingVertical: 5,
+                                    paddingLeft: 5,
+                                    width: 200,
+                                }}
+                                // return 누른 후 호출되는거 확인함.
+                                onSubmitEditing={() => {
+                                    console.log(`${userInput} has submitted`);
+                                }}
+                            />
+                        ) : (
+                            // </View>
+                            <Text style={styles.textStyle}>{value}</Text>
+                        )}
                     </View>
                 ) : (
                     <View style={styles.container}>
@@ -111,7 +154,28 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             backgroundStyle={{ justifyContent: "center" }}
                             onPress={onPress}
                         />
-                        <Text style={styles.textStyle}>{value}</Text>
+                        {isExtra === 1 ? (
+                            <TextInput
+                                placeholder="기타"
+                                value={userInput}
+                                onChangeText={setUserInput}
+                                style={{
+                                    backgroundColor: colors.lightMainTrans,
+                                    marginLeft: marginSizes.s12,
+                                    fontSize: fontSizes.s16,
+                                    paddingVertical: 5,
+                                    paddingLeft: 5,
+                                    width: 200,
+                                }}
+                                // return 누른 후 호출되는거 확인함.
+                                onSubmitEditing={() => {
+                                    console.log(`${userInput} has submitted`);
+                                }}
+                            />
+                        ) : (
+                            // </View>
+                            <Text style={styles.textStyle}>{value}</Text>
+                        )}
                     </View>
                 );
                 break;

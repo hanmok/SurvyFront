@@ -61,6 +61,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
         setRemovingText(true);
         console.log(`dynamicInputValues: ${dynamicInputValues}`);
         onClose();
+        setIsExtraOptionEnabled(false);
     };
 
     useEffect(() => {
@@ -159,6 +160,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                     setParentInputValues={setDynamicInputValues}
                                     isModifyingModalVisible={removingTexts}
                                     setSecondTexts={setSecondTexts}
+                                    isExtraOptionEnabled={isExtraOptionEnabled}
                                 />
                             )}
 
@@ -252,21 +254,24 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                             makeSelectableOption(
                                                 selectedQuestion.id,
                                                 0,
-                                                placeHolder
+                                                placeHolder,
+                                                0
                                             );
                                         selectableOptions.push(
                                             selectableOption
                                         );
                                     } else {
                                         log(`modify called`);
-                                        // dynamicInputValues.map(
                                         secondTexts.map((optionText, index) => {
                                             if (optionText !== "") {
                                                 const selectableOption =
                                                     makeSelectableOption(
                                                         selectedQuestion.id,
                                                         index,
-                                                        optionText
+                                                        optionText,
+                                                        isExtraOptionEnabled
+                                                            ? 1
+                                                            : 0
                                                     );
                                                 selectableOptions.push(
                                                     selectableOption

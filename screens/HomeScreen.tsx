@@ -28,6 +28,7 @@ import { Ionicons } from "@expo/vector-icons";
 import GreetingComponent from "../GreetingComponent";
 // import { getAllPostedSurveys } from "../API/gqlAPI";
 import { getSurveyQuery } from "../API/gqlQuery";
+import { RefreshControl } from "react-native-gesture-handler";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -36,6 +37,15 @@ function HomeScreen({
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.home>;
 }) {
+    const [refreshing, setRefreshing] = useState(false);
+    const onRefresh = () => {
+        setRefreshing(true);
+        fetchSurveys().then(newSurveys => {
+            setSurveys(newSurveys);
+            setRefreshing(false);
+        });
+    };
+
     const postingNavTitle = NavigationTitle.posting;
     const dispatch = useDispatch();
     const [surveys, setSurveys] = useState<Survey[]>([]);
@@ -66,6 +76,28 @@ function HomeScreen({
     }, []);
 
     const fetchSurveys = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/survey`);
+            const jsonData = await response.json();
+
+            logObject("fetching survey result: ", jsonData);
+
+            const surveys: Survey[] = jsonData.data.map((item: Survey) => ({
+                title: item.title,
+                id: item.id,
+                currentParticipation: item.currentParticipation,
+                participationGoal: item.participationGoal,
+                initialSectionId: item.initialSectionId,
+                // rewardRange: item.rewardRange,
+            }));
+
+            return surveys; // 이 부분이 수정된 부분. 함수가 Promise<[Survey]>를 반환하게 함
+        } catch (error) {
+            throw new Error("error fetching survey");
+        }
+    };
+
+    const updateSurveys = async () => {
         try {
             await fetch(`${API_BASE_URL}/survey`)
                 .then(response => response.json())
@@ -116,7 +148,7 @@ function HomeScreen({
 
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {
-        fetchSurveys();
+        updateSurveys();
         // getSurveyQuery(804);
         // getPostedSurveys(774);
         // getAllPostedSurveys(0);
@@ -187,6 +219,12 @@ function HomeScreen({
                     )}
                     contentContainerStyle={{ justifyContent: "flex-start" }}
                     style={styles.surveyListContainer}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
                 />
             </View>
         </SafeAreaView>

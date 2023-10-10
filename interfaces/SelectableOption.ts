@@ -12,19 +12,21 @@ export interface SelectableOption {
     questionId: number | undefined;
     position: number;
     value: string;
+    isExtra: number | undefined;
 }
 
 export const makeSelectableOption = (
     questionId: number,
     position: number,
-    value: string
+    value: string,
+    isExtra: number
 ): SelectableOption => {
     const selectableOption: SelectableOption = {
-        // id: randomNumber,
         id: makeRandomNumber(),
         questionId: questionId,
         position: position,
         value: value,
+        isExtra: isExtra,
     };
     return selectableOption;
 };

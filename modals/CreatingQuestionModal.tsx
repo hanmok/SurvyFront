@@ -63,7 +63,8 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
             const selectableOption = makeSelectableOption(
                 question.id,
                 0,
-                placeHolder
+                placeHolder,
+                0
             );
             selectableOptions.push(selectableOption);
         } else {
@@ -72,22 +73,41 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                     const selectableOption = makeSelectableOption(
                         question.id,
                         index,
-                        optionText
+                        optionText,
+                        0
                     );
                     selectableOptions.push(selectableOption);
                 }
             });
+
+            if (isExtraOptionEnabled) {
+                const selectableOption = makeSelectableOption(
+                    question.id,
+                    dynamicInputValues.length,
+                    "기타",
+                    1
+                );
+                selectableOptions.push(selectableOption);
+            }
         }
+
         question.selectableOptions = selectableOptions;
         logObject("question added", question);
         onAdd(question);
+
+        setIsExtraOptionEnabled(false);
     };
     const toggleExtraOptionSwitch = () => {
         setIsExtraOptionEnabled(prev => !prev);
     };
 
+    useEffect(() => {
+        console.log(`isExtraOptionEnabled: ${isExtraOptionEnabled}`);
+    }, [isExtraOptionEnabled]);
+
     const handleModalClose = () => {
         console.log(`dynamicInputValues: ${dynamicInputValues}`);
+        setIsExtraOptionEnabled(false);
         onClose();
     };
 
@@ -185,6 +205,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                     keys={dynamicInputValues.map((_, index) =>
                                         index.toString()
                                     )}
+                                    isExtraOptionEnabled={isExtraOptionEnabled}
                                 />
                             )}
 

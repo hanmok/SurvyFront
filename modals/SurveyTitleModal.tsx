@@ -84,7 +84,6 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                             <TextButton
                                 title="확인"
                                 onPress={() => {
-                                    // setSurveyTitle(title);
                                     setSurveyTitle(title);
                                     setModalVisible(false);
                                     setConfirmTapped(true);

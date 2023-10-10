@@ -50,6 +50,7 @@ export const getSurveyQuery = gql`
                         id
                         position
                         value
+                        is_extra
                     }
                 }
             }

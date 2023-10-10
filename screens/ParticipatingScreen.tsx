@@ -84,6 +84,7 @@ function ParticipatingScreen({
             const updatedSurvey: Survey = removeTypenameAndConvertToCamelCase(
                 data.survey
             );
+            logObject("fetched survey", updatedSurvey);
             setCurrentSurvey(updatedSurvey); // currentSurvey 상태를 업데이트
             const currentSection = updatedSurvey.sections.find(
                 s => s.sequence === currentSectionIndex
@@ -93,8 +94,11 @@ function ParticipatingScreen({
             dispatch(initialize(currentSection.questions.length));
             setIsLoading(false);
         }
-        console.log("currentSectionIndex changed to " + currentSectionIndex);
-        console.log("number of sections:", currentSurvey.sections.length);
+        // console.log("currentSectionIndex changed to " + currentSectionIndex);
+
+        // // 건든게 없는데 ? 정말 없어? pretty much..?
+        // console.log("number of sections:", currentSurvey.sections.length);
+
         // setQuestions(currentSurvey.sections[currentSectionIndex].questions);
     }, [currentSectionIndex, data]);
 
@@ -249,7 +253,8 @@ function ParticipatingScreen({
                 style={styles.flatListStyle}
                 data={questions}
                 renderItem={renderItem}
-                keyExtractor={item => `${item.selectableOptions[0].id} `}
+                // keyExtractor={item => `${item.selectableOptions[0].id} `}
+                keyExtractor={item => `${item.id} `}
                 ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
             />
 

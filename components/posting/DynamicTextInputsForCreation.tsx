@@ -17,6 +17,7 @@ const DynamicTextInputsForCreation = ({
     dynamicInputValues,
     setDynamicInputValues,
     keys,
+    isExtraOptionEnabled,
 }) => {
     const [inputValues, setInputValues] = useState([""]);
 
@@ -76,6 +77,7 @@ const DynamicTextInputsForCreation = ({
                                 }
                             }}
                         />
+
                         <ImageButton
                             img={require("../../assets/minusIcon.png")}
                             onPress={() => handleRemoveInput(index)}
@@ -83,6 +85,21 @@ const DynamicTextInputsForCreation = ({
                         />
                     </View>
                 ))}
+                {isExtraOptionEnabled && (
+                    <TextButton
+                        title="기타"
+                        onPress={() => {}}
+                        backgroundStyle={{
+                            borderWidth: 1,
+                            borderColor: "#ccc",
+                            borderRadius: 5,
+                            padding: 10,
+                            marginBottom: 10,
+                        }}
+                        textStyle={{ color: colors.gray2 }}
+                    />
+                )}
+
                 <TextButton
                     title="Add Input"
                     backgroundStyle={{

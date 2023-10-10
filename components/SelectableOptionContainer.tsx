@@ -35,6 +35,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
         logObject("questionTypeId: ", questionTypeId);
     }, []);
 
+    // TODO: 상태 변수 하나 써서 더 간단히 할 수 있을 것 같아.
     const handleUserInput = useCallback(
         (userInput: string, index: number) => {
             console.log(`handleUserInput called, input: ${userInput}`);

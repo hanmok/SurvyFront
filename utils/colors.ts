@@ -6,6 +6,8 @@ export const colors = {
     darkGray: "#444",
     deepMainColor: "#66A1FF",
     lightMainColor: "#B8D4FF",
+    // lightMainTrans: "rgba(184, 212, 255, 0.7)",
+    lightMainTrans: "rgba(150, 180, 220, 0.7)",
     blurredGray: "#E5E5E5",
     inactiveBtnBG: "#C9C9C9",
     white: "#fff",

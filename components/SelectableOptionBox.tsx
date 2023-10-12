@@ -44,6 +44,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         console.log("selectableOption value:", value);
         console.log("question type id:", questionTypeId);
     }, []);
+
     const textInputRef = useRef(null);
 
     const handleFocusTextInput = () => {
@@ -74,6 +75,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
+                    // 선택된 상태
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/selectedSingleSelection.png")}
@@ -94,10 +96,12 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                     );
                                     handleUserInput(userInput);
                                 }}
-                                onFocus={() => {
-                                    onPress();
-                                    console.log("기타 tapped");
-                                }}
+                                // onFocus={() => {
+                                //     // 선택되어있는지 아닌지.. 어떻게 알지?
+                                //     onPress();
+
+                                //     console.log("기타 tapped");
+                                // }}
                                 onEndEditing={() => {
                                     logObject(
                                         "onEndEditing, userInput:",
@@ -115,6 +119,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         )}
                     </View>
                 ) : (
+                    // 선택 되어있지 않은 상태
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/unselectedSingleSelection.png")}
@@ -157,6 +162,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
+                    // 선택 되어있는 상태
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/selectedMultipleSelection.png")}
@@ -178,10 +184,10 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                     );
                                     handleUserInput(userInput);
                                 }}
-                                onFocus={() => {
-                                    onPress();
-                                    console.log("기타 tapped");
-                                }}
+                                // onFocus={() => {
+                                //     onPress();
+                                //     console.log("기타 tapped");
+                                // }}
                                 onEndEditing={() => {
                                     logObject(
                                         "onEndEditing, userInput:",
@@ -199,6 +205,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         )}
                     </View>
                 ) : (
+                    // 선택 되어있지 않은 상태
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/unselectedMultipleSelection.png")}

@@ -134,12 +134,6 @@ export const selectorSlice = createSlice({
                 customAnswer.answerText
             );
 
-            // const newCustomAnswer: CustomAnswer = {
-            //     selectableOptionId: customAnswer.selectableOptionId,
-            //     questionId: customAnswer.questionId,
-            //     answerText: customAnswer.answerText,
-            // };
-
             // 이미 같은 customAnswer가 배열에 없으면 추가
             // 만약, 음.. 수정된 값이 호출되면? 교체해야지. questionId 가 같으면 교체해야함.
             const textAnswerIndex = state.textAnswers.findIndex(

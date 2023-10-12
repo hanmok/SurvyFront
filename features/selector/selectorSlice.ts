@@ -92,22 +92,33 @@ export const selectorSlice = createSlice({
             };
 
             // 이미 같은 customAnswer가 배열에 없으면 추가
-            if (
-                state.textAnswers.findIndex(
-                    ans =>
-                        // 여기서 ans와 newCustomAnswer를 비교하여 같은지 확인
-                        ans.selectableOptionId ===
-                            newCustomAnswer.selectableOptionId &&
-                        ans.questionId === newCustomAnswer.questionId &&
-                        ans.answerText === newCustomAnswer.answerText
-                ) === -1
-            ) {
+            // 만약, 음.. 수정된 값이 호출되면? 교체해야지. questionId 가 같으면 교체해야함.
+            const textAnswerIndex = state.textAnswers.findIndex(
+                ans =>
+                    ans.selectableOptionId ===
+                    newCustomAnswer.selectableOptionId
+            );
+
+            if (textAnswerIndex === -1) {
                 logObject(
                     "[selectorSlice] customAnswer has added",
                     newCustomAnswer
                 );
                 state.textAnswers.push(newCustomAnswer);
             } else {
+                // selectableOptionId 가 같은 경우
+                // 만약 Text가 다르면, 업데이트!
+                if (
+                    state.textAnswers.findIndex(
+                        ans => ans.answerText === newCustomAnswer.answerText
+                    ) === -1
+                ) {
+                    logObject(
+                        "[selectorSlice] customAnswer has updated to ",
+                        newCustomAnswer
+                    );
+                    state.textAnswers[textAnswerIndex] = newCustomAnswer;
+                }
             }
         },
     },

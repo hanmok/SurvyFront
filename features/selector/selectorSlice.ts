@@ -48,6 +48,7 @@ export const selectorSlice = createSlice({
             );
 
             // 선택된 selectableOption 의 Index 가 textAnswer 에 있으면 !== -1
+
             const prevTextInputIndex = state.textAnswers.findIndex(
                 ans => ans.questionId === questionId
             );

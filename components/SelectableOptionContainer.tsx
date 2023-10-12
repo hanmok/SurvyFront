@@ -8,7 +8,7 @@ import {
     textInputAction,
     // CustomAnswer,
 } from "../features/selector/selectorSlice";
-import { CustomAnswer } from "../interfaces/CustomAnswer";
+import { CustomAnswer, makeCustomAnswer } from "../interfaces/CustomAnswer";
 import { useDispatch } from "react-redux";
 import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";
@@ -56,6 +56,9 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
 
     const handlePress = useCallback(
         (selectedIndex: number, answerText: string) => {
+            console.log(
+                `[SelectableOptionContainer] handlePress, questionTypeId: ${questionTypeId}`
+            );
             switch (questionTypeId) {
                 case QuestionTypeId.SingleSelection:
                     dispatch(
@@ -80,14 +83,12 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     break;
 
                 default:
-                    dispatch(
-                        selectSingleSelection({
-                            questionId,
-                            questionIndex,
-                            selectedSOId: selectableOptions[0].id,
-                            answerText,
-                        })
+                    const customAnswer = makeCustomAnswer(
+                        selectableOptions[0].id,
+                        questionId,
+                        answerText
                     );
+                    dispatch(textInputAction({ customAnswer }));
                     break;
             }
         },

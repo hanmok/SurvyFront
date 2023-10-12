@@ -297,8 +297,6 @@ function ParticipatingScreen({
     };
 
     return (
-        // <View style={{ alignItems: "center" }}>
-        // <View style={styles.container}>
         <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -313,7 +311,6 @@ function ParticipatingScreen({
                 ListFooterComponent={listFooter}
             />
         </KeyboardAvoidingView>
-        // </View>
     );
 }
 

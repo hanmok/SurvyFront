@@ -259,8 +259,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             }} // 리턴 키 누를 때 호출
                             onEndEditing={() => {
                                 logObject("onEndEditing, userInput", userInput);
-
-                                // dismissKeyboard
                             }}
                             returnKeyType="done"
                         />
@@ -276,15 +274,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 break;
         }
     }
-
-    // return (
-    //     <KeyboardAvoidingView
-    //         behavior={Platform.OS === "ios" ? "padding" : "height"}
-    //         style={styles.container}
-    //     >
-    //         {selectableOptionComponent}
-    //     </KeyboardAvoidingView>
-    // );
 
     return <View style={styles.container}>{selectableOptionComponent}</View>;
 };

@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { numberOfQuestions } from "../../types/types";
-import { CustomAnswer } from "../../interfaces/CustomAnswer";
+import { CustomAnswer, makeCustomAnswer } from "../../interfaces/CustomAnswer";
 // import { CustomAnswer } from "../interfaces/CustomAnswer";
-import { logObject } from "../../utils/Log";
+import { log, logObject } from "../../utils/Log";
 
 interface SelectorState {
     selectedOptionIds: number[][];
@@ -34,25 +34,54 @@ export const selectorSlice = createSlice({
         selectSingleSelection: (
             state,
             action: PayloadAction<{
+                questionId: number;
                 questionIndex: number;
                 selectedSOId: number;
+                answerText: string;
             }>
         ) => {
-            const { questionIndex, selectedSOId } = action.payload;
+            const { questionIndex, selectedSOId, questionId, answerText } =
+                action.payload;
+
             console.log(
                 `[selectorSlice], selectSingleSelection, questionIndex: ${questionIndex}, selectedSOId: ${selectedSOId}`
             );
+
+            // 선택된 selectableOption 의 Index 가 textAnswer 에 있으면 !== -1
+            const prevTextInputIndex = state.textAnswers.findIndex(
+                ans => ans.questionId === questionId
+            );
+
+            if (prevTextInputIndex !== -1) {
+                log("textAnswer has been removed");
+                state.textAnswers.splice(prevTextInputIndex, 1);
+            }
+
+            if (answerText !== "") {
+                const customAnswer = makeCustomAnswer(
+                    selectedSOId,
+                    questionId,
+                    answerText
+                );
+                logObject("textAnswer has been added", customAnswer);
+                state.textAnswers.push(customAnswer);
+            }
             state.selectedOptionIds[questionIndex] = [selectedSOId];
         },
 
         selectMultipleSelection: (
             state,
             action: PayloadAction<{
+                questionId: number;
                 questionIndex: number;
                 selectedSOId: number;
+                answerText: string;
             }>
         ) => {
-            const { questionIndex, selectedSOId } = action.payload;
+            const { questionId, questionIndex, selectedSOId, answerText } =
+                action.payload;
+
+            // 기타 옵션 아닌 경우
 
             if (state.selectedOptionIds[questionIndex].includes(selectedSOId)) {
                 // 이미 포함시 제거
@@ -60,9 +89,35 @@ export const selectorSlice = createSlice({
                     state.selectedOptionIds[questionIndex].filter(
                         item => item !== selectedSOId
                     );
+                log("[selectorSlice] removed from multiple selection");
             } else {
                 // 없을 경우 추가
                 state.selectedOptionIds[questionIndex].push(selectedSOId);
+                log("[selectorSlice] added from multiple selection");
+            }
+
+            // 기타 옵션인 경우
+            if (answerText !== "") {
+                // state.selectedOptionIds[questionIndex].push(selectedSOId)
+                // 이미 있는지 보기.
+                const existingIndex = state.textAnswers.findIndex(
+                    customAnswer =>
+                        customAnswer.selectableOptionId === selectedSOId
+                );
+                // 존재하지 않는 경우 -> 추가
+                if (existingIndex === -1) {
+                    const customAnswer = makeCustomAnswer(
+                        selectedSOId,
+                        questionId,
+                        answerText
+                    );
+                    logObject("textAnswer has been added", customAnswer);
+                    state.textAnswers.push(customAnswer);
+                } else {
+                    // 존재 하는 경우 -> 제거
+                    log("textAnswer has been removed");
+                    state.textAnswers.splice(existingIndex, 1);
+                }
             }
         },
         textInputAction: (
@@ -71,25 +126,19 @@ export const selectorSlice = createSlice({
                 customAnswer: CustomAnswer; // selectableOptionId, sequence, text
             }>
         ) => {
-            // const customAnswer = action.payload.customAnswer;
-            // // 없으면 push
-            // if (
-            //     state.textAnswers.findIndex(ans => ans === customAnswer) === -1
-            // ) {
-            //     logObject(
-            //         "[selectorSlice] customAnswer has added",
-            //         customAnswer
-            //     );
-            //     state.textAnswers.push(customAnswer);
-            // }
-
             const customAnswer = action.payload.customAnswer;
             // customAnswer 객체를 복사하여 새로운 객체 생성
-            const newCustomAnswer: CustomAnswer = {
-                selectableOptionId: customAnswer.selectableOptionId,
-                questionId: customAnswer.questionId,
-                answerText: customAnswer.answerText,
-            };
+            const newCustomAnswer = makeCustomAnswer(
+                customAnswer.selectableOptionId,
+                customAnswer.questionId,
+                customAnswer.answerText
+            );
+
+            // const newCustomAnswer: CustomAnswer = {
+            //     selectableOptionId: customAnswer.selectableOptionId,
+            //     questionId: customAnswer.questionId,
+            //     answerText: customAnswer.answerText,
+            // };
 
             // 이미 같은 customAnswer가 배열에 없으면 추가
             // 만약, 음.. 수정된 값이 호출되면? 교체해야지. questionId 가 같으면 교체해야함.
@@ -104,6 +153,7 @@ export const selectorSlice = createSlice({
                     "[selectorSlice] customAnswer has added",
                     newCustomAnswer
                 );
+                //
                 state.textAnswers.push(newCustomAnswer);
             } else {
                 // selectableOptionId 가 같은 경우

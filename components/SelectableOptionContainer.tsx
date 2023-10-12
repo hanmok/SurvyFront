@@ -28,6 +28,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     questionId,
 }) => {
     const dispatch = useDispatch();
+    const [userInput, setUserInput] = useState<string>("");
 
     useEffect(() => {
         logObject("passed selectableOptions:", selectableOptions);
@@ -54,13 +55,15 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     );
 
     const handlePress = useCallback(
-        (selectedIndex: number) => {
+        (selectedIndex: number, answerText: string) => {
             switch (questionTypeId) {
                 case QuestionTypeId.SingleSelection:
                     dispatch(
                         selectSingleSelection({
+                            questionId,
                             questionIndex,
                             selectedSOId: selectableOptions[selectedIndex].id,
+                            answerText,
                         })
                     );
                     break;
@@ -68,8 +71,10 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                 case QuestionTypeId.MultipleSelection:
                     dispatch(
                         selectMultipleSelection({
+                            questionId,
                             questionIndex,
                             selectedSOId: selectableOptions[selectedIndex].id,
+                            answerText,
                         })
                     );
                     break;
@@ -77,8 +82,10 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                 default:
                     dispatch(
                         selectSingleSelection({
+                            questionId,
                             questionIndex,
                             selectedSOId: selectableOptions[0].id,
+                            answerText,
                         })
                     );
                     break;
@@ -94,8 +101,16 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     <SelectableOptionBox
                         {...selectableOption}
                         questionTypeId={questionTypeId}
-                        onPress={() => handlePress(soIndex)}
-                        handleUserInput={text => handleUserInput(text, soIndex)}
+                        onPress={() =>
+                            handlePress(
+                                soIndex,
+                                selectableOption.isExtra === 1 ? userInput : ""
+                            )
+                        } // text 추가
+                        handleUserInput={text => {
+                            handleUserInput(text, soIndex);
+                            setUserInput(text);
+                        }}
                         questionIndex={questionIndex}
                         key={`${selectableOption.id}`}
                     />

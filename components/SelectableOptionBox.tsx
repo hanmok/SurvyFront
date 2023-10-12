@@ -52,8 +52,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         }
     };
 
-    // const [text, setText] = useState("");
-
     const [userInput, setUserInput] = useState("");
 
     const selectedIndexIds = useSelector((state: RootState) => {

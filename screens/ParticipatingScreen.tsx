@@ -13,8 +13,9 @@ import TextButton from "../components/TextButton";
 import { useNavigation } from "@react-navigation/native";
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
 import { initialize } from "../features/selector/selectorSlice";
-import { CustomAnswer } from "../interfaces/Answer";
+import { CustomAnswer } from "../interfaces/CustomAnswer";
 import { useSelector, useDispatch } from "react-redux";
+import { Answer } from "../interfaces/Answer";
 import { RootState } from "../store";
 import {
     // postSelectionAnswer,
@@ -36,7 +37,7 @@ import { useApollo } from "../ApolloProvider";
 import { useQuery } from "@apollo/client";
 import { Survey } from "../interfaces/Survey";
 import { getSurveyQuery } from "../API/gqlQuery";
-import { logObject } from "../utils/Log";
+import { log, logObject } from "../utils/Log";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -66,8 +67,8 @@ function ParticipatingScreen({
     const shouldGoBack = useRef(false);
     const { sectionId, surveyId } = route.params;
     const dispatch = useDispatch();
-    const selectedIndexIds = useSelector((state: RootState) => {
-        return state.selector.selectedIndexIds;
+    const selectedSOIndexIds = useSelector((state: RootState) => {
+        return state.selector.selectedOptionIds;
     });
     const textAnswers = useSelector((state: RootState) => {
         return state.selector.textAnswers;
@@ -96,12 +97,6 @@ function ParticipatingScreen({
             dispatch(initialize(currentSection.questions.length));
             setIsLoading(false);
         }
-        // console.log("currentSectionIndex changed to " + currentSectionIndex);
-
-        // // 건든게 없는데 ? 정말 없어? pretty much..?
-        // console.log("number of sections:", currentSurvey.sections.length);
-
-        // setQuestions(currentSurvey.sections[currentSectionIndex].questions);
     }, [currentSectionIndex, data]);
 
     useEffect(() => {
@@ -136,38 +131,34 @@ function ParticipatingScreen({
         );
     };
 
-    const postEachSelectionAnswer = async (
+    // Selectable Option 은 매우 많음...
+    const postSelectionAnswer = async (
         surveyId: number,
         userId: number,
         questionId: number,
         selectableOptionId: number
     ) => {
-        // await postSelectionAnswer(
-        //     surveyId,
-        //     userId,
-        //     questionId,
-        //     selectableOptionId
-        // );
-
+        logObject("[ParticipatingScreen] postSelectionAnswer", {
+            questionId,
+            selectableOptionId,
+        });
         await postAnswer(surveyId, questionId, selectableOptionId, "", userId);
     };
 
-    const postEachTextAnswer = async (
+    const postTextAnswer = async (
         customAnswer: CustomAnswer,
-        userId: number
+        userId: number,
+        surveyId: number
     ) => {
-        // export interface CustomAnswer {
-        //     selectableOptionId: number;
-        //     sequence: number;
-        //     answerText: string;
-        // }
-        const { selectableOptionId, sequence, answerText } = customAnswer;
-
-        // await postTextAnswer(customAnswer, userId);
-        // await postAnswer()
-
-        // 1: QuestionId
-        await postAnswer(surveyId, 1, selectableOptionId, answerText, userId);
+        const { selectableOptionId, answerText, questionId } = customAnswer;
+        logObject("[ParticipatingScreen] postTextAnswer", { customAnswer });
+        await postAnswer(
+            surveyId,
+            questionId,
+            selectableOptionId,
+            answerText,
+            userId
+        );
     };
 
     const handleNextScreen = () => {
@@ -175,36 +166,44 @@ function ParticipatingScreen({
         navigation.goBack();
     };
 
-    const buttonTapAction = async () => {
+    const handleCompleteSection = async () => {
         const userId = (await loadUserState()).userId;
         console.log(`buttonTapAction called, userId: ${userId}`);
         const promises = [];
 
-        // section Idx 도 있어야 할 것 같은데?
-        // 한번에 다 처리하고 싶은거 아니야? 맞아.
-        // Selection 이든, Text 든 하나로 처리해.
-        // 논리부터 파악해야해.
+        // selectedSOIndexIds 에서 textAnswers 를 빼야해요.
+
+        let selectableOptionIds: number[] = [];
+        for (let j = 0; j < textAnswers.length; j++) {
+            selectableOptionIds.push(textAnswers[j].selectableOptionId);
+            const customAnswer = textAnswers[j];
+            const postCall = postTextAnswer(customAnswer, userId, surveyId);
+            logObject("[ParticipatingScreen] postTextAnswer", { customAnswer });
+            promises.push(postCall);
+        }
+
         for (let q = 0; q < questions.length; q++) {
-            for (let i = 0; i < selectedIndexIds[q].length; i++) {
-                const apiCall = postEachSelectionAnswer(
-                    surveyId,
-                    userId,
-                    questions[q].id,
-                    selectedIndexIds[q][i]
-                );
-                promises.push(apiCall);
+            for (let i = 0; i < selectedSOIndexIds[q].length; i++) {
+                const questionId = questions[q].id;
+                const selectableOptionId = selectedSOIndexIds[q][i];
+
+                if (!selectableOptionIds.includes(selectableOptionId)) {
+                    const postCall = postSelectionAnswer(
+                        surveyId,
+                        userId,
+                        questionId,
+                        selectableOptionId
+                    );
+                    logObject("[ParticipatingScreen] postSelection", {
+                        questionId,
+                        selectableOptionId,
+                    });
+                    promises.push(postCall);
+                }
             }
         }
 
-        for (let j = 0; j < textAnswers.length; j++) {
-            const apiCall = postEachTextAnswer(textAnswers[j], userId);
-            promises.push(apiCall);
-        }
-
         await Promise.all(promises)
-            // .then(() => {
-            //     createParticipate(surveyId, userId);
-            // })
             .then(() => {
                 console.log(
                     `currentSectionIndex: ${currentSectionIndex}, number of sections: ${currentSurvey.sections.length}`
@@ -218,7 +217,6 @@ function ParticipatingScreen({
                         handleNextScreen();
                     });
                 } else {
-                    // dispatch(initialize())
                     console.log(
                         "currentSectionIndex !== currentSurvey.numOfSections - 1"
                     );
@@ -278,19 +276,21 @@ function ParticipatingScreen({
 
             <TextButton
                 title={
-                    currentSectionIndex === currentSurvey.numOfSections - 1
+                    currentSectionIndex === currentSurvey.sections.length - 1
                         ? "Finish"
                         : "Next"
                 }
-                onPress={buttonTapAction}
+                onPress={handleCompleteSection}
                 // textStyle={if (selectedIndexes) styles.finishButtonText}
                 textStyle={
-                    selectedIndexIds.every(arr => arr.length !== 0)
+                    selectedSOIndexIds &&
+                    selectedSOIndexIds.every(arr => arr.length !== 0)
                         ? styles.activatedButtonText
                         : styles.inactivatedButtonText
                 }
                 backgroundStyle={
-                    selectedIndexIds.every(arr => arr.length !== 0)
+                    selectedSOIndexIds &&
+                    selectedSOIndexIds.every(arr => arr.length !== 0)
                         ? styles.activatedFinishButtonBackground
                         : styles.inactivatedFinishButtonBackground
                 }

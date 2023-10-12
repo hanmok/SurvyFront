@@ -8,7 +8,7 @@ import {
     textInputAction,
     // CustomAnswer,
 } from "../features/selector/selectorSlice";
-import { CustomAnswer } from "../interfaces/Answer";
+import { CustomAnswer } from "../interfaces/CustomAnswer";
 import { useDispatch } from "react-redux";
 import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";
@@ -32,22 +32,22 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     useEffect(() => {
         logObject("passed selectableOptions:", selectableOptions);
         logObject("questionIndex", questionIndex);
-
         logObject("questionTypeId: ", questionTypeId);
     }, []);
 
     // TODO: 상태 변수 하나 써서 더 간단히 할 수 있을 것 같아.
     const handleUserInput = useCallback(
-        (userInput: string, index: number) => {
+        (userInput: string, soIndex: number) => {
             console.log(`handleUserInput called, input: ${userInput}`);
-            const selectableOptionId = selectableOptions[index].id;
-            const sequence = index;
+            const selectableOptionId = selectableOptions[soIndex].id;
+
             const customAnswer: CustomAnswer = {
                 selectableOptionId,
                 answerText: userInput,
-                sequence,
+                questionId,
+                // soIndex,
             };
-            dispatch(dispatch(textInputAction({ customAnswer })));
+            dispatch(textInputAction({ customAnswer }));
         },
         [textInputAction]
         // [dispatch]
@@ -60,25 +60,25 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     dispatch(
                         selectSingleSelection({
                             questionIndex,
-                            selectedIndexId:
-                                selectableOptions[selectedIndex].id,
+                            selectedSOId: selectableOptions[selectedIndex].id,
                         })
                     );
                     break;
+
                 case QuestionTypeId.MultipleSelection:
                     dispatch(
                         selectMultipleSelection({
                             questionIndex,
-                            selectedIndexId:
-                                selectableOptions[selectedIndex].id,
+                            selectedSOId: selectableOptions[selectedIndex].id,
                         })
                     );
                     break;
+
                 default:
                     dispatch(
                         selectSingleSelection({
                             questionIndex,
-                            selectedIndexId: selectableOptions[0].id,
+                            selectedSOId: selectableOptions[0].id,
                         })
                     );
                     break;
@@ -89,13 +89,13 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
 
     return (
         <View>
-            {selectableOptions.map((selectableOption, index) => {
+            {selectableOptions.map((selectableOption, soIndex) => {
                 return (
                     <SelectableOptionBox
                         {...selectableOption}
                         questionTypeId={questionTypeId}
-                        onPress={() => handlePress(index)}
-                        handleUserInput={text => handleUserInput(text, index)}
+                        onPress={() => handlePress(soIndex)}
+                        handleUserInput={text => handleUserInput(text, soIndex)}
                         questionIndex={questionIndex}
                         key={`${selectableOption.id}`}
                     />

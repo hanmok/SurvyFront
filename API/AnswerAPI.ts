@@ -1,43 +1,8 @@
 // import { CustomAnswer } from "../features/selector/selectorSlice";
-import { CustomAnswer } from "../interfaces/Answer";
+import { CustomAnswer } from "../interfaces/CustomAnswer";
 import { printObject } from "../utils/printObject";
 import { API_BASE_URL } from "./API";
 import _ from "lodash";
-
-// export async function postSelectionAnswer(
-//     surveyId: number,
-//     userId: number,
-//     questionId: number,
-//     selectableOptionId: number
-// ): Promise<ApiResponse> {
-//     const url = `${API_BASE_URL}/answer`;
-//     const data = { surveyId, userId, questionId, selectableOptionId };
-//     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
-//     printObject(snakeData, "postSelectionAnswer snake");
-
-//     try {
-//         const response = await fetch(url, {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify(snakeData),
-//         });
-
-//         if (!response.ok) {
-//             console.log("postSelectionAnswer error!!");
-//             throw new Error("postSelectionAnswer error!!");
-//         }
-
-//         const responseData: ApiResponse = await response.json();
-//         console.log(`status: ${responseData.statusCode}`);
-
-//         return responseData;
-//     } catch (error) {
-//         console.error("postSelectionAnswer error!", error);
-//         throw error;
-//     }
-// }
 
 export async function postAnswer(
     surveyId: number,
@@ -55,7 +20,7 @@ export async function postAnswer(
         userId,
     };
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
-    printObject(snakeData, "postSelectionAnswer snake");
+    printObject(snakeData, "[AnswerAPI] postAnswer");
 
     try {
         const response = await fetch(url, {
@@ -67,7 +32,6 @@ export async function postAnswer(
         });
 
         if (!response.ok) {
-            console.log("postSelectionAnswer error!!");
             throw new Error("postSelectionAnswer error!!");
         }
 

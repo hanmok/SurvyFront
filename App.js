@@ -41,7 +41,7 @@ import { TextInput } from "react-native-gesture-handler";
 //     cache: new InMemoryCache(),
 // });
 
-TextInput.defaultProps.autoCorrect = false;
+// TextInput.defaultProps.autoCorrect = false;
 
 export default function App() {
     return (

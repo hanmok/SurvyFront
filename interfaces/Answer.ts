@@ -1,8 +1,6 @@
-export interface CustomAnswer {
-    selectableOptionId: number;
-    sequence: number;
-    answerText: string;
-}
+/** selectableOptionId, sequence, answerText */
+
+/** questionId, selectableOptionId, userId, surveyId, answerText */
 
 export interface Answer {
     questionId: number;

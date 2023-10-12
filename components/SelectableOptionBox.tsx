@@ -15,6 +15,7 @@ import { RootState } from "../store";
 // import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";
 import { colors } from "../utils/colors";
+import { log, logObject } from "../utils/Log";
 
 interface SelectableOptionProps {
     id: number;
@@ -51,17 +52,17 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         }
     };
 
-    const [text, setText] = useState("");
+    // const [text, setText] = useState("");
 
     const [userInput, setUserInput] = useState("");
 
     const selectedIndexIds = useSelector((state: RootState) => {
-        return state.selector.selectedIndexIds;
+        return state.selector.selectedOptionIds;
     });
 
     let selectableOptionComponent;
 
-    if (!selectedIndexIds[questionIndex]) {
+    if (!selectedIndexIds || !selectedIndexIds[questionIndex]) {
         return <Text>Selected indexes are empty</Text>;
     }
 
@@ -89,19 +90,26 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 // return 누른 후 호출되는거 확인함.
                                 onSubmitEditing={() => {
                                     console.log(`${userInput} has submitted`);
+                                    logObject(
+                                        `[SelectableOptionBox] submitting text`,
+                                        userInput
+                                    );
+                                    handleUserInput(userInput);
                                 }}
-                                // onKeyPress={() => {
-                                //     onPress();
-                                //     console.log("기타 tapped");
-                                // }}
-                                // onPressIn={() => {
-                                //     onPress();
-                                //     console.log("기타 tapped");
-                                // }}
                                 onFocus={() => {
                                     onPress();
                                     console.log("기타 tapped");
                                 }}
+                                onEndEditing={() => {
+                                    logObject(
+                                        "onEndEditing, userInput:",
+                                        userInput
+                                    );
+                                    handleUserInput(userInput);
+                                }}
+                                // onBlur={() => {
+                                //     console.log("textInput is on Blur");
+                                // }}
                             />
                         ) : (
                             // </View>
@@ -128,6 +136,16 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                     onPress();
                                     console.log("기타 tapped");
                                 }}
+                                onEndEditing={() => {
+                                    logObject(
+                                        "onEndEditing, userInput:",
+                                        userInput
+                                    );
+                                    handleUserInput(userInput);
+                                }}
+                                // onBlur={() => {
+                                //     console.log("textInput is on Blur");
+                                // }}
                             />
                         ) : (
                             // </View>
@@ -156,11 +174,26 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 // return 누른 후 호출되는거 확인함.
                                 onSubmitEditing={() => {
                                     console.log(`${userInput} has submitted`);
+                                    logObject(
+                                        `[SelectableOptionBox] submitting text`,
+                                        userInput
+                                    );
+                                    handleUserInput(userInput);
                                 }}
                                 onFocus={() => {
                                     onPress();
                                     console.log("기타 tapped");
                                 }}
+                                onEndEditing={() => {
+                                    logObject(
+                                        "onEndEditing, userInput:",
+                                        userInput
+                                    );
+                                    handleUserInput(userInput);
+                                }}
+                                // onBlur={() => {
+                                //     console.log("textInput is on Blur");
+                                // }}
                             />
                         ) : (
                             // </View>
@@ -188,6 +221,16 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                     onPress();
                                     console.log("기타 tapped");
                                 }}
+                                onEndEditing={() => {
+                                    logObject(
+                                        "onEndEditing, userInput:",
+                                        userInput
+                                    );
+                                    handleUserInput(userInput);
+                                }}
+                                // onBlur={() => {
+                                //     console.log("textInput is on Blur");
+                                // }}
                             />
                         ) : (
                             // </View>
@@ -206,18 +249,34 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             numberOfLines={5}
                             style={styles.textInput}
                             autoCorrect={false}
-                            value={text}
-                            onChangeText={newText => setText(newText)}
+                            value={userInput}
+                            // onChangeText={newText => setText(newText)}
+                            // onChangeText={userInput => setUserInput}
+                            onChangeText={setUserInput}
                             onSubmitEditing={() => {
-                                console.log(text);
+                                // console.log(text);
+                                logObject(
+                                    "[SelectableOptionBox] submitting text",
+                                    userInput
+                                );
                                 // handleUserInput(text);
                             }} // 리턴 키 누를 때 호출
+                            onEndEditing={() => {
+                                logObject(
+                                    "onEndEditing, userInput:",
+                                    userInput
+                                );
+                                handleUserInput(userInput);
+                            }}
+                            // onBlur={() => {
+                            //     console.log("textInput is on Blur");
+                            // }}
                             returnKeyType="done"
                         />
                         <Button
                             title="submit"
                             onPress={() => {
-                                handleUserInput(text);
+                                handleUserInput(userInput);
                                 onPress();
                             }}
                         />
@@ -249,7 +308,6 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         justifyContent: "center",
     },
-
     textInput: {
         borderWidth: 1,
         borderColor: "#ccc",
@@ -257,7 +315,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlignVertical: "top", // 텍스트 상단 정렬
     },
-
     extraInput: {
         backgroundColor: colors.lightMainTrans,
         marginLeft: marginSizes.s12,

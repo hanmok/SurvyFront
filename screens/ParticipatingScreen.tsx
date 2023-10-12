@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FlatList, StyleSheet, Text, View, Alert } from "react-native";
+import {
+    FlatList,
+    StyleSheet,
+    Text,
+    View,
+    Alert,
+    KeyboardAvoidingView,
+    Platform,
+} from "react-native";
 import { colors } from "../utils/colors";
 import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -262,18 +270,8 @@ function ParticipatingScreen({
         </View>
     );
 
-    return (
-        // <View style={{ alignItems: "center" }}>
-        <View style={styles.container}>
-            <FlatList
-                style={styles.flatListStyle}
-                data={questions}
-                renderItem={renderItem}
-                // keyExtractor={item => `${item.selectableOptions[0].id} `}
-                keyExtractor={item => `${item.id} `}
-                ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
-            />
-
+    const listFooter = () => {
+        return (
             <TextButton
                 title={
                     currentSectionIndex === currentSurvey.sections.length - 1
@@ -295,7 +293,27 @@ function ParticipatingScreen({
                         : styles.inactivatedFinishButtonBackground
                 }
             />
-        </View>
+        );
+    };
+
+    return (
+        // <View style={{ alignItems: "center" }}>
+        // <View style={styles.container}>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <FlatList
+                style={styles.flatListStyle}
+                data={questions}
+                renderItem={renderItem}
+                // keyExtractor={item => `${item.selectableOptions[0].id} `}
+                keyExtractor={item => `${item.id} `}
+                ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+                ListFooterComponent={listFooter}
+            />
+        </KeyboardAvoidingView>
+        // </View>
     );
 }
 
@@ -307,14 +325,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         // marginHorizontal: 10,
         marginHorizontal: 20,
+        marginBottom: 30,
     },
-
     flatListStyle: {
         alignSelf: "stretch",
     },
     questionContainerBox: {
         backgroundColor: colors.lightMainColor,
-        // marginHorizontal: marginSizes.l20,
         marginVertical: marginSizes.s12,
         paddingVertical: 16,
         borderRadius: 20,
@@ -341,13 +358,16 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         padding: 10,
         borderRadius: borderSizes.m10,
+        height: 40,
+        // width: 100,
     },
-
     inactivatedFinishButtonBackground: {
         marginTop: 20,
         backgroundColor: "#BBB",
         alignSelf: "stretch",
         padding: 10,
         borderRadius: borderSizes.m10,
+        height: 40,
+        // width: 100,
     },
 });

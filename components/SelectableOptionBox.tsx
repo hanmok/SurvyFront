@@ -6,6 +6,9 @@ import {
     TextInput,
     NativeSyntheticEvent,
     TextInputSubmitEditingEventData,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
 } from "react-native";
 import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
 import { Button } from "react-native";
@@ -48,12 +51,17 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     const textInputRef = useRef(null);
 
     const handleFocusTextInput = () => {
+        logObject("[SelectableOptionBox] focus called", textInputRef.current);
         if (textInputRef.current) {
             textInputRef.current.focus();
         }
     };
 
     const [userInput, setUserInput] = useState("");
+
+    // useEffect(() => {
+    //     handleUserInput(userInput)
+    // }, [userInput]);
 
     const selectedIndexIds = useSelector((state: RootState) => {
         return state.selector.selectedOptionIds;
@@ -96,22 +104,13 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                     );
                                     handleUserInput(userInput);
                                 }}
-                                // onFocus={() => {
-                                //     // 선택되어있는지 아닌지.. 어떻게 알지?
-                                //     onPress();
-
-                                //     console.log("기타 tapped");
-                                // }}
                                 onEndEditing={() => {
                                     logObject(
-                                        "onEndEditing, userInput:",
+                                        "onEndEditing, userInput",
                                         userInput
                                     );
                                     handleUserInput(userInput);
                                 }}
-                                // onBlur={() => {
-                                //     console.log("textInput is on Blur");
-                                // }}
                             />
                         ) : (
                             // </View>
@@ -123,10 +122,14 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/unselectedSingleSelection.png")}
-                            onPress={onPress}
+                            onPress={() => {
+                                onPress();
+                                // handleFocusTextInput();
+                            }}
                         />
                         {isExtra === 1 ? (
                             <TextInput
+                                ref={textInputRef}
                                 placeholder="기타"
                                 value={userInput}
                                 onChangeText={setUserInput}
@@ -141,14 +144,11 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 }}
                                 onEndEditing={() => {
                                     logObject(
-                                        "onEndEditing, userInput:",
+                                        "onEndEditing, userInput",
                                         userInput
                                     );
                                     handleUserInput(userInput);
                                 }}
-                                // onBlur={() => {
-                                //     console.log("textInput is on Blur");
-                                // }}
                             />
                         ) : (
                             // </View>
@@ -184,20 +184,13 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                     );
                                     handleUserInput(userInput);
                                 }}
-                                // onFocus={() => {
-                                //     onPress();
-                                //     console.log("기타 tapped");
-                                // }}
                                 onEndEditing={() => {
                                     logObject(
-                                        "onEndEditing, userInput:",
+                                        "onEndEditing, userInput",
                                         userInput
                                     );
                                     handleUserInput(userInput);
                                 }}
-                                // onBlur={() => {
-                                //     console.log("textInput is on Blur");
-                                // }}
                             />
                         ) : (
                             // </View>
@@ -210,10 +203,14 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         <ImageButton
                             img={require("../assets/unselectedMultipleSelection.png")}
                             backgroundStyle={{ justifyContent: "center" }}
-                            onPress={onPress}
+                            onPress={() => {
+                                onPress();
+                                // handleFocusTextInput();
+                            }}
                         />
                         {isExtra === 1 ? (
                             <TextInput
+                                ref={textInputRef}
                                 placeholder="기타"
                                 value={userInput}
                                 onChangeText={setUserInput}
@@ -228,17 +225,13 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 }}
                                 onEndEditing={() => {
                                     logObject(
-                                        "onEndEditing, userInput:",
+                                        "onEndEditing, userInput",
                                         userInput
                                     );
                                     handleUserInput(userInput);
                                 }}
-                                // onBlur={() => {
-                                //     console.log("textInput is on Blur");
-                                // }}
                             />
                         ) : (
-                            // </View>
                             <Text style={styles.textStyle}>{value}</Text>
                         )}
                     </View>
@@ -250,32 +243,25 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         <TextInput
                             ref={textInputRef}
                             placeholder="hi"
-                            multiline
+                            // multiline
                             numberOfLines={5}
                             style={styles.textInput}
                             autoCorrect={false}
                             value={userInput}
-                            // onChangeText={newText => setText(newText)}
-                            // onChangeText={userInput => setUserInput}
                             onChangeText={setUserInput}
                             onSubmitEditing={() => {
-                                // console.log(text);
                                 logObject(
                                     "[SelectableOptionBox] submitting text",
                                     userInput
                                 );
-                                // handleUserInput(text);
+                                handleUserInput(userInput);
+                                Keyboard.dismiss();
                             }} // 리턴 키 누를 때 호출
                             onEndEditing={() => {
-                                logObject(
-                                    "onEndEditing, userInput:",
-                                    userInput
-                                );
-                                handleUserInput(userInput);
+                                logObject("onEndEditing, userInput", userInput);
+
+                                // dismissKeyboard
                             }}
-                            // onBlur={() => {
-                            //     console.log("textInput is on Blur");
-                            // }}
                             returnKeyType="done"
                         />
                         <Button
@@ -290,6 +276,15 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 break;
         }
     }
+
+    // return (
+    //     <KeyboardAvoidingView
+    //         behavior={Platform.OS === "ios" ? "padding" : "height"}
+    //         style={styles.container}
+    //     >
+    //         {selectableOptionComponent}
+    //     </KeyboardAvoidingView>
+    // );
 
     return <View style={styles.container}>{selectableOptionComponent}</View>;
 };

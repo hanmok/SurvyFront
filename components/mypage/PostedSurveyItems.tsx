@@ -1,12 +1,14 @@
 import { useQuery } from "@apollo/client";
 import { postedSurveyQuery } from "../../API/gqlQuery";
-import { View, Text } from "react-native";
+import { View, Text, TouchableNativeFeedback } from "react-native";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useApollo } from "../../ApolloProvider";
 import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
 import { convertKeysToCamelCase } from "../../utils/SnakeToCamel";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 
 interface PostedSurveyItem {
     title: string;
@@ -14,6 +16,7 @@ interface PostedSurveyItem {
     code: string;
     currentParticipation: number;
     participationGoal: number;
+    id: number;
 }
 
 interface PostedSurveyResponse {
@@ -22,7 +25,13 @@ interface PostedSurveyResponse {
     };
 }
 
-const PostedSurveyItems = ({ userId }) => {
+const PostedSurveyItems = ({
+    userId,
+    handleTapAction,
+}: {
+    userId: number;
+    handleTapAction: (number) => void;
+}) => {
     const client = useApollo();
 
     const { loading, error, data } = useQuery<PostedSurveyResponse>(
@@ -46,28 +55,41 @@ const PostedSurveyItems = ({ userId }) => {
         <FlatList
             data={postedSurveys}
             renderItem={({ item }) => (
-                <View
-                    style={[
-                        commonStyles.border,
-                        {
-                            marginHorizontal: marginSizes.m16,
-                            borderRadius: 10,
-                            marginBottom: 12,
-                            padding: 8,
-                            gap: 6,
-                        },
-                    ]}
+                // <View
+                <TouchableNativeFeedback
+                    onPress={() => {
+                        // console.log(`tapped! item: ${item.title}`);
+                        handleTapAction(item.id);
+                    }}
                 >
-                    <Text
-                        style={{ fontSize: fontSizes.m20, fontWeight: "bold" }}
+                    <View
+                        style={[
+                            commonStyles.border,
+                            {
+                                marginHorizontal: marginSizes.m16,
+                                borderRadius: 10,
+                                marginBottom: 12,
+                                padding: 8,
+                                gap: 6,
+                            },
+                        ]}
                     >
-                        {item.title}
-                    </Text>
-                    <Text>{convertTime(parseInt(item.createdAt))}</Text>
-                    <Text>
-                        {item.currentParticipation} / {item.participationGoal}
-                    </Text>
-                </View>
+                        <Text
+                            style={{
+                                fontSize: fontSizes.m20,
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {item.title}
+                        </Text>
+                        <Text>{convertTime(parseInt(item.createdAt))}</Text>
+                        <Text>
+                            {item.currentParticipation} /{" "}
+                            {item.participationGoal}
+                        </Text>
+                        {/* </View> */}
+                    </View>
+                </TouchableNativeFeedback>
             )}
             keyExtractor={item => `${item.code}${item.createdAt}`}
         />

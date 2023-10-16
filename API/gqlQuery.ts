@@ -31,6 +31,7 @@ export const postedSurveyQuery = gql`
                 created_at
                 participation_goal
                 current_participation
+                id
             }
         }
     }

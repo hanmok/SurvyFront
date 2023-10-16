@@ -35,6 +35,7 @@ import { API_BASE_URL, GQL_URL } from "./API/API";
 import { useEffect } from "react";
 import TargettingScreen from "./screens/TargettingScreen";
 import { TextInput } from "react-native-gesture-handler";
+import ResponseScreen from "./screens/ResponseScreen";
 
 // const client = new ApolloClient({
 //     uri: API_BASE_URL,
@@ -142,6 +143,11 @@ export default function App() {
                                 name={NavigationTitle.targetting}
                                 component={TargettingScreen}
                                 options={{ headerBackTitleVisible: false }}
+                            />
+
+                            <Stack.Screen
+                                name={NavigationTitle.response}
+                                component={ResponseScreen}
                             />
                         </Stack.Navigator>
                     </NavigationContainer>

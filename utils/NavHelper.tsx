@@ -15,6 +15,7 @@ export type RootStackParamList = {
     MainTabs: undefined;
     MyInfo: undefined;
     Targetting: SurveyProps;
+    Response: { surveyId: number };
 };
 
 export enum NavigationTitle {
@@ -29,4 +30,5 @@ export enum NavigationTitle {
     setting = "Setting",
     myinfo = "MyInfo",
     targetting = "Targetting",
+    response = "Response",
 }

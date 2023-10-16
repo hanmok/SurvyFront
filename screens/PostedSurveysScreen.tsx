@@ -6,10 +6,19 @@ import axios from "axios";
 import { API_BASE_URL } from "../API/API";
 import BlockView from "../components/BlockView";
 import PostedSurveyItems from "../components/mypage/PostedSurveyItems";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 
 // userId 는 App 전체에 나눠줄 수 없나 ??
 
-function PostedSurveysScreen() {
+function PostedSurveysScreen({
+    navigation,
+}: {
+    navigation: StackNavigationProp<
+        RootStackParamList,
+        NavigationTitle.postedSurveys
+    >;
+}) {
     const [userId, setUserId] = useState<number>(null);
 
     useEffect(() => {
@@ -17,11 +26,20 @@ function PostedSurveysScreen() {
             const userId = await loadUserState();
             setUserId(userId.userId);
         };
-
         getUserId();
     }, [userId]);
 
-    return <PostedSurveyItems userId={userId} />;
+    return (
+        <PostedSurveyItems
+            userId={userId}
+            handleTapAction={surveyId => {
+                // move to response screen
+                navigation.navigate(NavigationTitle.response, {
+                    surveyId,
+                });
+            }}
+        />
+    );
 }
 
 export default PostedSurveysScreen;

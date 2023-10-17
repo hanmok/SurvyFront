@@ -1,4 +1,4 @@
-export enum QuestionType {
+export enum QuestionTypeKorean {
     SingleSelection = "단일 선택",
     MultiSelection = "다중 선택",
     // Short = "단답형",
@@ -14,11 +14,11 @@ export enum QuestionTypeId {
 export function getQuestionType(index: number): string {
     switch (index) {
         case 100:
-            return QuestionType.SingleSelection;
+            return QuestionTypeKorean.SingleSelection;
         case 200:
-            return QuestionType.MultiSelection;
+            return QuestionTypeKorean.MultiSelection;
         case 300:
-            return QuestionType.Essay;
+            return QuestionTypeKorean.Essay;
         default:
             throw new Error("Invalid Input");
     }

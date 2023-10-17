@@ -4,6 +4,12 @@ export enum QuestionTypeEnum {
     Essay = "ESSAY",
 }
 
+export enum QuestionTypeIdEnum {
+    SingleSelection = 100,
+    MultipleSelection = 200,
+    Essay = 300,
+}
+
 export const convertIdToType = (id: number): QuestionTypeEnum => {
     console.log(`input: ${id}`);
 

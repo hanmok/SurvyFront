@@ -18,7 +18,7 @@ import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelecti
 import { Switch } from "react-native";
 import DynamicTextInputsForCreation from "../components/posting/DynamicTextInputsForCreation";
 import { Question, makeQuestion } from "../interfaces/Question";
-import { QuestionType, QuestionTypeId } from "../QuestionType";
+import { QuestionTypeKorean, QuestionTypeId } from "../QuestionType";
 import {
     SelectableOption,
     makeSelectableOption,

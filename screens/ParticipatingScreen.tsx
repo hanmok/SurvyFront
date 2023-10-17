@@ -46,7 +46,11 @@ import { useQuery } from "@apollo/client";
 import { Survey } from "../interfaces/Survey";
 import { getSurveyQuery } from "../API/gqlQuery";
 import { log, logObject } from "../utils/Log";
-import { SurveyResponse } from "../interfaces/SurveyResponse";
+import {
+    GQLSurveyResponse,
+    SurveyResponse,
+} from "../interfaces/SurveyResponse";
+import { GQLQuestion, GQLSurvey } from "../interfaces/GQLInterface";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
@@ -62,12 +66,15 @@ function ParticipatingScreen({
     route: RouteProp<RootStackParamList, NavigationTitle.participate>;
 }) {
     const client = useApollo();
-    const { loading, error, data } = useQuery<SurveyResponse>(getSurveyQuery, {
-        client,
-        variables: { surveyId: route.params.surveyId },
-    });
+    const { loading, error, data } = useQuery<GQLSurveyResponse>(
+        getSurveyQuery,
+        {
+            client,
+            variables: { surveyId: route.params.surveyId },
+        }
+    );
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-    const [questions, setQuestions] = useState<Question[]>([]);
+    const [questions, setQuestions] = useState<GQLQuestion[]>([]);
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const [selectableOptions, setSelectableOptions] = useState<
         SelectableOption[]
@@ -85,7 +92,7 @@ function ParticipatingScreen({
 
     const navigation = useNavigation();
 
-    const [currentSurvey, setCurrentSurvey] = useState<Survey | null>(null);
+    const [currentSurvey, setCurrentSurvey] = useState<GQLSurvey | null>(null);
 
     useEffect(() => {
         console.log("passed survey id:", surveyId);
@@ -93,9 +100,8 @@ function ParticipatingScreen({
 
         // if (currentSurvey) {
         if (data?.survey) {
-            const updatedSurvey: Survey = removeTypenameAndConvertToCamelCase(
-                data.survey
-            );
+            const updatedSurvey: GQLSurvey =
+                removeTypenameAndConvertToCamelCase(data.survey);
             logObject("fetched survey", updatedSurvey);
             setCurrentSurvey(updatedSurvey); // currentSurvey 상태를 업데이트
             const currentSection = updatedSurvey.sections.find(
@@ -254,14 +260,14 @@ function ParticipatingScreen({
         );
     }
 
-    const renderItem = ({ item }: { item: Question }) => (
+    const renderItem = ({ item }: { item: GQLQuestion }) => (
         <View style={styles.questionContainerBox}>
             <ParticipatingQuestionBox {...item} />
             {item.selectableOptions !== undefined &&
             item.selectableOptions.length > 0 ? (
                 <SelectableOptionContainer
                     selectableOptions={item.selectableOptions}
-                    questionTypeId={item.questionTypeId}
+                    questionType={item.questionType}
                     questionIndex={item.position}
                     questionId={item.id}
                 />

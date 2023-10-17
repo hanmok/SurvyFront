@@ -11,7 +11,7 @@ import ImageButton from "../ImageButton";
 import { colors } from "../../utils/colors";
 import QuestionTypeSelectionBoxContainer from "../QuestionTypeSelectionBoxContainer";
 import {
-    QuestionType,
+    QuestionTypeKorean,
     QuestionTypeId,
     getQuestionType,
     // getQuestionTypeIndex,

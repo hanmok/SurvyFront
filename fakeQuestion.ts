@@ -1,4 +1,4 @@
-import { QuestionType } from "./QuestionType";
+import { QuestionTypeKorean } from "./QuestionType";
 
 export const fakeQuestions = [
     {
@@ -7,7 +7,7 @@ export const fakeQuestions = [
         position: 0,
         text: "내 설문조사 질문 1",
         expectedTimeInSec: 0,
-        questionType: QuestionType.SingleSelection,
+        questionType: QuestionTypeKorean.SingleSelection,
         selectableOptions: [
             {
                 id: 78954,
@@ -29,7 +29,7 @@ export const fakeQuestions = [
         sectionId: 264,
         text: "내 설문조사 질문 2",
         expectedTimeInSec: 0,
-        questionType: QuestionType.MultiSelection,
+        questionType: QuestionTypeKorean.MultiSelection,
         selectableOptions: [
             {
                 id: 468513,

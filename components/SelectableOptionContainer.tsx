@@ -10,20 +10,29 @@ import {
 } from "../features/selector/selectorSlice";
 import { CustomAnswer, makeCustomAnswer } from "../interfaces/CustomAnswer";
 import { useDispatch } from "react-redux";
-import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
+import {
+    QuestionTypeEnum,
+    QuestionTypeIdEnum,
+} from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";
 import { logObject } from "../utils/Log";
+import {
+    GQLQuestionType,
+    GQLSelectableOption,
+} from "../interfaces/GQLInterface";
 
 interface SelectablContainerProps {
-    selectableOptions: SelectableOption[];
-    questionTypeId: number;
+    selectableOptions: GQLSelectableOption[];
+    // questionTypeId: number;
+    questionType: GQLQuestionType;
     questionIndex: number; // questionId 를 알아야 하는건 아냐?
     questionId: number;
 }
 
 const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     selectableOptions,
-    questionTypeId,
+    // questionTypeId,
+    questionType,
     questionIndex,
     questionId,
 }) => {
@@ -33,7 +42,8 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     useEffect(() => {
         logObject("passed selectableOptions:", selectableOptions);
         logObject("questionIndex", questionIndex);
-        logObject("questionTypeId: ", questionTypeId);
+        // logObject("questionTypeId: ", questionTypeId);
+        logObject("questionType", questionType);
     }, []);
 
     // TODO: 상태 변수 하나 써서 더 간단히 할 수 있을 것 같아.
@@ -57,10 +67,12 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     const handlePress = useCallback(
         (selectedIndex: number, answerText: string) => {
             console.log(
-                `[SelectableOptionContainer] handlePress, questionTypeId: ${questionTypeId}`
+                `[SelectableOptionContainer] handlePress, questionTypeId: ${questionType}`
             );
-            switch (questionTypeId) {
-                case QuestionTypeId.SingleSelection:
+            switch (questionType.id) {
+                // case QuestionTypeId.SingleSelection:
+                // case QuestionTypeEnum.SingleSelection:
+                case QuestionTypeIdEnum.SingleSelection:
                     dispatch(
                         selectSingleSelection({
                             questionId,
@@ -71,7 +83,9 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     );
                     break;
 
-                case QuestionTypeId.MultipleSelection:
+                // case QuestionTypeId.MultipleSelection:
+                // case QuestionTypeEnum.MultipleSelection:
+                case QuestionTypeIdEnum.MultipleSelection:
                     dispatch(
                         selectMultipleSelection({
                             questionId,
@@ -92,7 +106,8 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     break;
             }
         },
-        [dispatch, questionTypeId, questionIndex]
+        // [dispatch, questionTypeId, questionIndex]
+        [dispatch, questionType, questionIndex]
     );
 
     return (
@@ -100,8 +115,10 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
             {selectableOptions.map((selectableOption, soIndex) => {
                 return (
                     <SelectableOptionBox
+                        questionId={questionId}
                         {...selectableOption}
-                        questionTypeId={questionTypeId}
+                        // questionTypeId={questionTypeId}
+                        questionTypeId={questionType.id}
                         onPress={() =>
                             handlePress(
                                 soIndex,

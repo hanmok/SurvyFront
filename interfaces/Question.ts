@@ -1,4 +1,4 @@
-import { QuestionType } from "../QuestionType";
+import { QuestionTypeKorean } from "../QuestionType";
 import { makeRandomNumber, randomNumber } from "../utils/GetRandomNumber";
 import { SelectableOption } from "./SelectableOption";
 

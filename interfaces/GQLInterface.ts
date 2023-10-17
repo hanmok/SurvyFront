@@ -41,7 +41,7 @@ export interface GQLSelectableOption {
     position: number;
     value: string;
     section: GQLSection;
-    is_extra: number;
+    isExtra: number;
 }
 
 export interface GQLUser {

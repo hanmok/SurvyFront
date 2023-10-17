@@ -19,12 +19,18 @@ import { RootState } from "../store";
 import { QuestionTypeId } from "../QuestionType";
 import { colors } from "../utils/colors";
 import { log, logObject } from "../utils/Log";
+import { GQLQuestionType } from "../interfaces/GQLInterface";
+import {
+    QuestionTypeEnum,
+    QuestionTypeIdEnum,
+} from "../enums/QuestionTypeEnum";
 
 interface SelectableOptionProps {
     id: number;
     questionId: number;
     position: number;
     value: string;
+    // questionTypeId: number;
     questionTypeId: number;
     onPress?: () => void;
     handleUserInput?: (text: string) => void;
@@ -37,6 +43,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     questionId,
     position,
     value,
+    // questionTypeId,
     questionTypeId,
     onPress,
     handleUserInput,
@@ -79,7 +86,9 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
 
     {
         switch (questionTypeId) {
-            case QuestionTypeId.SingleSelection:
+            // case QuestionTypeId.SingleSelection:
+            // case QuestionTypeIdEnum.SingleSelection:
+            case 100:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
@@ -158,7 +167,9 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 );
                 break;
 
-            case QuestionTypeId.MultipleSelection:
+            // case QuestionTypeId.MultipleSelection:
+            // case QuestionTypeIdEnum.MultipleSelection:
+            case 200:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
@@ -237,7 +248,8 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                     </View>
                 );
                 break;
-            default:
+            // default:
+            case 300:
                 selectableOptionComponent = (
                     <View style={styles.textContainer}>
                         <TextInput
@@ -272,6 +284,8 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                     </View>
                 );
                 break;
+            // default:
+            //     throw new console.error("Question type error");
         }
     }
 

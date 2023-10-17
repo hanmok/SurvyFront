@@ -13,7 +13,7 @@ import Spacer from "../components/Spacer";
 import TextButton from "../components/TextButton";
 // import PostingQuestionBox from "../components/PostingQuestionBox";
 import { useState } from "react";
-import { QuestionType } from "../QuestionType";
+import { QuestionTypeKorean } from "../QuestionType";
 import { Question } from "../interfaces/Question";
 import { fakeQuestions } from "../fakeQuestion";
 import PostingQuestionBox from "../components/posting/PostingQuestionBox";

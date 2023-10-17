@@ -46,7 +46,9 @@ export const getSurveyQuery = gql`
                     id
                     position
                     text
-                    question_type_id
+                    questionType {
+                        id
+                    }
                     selectable_options {
                         id
                         position

@@ -8,6 +8,7 @@ import BlockView from "../components/BlockView";
 import PostedSurveyItems from "../components/mypage/PostedSurveyItems";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
+import { useApollo } from "../ApolloProvider";
 
 // userId 는 App 전체에 나눠줄 수 없나 ??
 
@@ -20,7 +21,7 @@ function PostedSurveysScreen({
     >;
 }) {
     const [userId, setUserId] = useState<number>(null);
-
+    // const client = useApollo();
     useEffect(() => {
         const getUserId = async () => {
             const userId = await loadUserState();

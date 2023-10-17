@@ -1,0 +1,138 @@
+ // answers
+ 
+ [
+  {
+    "id": "34",
+    "question": {
+      "id": "456904"
+    },
+    "selectableOption": {
+      "id": "469404",
+      "value": "옵1"
+    },
+    "answerText": null
+  },
+  {
+    "id": "44",
+    "question": {
+      "id": "456914"
+    },
+    "selectableOption": {
+      "id": "469444",
+      "value": "옵22"
+    },
+    "answerText": null
+  },
+  {
+    "id": "54",
+    "question": {
+      "id": "456924"
+    },
+    "selectableOption": {
+      "id": "469464",
+      "value": "ph"
+    },
+    "answerText": "Gggggg"
+  },
+  {
+    "id": "74",
+    "question": {
+      "id": "456904"
+    },
+    "selectableOption": {
+      "id": "469414",
+      "value": "옵2"
+    },
+    "answerText": null
+  },
+  {
+    "id": "94",
+    "question": {
+      "id": "456914"
+    },
+    "selectableOption": {
+      "id": "469434",
+      "value": "옵11"
+    },
+    "answerText": null
+  },
+  {
+    "id": "104",
+    "question": {
+      "id": "456914"
+    },
+    "selectableOption": {
+      "id": "469444",
+      "value": "옵22"
+    },
+    "answerText": null
+  },
+  {
+    "id": "124",
+    "question": {
+      "id": "456924"
+    },
+    "selectableOption": {
+      "id": "469464",
+      "value": "ph"
+    },
+    "answerText": "Bbbbbbb"
+  }
+]
+
+
+
+ // survey
+ {
+  "sections": [
+    {
+      "sequence": 0,
+      "questions": [
+        {
+          "id": "456884",
+          "position": 0,
+          "text": "질무우우운",
+          "questionType": {
+            "id": "100"
+          },
+          "selectableOptions": [
+            {
+              "id": "469364",
+              "position": 0,
+              "value": "옵셔어어어언1",
+              "isExtra": 0
+            },
+            {
+              "id": "469374",
+              "position": 1,
+              "value": "기타",
+              "isExtra": 1
+            }
+          ]
+        },
+        {
+          "id": "456894",
+          "position": 1,
+          "text": "질무우운2",
+          "questionType": {
+            "id": "200"
+          },
+          "selectableOptions": [
+            {
+              "id": "469384",
+              "position": 0,
+              "value": "다중 옵션1111",
+              "isExtra": 0
+            },
+            {
+              "id": "469394",
+              "position": 1,
+              "value": "기타",
+              "isExtra": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

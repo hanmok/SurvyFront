@@ -1,4 +1,4 @@
-import { Answer } from "./Answer";
+import { Answer, GQLAnswer } from "./Answer";
 import { Survey } from "./Survey";
 
 export interface SurveyResponse {
@@ -6,5 +6,6 @@ export interface SurveyResponse {
 }
 
 export interface AnswerResponse {
-    answers: Answer[];
+    // answers: Answer[];
+    answers: GQLAnswer[];
 }

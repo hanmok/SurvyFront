@@ -9,3 +9,10 @@ export interface Answer {
     surveyId: number;
     answerText: string | undefined;
 }
+
+export interface GQLAnswer {
+    id: number;
+    question: { id: number };
+    selectableOption: { id: number; value: string };
+    answerText: string | undefined;
+}

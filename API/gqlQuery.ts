@@ -40,6 +40,7 @@ export const postedSurveyQuery = gql`
 export const getSurveyQuery = gql`
     query Survey($surveyId: ID!) {
         survey(id: $surveyId) {
+            current_participation
             sections {
                 sequence
                 questions {

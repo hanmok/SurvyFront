@@ -11,13 +11,13 @@ export interface QuestionResponseContainerProps {
     questionTitle: string;
     selectableOptions: GQLSelectableOption[];
     // answers: Answer[];
-    questionType: QuestionTypeEnum;
+    // questionType: QuestionTypeEnum;
     answers: GQLAnswer[];
 }
 
 const QuestionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
     questionTitle,
-    questionType,
+    // questionType,
     selectableOptions,
     answers,
 }) => {
@@ -31,7 +31,7 @@ const QuestionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: fontSizes.l24 }}>{questionTitle}</Text>
-            <Text>Type: {questionType}</Text>
+            {/* <Text>Type: {questionType}</Text> */}
             <FlatList
                 data={selectableOptions}
                 renderItem={({ item }) => (

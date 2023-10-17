@@ -64,7 +64,7 @@ const PostedSurveyItems = ({
     }
 
     if (error) {
-        console.error(error);
+        // console.error(error);
         return <Text>Error: {error.message}</Text>;
     }
 

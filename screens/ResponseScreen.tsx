@@ -40,6 +40,7 @@ export default function ResponseScreen({
     } = useQuery<GQLAnswerResponse>(getAnswersQuery, {
         client,
         variables: { surveyId: route.params.surveyId },
+        // fetchPolicy: "no-cache",
     });
 
     const {
@@ -55,8 +56,11 @@ export default function ResponseScreen({
         QuestionResponseContainerProps[]
     >([]);
 
-    const [survey, setSurvey] = useState<GQLSurvey | null>(null);
-    const [answers, setAnswers] = useState<GQLAnswer[] | null>(null);
+    // const [survey, setSurvey] = useState<GQLSurvey | null>(null);
+    // const [answers, setAnswers] = useState<GQLAnswer[] | null>(null);
+
+    const [survey, setSurvey] = useState<GQLSurvey>(null);
+    const [answers, setAnswers] = useState<GQLAnswer[]>(null);
 
     useEffect(() => {
         console.log("passed survey id:", surveyId);
@@ -99,18 +103,18 @@ export default function ResponseScreen({
                         ans => ans.question.id === question.id
                     );
 
-                    let questionType = convertIdToType(
-                        question.questionType.id
-                    );
+                    // let questionType = convertIdToType(
+                    //     question.questionType.id
+                    // );
 
-                    console.log("questionType: ", questionType);
+                    // console.log("questionType: ", questionType);
                     const props: QuestionResponseContainerProps = {
                         questionTitle: ` ${question.position + 1}. ${
                             question.text
                         }`,
                         selectableOptions: selectableOptions,
                         answers: tempAnswers,
-                        questionType: questionType,
+                        // questionType: questionType,
                     };
                     logObject("prop obj", props);
 
@@ -119,12 +123,9 @@ export default function ResponseScreen({
             });
             setResponseProps(tempQuestionResponseContainerProps);
         }
-        // }, [answers, survey]);
-    }, [surveyData, answersData]);
+    }, [answers, survey]);
+    // }, [surveyData, answersData]);
 
-    // if (surveyError || answersError) {
-    //     return <Text>{surveyError?.message || answersError?.message}</Text>;
-    // }
     if (surveyError) {
         return <Text>survey Error</Text>;
     }
@@ -145,7 +146,7 @@ export default function ResponseScreen({
                 questionTitle={item.questionTitle}
                 selectableOptions={item.selectableOptions}
                 answers={item.answers}
-                questionType={item.questionType}
+                // questionType={item.questionType}
             />
         );
     };

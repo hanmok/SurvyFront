@@ -43,3 +43,14 @@ function PostedSurveysScreen({
 }
 
 export default PostedSurveysScreen;
+
+// answer Schema
+// type Answer {
+//     id: ID!
+//     question: Question!
+//     selectable_option: SelectableOption!
+//     // user_id: ID!
+//     user: User!
+//     survey: Survey!
+//     answer_text: String
+//   }

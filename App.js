@@ -148,6 +148,9 @@ export default function App() {
                             <Stack.Screen
                                 name={NavigationTitle.response}
                                 component={ResponseScreen}
+                                options={{
+                                    headerBackTitleVisible: false,
+                                }}
                             />
                         </Stack.Navigator>
                     </NavigationContainer>

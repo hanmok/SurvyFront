@@ -46,14 +46,15 @@ import { useQuery } from "@apollo/client";
 import { Survey } from "../interfaces/Survey";
 import { getSurveyQuery } from "../API/gqlQuery";
 import { log, logObject } from "../utils/Log";
+import { SurveyResponse } from "../interfaces/SurveyResponse";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
 }
 
-interface SurveyResponse {
-    survey: Survey;
-}
+// interface SurveyResponse {
+//     survey: Survey;
+// }
 
 function ParticipatingScreen({
     route,

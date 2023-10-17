@@ -58,3 +58,19 @@ export const getSurveyQuery = gql`
         }
     }
 `;
+
+export const getAnswersQuery = gql`
+    query Answers($surveyId: ID!) {
+        answers(survey_id: $surveyId) {
+            id
+            question {
+                id
+            }
+            selectable_option {
+                id
+                value
+            }
+            answer_text
+        }
+    }
+`;

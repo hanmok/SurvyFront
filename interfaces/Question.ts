@@ -10,6 +10,7 @@ export interface Question {
     text: string;
     // questionType: QuestionType;
     questionTypeId: number;
+    questionType: { id: number };
     selectableOptions: SelectableOption[];
 }
 
@@ -32,6 +33,7 @@ export const makeQuestion = (
         // sectionId: sectionId || undefined,
         text: text,
         // questionType: questionType,
+        questionType: undefined,
         questionTypeId: questionTypeId,
         selectableOptions: selectableOptions,
     };

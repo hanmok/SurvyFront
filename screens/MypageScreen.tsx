@@ -23,10 +23,6 @@ function MypageScreen({
         useState<number>(0);
     const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
 
-    const handleClick = (flag: number) => {
-        log(`click ${flag}`);
-    };
-
     const getNumbers = async () => {
         const myUserId = (await loadUserState()).userId;
 
@@ -38,7 +34,6 @@ function MypageScreen({
                 console.log(res.data);
                 logObject(`participated surveys`, res.data);
                 return res.data;
-                // setNumOfParticipatedSurveys(res.data.data.length);
             })
             .then(res => {
                 setNumOfParticipatedSurveys(res.data.length);
@@ -49,7 +44,10 @@ function MypageScreen({
             method: "GET",
             url: `${API_BASE_URL}/user/${myUserId}/posted-surveys`,
         })
-            .then(res => res.data)
+            .then(res => {
+                logObject(`posted surveys`, res.data);
+                return res.data;
+            })
             .then(res => setNumOfPostedSurveys(res.data.length))
             .catch(err => {});
     };
@@ -64,7 +62,6 @@ function MypageScreen({
 
     useEffect(() => {
         getNumbers();
-        // console.log()
         console.log("[MypageScreen] screenWidth: ", screenWidth);
         console.log("[MypageScreen] screenHeight: ", screenHeight);
     }, [numOfParticipatedSurveys, numOfPostedSurveys]);
@@ -112,11 +109,7 @@ function MypageScreen({
             >
                 <BlockView
                     onPress={() => {
-                        // navigation.navigate(
-                        //     NavigationTitle.participatedSurveys
-                        // );
                         navigateToMyInfo();
-                        handleClick(1);
                     }}
                 >
                     <Text style={[styles.eachBoxTextStyle, { padding: 20 }]}>
@@ -129,7 +122,6 @@ function MypageScreen({
                         navigation.navigate(
                             NavigationTitle.participatedSurveys
                         );
-                        // handleClick(1);
                     }}
                 >
                     <View
@@ -149,7 +141,6 @@ function MypageScreen({
                 <BlockView
                     onPress={() => {
                         navigation.navigate(NavigationTitle.postedSurveys);
-                        handleClick(2);
                     }}
                 >
                     <View

@@ -28,7 +28,6 @@ export const postedSurveyQuery = gql`
             posted_surveys {
                 code
                 title
-                created_at
                 participation_goal
                 current_participation
                 id
@@ -47,7 +46,7 @@ export const getSurveyQuery = gql`
                     id
                     position
                     text
-                    questionType {
+                    question_type {
                         id
                     }
                     selectable_options {

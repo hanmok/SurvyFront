@@ -6,9 +6,15 @@ import { FlatList } from "react-native-gesture-handler";
 import { useApollo } from "../../ApolloProvider";
 import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
-import { convertKeysToCamelCase } from "../../utils/SnakeToCamel";
+import {
+    convertKeysToCamelCase,
+    removeTypenameAndConvertToCamelCase,
+} from "../../utils/SnakeToCamel";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
+import { useEffect, useState } from "react";
+import { logObject } from "../../utils/Log";
+import { GQLSurvey } from "../../interfaces/GQLInterface";
 
 interface PostedSurveyItem {
     title: string;
@@ -21,7 +27,8 @@ interface PostedSurveyItem {
 
 interface PostedSurveyResponse {
     user: {
-        posted_surveys: PostedSurveyItem[];
+        // posted_surveys: PostedSurveyItem[];
+        posted_surveys: GQLSurvey[];
     };
 }
 
@@ -37,17 +44,27 @@ const PostedSurveyItems = ({
     const { loading, error, data } = useQuery<PostedSurveyResponse>(
         postedSurveyQuery,
         { client, variables: { userId: userId } }
+        // { client, variables: { userId: 774 } }
     );
 
-    const postedSurveys: PostedSurveyItem[] =
-        data?.user.posted_surveys.map(item => convertKeysToCamelCase(item)) ||
-        [];
+    const [postedSurveys, setPostedSurveys] = useState<GQLSurvey[]>([]);
+
+    useEffect(() => {
+        if (data?.user.posted_surveys) {
+            logObject("postedSurveyObj before", data.user);
+            const updatedPostedSurveys: GQLSurvey[] =
+                removeTypenameAndConvertToCamelCase(data.user.posted_surveys);
+            logObject("postedSurveyObj after", updatedPostedSurveys);
+            setPostedSurveys(updatedPostedSurveys);
+        }
+    }, [data]);
 
     if (loading) {
         return <Text>Loading...</Text>;
     }
 
     if (error) {
+        console.error(error);
         return <Text>Error: {error.message}</Text>;
     }
 
@@ -55,10 +72,8 @@ const PostedSurveyItems = ({
         <FlatList
             data={postedSurveys}
             renderItem={({ item }) => (
-                // <View
                 <TouchableNativeFeedback
                     onPress={() => {
-                        // console.log(`tapped! item: ${item.title}`);
                         handleTapAction(item.id);
                     }}
                 >
@@ -82,16 +97,16 @@ const PostedSurveyItems = ({
                         >
                             {item.title}
                         </Text>
-                        <Text>{convertTime(parseInt(item.createdAt))}</Text>
+                        {/* <Text>{convertTime(parseInt(item.createdAt))}</Text> */}
                         <Text>
                             {item.currentParticipation} /{" "}
                             {item.participationGoal}
                         </Text>
-                        {/* </View> */}
                     </View>
                 </TouchableNativeFeedback>
             )}
-            keyExtractor={item => `${item.code}${item.createdAt}`}
+            // keyExtractor={item => `${item.code}${item.createdAt}`}
+            keyExtractor={item => `${item.code}`}
         />
     );
 };

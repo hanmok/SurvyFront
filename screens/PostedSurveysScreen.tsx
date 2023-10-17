@@ -34,7 +34,6 @@ function PostedSurveysScreen({
         <PostedSurveyItems
             userId={userId}
             handleTapAction={surveyId => {
-                // move to response screen
                 navigation.navigate(NavigationTitle.response, {
                     surveyId,
                 });

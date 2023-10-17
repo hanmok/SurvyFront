@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
-import { participatedSurveyQuery, postedSurveyQuery } from "../../API/gqlQuery";
+// import { participatedSurveyQuery, postedSurveyQuery } from "../../API/gqlQuery";
+import { participatedSurveyQuery } from "../../API/gqlQuery";
 import { View, Text } from "react-native";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";

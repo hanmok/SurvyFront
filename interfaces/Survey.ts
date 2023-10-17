@@ -6,7 +6,7 @@ export interface Survey {
     userId: number | undefined;
     title: string;
     participationGoal: number;
-    currentParticipation: number;
+    currentParticipation: number | undefined;
     initialSectionId: number | undefined;
     geoCode: number;
     targetMinAge: number;

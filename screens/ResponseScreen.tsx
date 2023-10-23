@@ -83,7 +83,6 @@ export default function ResponseScreen({
 
     useEffect(() => {
         if (answers && answers.length !== 0 && survey !== null) {
-            // make QuestionResponseContainerProps
             let tempQuestionResponseContainerProps: QuestionResponseContainerProps[] =
                 [];
             logObject("survey:", survey);
@@ -146,6 +145,7 @@ export default function ResponseScreen({
     return (
         <View style={styles.container}>
             <Text>surveyId: {surveyId}</Text>
+            <Text>{survey.title}</Text>
             {/* <Text>{survey.currentParticipation ?? 0} answers has fetched</Text> */}
             <View style={{ height: 30 }} />
             <FlatList

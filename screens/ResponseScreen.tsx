@@ -17,14 +17,15 @@ import {
 } from "../interfaces/GQLInterface";
 import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { log, logObject } from "../utils/Log";
-import QuestionResponseContainer, {
+import SelectionResponseContainer, {
     QuestionResponseContainerProps,
-} from "../components/QuestionResponseContainer";
+} from "../components/SelectionResponseContainer";
 import { ListRenderItem } from "react-native";
 import { marginSizes } from "../utils/sizes";
 import { convertIdToType } from "../enums/QuestionTypeEnum";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
+import EssayResponseContainer from "../components/EssayResponseContainer";
 
 export default function ResponseScreen({
     navigation,
@@ -58,12 +59,14 @@ export default function ResponseScreen({
         variables: { surveyId: route.params.surveyId },
     });
 
+    const [survey, setSurvey] = useState<GQLSurvey>(null);
+    const [answers, setAnswers] = useState<GQLAnswer[]>(null);
+
+    const [isShowingOverall, setIsShowingOverall] = useState<boolean>(true);
+
     const [responseProps, setResponseProps] = useState<
         QuestionResponseContainerProps[]
     >([]);
-
-    const [survey, setSurvey] = useState<GQLSurvey>(null);
-    const [answers, setAnswers] = useState<GQLAnswer[]>(null);
 
     useEffect(() => {
         console.log("passed survey id:", surveyId);
@@ -139,8 +142,15 @@ export default function ResponseScreen({
     const questionResponseBoxItem: ListRenderItem<
         QuestionResponseContainerProps
     > = ({ item }) => {
-        return (
-            <QuestionResponseContainer
+        return item.questionTypeId !== "300" ? (
+            <SelectionResponseContainer
+                questionTitle={item.questionTitle}
+                selectableOptions={item.selectableOptions}
+                answers={item.answers}
+                questionTypeId={item.questionTypeId}
+            />
+        ) : (
+            <EssayResponseContainer
                 questionTitle={item.questionTitle}
                 selectableOptions={item.selectableOptions}
                 answers={item.answers}
@@ -149,9 +159,12 @@ export default function ResponseScreen({
         );
     };
 
-    const applyMinimumLength = (len: number) => {
-        return len > 0 ? len : 50;
-    };
+    // const listFooter = () => {
+    // 	return (
+    // 		<View
+    // 		/>
+    // 	)
+    // }
 
     return (
         <View style={styles.container}>
@@ -165,7 +178,6 @@ export default function ResponseScreen({
             >
                 {survey.title}
             </Text>
-            {/* <Text>{survey.currentParticipation ?? 0} answers has fetched</Text> */}
             <View style={{ height: 30 }} />
             <FlatList
                 data={responseProps}
@@ -174,6 +186,8 @@ export default function ResponseScreen({
                 ItemSeparatorComponent={() => {
                     return <View style={{ height: 10 }} />;
                 }}
+                style={{ marginBottom: 200 }}
+                ListFooterComponent={} // 총 설문 인원,
             />
         </View>
     );

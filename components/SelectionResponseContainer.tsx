@@ -18,8 +18,8 @@ export interface QuestionResponseContainerProps {
     questionTypeId: string;
     answers: GQLAnswer[];
 }
-
-const QuestionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
+// 이거.. 나눠야 하는거 아닐까?
+const SelectionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
     questionTitle,
     questionTypeId,
     selectableOptions,
@@ -38,31 +38,14 @@ const QuestionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
     const getPercentage = (num: number) =>
         num > 0 ? ` (${(num * 100).toFixed(1)} %) ` : "";
 
-    // stick
     const applyMinimumLength = (len: number) => {
         return len > 0 ? len : 100;
     };
+
     return (
         <View>
-            <View
-                style={{
-                    borderTopRightRadius: 10,
-                    borderTopLeftRadius: 10,
-                    overflow: "hidden",
-                    borderColor: "white",
-                    alignSelf: "flex-end",
-                    marginRight: 10,
-                }}
-            >
-                <Text
-                    style={{
-                        backgroundColor: "black",
-                        color: "white",
-                        paddingHorizontal: 10,
-                        paddingVertical: 4,
-                        fontWeight: "bold",
-                    }}
-                >
+            <View style={styles.whole}>
+                <Text style={styles.questionType}>
                     {getQuestionType(parseInt(questionTypeId))}
                 </Text>
             </View>
@@ -74,7 +57,6 @@ const QuestionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
                     renderItem={({ item }) => (
                         <View>
                             <Text style={{ marginLeft: 10 }}>{item.value}</Text>
-                            {/* 없는 경우에는, 음.. 색상을 다르게 적용시켜야해.  */}
                             <View
                                 style={[
                                     {
@@ -114,9 +96,17 @@ const QuestionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
     );
 };
 
-export default QuestionResponseContainer;
+export default SelectionResponseContainer;
 
 const styles = StyleSheet.create({
+    whole: {
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        overflow: "hidden",
+        borderColor: "white",
+        alignSelf: "flex-end",
+        marginRight: 10,
+    },
     container: {
         borderRadius: 10,
         borderColor: "black",
@@ -132,5 +122,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginLeft: 10,
         marginTop: 4,
+    },
+    questionType: {
+        backgroundColor: "black",
+        color: "white",
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        fontWeight: "bold",
     },
 });

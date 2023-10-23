@@ -499,10 +499,7 @@ export default function PostingScreen({
 
                 <View
                     style={{
-                        // backgroundColor: "magenta",
                         flexDirection: "row",
-                        // padding: 20,
-                        // flex: 1,
                         marginBottom: 12,
                         height: 40,
                     }}

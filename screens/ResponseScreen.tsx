@@ -10,22 +10,26 @@ import {
 import { getAnswersQuery, getSurveyQuery } from "../API/gqlQuery";
 import { useApollo } from "../ApolloProvider";
 import { useEffect, useState } from "react";
+
 import {
     GQLAnswer,
     GQLSelectableOption,
     GQLSurvey,
 } from "../interfaces/GQLInterface";
+
 import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { log, logObject } from "../utils/Log";
 import SelectionResponseContainer, {
     QuestionResponseContainerProps,
 } from "../components/SelectionResponseContainer";
 import { ListRenderItem } from "react-native";
-import { marginSizes } from "../utils/sizes";
+import { fontSizes, marginSizes } from "../utils/sizes";
 import { convertIdToType } from "../enums/QuestionTypeEnum";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
 import EssayResponseContainer from "../components/EssayResponseContainer";
+import { Picker } from "@react-native-picker/picker";
+import CustomSegmentedControl from "../components/CustomSegmentedControl";
 
 export default function ResponseScreen({
     navigation,
@@ -39,7 +43,7 @@ export default function ResponseScreen({
 }) {
     const { surveyId } = route.params;
     const client = useApollo();
-
+    const options = ["전체", "개별"];
     const {
         loading: answersLoading,
         error: answersError,
@@ -128,6 +132,10 @@ export default function ResponseScreen({
     }, [answers, survey]);
     // }, [surveyData, answersData]);
 
+    useEffect(() => {
+        console.log("isShowingOverall?", isShowingOverall);
+    }, [isShowingOverall]);
+
     if (surveyError) {
         return <Text>survey Error</Text>;
     }
@@ -160,10 +168,6 @@ export default function ResponseScreen({
         );
     };
 
-    const listFooter = (currentParticipation: number) => {
-        return <Text>{currentParticipation}</Text>;
-    };
-
     return (
         <View style={styles.container}>
             <Text style={{ color: colors.gray3 }}>surveyId: {surveyId}</Text>
@@ -174,19 +178,59 @@ export default function ResponseScreen({
                     textAlign: "center",
                 }}
             >
-                {survey.title ?? ""}
+                {survey ? survey.title : ""}
             </Text>
-            <View style={{ height: 30 }} />
-            <FlatList
-                data={responseProps}
-                renderItem={questionResponseBoxItem}
-                keyExtractor={item => `${item.questionTitle}`}
-                ItemSeparatorComponent={() => {
-                    return <View style={{ height: 10 }} />;
-                }}
-                style={{ marginBottom: 200 }}
-                ListFooterComponent={listFooter(survey.currentParticipation)} // 총 설문 인원,
-            />
+            <View
+                style={{ height: 30, flex: 1, justifyContent: "space-between" }}
+            >
+                <>
+                    {isShowingOverall ? (
+                        <FlatList
+                            data={responseProps}
+                            renderItem={questionResponseBoxItem}
+                            keyExtractor={item => `${item.questionTitle}`}
+                            ItemSeparatorComponent={() => {
+                                return <View style={{ height: 10 }} />;
+                            }}
+                            // ListFooterComponent={bottomView}
+                            style={{ backgroundColor: "cyan" }}
+                        />
+                    ) : (
+                        <View
+                            style={{
+                                backgroundColor: "black",
+                                width: 300,
+                                height: 400,
+                            }}
+                        ></View>
+                    )}
+                </>
+                <View
+                    style={{
+                        backgroundColor: "magenta",
+                        width: screenWidth,
+                        height: 100,
+                    }}
+                >
+                    <Text
+                        style={{
+                            alignSelf: "flex-end",
+                            marginRight: 30,
+                            fontSize: fontSizes.s16,
+                            marginTop: 10,
+                        }}
+                    >
+                        총 설문 인원 {survey ? survey.currentParticipation : 0}
+                    </Text>
+                    <CustomSegmentedControl
+                        options={options}
+                        handlePress={idx => {
+                            setIsShowingOverall(idx === 0);
+                            console.log(`pressed:${idx}`);
+                        }}
+                    />
+                </View>
+            </View>
         </View>
     );
 }
@@ -194,5 +238,6 @@ export default function ResponseScreen({
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: marginSizes.s12,
+        flex: 1,
     },
 });

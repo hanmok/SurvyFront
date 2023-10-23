@@ -57,6 +57,7 @@ export default function ResponseScreen({
     } = useQuery<GQLSurveyResponse>(getSurveyQuery, {
         client,
         variables: { surveyId: route.params.surveyId },
+        fetchPolicy: "no-cache",
     });
 
     const [survey, setSurvey] = useState<GQLSurvey>(null);
@@ -159,12 +160,9 @@ export default function ResponseScreen({
         );
     };
 
-    // const listFooter = () => {
-    // 	return (
-    // 		<View
-    // 		/>
-    // 	)
-    // }
+    const listFooter = (currentParticipation: number) => {
+        return <Text>{currentParticipation}</Text>;
+    };
 
     return (
         <View style={styles.container}>
@@ -176,7 +174,7 @@ export default function ResponseScreen({
                     textAlign: "center",
                 }}
             >
-                {survey.title}
+                {survey.title ?? ""}
             </Text>
             <View style={{ height: 30 }} />
             <FlatList
@@ -187,7 +185,7 @@ export default function ResponseScreen({
                     return <View style={{ height: 10 }} />;
                 }}
                 style={{ marginBottom: 200 }}
-                ListFooterComponent={} // 총 설문 인원,
+                ListFooterComponent={listFooter(survey.currentParticipation)} // 총 설문 인원,
             />
         </View>
     );

@@ -71,6 +71,7 @@ function ParticipatingScreen({
         {
             client,
             variables: { surveyId: route.params.surveyId },
+            fetchPolicy: "no-cache",
         }
     );
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);

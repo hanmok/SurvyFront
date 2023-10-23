@@ -25,7 +25,7 @@ const ParticipatedSurveyItems = ({ userId }) => {
     const client = useApollo();
     const { loading, error, data } = useQuery<ParticipatedSurveyResponse>(
         participatedSurveyQuery,
-        { client, variables: { userId: userId } }
+        { client, variables: { userId: userId }, fetchPolicy: "no-cache" }
     );
 
     const participatedSurveys: ParticipatedSurveyItem[] =

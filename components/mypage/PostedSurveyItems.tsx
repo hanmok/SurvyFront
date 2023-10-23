@@ -43,7 +43,7 @@ const PostedSurveyItems = ({
 
     const { loading, error, data } = useQuery<PostedSurveyResponse>(
         postedSurveyQuery,
-        { client, variables: { userId: userId } }
+        { client, variables: { userId: userId }, fetchPolicy: "no-cache" }
         // { client, variables: { userId: 774 } }
     );
 
@@ -51,10 +51,10 @@ const PostedSurveyItems = ({
 
     useEffect(() => {
         if (data?.user.posted_surveys) {
-            logObject("postedSurveyObj before", data.user);
+            logObject("get postedSurveyObj using user", data.user);
             const updatedPostedSurveys: GQLSurvey[] =
                 removeTypenameAndConvertToCamelCase(data.user.posted_surveys);
-            logObject("postedSurveyObj after", updatedPostedSurveys);
+            logObject("get postedSurveyObj", updatedPostedSurveys);
             setPostedSurveys(updatedPostedSurveys);
         }
     }, [data]);

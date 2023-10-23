@@ -40,7 +40,7 @@ export default function ResponseScreen({
     } = useQuery<GQLAnswerResponse>(getAnswersQuery, {
         client,
         variables: { surveyId: route.params.surveyId },
-        // fetchPolicy: "no-cache",
+        fetchPolicy: "no-cache",
     });
 
     const {
@@ -55,9 +55,6 @@ export default function ResponseScreen({
     const [responseProps, setResponseProps] = useState<
         QuestionResponseContainerProps[]
     >([]);
-
-    // const [survey, setSurvey] = useState<GQLSurvey | null>(null);
-    // const [answers, setAnswers] = useState<GQLAnswer[] | null>(null);
 
     const [survey, setSurvey] = useState<GQLSurvey>(null);
     const [answers, setAnswers] = useState<GQLAnswer[]>(null);
@@ -103,11 +100,6 @@ export default function ResponseScreen({
                         ans => ans.question.id === question.id
                     );
 
-                    // let questionType = convertIdToType(
-                    //     question.questionType.id
-                    // );
-
-                    // console.log("questionType: ", questionType);
                     const props: QuestionResponseContainerProps = {
                         questionTitle: ` ${question.position + 1}. ${
                             question.text

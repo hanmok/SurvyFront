@@ -34,12 +34,15 @@ const QuestionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
 
     const totalNumberOfAnswer = answers.length;
     const wholeLength = screenWidth - 100;
-    const getPercentage = (num: number) => `${(num * 100).toFixed(1)} %`;
+
+    const getPercentage = (num: number) =>
+        num > 0 ? ` (${(num * 100).toFixed(1)} %) ` : "";
 
     // stick
-
+    const applyMinimumLength = (len: number) => {
+        return len > 0 ? len : 100;
+    };
     return (
-        // <View style={{ alignSelf: "flex-end", backgroundColor: "magenta" }}>
         <View>
             <View
                 style={{
@@ -71,31 +74,35 @@ const QuestionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
                     renderItem={({ item }) => (
                         <View>
                             <Text style={{ marginLeft: 10 }}>{item.value}</Text>
-
+                            {/* 없는 경우에는, 음.. 색상을 다르게 적용시켜야해.  */}
                             <View
-                                style={{
-                                    width:
-                                        (wholeLength *
+                                style={[
+                                    {
+                                        width: applyMinimumLength(
+                                            (wholeLength *
+                                                getNumberOfSameAnswer(
+                                                    item,
+                                                    answers
+                                                )) /
+                                                answers.length
+                                        ),
+                                        backgroundColor:
                                             getNumberOfSameAnswer(
                                                 item,
                                                 answers
-                                            )) /
-                                        answers.length,
-                                    height: 30,
-                                    backgroundColor: colors.gray3,
-                                    marginBottom: 10,
-                                    justifyContent: "center",
-                                    marginLeft: 10,
-                                    marginTop: 4,
-                                }}
+                                            ) > 0
+                                                ? colors.gray3
+                                                : colors.transparent,
+                                    },
+                                    styles.bar,
+                                ]}
                             >
                                 <Text style={{ marginLeft: 10 }}>
-                                    {getNumberOfSameAnswer(item, answers)} (
+                                    {getNumberOfSameAnswer(item, answers)}
                                     {getPercentage(
                                         getNumberOfSameAnswer(item, answers) /
                                             totalNumberOfAnswer
                                     )}
-                                    )
                                 </Text>
                             </View>
                         </View>
@@ -117,5 +124,13 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         padding: 6,
         // backgroundColor: "magenta",
+    },
+    bar: {
+        height: 30,
+
+        marginBottom: 10,
+        justifyContent: "center",
+        marginLeft: 10,
+        marginTop: 4,
     },
 });

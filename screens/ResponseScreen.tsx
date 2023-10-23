@@ -10,7 +10,11 @@ import {
 import { getAnswersQuery, getSurveyQuery } from "../API/gqlQuery";
 import { useApollo } from "../ApolloProvider";
 import { useEffect, useState } from "react";
-import { GQLAnswer, GQLSurvey } from "../interfaces/GQLInterface";
+import {
+    GQLAnswer,
+    GQLSelectableOption,
+    GQLSurvey,
+} from "../interfaces/GQLInterface";
 import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { log, logObject } from "../utils/Log";
 import QuestionResponseContainer, {
@@ -19,6 +23,8 @@ import QuestionResponseContainer, {
 import { ListRenderItem } from "react-native";
 import { marginSizes } from "../utils/sizes";
 import { convertIdToType } from "../enums/QuestionTypeEnum";
+import { colors } from "../utils/colors";
+import { screenWidth } from "../utils/ScreenSize";
 
 export default function ResponseScreen({
     navigation,
@@ -139,15 +145,26 @@ export default function ResponseScreen({
                 selectableOptions={item.selectableOptions}
                 answers={item.answers}
                 questionTypeId={item.questionTypeId}
-                // questionType={item.questionType}
             />
         );
     };
 
+    const applyMinimumLength = (len: number) => {
+        return len > 0 ? len : 50;
+    };
+
     return (
         <View style={styles.container}>
-            <Text>surveyId: {surveyId}</Text>
-            <Text>{survey.title}</Text>
+            <Text style={{ color: colors.gray3 }}>surveyId: {surveyId}</Text>
+            <Text
+                style={{
+                    fontSize: 22,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                }}
+            >
+                {survey.title}
+            </Text>
             {/* <Text>{survey.currentParticipation ?? 0} answers has fetched</Text> */}
             <View style={{ height: 30 }} />
             <FlatList

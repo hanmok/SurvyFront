@@ -105,6 +105,7 @@ export default function ResponseScreen({
                         }`,
                         selectableOptions: selectableOptions,
                         answers: tempAnswers,
+                        questionTypeId: String(question.questionType.id),
                         // questionType: questionType,
                     };
                     logObject("prop obj", props);
@@ -137,6 +138,7 @@ export default function ResponseScreen({
                 questionTitle={item.questionTitle}
                 selectableOptions={item.selectableOptions}
                 answers={item.answers}
+                questionTypeId={item.questionTypeId}
                 // questionType={item.questionType}
             />
         );

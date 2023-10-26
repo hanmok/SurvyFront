@@ -19,8 +19,9 @@ export async function postAnswer(
         answerText,
         userId,
     };
+
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
-    printObject(snakeData, "[AnswerAPI] postAnswer");
+    // printObject(snakeData, "[AnswerAPI] postAnswer");
 
     try {
         const response = await fetch(url, {
@@ -44,39 +45,6 @@ export async function postAnswer(
         throw error;
     }
 }
-
-// export async function postTextAnswer(
-//     customAnswer: CustomAnswer,
-//     userId: number
-// ): Promise<ApiResponse> {
-//     const url = `${API_BASE_URL}/custom-answer`;
-
-//     const { selectableOptionId, sequence, answerText } = customAnswer;
-//     const data = { selectableOptionId, sequence, answerText, userId };
-//     // console.log(`data from postTextAnswer: ${data}`);
-//     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
-//     printObject(snakeData, "postTextAnswer snake");
-//     try {
-//         const response = await fetch(url, {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify(snakeData),
-//         });
-
-//         if (!response.ok) {
-//             console.log("postTextAnswer error!!");
-//             // console.error
-//             throw new Error("postTextAnswer Network response was not ok");
-//         }
-//         const responseData: ApiResponse = await response.json();
-//         return responseData;
-//     } catch (error) {
-//         console.error("postTextAnswer Error", error);
-//         throw error;
-//     }
-// }
 
 export async function createParticipate(
     surveyId: number,

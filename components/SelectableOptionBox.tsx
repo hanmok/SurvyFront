@@ -15,7 +15,6 @@ import { Button } from "react-native";
 import ImageButton from "./ImageButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-// import { QuestionTypeEnum } from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";
 import { colors } from "../utils/colors";
 import { log, logObject } from "../utils/Log";
@@ -31,7 +30,7 @@ interface SelectableOptionProps {
     position: number;
     value: string;
     // questionTypeId: number;
-    questionTypeId: number;
+    questionTypeId: string;
     onPress?: () => void;
     handleUserInput?: (text: string) => void;
     questionIndex: number;
@@ -55,6 +54,26 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         console.log("question type id:", questionTypeId);
     }, []);
 
+    useEffect(() => {
+        console.log(
+            `questionTypeId: ${questionTypeId}, type: ${typeof questionTypeId}`
+        );
+        switch (questionTypeId) {
+            // case 100:
+            case "100":
+                console.log("questionTypeId is 100");
+                break;
+                // case 200:
+                console.log("questionTypeId is 200");
+                break;
+                // case 300:
+                console.log("questionTypeId is 300");
+                break;
+            default:
+                console.log("questionTypeId is default");
+                break;
+        }
+    }, []);
     const textInputRef = useRef(null);
 
     const handleFocusTextInput = () => {
@@ -65,10 +84,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     };
 
     const [userInput, setUserInput] = useState("");
-
-    // useEffect(() => {
-    //     handleUserInput(userInput)
-    // }, [userInput]);
 
     const selectedIndexIds = useSelector((state: RootState) => {
         return state.selector.selectedOptionIds;
@@ -88,7 +103,9 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         switch (questionTypeId) {
             // case QuestionTypeId.SingleSelection:
             // case QuestionTypeIdEnum.SingleSelection:
-            case 100:
+            // case 100:
+            // case "100":
+            case `${QuestionTypeIdEnum.SingleSelection}`:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
@@ -169,7 +186,8 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
 
             // case QuestionTypeId.MultipleSelection:
             // case QuestionTypeIdEnum.MultipleSelection:
-            case 200:
+            // case "200":
+            case `${QuestionTypeIdEnum.MultipleSelection}`:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
@@ -249,7 +267,8 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 );
                 break;
             // default:
-            case 300:
+            // case "300":
+            case `${QuestionTypeIdEnum.Essay}`:
                 selectableOptionComponent = (
                     <View style={styles.textContainer}>
                         <TextInput

@@ -13,11 +13,14 @@ export enum QuestionTypeId {
 
 export function getQuestionType(index: number): string {
     switch (index) {
-        case 100:
+        // case 100:
+        case QuestionTypeId.SingleSelection:
             return QuestionTypeKorean.SingleSelection;
-        case 200:
+        // case 200:
+        case QuestionTypeId.MultipleSelection:
             return QuestionTypeKorean.MultiSelection;
-        case 300:
+        // case 300:
+        case QuestionTypeId.Essay:
             return QuestionTypeKorean.Essay;
         default:
             throw new Error("Invalid Input");

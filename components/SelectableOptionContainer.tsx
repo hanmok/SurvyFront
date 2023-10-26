@@ -15,7 +15,7 @@ import {
     QuestionTypeIdEnum,
 } from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";
-import { logObject } from "../utils/Log";
+import { logArray, logObject } from "../utils/Log";
 import {
     GQLQuestionType,
     GQLSelectableOption,
@@ -40,22 +40,27 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     const [userInput, setUserInput] = useState<string>("");
 
     useEffect(() => {
-        logObject("passed selectableOptions:", selectableOptions);
+        logArray(
+            "[SelectableeOptionContainer] passed selectableOptions",
+            selectableOptions
+        );
         logObject("questionIndex", questionIndex);
-        // logObject("questionTypeId: ", questionTypeId);
         logObject("questionType", questionType);
     }, []);
 
     // TODO: 상태 변수 하나 써서 더 간단히 할 수 있을 것 같아.
     const handleUserInput = useCallback(
-        (userInput: string, soIndex: number) => {
-            console.log(`handleUserInput called, input: ${userInput}`);
+        (userInput: string, soIndex: number, questionIndex: number) => {
+            console.log(
+                `handleUserInput called, input: ${userInput}, soIndex: ${soIndex}`
+            );
             const selectableOptionId = selectableOptions[soIndex].id;
 
             const customAnswer: CustomAnswer = {
                 selectableOptionId,
                 answerText: userInput,
                 questionId,
+                questionIndex,
                 // soIndex,
             };
             dispatch(textInputAction({ customAnswer }));
@@ -66,13 +71,15 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
 
     const handlePress = useCallback(
         (selectedIndex: number, answerText: string) => {
-            console.log(
-                `[SelectableOptionContainer] handlePress, questionTypeId: ${questionType}`
+            logObject(
+                `[SelectableOptionContainer] handlePress, questionTypeId:`,
+                questionType
             );
             switch (questionType.id) {
                 // case QuestionTypeId.SingleSelection:
                 // case QuestionTypeEnum.SingleSelection:
-                case QuestionTypeIdEnum.SingleSelection:
+                // case QuestionTypeIdEnum.SingleSelection:
+                case `${QuestionTypeIdEnum.SingleSelection}`:
                     dispatch(
                         selectSingleSelection({
                             questionId,
@@ -85,7 +92,9 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
 
                 // case QuestionTypeId.MultipleSelection:
                 // case QuestionTypeEnum.MultipleSelection:
-                case QuestionTypeIdEnum.MultipleSelection:
+                // case QuestionTypeIdEnum.MultipleSelection:
+                // case "200":
+                case `${QuestionTypeIdEnum.MultipleSelection}`:
                     dispatch(
                         selectMultipleSelection({
                             questionId,
@@ -100,7 +109,8 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     const customAnswer = makeCustomAnswer(
                         selectableOptions[0].id,
                         questionId,
-                        answerText
+                        answerText,
+                        questionIndex
                     );
                     dispatch(textInputAction({ customAnswer }));
                     break;
@@ -117,7 +127,6 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     <SelectableOptionBox
                         questionId={questionId}
                         {...selectableOption}
-                        // questionTypeId={questionTypeId}
                         questionTypeId={questionType.id}
                         onPress={() =>
                             handlePress(
@@ -126,7 +135,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                             )
                         } // text 추가
                         handleUserInput={text => {
-                            handleUserInput(text, soIndex);
+                            handleUserInput(text, soIndex, questionIndex);
                             setUserInput(text);
                         }}
                         questionIndex={questionIndex}

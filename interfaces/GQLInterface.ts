@@ -1,5 +1,5 @@
 export interface GQLQuestionType {
-    id: number;
+    id: string;
     name: string;
 }
 

@@ -26,12 +26,7 @@ import { CustomAnswer } from "../interfaces/CustomAnswer";
 import { useSelector, useDispatch } from "react-redux";
 import { Answer } from "../interfaces/Answer";
 import { RootState } from "../store";
-import {
-    // postSelectionAnswer,
-    createParticipate,
-    // postTextAnswer,
-    postAnswer,
-} from "../API/AnswerAPI";
+import { createParticipate, postAnswer } from "../API/AnswerAPI";
 import { API_BASE_URL } from "../API/API";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -85,9 +80,14 @@ function ParticipatingScreen({
     const shouldGoBack = useRef(false);
     const { sectionId, surveyId } = route.params;
     const dispatch = useDispatch();
+
     const selectedSOIndexIds = useSelector((state: RootState) => {
-        return state.selector.selectedOptionIds;
+        const ret = state.selector.selectedOptionIds;
+        logObject("selectedSOIndexIds changed to", ret);
+        return ret;
+        // return state.selector.selectedOptionIds;
     });
+
     const textAnswers = useSelector((state: RootState) => {
         return state.selector.textAnswers;
     });
@@ -148,7 +148,6 @@ function ParticipatingScreen({
         );
     };
 
-    // Selectable Option 은 매우 많음...
     const postSelectionAnswer = async (
         surveyId: number,
         userId: number,
@@ -188,6 +187,7 @@ function ParticipatingScreen({
         console.log(`buttonTapAction called, userId: ${userId}`);
         const promises = [];
 
+        // ..?? selectedSOIndexIds 에 Text SO가 선택되어야 하는구나.
         // selectedSOIndexIds 에서 textAnswers 를 빼야해요.
 
         let selectableOptionIds: number[] = [];
@@ -245,8 +245,6 @@ function ParticipatingScreen({
                         )
                     );
                     setCurrentSectionIndex(currentSectionIndex + 1);
-                    // dispatch(initialize(currentSection.questions.length))
-                    // dispatch(initialize())
                 }
             })
             .catch(error => {
@@ -254,7 +252,6 @@ function ParticipatingScreen({
             });
     };
 
-    // if (isLoading) {
     if (loading) {
         return (
             <ActivityIndicator
@@ -294,7 +291,6 @@ function ParticipatingScreen({
                             : "Next"
                     }
                     onPress={handleCompleteSection}
-                    // textStyle={if (selectedIndexes) styles.finishButtonText}
                     textStyle={
                         selectedSOIndexIds &&
                         selectedSOIndexIds.every(arr => arr.length !== 0)
@@ -331,7 +327,6 @@ function ParticipatingScreen({
 }
 
 export default ParticipatingScreen;
-// export default SurveyParticipateScreen;
 
 const styles = StyleSheet.create({
     container: {

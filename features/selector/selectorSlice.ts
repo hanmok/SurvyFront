@@ -27,6 +27,7 @@ export const selectorSlice = createSlice({
                 outer.push([]);
             }
             state.selectedOptionIds = outer;
+            state.textAnswers = [];
             console.log("[selectorSlice], initialize called");
         },
         // singleSelection, multipleSelection 두 경우 모두 textInput Action 에도 해당하는 경우에는 ?
@@ -62,7 +63,8 @@ export const selectorSlice = createSlice({
                 const customAnswer = makeCustomAnswer(
                     selectedSOId,
                     questionId,
-                    answerText
+                    answerText,
+                    questionIndex
                 );
                 logObject("textAnswer has been added", customAnswer);
                 state.textAnswers.push(customAnswer);
@@ -110,7 +112,8 @@ export const selectorSlice = createSlice({
                     const customAnswer = makeCustomAnswer(
                         selectedSOId,
                         questionId,
-                        answerText
+                        answerText,
+                        questionIndex
                     );
                     logObject("textAnswer has been added", customAnswer);
                     state.textAnswers.push(customAnswer);
@@ -132,7 +135,12 @@ export const selectorSlice = createSlice({
             const newCustomAnswer = makeCustomAnswer(
                 customAnswer.selectableOptionId,
                 customAnswer.questionId,
-                customAnswer.answerText
+                customAnswer.answerText,
+                customAnswer.questionIndex
+            );
+
+            state.selectedOptionIds[newCustomAnswer.questionIndex].push(
+                newCustomAnswer.selectableOptionId
             );
 
             // 이미 같은 customAnswer가 배열에 없으면 추가

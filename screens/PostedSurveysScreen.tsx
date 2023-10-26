@@ -21,7 +21,7 @@ function PostedSurveysScreen({
     >;
 }) {
     const [userId, setUserId] = useState<number>(null);
-    // const client = useApollo();
+
     useEffect(() => {
         const getUserId = async () => {
             const userId = await loadUserState();
@@ -43,14 +43,3 @@ function PostedSurveysScreen({
 }
 
 export default PostedSurveysScreen;
-
-// answer Schema
-// type Answer {
-//     id: ID!
-//     question: Question!
-//     selectable_option: SelectableOption!
-//     // user_id: ID!
-//     user: User!
-//     survey: Survey!
-//     answer_text: String
-//   }

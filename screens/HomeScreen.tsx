@@ -32,7 +32,7 @@ import { NavigationTitle } from "../utils/NavHelper";
 import ImageButton from "../components/ImageButton";
 import { logObject } from "../utils/Log";
 import { Ionicons } from "@expo/vector-icons";
-import GreetingComponent from "../GreetingComponent";
+
 // import { getAllPostedSurveys } from "../API/gqlAPI";
 import { getSurveyQuery } from "../API/gqlQuery";
 import { RefreshControl } from "react-native-gesture-handler";

@@ -285,27 +285,30 @@ function ParticipatingScreen({
 
     const listFooter = () => {
         return (
-            <TextButton
-                title={
-                    currentSectionIndex === currentSurvey.sections.length - 1
-                        ? "Finish"
-                        : "Next"
-                }
-                onPress={handleCompleteSection}
-                // textStyle={if (selectedIndexes) styles.finishButtonText}
-                textStyle={
-                    selectedSOIndexIds &&
-                    selectedSOIndexIds.every(arr => arr.length !== 0)
-                        ? styles.activatedButtonText
-                        : styles.inactivatedButtonText
-                }
-                backgroundStyle={
-                    selectedSOIndexIds &&
-                    selectedSOIndexIds.every(arr => arr.length !== 0)
-                        ? styles.activatedFinishButtonBackground
-                        : styles.inactivatedFinishButtonBackground
-                }
-            />
+            currentSurvey !== null && (
+                <TextButton
+                    title={
+                        currentSectionIndex ===
+                        currentSurvey.sections.length - 1
+                            ? "Finish"
+                            : "Next"
+                    }
+                    onPress={handleCompleteSection}
+                    // textStyle={if (selectedIndexes) styles.finishButtonText}
+                    textStyle={
+                        selectedSOIndexIds &&
+                        selectedSOIndexIds.every(arr => arr.length !== 0)
+                            ? styles.activatedButtonText
+                            : styles.inactivatedButtonText
+                    }
+                    backgroundStyle={
+                        selectedSOIndexIds &&
+                        selectedSOIndexIds.every(arr => arr.length !== 0)
+                            ? styles.activatedFinishButtonBackground
+                            : styles.inactivatedFinishButtonBackground
+                    }
+                />
+            )
         );
     };
 

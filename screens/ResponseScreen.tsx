@@ -5,31 +5,42 @@ import { RouteProp } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
 import {
     GQLAnswerResponse,
+    GQLParticipatingResponse,
     GQLSurveyResponse,
 } from "../interfaces/SurveyResponse";
-import { getAnswersQuery, getSurveyQuery } from "../API/gqlQuery";
+import {
+    getAnswersQuery,
+    getSurveyQuery,
+    getParticipatingQuery,
+} from "../API/gqlQuery";
 import { useApollo } from "../ApolloProvider";
 import { useEffect, useState } from "react";
 
 import {
     GQLAnswer,
+    GQLParticipating,
     GQLSelectableOption,
     GQLSurvey,
 } from "../interfaces/GQLInterface";
 
 import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { log, logObject } from "../utils/Log";
-import SelectionResponseContainer, {
-    QuestionResponseContainerProps,
-} from "../components/SelectionResponseContainer";
+import OverallSelectionResponseContainer from "../components/response/OverallSelectionResponseContainer";
+import { QuestionResponseContainerProps } from "../components/response/OverallSelectionResponseContainer";
 import { ListRenderItem } from "react-native";
 import { fontSizes, marginSizes } from "../utils/sizes";
 import { convertIdToType } from "../enums/QuestionTypeEnum";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
-import EssayResponseContainer from "../components/EssayResponseContainer";
+import OverallEssayResponseContainer from "../components/response/OverallEssayResponseContainer";
 import { Picker } from "@react-native-picker/picker";
 import CustomSegmentedControl from "../components/CustomSegmentedControl";
+import { Answer } from "../interfaces/Answer";
+import IndivisualSelectionResponseContainer from "../components/response/IndivisualSelectionResponseContainer";
+import IndivisualEssayResponseContainer from "../components/response/IndivisualEssayResponseContainer";
+import ImageButton from "../components/ImageButton";
+import { Entypo } from "@expo/vector-icons";
+import TextButton from "../components/TextButton";
 
 export default function ResponseScreen({
     navigation,
@@ -44,11 +55,26 @@ export default function ResponseScreen({
     const { surveyId } = route.params;
     const client = useApollo();
     const options = ["전체", "개별"];
+
+    const [currentSequence, setCurrentSequence] = useState<number>(1);
+    const [currentUserId, setCurrentUserId] = useState<number>(undefined);
+    // const [indivisualAnswers, setIndivisualAnswers] = useState<GQLAnswer[]>([]);
+
     const {
         loading: answersLoading,
         error: answersError,
         data: answersData,
     } = useQuery<GQLAnswerResponse>(getAnswersQuery, {
+        client,
+        variables: { surveyId: route.params.surveyId },
+        fetchPolicy: "no-cache",
+    });
+
+    const {
+        loading: participatingLoading,
+        error: participatingError,
+        data: participatingData,
+    } = useQuery<GQLParticipatingResponse>(getParticipatingQuery, {
         client,
         variables: { surveyId: route.params.surveyId },
         fetchPolicy: "no-cache",
@@ -66,6 +92,8 @@ export default function ResponseScreen({
 
     const [survey, setSurvey] = useState<GQLSurvey>(null);
     const [answers, setAnswers] = useState<GQLAnswer[]>(null);
+    const [participatings, setParticipatings] =
+        useState<GQLParticipating[]>(null);
 
     const [isShowingOverall, setIsShowingOverall] = useState<boolean>(true);
 
@@ -74,13 +102,33 @@ export default function ResponseScreen({
     >([]);
 
     useEffect(() => {
+        if (participatings) {
+            logObject(
+                "[ResponseScreen] currentSequence changed, participatings ",
+                participatings
+            );
+            log("currentSequence: " + currentSequence);
+            const correspondingUserId = participatings.find(
+                participating => participating.sequence === currentSequence
+            ).user.id;
+
+            logObject(
+                "[ResponseScreen] currentUserId set to",
+                correspondingUserId
+            );
+
+            setCurrentUserId(correspondingUserId);
+        }
+    }, [currentSequence, participatings]);
+
+    useEffect(() => {
         console.log("passed survey id:", surveyId);
 
         if (answersData?.answers) {
-            const updatedAnswer: GQLAnswer[] =
+            const updatedAnswers: GQLAnswer[] =
                 removeTypenameAndConvertToCamelCase(answersData.answers);
-            logObject("fetched answers", updatedAnswer);
-            setAnswers(updatedAnswer);
+            logObject("fetched answers", updatedAnswers);
+            setAnswers(updatedAnswers);
         } else {
             log("still fetching answers..");
         }
@@ -96,7 +144,23 @@ export default function ResponseScreen({
     }, [surveyData]);
 
     useEffect(() => {
-        if (answers && answers.length !== 0 && survey !== null) {
+        if (participatingData?.participatings) {
+            const updatedParticipatings: GQLParticipating[] =
+                removeTypenameAndConvertToCamelCase(
+                    participatingData.participatings
+                );
+            logObject("fetched participatings", updatedParticipatings);
+            setParticipatings(updatedParticipatings);
+        }
+    }, [participatingData]);
+
+    useEffect(() => {
+        if (
+            answers &&
+            answers.length !== 0 &&
+            survey !== null &&
+            participatings
+        ) {
             let tempQuestionResponseContainerProps: QuestionResponseContainerProps[] =
                 [];
             logObject("survey:", survey);
@@ -120,9 +184,10 @@ export default function ResponseScreen({
                         selectableOptions: selectableOptions,
                         answers: tempAnswers,
                         questionTypeId: String(question.questionType.id),
+                        selectedUserId: undefined,
                         // questionType: questionType,
                     };
-                    logObject("prop obj", props);
+                    // logObject("prop obj", props);
 
                     tempQuestionResponseContainerProps.push(props);
                 });
@@ -132,10 +197,6 @@ export default function ResponseScreen({
     }, [answers, survey]);
     // }, [surveyData, answersData]);
 
-    useEffect(() => {
-        console.log("isShowingOverall?", isShowingOverall);
-    }, [isShowingOverall]);
-
     if (surveyError) {
         return <Text>survey Error</Text>;
     }
@@ -144,26 +205,84 @@ export default function ResponseScreen({
         return <Text>Answer Error</Text>;
     }
 
-    if (surveyLoading || answersLoading) {
+    if (participatingError) {
+        return <Text>Participating Error</Text>;
+    }
+
+    if (surveyLoading || answersLoading || participatingLoading) {
         return <Text>Loading...</Text>;
     }
 
-    const questionResponseBoxItem: ListRenderItem<
+    const countUp = () => {
+        const updatedSequence = currentSequence + 1;
+        if (participatings && participatings.length >= updatedSequence) {
+            setCurrentSequence(updatedSequence);
+        }
+    };
+
+    const countDown = () => {
+        const updatedSequence = currentSequence - 1;
+
+        if (updatedSequence > 0) {
+            setCurrentSequence(updatedSequence);
+        }
+    };
+
+    const overallQuestionResponseBoxItem: ListRenderItem<
         QuestionResponseContainerProps
     > = ({ item }) => {
         return item.questionTypeId !== "300" ? (
-            <SelectionResponseContainer
+            <OverallSelectionResponseContainer
                 questionTitle={item.questionTitle}
                 selectableOptions={item.selectableOptions}
                 answers={item.answers}
                 questionTypeId={item.questionTypeId}
+                selectedUserId={undefined}
             />
         ) : (
-            <EssayResponseContainer
+            <OverallEssayResponseContainer
+                questionTitle={item.questionTitle}
+                selectableOptions={[]} // 필요 없음.
+                answers={item.answers}
+                questionTypeId={item.questionTypeId}
+                selectedUserId={undefined}
+            />
+        );
+    };
+
+    const bottomOverallView = () => {
+        return (
+            <Text
+                style={{
+                    alignSelf: "flex-end",
+                    marginRight: 30,
+                    fontSize: fontSizes.s16,
+                    marginTop: 10,
+                }}
+            >
+                총 설문 인원 {survey ? survey.currentParticipation : 0}
+            </Text>
+        );
+    };
+
+    const indivisualQuestionResponseBoxItem: ListRenderItem<
+        QuestionResponseContainerProps
+    > = ({ item }) => {
+        return item.questionTypeId !== "300" ? (
+            <IndivisualSelectionResponseContainer
                 questionTitle={item.questionTitle}
                 selectableOptions={item.selectableOptions}
                 answers={item.answers}
                 questionTypeId={item.questionTypeId}
+                selectedUserId={currentUserId}
+            />
+        ) : (
+            <IndivisualEssayResponseContainer
+                questionTitle={item.questionTitle}
+                selectableOptions={[]} // 필요 없음.
+                answers={item.answers}
+                questionTypeId={item.questionTypeId}
+                selectedUserId={currentUserId}
             />
         );
     };
@@ -171,6 +290,11 @@ export default function ResponseScreen({
     return (
         <View style={styles.container}>
             <Text style={{ color: colors.gray3 }}>surveyId: {surveyId}</Text>
+            {currentUserId && (
+                <Text style={{ color: colors.gray3 }}>
+                    currentUserId: {currentUserId ?? 0}
+                </Text>
+            )}
             <Text
                 style={{
                     fontSize: 22,
@@ -187,22 +311,23 @@ export default function ResponseScreen({
                     {isShowingOverall ? (
                         <FlatList
                             data={responseProps}
-                            renderItem={questionResponseBoxItem}
+                            renderItem={overallQuestionResponseBoxItem}
                             keyExtractor={item => `${item.questionTitle}`}
                             ItemSeparatorComponent={() => {
                                 return <View style={{ height: 10 }} />;
                             }}
-                            // ListFooterComponent={bottomView}
-                            style={{ backgroundColor: "cyan" }}
+                            // style={{ backgroundColor: "cyan" }}
                         />
                     ) : (
-                        <View
-                            style={{
-                                backgroundColor: "black",
-                                width: 300,
-                                height: 400,
+                        // indivisual 그거로 바꿔야해.
+                        <FlatList
+                            data={responseProps}
+                            renderItem={indivisualQuestionResponseBoxItem}
+                            keyExtractor={item => `${item.questionTitle}`}
+                            ItemSeparatorComponent={() => {
+                                return <View style={{ height: 10 }} />;
                             }}
-                        ></View>
+                        />
                     )}
                 </>
                 <View
@@ -212,21 +337,49 @@ export default function ResponseScreen({
                         height: 100,
                     }}
                 >
-                    <Text
-                        style={{
-                            alignSelf: "flex-end",
-                            marginRight: 30,
-                            fontSize: fontSizes.s16,
-                            marginTop: 10,
-                        }}
-                    >
-                        총 설문 인원 {survey ? survey.currentParticipation : 0}
-                    </Text>
+                    {isShowingOverall ? (
+                        bottomOverallView()
+                    ) : (
+                        <View
+                            style={{
+                                // backgroundColor: "cyan",
+                                alignSelf: "flex-end",
+                                marginRight: 30,
+                                marginTop: 10,
+                                flexDirection: "row",
+                                // paddingBottom: 10,
+                            }}
+                        >
+                            <Entypo
+                                name="chevron-left"
+                                onPress={countDown}
+                                size={24}
+                            />
+
+                            <TextButton
+                                title={`${currentSequence}`}
+                                textStyle={{ textAlign: "center" }}
+                                backgroundStyle={{
+                                    marginHorizontal: 6,
+                                    width: 40,
+                                    borderRadius: 6,
+                                    backgroundColor: colors.blurredGray,
+                                    overflow: "hidden",
+                                }}
+                                onPress={countDown}
+                            />
+                            <Entypo
+                                name="chevron-right"
+                                onPress={countUp}
+                                size={24}
+                            />
+                        </View>
+                    )}
+
                     <CustomSegmentedControl
                         options={options}
                         handlePress={idx => {
                             setIsShowingOverall(idx === 0);
-                            console.log(`pressed:${idx}`);
                         }}
                     />
                 </View>

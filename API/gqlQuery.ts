@@ -73,7 +73,21 @@ export const getAnswersQuery = gql`
                 id
                 value
             }
+            user {
+                id
+            }
             answer_text
+        }
+    }
+`;
+
+export const getParticipatingQuery = gql`
+    query Participatings($surveyId: ID!) {
+        participatings(survey_id: $surveyId) {
+            user {
+                id
+            }
+            sequence
         }
     }
 `;

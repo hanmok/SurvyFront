@@ -12,6 +12,7 @@ export interface GQLPosting {
 
 export interface GQLParticipating {
     id: number;
+    sequence: number;
     user: GQLUser;
     survey: GQLSurvey;
 }

@@ -1,28 +1,25 @@
 import { View, StyleSheet, FlatList, Text } from "react-native";
-import { fontSizes } from "../utils/sizes";
-import { SelectableOption } from "../interfaces/SelectableOption";
+import { fontSizes } from "../../utils/sizes";
+import { SelectableOption } from "../../interfaces/SelectableOption";
 // import { Answer, GQLAnswer } from "../interfaces/Answer";
-import { GQLAnswer, GQLSelectableOption } from "../interfaces/GQLInterface";
+import { GQLAnswer, GQLSelectableOption } from "../../interfaces/GQLInterface";
 import { useState } from "react";
-import { QuestionTypeEnum, convertIdToType } from "../enums/QuestionTypeEnum";
-import { screenWidth } from "../utils/ScreenSize";
-import { colors } from "../utils/colors";
-import { getQuestionType } from "../QuestionType";
-import { QuestionResponseContainerProps } from "./SelectionResponseContainer";
+import {
+    QuestionTypeEnum,
+    convertIdToType,
+} from "../../enums/QuestionTypeEnum";
+import { screenWidth } from "../../utils/ScreenSize";
+import { colors } from "../../utils/colors";
+import { getQuestionType } from "../../QuestionType";
+import { QuestionResponseContainerProps } from "./OverallSelectionResponseContainer";
 /** questionTitle, selectableOptions, answers */
 
-// export interface QuestionResponseContainerProps {
-//     questionTitle: string;
-//     selectableOptions: GQLSelectableOption[];
-//     questionTypeId: string;
-//     answers: GQLAnswer[];
-// }
-
 // 이거.. 나눠야 하는거 아닐까?
-const EssayResponseContainer: React.FC<QuestionResponseContainerProps> = ({
+const OverallEssayResponseContainer: React.FC<
+    QuestionResponseContainerProps
+> = ({
     questionTitle,
     questionTypeId, // 어차피 300
-    selectableOptions,
     answers,
 }) => {
     const getNumberOfSameAnswer = (
@@ -68,7 +65,7 @@ const EssayResponseContainer: React.FC<QuestionResponseContainerProps> = ({
     );
 };
 
-export default EssayResponseContainer;
+export default OverallEssayResponseContainer;
 
 const styles = StyleSheet.create({
     whole: {

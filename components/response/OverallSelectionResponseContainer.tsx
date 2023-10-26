@@ -1,30 +1,23 @@
 import { View, StyleSheet, FlatList, Text } from "react-native";
-import { fontSizes } from "../utils/sizes";
-import { SelectableOption } from "../interfaces/SelectableOption";
-// import { Answer, GQLAnswer } from "../interfaces/Answer";
-import { GQLAnswer, GQLSelectableOption } from "../interfaces/GQLInterface";
-import { useState } from "react";
-import { QuestionTypeEnum, convertIdToType } from "../enums/QuestionTypeEnum";
-import { screenWidth } from "../utils/ScreenSize";
-import { colors } from "../utils/colors";
-import { getQuestionType } from "../QuestionType";
+import { fontSizes } from "../../utils/sizes";
+import { SelectableOption } from "../../interfaces/SelectableOption";
+import { GQLAnswer, GQLSelectableOption } from "../../interfaces/GQLInterface";
+import { screenWidth } from "../../utils/ScreenSize";
+import { colors } from "../../utils/colors";
+import { getQuestionType } from "../../QuestionType";
 
 /** questionTitle, selectableOptions, answers */
 export interface QuestionResponseContainerProps {
     questionTitle: string;
     selectableOptions: GQLSelectableOption[];
-    // answers: Answer[];
-    // questionType: QuestionTypeEnum;
     questionTypeId: string;
     answers: GQLAnswer[];
+    selectedUserId: number | undefined;
 }
-// 이거.. 나눠야 하는거 아닐까?
-const SelectionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
-    questionTitle,
-    questionTypeId,
-    selectableOptions,
-    answers,
-}) => {
+
+const OverallSelectionResponseContainer: React.FC<
+    QuestionResponseContainerProps
+> = ({ questionTitle, questionTypeId, selectableOptions, answers }) => {
     const getNumberOfSameAnswer = (
         sos: GQLSelectableOption, // selectable Options
         anss: GQLAnswer[]
@@ -96,7 +89,7 @@ const SelectionResponseContainer: React.FC<QuestionResponseContainerProps> = ({
     );
 };
 
-export default SelectionResponseContainer;
+export default OverallSelectionResponseContainer;
 
 const styles = StyleSheet.create({
     whole: {

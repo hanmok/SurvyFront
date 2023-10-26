@@ -36,6 +36,7 @@ import { useEffect } from "react";
 import TargettingScreen from "./screens/TargettingScreen";
 import { TextInput } from "react-native-gesture-handler";
 import ResponseScreen from "./screens/ResponseScreen";
+import ParticipatingEndScreen from "./screens/ParticipatingEndScreen";
 
 // const client = new ApolloClient({
 //     uri: API_BASE_URL,
@@ -56,6 +57,14 @@ export default function App() {
                             {/* <Stack.Screen
                                 name={NavigationTitle.login}
                                 component={LoginScreen}
+                                options={{
+                                    headerShown: false,
+                                }}
+                            /> */}
+
+                            {/* <Stack.Screen
+                                name={NavigationTitle.endParticipation}
+                                component={ParticipatingEndScreen}
                                 options={{
                                     headerShown: false,
                                 }}
@@ -152,6 +161,13 @@ export default function App() {
                                     headerBackTitleVisible: false,
                                 }}
                             />
+                            <Stack.Screen
+                                name={NavigationTitle.endParticipation}
+                                component={ParticipatingEndScreen}
+                                options={{
+                                    headerShown: false,
+                                }}
+                            />
                         </Stack.Navigator>
                     </NavigationContainer>
                 </MenuProvider>
@@ -173,25 +189,3 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
 });
-
-// const fetchGreeting = async () => {
-//     console.log("fetchGreeting called");
-//     const response = await fetch(API_BASE_URL, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//             query: "query { greeting }",
-//         }),
-//     });
-
-//     const { data } = await response.json();
-//     // console.log(`data: `)
-//     logObject("gql test, data: ", data);
-//     return data.greeting;
-// };
-
-// fetchGreeting().then(greeting => {
-//     console.log(`greeting: ${greeting}`);
-// });

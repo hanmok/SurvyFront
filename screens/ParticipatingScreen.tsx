@@ -47,19 +47,21 @@ import {
     SurveyResponse,
 } from "../interfaces/SurveyResponse";
 import { GQLQuestion, GQLSurvey } from "../interfaces/GQLInterface";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 interface Dictionary<T> {
     [key: number]: Set<T>;
 }
 
-// interface SurveyResponse {
-//     survey: Survey;
-// }
-
 function ParticipatingScreen({
     route,
+    navigation,
 }: {
     route: RouteProp<RootStackParamList, NavigationTitle.participate>;
+    navigation: StackNavigationProp<
+        RootStackParamList,
+        NavigationTitle.participate
+    >;
 }) {
     const client = useApollo();
     const { loading, error, data } = useQuery<GQLSurveyResponse>(
@@ -92,7 +94,7 @@ function ParticipatingScreen({
         return state.selector.textAnswers;
     });
 
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
 
     const [currentSurvey, setCurrentSurvey] = useState<GQLSurvey | null>(null);
 
@@ -179,7 +181,8 @@ function ParticipatingScreen({
 
     const handleNextScreen = () => {
         console.log("handleNextScreen called");
-        navigation.goBack();
+        // navigation.goBack();
+        navigation.navigate(NavigationTitle.endParticipation);
     };
 
     const handleCompleteSection = async () => {
@@ -226,7 +229,7 @@ function ParticipatingScreen({
                     `currentSectionIndex: ${currentSectionIndex}, number of sections: ${currentSurvey.sections.length}`
                 );
                 if (currentSectionIndex === currentSurvey.sections.length - 1) {
-                    shouldGoBack.current = true;
+                    // shouldGoBack.current = true;
                     console.log(
                         "currentSectionIndex === currentSurvey.numOfSections - 1"
                     );

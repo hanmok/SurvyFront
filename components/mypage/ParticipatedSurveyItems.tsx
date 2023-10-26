@@ -1,13 +1,14 @@
 import { useQuery } from "@apollo/client";
 // import { participatedSurveyQuery, postedSurveyQuery } from "../../API/gqlQuery";
 import { participatedSurveyQuery } from "../../API/gqlQuery";
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useApollo } from "../../ApolloProvider";
 import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
 import { convertKeysToCamelCase } from "../../utils/SnakeToCamel";
+import { colors } from "../../utils/colors";
 
 interface ParticipatedSurveyItem {
     title: string;
@@ -34,7 +35,15 @@ const ParticipatedSurveyItems = ({ userId }) => {
         ) || [];
 
     if (loading) {
-        return <Text>Loading...</Text>;
+        return (
+            <ActivityIndicator
+                animating={loading}
+                style={{ flex: 1 }}
+                size={"large"}
+                color={colors.deepMainColor}
+            />
+        );
+        // return <Text>Loading...</Text>;
     }
 
     if (error) {

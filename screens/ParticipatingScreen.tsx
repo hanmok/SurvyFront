@@ -7,6 +7,7 @@ import {
     Alert,
     KeyboardAvoidingView,
     Platform,
+    ActivityIndicator,
 } from "react-native";
 import { colors } from "../utils/colors";
 import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
@@ -76,7 +77,7 @@ function ParticipatingScreen({
     );
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const [questions, setQuestions] = useState<GQLQuestion[]>([]);
-    const [isLoading, setIsLoading] = useState<Boolean>(true);
+    // const [isLoading, setIsLoading] = useState<Boolean>(true);
     const [selectableOptions, setSelectableOptions] = useState<
         SelectableOption[]
     >([]);
@@ -111,7 +112,7 @@ function ParticipatingScreen({
             logObject("currentSection:", currentSection);
             setQuestions(currentSection.questions);
             dispatch(initialize(currentSection.questions.length));
-            setIsLoading(false);
+            // setIsLoading(false);
         }
     }, [currentSectionIndex, data]);
 
@@ -253,11 +254,15 @@ function ParticipatingScreen({
             });
     };
 
-    if (isLoading) {
+    // if (isLoading) {
+    if (loading) {
         return (
-            <View>
-                <Text>Loading..</Text>
-            </View>
+            <ActivityIndicator
+                animating={loading}
+                style={{ flex: 1 }}
+                size={"large"}
+                color={colors.deepMainColor}
+            />
         );
     }
 

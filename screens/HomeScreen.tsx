@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, FlatList, Dimensions } from "react-native";
+import {
+    View,
+    Text,
+    Button,
+    FlatList,
+    Dimensions,
+    ActivityIndicator,
+} from "react-native";
 // import { getPostedSurveys, getSurvey } from "../API/gqlAPI";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
@@ -170,9 +177,12 @@ function HomeScreen({
 
     if (isLoading) {
         return (
-            <View>
-                <Text>loading..</Text>
-            </View>
+            <ActivityIndicator
+                animating={isLoading}
+                style={{ flex: 1 }}
+                size={"large"}
+                color={colors.deepMainColor}
+            />
         );
     }
 

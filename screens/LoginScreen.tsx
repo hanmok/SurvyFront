@@ -40,16 +40,6 @@ export default function LoginScreen({
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.login>;
 }) {
-    // const { loading, error, data } = useQuery(get_greeting);
-
-    // if (loading) {
-    //     return <Text>Loading..</Text>;
-    // }
-    // if (error) {
-    //     return <Text>Error: {error.message}</Text>;
-    // }
-    // return <Text>Greeting from server: {data.greeting}</Text>;
-
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 

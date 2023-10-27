@@ -116,16 +116,20 @@ export default function ResponseScreen({
                 participatings
             );
             log("currentSequence: " + currentSequence);
-            const correspondingUserId = participatings.find(
+            const correspondingParticipatings = participatings.find(
                 participating => participating.sequence === currentSequence
-            ).user.id;
-
-            logObject(
-                "[ResponseScreen] currentUserId set to",
-                correspondingUserId
             );
 
-            setCurrentUserId(correspondingUserId);
+            if (correspondingParticipatings) {
+                const correspondingUserId = correspondingParticipatings.user.id;
+
+                logObject(
+                    "[ResponseScreen] currentUserId set to",
+                    correspondingUserId
+                );
+
+                setCurrentUserId(correspondingUserId);
+            }
         }
     }, [currentSequence, participatings]);
 

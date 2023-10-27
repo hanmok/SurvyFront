@@ -9,6 +9,7 @@ import MypageScreen from "./MypageScreen";
 import HomeScreen from "./HomeScreen";
 import SurveyParticipateScreen from "./ParticipatingScreen";
 import PostingScreen from "./PostingScreen";
+import PostingBaseScreen from "./PostingBaseScreen";
 
 export default function MainTabs() {
     return (
@@ -31,7 +32,8 @@ export default function MainTabs() {
             />
             <Tab.Screen
                 name="설문 요청"
-                component={PostingScreen}
+                // component={PostingScreen}
+                component={PostingBaseScreen}
                 options={{
                     // headerShown: false,
                     tabBarIcon: ({ focused }) => {

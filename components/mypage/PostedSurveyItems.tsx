@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { logObject } from "../../utils/Log";
 import { GQLSurvey } from "../../interfaces/GQLInterface";
 import { colors } from "../../utils/colors";
+import { PostedSurveyResponse } from "../../API/gqlResponses";
 
 interface PostedSurveyItem {
     title: string;
@@ -29,13 +30,6 @@ interface PostedSurveyItem {
     currentParticipation: number;
     participationGoal: number;
     id: number;
-}
-
-interface PostedSurveyResponse {
-    user: {
-        // posted_surveys: PostedSurveyItem[];
-        posted_surveys: GQLSurvey[];
-    };
 }
 
 const PostedSurveyItems = ({

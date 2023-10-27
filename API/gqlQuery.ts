@@ -1,4 +1,3 @@
-// import { fetchAllPostedSurveys } from "./gqlQuery";
 import { gql } from "@apollo/client";
 
 export const greeting = gql`
@@ -6,8 +5,6 @@ export const greeting = gql`
         greeting
     }
 `;
-
-// export const greeting = "query { greeting }";
 
 export const participatedSurveyQuery = gql`
     query ParticipatedSurveys($userId: ID!) {

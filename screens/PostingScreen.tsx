@@ -84,6 +84,8 @@ export default function PostingScreen({
 
     const [isAddingSectionTapped, setIsAddingSectionTapped] = useState(false);
 
+    const [isSatisfied, setIsSatisfied] = useState(false);
+
     const addSection = () => {
         // const newSection = makeSection(sections.length);
         // console.log("addSection tapped, numberOfSections: " + sections.length);
@@ -92,6 +94,10 @@ export default function PostingScreen({
         const updatedNumOfSections = numOfSections + 1;
         setNumOfSections(updatedNumOfSections);
     };
+
+    useEffect(() => {
+        setIsSatisfied(questions.length !== 0); // 0 이 아니면 satisfied 는 true
+    }, [questions]);
 
     // useEffect(() => {
     //     if (isAddingSectionTapped) {
@@ -204,15 +210,6 @@ export default function PostingScreen({
                             </MenuOption>
                         </MenuOptions>
                     </Menu>
-
-                    <SimpleLineIcons
-                        name="paper-plane"
-                        size={24}
-                        color="black"
-                        onPress={() => {
-                            setIsSendButtonTapped(true);
-                        }}
-                    />
                 </View>
             ),
         });
@@ -521,11 +518,8 @@ export default function PostingScreen({
                 {/* Survey Title(Header) + 질문 추가(Footer) */}
                 <>
                     {questionsToShow.length === 0 ? (
-                        // <View style={{ marginVertical: 30 }}>
                         <View style={{ marginTop: 30 }}>
                             {listHeader()}
-                            {/* <View style={{ height: 50 }} /> */}
-                            {/* <View style={{ height: 20 }} /> */}
                             {listFooter()}
                         </View>
                     ) : (
@@ -542,13 +536,24 @@ export default function PostingScreen({
                     )}
                 </>
 
-                <View
-                    style={{
-                        flexDirection: "row",
-                        marginBottom: 12,
-                        height: 40,
+                <TextButton
+                    backgroundStyle={{
+                        backgroundColor: isSatisfied ? "#ffffff" : "#b3b3b3", // inactive
+                        height: 46,
+                        marginBottom: 30,
+                        marginHorizontal: 20,
+                        borderRadius: 10,
                     }}
-                ></View>
+                    title="다음"
+                    textStyle={{
+                        color: isSatisfied ? colors.black : "#cbcbcb",
+                        fontSize: 18,
+                        letterSpacing: 2,
+                    }}
+                    onPress={() => {
+                        setIsSendButtonTapped(true);
+                    }}
+                />
             </View>
         </SafeAreaView>
     );
@@ -718,6 +723,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         // marginHorizontal: marginSizes.l20,
         marginHorizontal: marginSizes.s12,
+        marginTop: 20,
         justifyContent: "center",
     },
     shadow: {

@@ -108,11 +108,13 @@ const DynamicTextInputsForCreation = ({
                         borderColor: colors.gray4,
                         overflow: "hidden",
                         height: 30,
+                        backgroundColor: "white",
                     }}
                     textStyle={{
                         color: colors.buttonText,
                         textAlign: "center",
                         fontSize: fontSizes.m20,
+                        overflow: "hidden",
                     }}
                     onPress={handleAddInput}
                 />

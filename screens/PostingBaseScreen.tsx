@@ -114,7 +114,7 @@ export default function PostingBaseScreen({
                     </View>
                 )}
             </View>
-            <View style={styles.subContainer}>
+            <View style={[styles.subContainer, { marginTop: 30 }]}>
                 <Text style={[styles.sectionTitle, { marginBottom: 20 }]}>
                     작성중인 설문
                 </Text>
@@ -124,7 +124,11 @@ export default function PostingBaseScreen({
                     onPress={() => {
                         navigation.navigate(NavigationTitle.posting);
                     }}
-                    textStyle={{ textAlign: "center" }}
+                    textStyle={{
+                        textAlign: "center",
+                        fontSize: 18,
+                        fontWeight: "700",
+                    }}
                     backgroundStyle={{
                         backgroundColor: "white",
                         height: 40,
@@ -139,13 +143,17 @@ export default function PostingBaseScreen({
 const styles = StyleSheet.create({
     subContainer: {
         marginHorizontal: 20,
-        marginVertical: 30,
+        // marginVertical: 30,
+        // marginTop: 20,
     },
     sectionTitle: {
         fontSize: fontSizes.l24,
         fontWeight: "bold",
         textAlign: "center",
-        borderColor: "black",
-        borderWidth: 1,
+        // borderTopColor: "#969696",
+        borderTopColor: colors.black,
+        backgroundColor: "#d9d9d9",
+        borderTopWidth: 1,
+        overflow: "hidden",
     },
 });

@@ -110,7 +110,7 @@ export default function ResponseScreen({
     >([]);
 
     useEffect(() => {
-        if (participatings) {
+        if (participatings && participatings.length !== 0) {
             logObject(
                 "[ResponseScreen] currentSequence changed, participatings ",
                 participatings

@@ -46,7 +46,7 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
         >
             {/* Parent View 에 보이는 것 */}
             <TextButton
-                backgroundStyle={styles.modalBGStyle}
+                backgroundStyle={[styles.modalBGStyle]}
                 title={surveyTitle}
                 onPress={() => setModalVisible(true)}
                 textStyle={styles.modalTextStyle}
@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
         marginTop: marginSizes.xxs4,
         marginBottom: marginSizes.xxs4,
         // width: screenWidth,
-        width: screenWidth - marginSizes.l20 * 2,
+        // width: screenWidth - marginSizes.l20 * 2,
+        width: 250,
         // backgroundColor: "magenta",
         // marginHorizontal: marginSizes.l20,
     },

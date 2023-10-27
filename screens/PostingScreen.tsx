@@ -54,6 +54,7 @@ import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import { getAddress } from "../API/GeoAPI";
 import { commonStyles } from "../utils/CommonStyles";
 import { screenWidth } from "../utils/ScreenSize";
+import SectionModal from "../modals/SectionModal";
 
 export default function PostingScreen({
     navigation,
@@ -65,33 +66,40 @@ export default function PostingScreen({
 }) {
     const [questions, setQuestions] = useState<Question[]>([]);
     const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
-    const [sections, setSections] = useState<Section[]>([]);
-    const [numOfSections, setNumOfSections] = useState<number>(1);
+
     const [selectedQuestionIndex, setSelectedQuestionIndex] =
         useState<number>(undefined);
     const [surveyTitle, setSurveyTitle] = useState<string>("");
+
+    const [sections, setSections] = useState<Section[]>([]);
+    const [numOfSections, setNumOfSections] = useState<number>(3);
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+
     const [titleModalVisible, setTitleModalVisible] = useState(false);
     const [creatingQuestionModalVisible, setCreatingQuestionModalVisible] =
         useState(false);
+    const [isSectionModalVisible, setSectionModalVisible] = useState(false);
     const [isConfirmTapped, setConfirmTapped] = useState(false);
     const [isSendButtonTapped, setIsSendButtonTapped] = useState(false);
 
     const [isAddingSectionTapped, setIsAddingSectionTapped] = useState(false);
 
     const addSection = () => {
-        const newSection = makeSection(sections.length);
-        console.log("addSection tapped, numberOfSections: " + sections.length);
-        setSections(prev => [...prev, newSection]);
+        // const newSection = makeSection(sections.length);
+        // console.log("addSection tapped, numberOfSections: " + sections.length);
+        // setSections(prev => [...prev, newSection]);
+
+        const updatedNumOfSections = numOfSections + 1;
+        setNumOfSections(updatedNumOfSections);
     };
 
-    useEffect(() => {
-        if (isAddingSectionTapped) {
-            addSection();
-            setIsAddingSectionTapped(false);
-        }
-        setNumOfSections(sections.length);
-    }, [sections, isAddingSectionTapped]);
+    // useEffect(() => {
+    //     if (isAddingSectionTapped) {
+    //         addSection();
+    //         setIsAddingSectionTapped(false);
+    //     }
+    //     setNumOfSections(sections.length);
+    // }, [sections, isAddingSectionTapped]);
 
     useEffect(() => {
         setIsSendButtonTapped(false);
@@ -100,26 +108,6 @@ export default function PostingScreen({
     useEffect(() => {
         console.log(`section changed, current length: ${sections.length}`);
     }, [sections]);
-
-    const renderSectionItem = ({ item }: { item: Section[] }) => {
-        const views = [];
-        for (let i = 0; i <= item.length; i++) {
-            views.push(
-                <MenuOption
-                    key={`section-option-${i}`}
-                    style={styles.option}
-                    onSelect={() => {
-                        handleMenuOptionSelect(i - 1);
-                    }}
-                >
-                    <Text style={{ fontSize: fontSizes.s16 }}>
-                        Section {i}{" "}
-                    </Text>
-                </MenuOption>
-            );
-        }
-        return views;
-    };
 
     const renderSectionOptions = React.useCallback(() => {
         const sectionOptions = [];
@@ -251,9 +239,14 @@ export default function PostingScreen({
     }, [isSendButtonTapped, surveyTitle, sections, questions]);
 
     useEffect(() => {
+        setCurrentSectionIndex(currentSectionIndex);
+    }, [currentSectionIndex]);
+
+    useEffect(() => {
         updateQuestions();
     }, [currentSectionIndex]);
 
+    // Options
     const handleFirstOptionTapped = () => {
         log("first option tapped");
     };
@@ -371,7 +364,7 @@ export default function PostingScreen({
 
     const listHeader = () => {
         return (
-            <View style={styles.listHeaderStyle}>
+            <View style={[styles.listHeaderStyle, { flexDirection: "row" }]}>
                 <SurveyTitleModal
                     setSurveyTitle={setSurveyTitle}
                     surveyTitle={surveyTitle}
@@ -379,16 +372,39 @@ export default function PostingScreen({
                     setTitleModalVisible={setTitleModalVisible}
                     setConfirmTapped={setConfirmTapped}
                 />
+                <View
+                    style={{
+                        // backgroundColor: "magenta",
+                        width: 130,
+                        justifyContent: "center",
+                    }}
+                >
+                    <TextButton
+                        title={`Section ${currentSectionIndex + 1}`}
+                        onPress={() => {
+                            toggleSectionVisible();
+                        }}
+                        textStyle={{
+                            textAlignVertical: "center",
+                            fontWeight: "600",
+                        }}
+                        backgroundStyle={{
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                            borderRadius: 10,
+                            overflow: "hidden",
+                            height: 44,
+                            marginRight: 12,
+                        }}
+                    ></TextButton>
+                </View>
             </View>
         );
     };
 
     const listFooter = () => {
         return (
-            <View
-                // style={[styles.listFooterStyle, { justifyContent: "center" }]}
-                style={styles.listFooterStyle}
-            >
+            <View style={styles.listFooterStyle}>
                 <TextButton
                     title="질문 추가"
                     onPress={toggleCreateModal}
@@ -416,7 +432,6 @@ export default function PostingScreen({
                 textStyle={{ textAlign: "center" }}
                 backgroundStyle={[
                     commonStyles.border,
-
                     {
                         borderRadius: 8,
                         marginVertical: 2,
@@ -456,6 +471,21 @@ export default function PostingScreen({
         );
     };
 
+    const toggleSectionVisible = () => {
+        const isVisible = isSectionModalVisible;
+        setSectionModalVisible(!isVisible);
+    };
+
+    const selectSection = (num: number) => {
+        setCurrentSectionIndex(num);
+    };
+
+    useEffect(() => {
+        console.log(
+            `[PostingScreen] currentSectionIndex changed to ${currentSectionIndex}`
+        );
+    }, [currentSectionIndex]);
+
     return (
         <SafeAreaView style={styles.container} edges={[]}>
             <CreatingQuestionModal
@@ -472,6 +502,14 @@ export default function PostingScreen({
                 onClose={toggleModifyingModal}
                 onModify={modifyQuestion}
                 selectedQuestion={questions[selectedQuestionIndex]}
+            />
+
+            <SectionModal
+                onClose={toggleSectionVisible}
+                isSectionModalVisible={isSectionModalVisible}
+                numOfSections={numOfSections}
+                onAdd={addSection}
+                onSelection={selectSection}
             />
 
             <View style={styles.subContainer}>
@@ -503,35 +541,7 @@ export default function PostingScreen({
                         marginBottom: 12,
                         height: 40,
                     }}
-                >
-                    <FlatList
-                        data={sections}
-                        renderItem={sectionBoxItem}
-                        keyExtractor={item => `${item.sequence}`}
-                        horizontal={true}
-                        ItemSeparatorComponent={() => (
-                            <View style={{ width: 12 }} />
-                        )}
-                        style={{
-                            // width: screenWidth - 200,
-                            backgroundColor: "yellow",
-                            paddingHorizontal: marginSizes.s12,
-                        }}
-                    />
-
-                    <Foundation
-                        name="page-add"
-                        size={30}
-                        style={{
-                            width: 40,
-                            height: 40,
-                            // backgroundColor: "magenta",
-                            alignSelf: "center",
-                            justifyContent: "center",
-                        }}
-                        onPress={addSection}
-                    />
-                </View>
+                ></View>
             </View>
         </SafeAreaView>
     );

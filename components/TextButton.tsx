@@ -26,7 +26,7 @@ const TextButton: React.FC<TextButtonProps> = ({
             style={[styles.container, backgroundStyle]}
             onPress={onPress}
         >
-            <Text style={textStyle}>{title}</Text>
+            <Text style={[styles.text, textStyle]}>{title}</Text>
         </TouchableOpacity>
     );
 };
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
     },
-    text: {},
+    text: { textAlign: "center" },
 });
 
 export default TextButton;

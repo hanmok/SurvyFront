@@ -116,20 +116,16 @@ export default function ResponseScreen({
                 participatings
             );
             log("currentSequence: " + currentSequence);
-            const correspondingParticipatings = participatings.find(
+            const correspondingUserId = participatings.find(
                 participating => participating.sequence === currentSequence
+            ).user.id;
+
+            logObject(
+                "[ResponseScreen] currentUserId set to",
+                correspondingUserId
             );
 
-            if (correspondingParticipatings) {
-                const correspondingUserId = correspondingParticipatings.user.id;
-
-                logObject(
-                    "[ResponseScreen] currentUserId set to",
-                    correspondingUserId
-                );
-
-                setCurrentUserId(correspondingUserId);
-            }
+            setCurrentUserId(correspondingUserId);
         }
     }, [currentSequence, participatings]);
 
@@ -343,7 +339,6 @@ export default function ResponseScreen({
                             ItemSeparatorComponent={() => {
                                 return <View style={{ height: 10 }} />;
                             }}
-                            // style={{ backgroundColor: "cyan" }}
                         />
                     ) : (
                         // indivisual 그거로 바꿔야해.

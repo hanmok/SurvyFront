@@ -90,16 +90,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         overflow: "hidden",
         padding: 6,
-        // backgroundColor: "magenta",
-        // backgroundColor: "magenta",
     },
-    // bar: {
-    //     height: 30,
-    //     marginBottom: 10,
-    //     justifyContent: "center",
-    //     marginLeft: 10,
-    //     marginTop: 4,
-    // },
     questionType: {
         backgroundColor: "black",
         color: "white",

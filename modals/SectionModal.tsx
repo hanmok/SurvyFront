@@ -32,9 +32,9 @@ const SectionModal: React.FC<SectionModalProps> = ({
         <View style={{ alignItems: "center" }}>
             <Button
                 key={index}
-                title={`Section ${index + 1}`}
+                title={`Section ${index + 1}`} // 보이는 인덱스 : 1,2,3
                 onPress={() => {
-                    onSelection(index + 1);
+                    onSelection(index); // 실제 인덱스: 0, 1, 2
                     onClose();
                 }}
             />

@@ -34,8 +34,26 @@ const TextButton: React.FC<TextButtonProps> = ({
 const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 4,
+            height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 2,
     },
     text: { textAlign: "center" },
+    shadow: {
+        // shadowColor: "#000",
+        // shadowOffset: {
+        //     width: 4,
+        //     height: 4,
+        // },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 4,
+        // elevation: 2,
+    },
 });
 
 export default TextButton;

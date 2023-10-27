@@ -388,14 +388,17 @@ export default function PostingScreen({
                             textAlignVertical: "center",
                             fontWeight: "600",
                         }}
-                        backgroundStyle={{
-                            justifyContent: "center",
-                            backgroundColor: "white",
-                            borderRadius: 10,
-                            overflow: "hidden",
-                            height: 44,
-                            marginRight: 12,
-                        }}
+                        backgroundStyle={[
+                            styles.shadow,
+                            {
+                                justifyContent: "center",
+                                backgroundColor: "white",
+                                borderRadius: 10,
+                                // overflow: "hidden",
+                                height: 44,
+                                marginRight: 12,
+                            },
+                        ]}
                     ></TextButton>
                 </View>
             </View>
@@ -477,6 +480,8 @@ export default function PostingScreen({
     };
 
     const selectSection = (num: number) => {
+        // 1 을 선택하면 0 이 나와야해.
+        console.log("[PostingScreen] selectSection num: " + num);
         setCurrentSectionIndex(num);
     };
 
@@ -516,9 +521,11 @@ export default function PostingScreen({
                 {/* Survey Title(Header) + 질문 추가(Footer) */}
                 <>
                     {questionsToShow.length === 0 ? (
-                        <View style={{ marginVertical: 30 }}>
+                        // <View style={{ marginVertical: 30 }}>
+                        <View style={{ marginTop: 30 }}>
                             {listHeader()}
-                            <View style={{ height: 50 }} />
+                            {/* <View style={{ height: 50 }} /> */}
+                            {/* <View style={{ height: 20 }} /> */}
                             {listFooter()}
                         </View>
                     ) : (
@@ -609,14 +616,16 @@ const styles = StyleSheet.create({
     },
 
     plusButtonBG: {
-        backgroundColor: colors.deepMainColor,
-        borderRadius: 12,
-        overflow: "hidden",
+        // backgroundColor: colors.deepMainColor,
+        backgroundColor: colors.white,
+        borderRadius: 10,
+        // overflow: "hidden",
         justifyContent: "center",
-        height: 40,
+        height: 46,
     },
     plusButtonText: {
-        color: colors.white,
+        // color: colors.white,
+        color: colors.black,
         textAlign: "center",
         fontSize: fontSizes.m20,
         fontWeight: "500",
@@ -705,9 +714,20 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     listFooterStyle: {
-        marginTop: 30,
+        // marginTop: 30,
         marginBottom: 20,
-        marginHorizontal: marginSizes.l20,
+        // marginHorizontal: marginSizes.l20,
+        marginHorizontal: marginSizes.s12,
         justifyContent: "center",
+    },
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 4,
+            height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 2,
     },
 });

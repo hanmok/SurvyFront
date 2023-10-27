@@ -6,6 +6,7 @@ import {
     FlatList,
     Dimensions,
     ActivityIndicator,
+    TouchableOpacity,
 } from "react-native";
 // import { getPostedSurveys, getSurvey } from "../API/gqlAPI";
 import { StyleSheet } from "react-native";
@@ -31,7 +32,7 @@ import { saveUserState } from "../utils/Storage";
 import { NavigationTitle } from "../utils/NavHelper";
 import ImageButton from "../components/ImageButton";
 import { logObject } from "../utils/Log";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 // import { getAllPostedSurveys } from "../API/gqlAPI";
 import { getSurveyQuery } from "../API/gqlQuery";
@@ -61,6 +62,39 @@ function HomeScreen({
     const setUser = async (userState: UserState) => {
         await saveUserState(userState);
     };
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ marginRight: 20, flexDirection: "row" }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            console.log("search tapped");
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="magnify-expand"
+                            size={24}
+                            color="black"
+                        />
+                    </TouchableOpacity>
+
+                    {/* <View style={{ width: 10 }}></View>
+                    <TouchableOpacity
+                        onPress={() => console.log("Share tapped!")}
+                        style={{ marginRight: 10 }}
+                    >
+                        <Feather name="bell" size={24} color="black" />
+                    </TouchableOpacity> */}
+                </View>
+            ),
+            headerLeft: () => (
+                <View style={{ marginBottom: 15 }}>
+                    <CollectedMoney amount={10000} />
+                </View>
+            ),
+        });
+    }, [navigation]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -187,9 +221,10 @@ function HomeScreen({
     }
 
     return (
-        <SafeAreaView style={styles.container} edges={["top"]}>
+        // <SafeAreaView style={styles.container} edges={["top"]}>
+        <SafeAreaView style={styles.container} edges={[]}>
             {/* <GreetingComponent /> */}
-            <View
+            {/* <View
                 style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
@@ -197,28 +232,27 @@ function HomeScreen({
                     height: 30,
                     // justifyContent: "center",
                 }}
-            >
-                <CollectedMoney amount={10000} />
-                <View
+            > */}
+            {/* <CollectedMoney amount={10000} /> */}
+            {/* <View
                     style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        // backgroundColor: "magenta",
                         marginRight: 20,
                         paddingTop: 10,
                         // height: 30,
                     }}
-                >
-                    <Ionicons
+                > */}
+            {/* <Ionicons
                         name="md-notifications-outline"
                         size={24}
                         color="black"
                         onPress={() => {
                             console.log("[HomeScreen] notification btn tapped");
                         }}
-                    />
-                </View>
-            </View>
+                    /> */}
+            {/* </View> */}
+            {/* </View> */}
             <View style={styles.subContainer}>
                 <FlatList
                     data={surveys}
@@ -252,9 +286,7 @@ const styles = StyleSheet.create({
     subContainer: {
         marginTop: 5,
         justifyContent: "flex-end",
-        // alignItems: "center",
         alignItems: "stretch",
-        // paddingBottom: 200,
     },
 
     floatingButtonContainer: {
@@ -277,19 +309,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignSelf: "stretch",
         flexBasis: 40,
-        backgroundColor: colors.magenta,
+        // backgroundColor: colors.magenta,
         paddingTop: 10,
         paddingBottom: 16,
     },
     surveyListContainer: {
         paddingTop: 20,
-        marginHorizontal: marginSizes.m16,
-        paddingBottom: 200,
-        // marginBottom: 200,
-        // justifyContent: "flex-start",
-        backgroundColor: "magenta",
+        // marginHorizontal: marginSizes.m16,
+        // backgroundColor: "magenta",
     },
-
     requestText: {
         textAlign: "center",
         color: "white",

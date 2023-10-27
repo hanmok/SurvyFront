@@ -160,11 +160,7 @@ const styles = StyleSheet.create({
         height: 50,
         marginTop: marginSizes.xxs4,
         marginBottom: marginSizes.xxs4,
-        // width: screenWidth,
-        // width: screenWidth - marginSizes.l20 * 2,
         width: 250,
-        // backgroundColor: "magenta",
-        // marginHorizontal: marginSizes.l20,
     },
     modalTextStyle: {
         textAlign: "center",

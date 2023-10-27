@@ -297,9 +297,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                 keyExtractor={item => `${item[0]}`}
                                 numColumns={5}
                                 style={{
-                                    // backgroundColor: "magenta",
                                     backgroundColor: colors.gray4,
-                                    // height: 150,
                                     width: "100%",
                                 }}
                             />

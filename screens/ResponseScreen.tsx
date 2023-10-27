@@ -20,7 +20,7 @@ import {
     getParticipatingQuery,
 } from "../API/gqlQuery";
 import { useApollo } from "../ApolloProvider";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     GQLAnswer,
@@ -45,8 +45,9 @@ import { Answer } from "../interfaces/Answer";
 import IndivisualSelectionResponseContainer from "../components/response/IndivisualSelectionResponseContainer";
 import IndivisualEssayResponseContainer from "../components/response/IndivisualEssayResponseContainer";
 import ImageButton from "../components/ImageButton";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Feather, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import TextButton from "../components/TextButton";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function ResponseScreen({
     navigation,
@@ -65,6 +66,24 @@ export default function ResponseScreen({
     const [currentSequence, setCurrentSequence] = useState<number>(1);
     const [currentUserId, setCurrentUserId] = useState<number>(undefined);
     // const [indivisualAnswers, setIndivisualAnswers] = useState<GQLAnswer[]>([]);
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ marginRight: 10 }}>
+                    <TouchableOpacity
+                        onPress={() => console.log("Share btn tapped!")}
+                    >
+                        <Ionicons
+                            name="ios-share-outline"
+                            size={30}
+                            color="black"
+                        />
+                    </TouchableOpacity>
+                </View>
+            ),
+        });
+    }, [navigation]);
 
     const {
         loading: answersLoading,
@@ -341,7 +360,6 @@ export default function ResponseScreen({
                             }}
                         />
                     ) : (
-                        // indivisual 그거로 바꿔야해.
                         <FlatList
                             data={responseProps}
                             renderItem={indivisualQuestionResponseBoxItem}
@@ -354,8 +372,8 @@ export default function ResponseScreen({
                 </>
                 <View
                     style={{
-                        backgroundColor: "magenta",
-                        width: screenWidth,
+                        // backgroundColor: "magenta",
+                        width: screenWidth - 24,
                         height: 100,
                     }}
                 >

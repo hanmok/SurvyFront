@@ -371,7 +371,6 @@ export default function PostingScreen({
                 />
                 <View
                     style={{
-                        // backgroundColor: "magenta",
                         width: 130,
                         justifyContent: "center",
                     }}

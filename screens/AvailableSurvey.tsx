@@ -1,19 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableNativeFeedback } from "react-native";
 import { colors } from "../utils/colors";
 import TextButton from "../components/TextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { fontSizes, marginSizes } from "../utils/sizes";
-
-// props
-// title
-// currentParticipation
-// ParticipationGoal
-// Genres
-
-// type RootStackParamList = {
-//     Participate: { sectionId: number };
-// };
 
 interface MyCustomComponentProps {
     title: string;
@@ -30,26 +20,30 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
     // genres
 }) => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.titleText}>{title}</Text>
-            <Text style={styles.participationText}>
-                {currentParticipation}/{participationGoal}
-            </Text>
-            <View
-                style={{
-                    flexDirection: "row-reverse",
-                    alignItems: "flex-end",
-                }}
-            >
-                {/* <Text style={styles.participateButtonText}>참여하기 &gt;</Text> */}
-                <TextButton
-                    title="참여하기 >"
-                    onPress={onPress}
-                    textStyle={styles.participateButtonText}
-                    backgroundStyle={{ backgroundColor: colors.white }}
-                />
+        <TouchableNativeFeedback onPress={onPress}>
+            <View style={styles.container}>
+                <Text style={styles.titleText}>{title}</Text>
+                <Text style={styles.participationText}>
+                    {currentParticipation}/{participationGoal}
+                </Text>
+                <View
+                    style={{
+                        flexDirection: "row-reverse",
+                        alignItems: "flex-end",
+                    }}
+                >
+                    {/* <TextButton
+                        title="참여하기 >"
+                        onPress={onPress}
+                        textStyle={styles.participateButtonText}
+                        backgroundStyle={{
+                            backgroundColor: colors.white,
+                            overflow: "hidden",
+                        }}
+                    /> */}
+                </View>
             </View>
-        </View>
+        </TouchableNativeFeedback>
     );
 };
 
@@ -60,6 +54,15 @@ const styles = StyleSheet.create({
         height: 120,
         borderRadius: 20,
         backgroundColor: colors.surveyBoxBackground,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 4,
+            height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 2,
+        marginHorizontal: 20,
     },
     titleText: {
         color: colors.black,

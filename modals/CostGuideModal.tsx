@@ -216,13 +216,9 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     mainContent: {
-        // backgroundColor: "magenta",
         flexDirection: "column",
-        // justifyContent: "flex-start",
         justifyContent: "center",
-        // alignItems: "center",
         flex: 1,
-        // alignItems: "stretch",
         gap: 30,
         marginHorizontal: 20,
     },

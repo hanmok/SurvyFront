@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         overflow: "hidden",
         padding: 6,
-        // backgroundColor: "magenta",
     },
     bar: {
         height: 30,

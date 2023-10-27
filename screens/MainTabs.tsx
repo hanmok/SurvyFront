@@ -18,7 +18,7 @@ export default function MainTabs() {
                 name="홈"
                 component={HomeScreen}
                 options={{
-                    headerShown: false,
+                    // headerShown: false,
                     tabBarIcon: ({ focused }) => {
                         return (
                             <Foundation

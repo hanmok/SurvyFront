@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { screenWidth } from "../utils/ScreenSize";
 import { Feather } from "@expo/vector-icons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import React from "react";
 
 interface SectionModalProps {
     onClose: () => void;

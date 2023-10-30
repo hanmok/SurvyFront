@@ -21,6 +21,7 @@ import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { colors } from "../utils/colors";
 import { log } from "../utils/Log";
 import Spacer from "../components/Spacer";
+import React from "react";
 
 export default function PostingBaseScreen({
     navigation,
@@ -31,7 +32,9 @@ export default function PostingBaseScreen({
     >;
 }) {
     const client = useApollo();
-    const [postedSurveys, setPostedSurveys] = useState<GQLSurvey[]>(null);
+    const [postedSurveys, setPostedSurveys] = useState<GQLSurvey[] | undefined>(
+        undefined
+    );
     const { loading, error, data } = useQuery<PostedSurveyResponse>(
         postedSurveyQuery,
         { client, variables: { userId: 774 }, fetchPolicy: "no-cache" }

@@ -17,6 +17,7 @@ export type RootStackParamList = {
     Targetting: SurveyProps;
     Response: { surveyId: number };
     EndParticipation: undefined;
+    PostingBase: undefined;
 };
 
 export enum NavigationTitle {
@@ -33,4 +34,5 @@ export enum NavigationTitle {
     targetting = "Targetting",
     response = "Response",
     endParticipation = "EndParticipation",
+    postingBase = "PostingBase",
 }

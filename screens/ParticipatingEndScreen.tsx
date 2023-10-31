@@ -5,7 +5,7 @@ import TextButton from "../components/TextButton";
 import DescriptionTextButton from "../components/DescriptionTextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { fontSizes } from "../utils/sizes";
-import Spacer from "../components/Spacer";
+import Spacer from "../components/common/Spacer";
 
 function ParticipatingEndScreen({
     route,

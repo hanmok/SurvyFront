@@ -9,7 +9,7 @@ import {
     paddingSizes,
 } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Spacer from "../components/Spacer";
+import Spacer from "../components/common/Spacer";
 import TextButton from "../components/TextButton";
 // import PostingQuestionBox from "../components/PostingQuestionBox";
 import { useState } from "react";
@@ -45,93 +45,95 @@ import { Section, makeSection } from "../interfaces/Section";
 
 import { createSurvey, postWholeSurvey } from "../API/SurveyAPI";
 import {
-    loadPostingSurvey,
+    loadSavedPostingSurveys,
     loadUserState,
     savePostingSurvey,
 } from "../utils/Storage";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
-import { PostingSurveyState } from "../interfaces/PostingSurveyState";
+import {
+    PostingSurveyState,
+    makePostingSurveyState,
+} from "../interfaces/PostingSurveyState";
 import { getAddress } from "../API/GeoAPI";
 import { commonStyles } from "../utils/CommonStyles";
 import { screenWidth } from "../utils/ScreenSize";
 import SectionModal from "../modals/SectionModal";
+import { RouteProp } from "@react-navigation/native";
+import { makeRandomNumber } from "../utils/GetRandomNumber";
 
 export default function PostingScreen({
     navigation,
+    route,
 }: {
     navigation: StackNavigationProp<
         RootStackParamList,
         NavigationTitle.posting
     >;
+    route: RouteProp<RootStackParamList, NavigationTitle.posting>;
 }) {
     const [questions, setQuestions] = useState<Question[]>([]);
     const [questionsToShow, setQuestionsToShow] = useState<Question[]>([]);
-
+    const [shouldSave, setShouldSave] = useState<boolean>(false);
     const [selectedQuestionIndex, setSelectedQuestionIndex] =
         useState<number>(undefined);
     const [surveyTitle, setSurveyTitle] = useState<string>("");
-
+    // 0 부터 시작
     const [sections, setSections] = useState<Section[]>([]);
-    const [numOfSections, setNumOfSections] = useState<number>(3);
+
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 
-    const [titleModalVisible, setTitleModalVisible] = useState(false);
+    const [isTitleModalVisible, setIsTitleModalVisible] = useState(false);
     const [creatingQuestionModalVisible, setCreatingQuestionModalVisible] =
         useState(false);
     const [isSectionModalVisible, setSectionModalVisible] = useState(false);
     const [isConfirmTapped, setConfirmTapped] = useState(false);
-    const [isSendButtonTapped, setIsSendButtonTapped] = useState(false);
-
+    const [isNextButtonTapped, setIsNextButtonTapped] = useState(false);
+    const [shouldInitializeCurrentSection, setShouldInitializeCurrentSection] =
+        useState(false);
     const [isAddingSectionTapped, setIsAddingSectionTapped] = useState(false);
+
+    const [postingSurvey, setPostingSurvey] = useState<
+        PostingSurveyState | undefined
+    >(undefined);
+
+    useEffect(() => {
+        const prevSurvey = route.params.postingSurveyState;
+        logObject("prevSurvey", prevSurvey);
+        setPostingSurvey(prevSurvey);
+        if (prevSurvey) {
+            const prevSections = prevSurvey.sections;
+            const prevQuestions = prevSurvey.questions;
+            const prevSurveyTitle = prevSurvey.title;
+            logObject("set sections to", prevSections);
+            logObject("set questions to", prevQuestions);
+            // 어.. 이거.. Questions 설정한 다음에, QuestionsToShow 설정해줘야 하는거 아니야?
+            logObject("set surveyTitle to", prevSurveyTitle); // 이건 정상이야.
+            setSections(prevSections);
+            setQuestions(prevQuestions);
+            setSurveyTitle(prevSurveyTitle);
+        }
+    }, []);
 
     const [isSatisfied, setIsSatisfied] = useState(false);
 
     const addSection = () => {
-        // const newSection = makeSection(sections.length);
-        // console.log("addSection tapped, numberOfSections: " + sections.length);
-        // setSections(prev => [...prev, newSection]);
-
-        const updatedNumOfSections = numOfSections + 1;
-        setNumOfSections(updatedNumOfSections);
+        const newSection = makeSection(sections.length);
+        setSections(prev => [...prev, newSection]);
     };
 
     useEffect(() => {
         setIsSatisfied(questions.length !== 0); // 0 이 아니면 satisfied 는 true
     }, [questions]);
 
-    // useEffect(() => {
-    //     if (isAddingSectionTapped) {
-    //         addSection();
-    //         setIsAddingSectionTapped(false);
-    //     }
-    //     setNumOfSections(sections.length);
-    // }, [sections, isAddingSectionTapped]);
-
     useEffect(() => {
-        setIsSendButtonTapped(false);
+        setIsNextButtonTapped(false);
     });
 
     useEffect(() => {
-        console.log(`section changed, current length: ${sections.length}`);
+        console.log(
+            `section changed, current number of sections: ${sections.length}`
+        );
     }, [sections]);
-
-    const renderSectionOptions = React.useCallback(() => {
-        const sectionOptions = [];
-        for (let i = 1; i <= sections.length; i++) {
-            sectionOptions.push(
-                <MenuOption
-                    key={`section-option-${i}`}
-                    onSelect={() => {
-                        handleMenuOptionSelect(i - 1);
-                    }}
-                    style={styles.option}
-                >
-                    <Text style={{ fontSize: fontSizes.s16 }}>Section {i}</Text>
-                </MenuOption>
-            );
-        }
-        return sectionOptions;
-    }, [sections, isAddingSectionTapped]);
 
     const handleMenuOptionSelect = (sectionIndex: number) => {
         console.log(
@@ -152,15 +154,11 @@ export default function PostingScreen({
     // Section 존재하지 않을 시, sequence 0 으로 추가 후 sections 등록.
 
     useEffect(() => {
-        if (sections.length === 0) {
+        if (sections.length === 0 && !route.params.postingSurveyState) {
             const newSection = makeSection(0);
             setSections([newSection]);
         }
-    });
-
-    useEffect(() => {
-        renderSectionOptions();
-    }, [sections]);
+    }, []);
 
     useEffect(() => {
         if (isConfirmTapped && questions.length === 0) {
@@ -203,10 +201,23 @@ export default function PostingScreen({
                             </MenuOption>
                             <View style={styles.divider} />
                             <MenuOption
-                                onSelect={handleInitializeTapped}
+                                onSelect={initializeAll}
                                 style={styles.option}
                             >
                                 <Text>초기화</Text>
+                            </MenuOption>
+                            <View style={styles.divider} />
+                            <MenuOption
+                                onSelect={toggleInitializeCurrentSection}
+                                style={styles.option}
+                            >
+                                <Text>현재 Section 초기화</Text>
+                            </MenuOption>
+                            <MenuOption
+                                onSelect={toggleSave}
+                                style={styles.option}
+                            >
+                                <Text>저장</Text>
                             </MenuOption>
                         </MenuOptions>
                     </Menu>
@@ -214,6 +225,48 @@ export default function PostingScreen({
             ),
         });
     }, [navigation]);
+
+    const toggleSave = () => {
+        setShouldSave(!shouldSave);
+    };
+
+    useEffect(() => {
+        console.log("save tapped");
+        if (shouldSave) {
+            const saveSurvey = async () => {
+                try {
+                    if (!postingSurvey) {
+                        const newSurvey: PostingSurveyState =
+                            makePostingSurveyState({
+                                id: undefined,
+                                surveyTitle,
+                                sections,
+                                questions,
+                            });
+                        await savePostingSurvey(newSurvey);
+                    } else {
+                        // 기존에 있었음. id 는 그대로 사용. 나머지는 지금까지 데이터.
+                        const updatedSurvey: PostingSurveyState =
+                            makePostingSurveyState({
+                                id: postingSurvey.id,
+                                surveyTitle,
+                                sections,
+                                questions,
+                            });
+                        await savePostingSurvey(updatedSurvey);
+                    }
+
+                    const savedObject = await loadSavedPostingSurveys();
+                    logObject("total saved object:", savedObject);
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+
+            saveSurvey();
+            setShouldSave(false);
+        }
+    }, [shouldSave]);
 
     // Survey Object 하나를 Pass 시키면 안돼?
     // 아직 설정되지 않은 값들은 undefined 로 하고...
@@ -225,7 +278,7 @@ export default function PostingScreen({
             questions,
         });
 
-        if (isSendButtonTapped) {
+        if (isNextButtonTapped) {
             navigation.navigate(NavigationTitle.targetting, {
                 surveyTitle,
                 sections,
@@ -233,22 +286,20 @@ export default function PostingScreen({
             });
         }
         // Sections 에 SelectableOption 까지 모두 들어가는데 ? 굳이 Questions 도 따로 넣어야해?
-    }, [isSendButtonTapped, surveyTitle, sections, questions]);
+    }, [isNextButtonTapped, surveyTitle, sections, questions]);
 
     useEffect(() => {
         setCurrentSectionIndex(currentSectionIndex);
     }, [currentSectionIndex]);
 
-    useEffect(() => {
-        updateQuestions();
-    }, [currentSectionIndex]);
-
     // Options
+    // 1. 순서바꾸기
     const handleFirstOptionTapped = () => {
         log("first option tapped");
     };
 
-    const handleInitializeTapped = async () => {
+    // 2. 초기화
+    const initializeAll = async () => {
         log("first option tapped");
         setQuestions([]);
         const firstSection = sections[0];
@@ -256,46 +307,44 @@ export default function PostingScreen({
         setSurveyTitle("");
     };
 
-    const addQuestion = async (newQuestion: Question) => {
-        let prevQuestions = questions;
-        newQuestion.sectionId = sections[currentSectionIndex].id;
+    // 3. 현재 Section 만 초기화
+    useEffect(() => {
+        if (shouldInitializeCurrentSection) {
+            console.log("initializeCurrentSection called");
+            const currentSectionId = sections[currentSectionIndex].id;
+            // questions 에서 questionsToShow 지우기.
+            // Random Id 가 주어짐.
+            logObject("currentSectionId", currentSectionId);
+            logObject("currentQuestions", questions);
+            const prevQuestions = [...questions];
 
-        // logObject("[PostingScreen] questions:", questions);
-        // logObject("sections: ", sections);
-        // logObject("currentSection: ", sections[currentSectionIndex]);
-        // logObject("questions: ", sections[currentSectionIndex].questions);
+            // const filteredQuestions = questions.filter(
+            const filteredQuestions = prevQuestions.filter(
+                q => q.sectionId !== currentSectionId
+            );
+            logObject("filteredQuestions", questions);
 
-        logObject("after question add flag 1, ", questions);
-        sections[currentSectionIndex].questions.push(newQuestion);
-        // console.log("[PostingScreen] flag 2");
-        logObject("after question add flag 2, ", questions);
-
-        if (
-            prevQuestions.findIndex(
-                question => question.id === newQuestion.id
-            ) === -1
-        ) {
-            prevQuestions.push(newQuestion);
+            setQuestions(filteredQuestions);
+            setShouldInitializeCurrentSection(false);
         }
+    }, [shouldInitializeCurrentSection]);
 
-        logObject("after question add flag 3, ", questions);
-        setQuestions(prevQuestions);
-        // 여기서 중복 일어남
-        logObject("after question add flag 4, ", questions);
-        setCreatingQuestionModalVisible(false);
-
-        const postingSurvey: PostingSurveyState = {
-            surveyTitle,
-            sections,
-        };
-        updateQuestions();
-        // await savePosting(postingSurvey);
-        console.log("[PostingScreen] savePosting ended");
-        logObject("questions: ", questions);
+    const toggleInitializeCurrentSection = () => {
+        const shouldInitialize = shouldInitializeCurrentSection;
+        setShouldInitializeCurrentSection(!shouldInitialize);
     };
 
-    const savePostingToLocal = async (postingSurvey: PostingSurveyState) => {
-        await savePostingSurvey(postingSurvey);
+    const addQuestion = async (newQuestion: Question) => {
+        logObject("add Question!", newQuestion);
+
+        const newQuestions = [...questions];
+        newQuestion.sectionId = sections[currentSectionIndex].id;
+        newQuestions.push(newQuestion);
+        setQuestions(newQuestions);
+        setCreatingQuestionModalVisible(false);
+
+        // Section 수정하기.
+        // Side Effect 는 ? questions 를 따로 하는게?
     };
 
     const modifyQuestion = (question: Question) => {
@@ -332,28 +381,43 @@ export default function PostingScreen({
     // TODO: Unique Question 의 Index 정리하기.
 
     useEffect(() => {
-        console.log("questions updated! updateQuestions called");
-        updateQuestions();
-    }, [questions]);
+        console.log("useEffect flag 1");
+        logObject("questions updated!", questions);
+        logObject("currentSectionIndex", currentSectionIndex);
 
-    const updateQuestions = () => {
         if (questions.length !== 0) {
-            // const uniques = questions.filter(
-            //     (question, index, arr) =>
-            //         arr.findIndex(t => t.id === question.id) === index // 중복 제거
+            // const toShow = questions.filter(
+            //     q => q.sectionId === sections[currentSectionIndex].id
             // );
 
-            // setUniqueQuestions(uniques);
-
-            const toShow = questions.filter(
-                q => q.sectionId === sections[currentSectionIndex].id
-            );
+            const toShow = questions.filter(q => {
+                const ret = q.sectionId === sections[currentSectionIndex].id;
+                log(
+                    `q.sectionId: ${q.sectionId}, current section's id: ${sections[currentSectionIndex].id}, ret: ${ret}`
+                );
+                return ret;
+            });
 
             setQuestionsToShow(toShow);
+            logObject("questions updated! questionsToShow:", toShow);
         } else {
+            logObject("questions updated! questionsToShow:", []);
             setQuestionsToShow([]);
         }
-    };
+    }, [questions, currentSectionIndex]);
+
+    // const updateQuestions = () => {
+
+    //     if (questions.length !== 0) {
+    //         const toShow = questions.filter(
+    //             q => q.sectionId === sections[currentSectionIndex].id
+    //         );
+
+    //         setQuestionsToShow(toShow);
+    //     } else {
+    //         setQuestionsToShow([]);
+    //     }
+    // };
 
     useEffect(() => {
         console.log(`[PostingScreen] surveyTitle changed to ${surveyTitle}`);
@@ -361,43 +425,52 @@ export default function PostingScreen({
 
     const listHeader = () => {
         return (
-            <View style={[styles.listHeaderStyle, { flexDirection: "row" }]}>
-                <SurveyTitleModal
+            <View style={styles.listHeaderStyle}>
+                {/* <SurveyTitleModal
                     setSurveyTitle={setSurveyTitle}
                     surveyTitle={surveyTitle}
                     titleModalVisible={titleModalVisible}
                     setTitleModalVisible={setTitleModalVisible}
                     setConfirmTapped={setConfirmTapped}
-                />
-                <View
-                    style={{
-                        width: 130,
-                        justifyContent: "center",
+                /> */}
+                <TextButton
+                    title={surveyTitle !== "" ? surveyTitle : "Survey Title"}
+                    onPress={() => {
+                        toggleTitleModalVisible();
                     }}
-                >
-                    <TextButton
-                        title={`Section ${currentSectionIndex + 1}`}
-                        onPress={() => {
-                            toggleSectionVisible();
-                        }}
-                        textStyle={{
-                            textAlignVertical: "center",
-                            fontWeight: "600",
-                        }}
-                        backgroundStyle={[
-                            styles.shadow,
-                            {
-                                justifyContent: "center",
-                                backgroundColor: "white",
-                                borderRadius: 10,
-                                // overflow: "hidden",
-                                height: 44,
-                                marginRight: 12,
-                            },
-                        ]}
-                    ></TextButton>
-                </View>
+                    textStyle={{ fontSize: 22, fontWeight: "bold" }}
+                    backgroundStyle={{
+                        height: 44,
+                        // marginRight: 12,
+
+                        borderTopLeftRadius: 12,
+                        borderTopRightRadius: 12,
+                        backgroundColor: colors.gray4,
+                    }}
+                />
+                <TextButton
+                    title={`Section ${currentSectionIndex + 1}`}
+                    onPress={() => {
+                        toggleSectionVisible();
+                    }}
+                    textStyle={{
+                        textAlignVertical: "center",
+                        fontWeight: "600",
+                        color: "blue",
+                    }}
+                    backgroundStyle={[
+                        styles.shadow,
+                        {
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                            borderBottomLeftRadius: 12,
+                            borderBottomRightRadius: 12,
+                            height: 34,
+                        },
+                    ]}
+                />
             </View>
+            // </View>
         );
     };
 
@@ -420,36 +493,9 @@ export default function PostingScreen({
         );
     };
 
-    const sectionBoxItem: ListRenderItem<Section> = ({ item }) => {
-        return (
-            <TextButton
-                title={`${item.sequence + 1}`}
-                onPress={() => {
-                    setCurrentSectionIndex(item.sequence);
-                    console.log(`section with ${item.sequence} tapped`);
-                }}
-                textStyle={{ textAlign: "center" }}
-                backgroundStyle={[
-                    commonStyles.border,
-                    {
-                        borderRadius: 8,
-                        marginVertical: 2,
-                        // width: 30,
-                        // height: 30,
-                        width: 40,
-                        backgroundColor:
-                            currentSectionIndex === item.sequence
-                                ? "magenta"
-                                : "white",
-                    },
-                ]}
-            />
-        );
-    };
-
     const postingQuestionBoxItem: ListRenderItem<Question> = ({ item }) => {
         return (
-            <View style={{ marginHorizontal: marginSizes.l20 }}>
+            <View style={{ marginHorizontal: marginSizes.s12 }}>
                 <PostingQuestionBox
                     key={item.id}
                     question={item}
@@ -475,10 +521,17 @@ export default function PostingScreen({
         setSectionModalVisible(!isVisible);
     };
 
-    const selectSection = (num: number) => {
+    const toggleTitleModalVisible = () => {
+        const isVisible = isTitleModalVisible;
+        setIsTitleModalVisible(!isVisible);
+    };
+
+    const selectSection = (selectedSectionIndex: number) => {
         // 1 을 선택하면 0 이 나와야해.
-        console.log("[PostingScreen] selectSection num: " + num);
-        setCurrentSectionIndex(num);
+        console.log(
+            "[PostingScreen] selected Section index: " + selectedSectionIndex
+        );
+        setCurrentSectionIndex(selectedSectionIndex);
     };
 
     useEffect(() => {
@@ -493,7 +546,7 @@ export default function PostingScreen({
                 isCreatingQuestionModalVisible={creatingQuestionModalVisible}
                 onClose={toggleCreateModal}
                 onAdd={addQuestion}
-                position={questions.length}
+                position={questionsToShow.length}
             />
 
             <ModifyingQuestionModal
@@ -505,19 +558,26 @@ export default function PostingScreen({
                 selectedQuestion={questions[selectedQuestionIndex]}
             />
 
+            <SurveyTitleModal
+                setSurveyTitle={setSurveyTitle}
+                surveyTitle={surveyTitle}
+                titleModalVisible={isTitleModalVisible}
+                setTitleModalVisible={setIsTitleModalVisible}
+                setConfirmTapped={setConfirmTapped}
+            />
+
             <SectionModal
                 onClose={toggleSectionVisible}
                 isSectionModalVisible={isSectionModalVisible}
-                numOfSections={numOfSections}
+                numOfSections={sections.length}
                 onAdd={addSection}
                 onSelection={selectSection}
             />
 
             <View style={styles.subContainer}>
-                {/* Survey Title(Header) + 질문 추가(Footer) */}
                 <>
                     {questionsToShow.length === 0 ? (
-                        <View style={{ marginTop: 30 }}>
+                        <View>
                             {listHeader()}
                             {listFooter()}
                         </View>
@@ -531,6 +591,8 @@ export default function PostingScreen({
                             )}
                             ListFooterComponent={listFooter}
                             ListHeaderComponent={listHeader}
+                            // ListHeaderComponentStyle={{ marginTop: 20 }}
+                            ListFooterComponentStyle={{ marginTop: 20 }}
                         />
                     )}
                 </>
@@ -550,7 +612,7 @@ export default function PostingScreen({
                         letterSpacing: 2,
                     }}
                     onPress={() => {
-                        setIsSendButtonTapped(true);
+                        setIsNextButtonTapped(true);
                     }}
                 />
             </View>
@@ -561,7 +623,9 @@ export default function PostingScreen({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: "flex-start",
         backgroundColor: colors.background,
+        // backgroundColor: "cyan",
     },
     subContainer: {
         // justifyContent: "space-between",
@@ -609,7 +673,7 @@ const styles = StyleSheet.create({
     sectionHeader: {
         marginLeft: marginSizes.xs8,
         fontWeight: "500",
-        marginTop: marginSizes.l20,
+        // marginTop: marginSizes.l20,
         marginBottom: marginSizes.xs8,
         backgroundColor: colors.selectedQuestionBoxBG,
         borderRadius: 5,
@@ -714,15 +778,17 @@ const styles = StyleSheet.create({
         // margin: 20,
     },
     listHeaderStyle: {
-        marginTop: 20,
+        // marginTop: 20,
+        marginTop: 30,
         marginBottom: 20,
+        marginHorizontal: marginSizes.s12,
     },
     listFooterStyle: {
         // marginTop: 30,
         marginBottom: 20,
         // marginHorizontal: marginSizes.l20,
         marginHorizontal: marginSizes.s12,
-        marginTop: 20,
+        // marginTop: 20,
         justifyContent: "center",
     },
     shadow: {

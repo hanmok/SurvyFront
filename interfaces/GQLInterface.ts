@@ -1,3 +1,5 @@
+import { log, logObject } from "../utils/Log";
+
 export interface GQLQuestionType {
     id: string;
     name: string;
@@ -69,6 +71,37 @@ export interface GQLSurvey {
     isPublic: number;
     isCompleted: number;
     sections: [GQLSection];
+}
+
+// export function isGQLSurvey(item: any): item is GQLSurvey {
+//     return (
+//         item &&
+//         typeof item.id === "number" &&
+//         typeof item.title === "string" &&
+//         typeof item.currentParticipation === "number"
+//     )
+// }
+
+export function isGQLSurvey(item: any): item is GQLSurvey {
+    const ret = typeof item?.id === "string" && typeof item?.title === "string";
+    // &&
+    typeof item?.currentParticipation === "number" &&
+        typeof item?.participationGoal === "number" &&
+        // typeof item?.createdAt === "string" &&
+        // typeof item?.endedAt === "string" &&
+        // typeof item?.reward === "number" &&
+        typeof item?.code === "string";
+    // typeof item?.isPublic === "number" &&
+    // typeof item?.isCompleted === "number" &&
+    // Array.isArray(item?.sections) &&
+    // item.sections.every(
+    //     (section: GQLSection) =>
+    //         typeof section?.id === "number" &&
+    //         typeof section?.title === "string"
+    // )
+    logObject("obj:", item);
+    log(`isGQL? : ${ret}`);
+    return ret;
 }
 
 export interface GQLAnswer {

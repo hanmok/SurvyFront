@@ -5,6 +5,7 @@ import { screenWidth } from "../utils/ScreenSize";
 import { Feather } from "@expo/vector-icons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import React from "react";
+import Separator from "../components/common/Separator";
 
 interface SectionModalProps {
     onClose: () => void;
@@ -39,21 +40,18 @@ const SectionModal: React.FC<SectionModalProps> = ({
                     onClose();
                 }}
             />
-            <View
+            {/* Separator */}
+            {/* <View
                 style={{
                     backgroundColor: colors.gray5,
-                    width: screenWidth - 100,
                     height: 1,
                 }}
-            />
+            /> */}
+            <Separator />
         </View>
     ));
 
     return (
-        // <TouchableWithoutFeedback
-        //     onPress={onClose}
-        //     style={{ backgroundColor: "magenta" }}
-        // >
         <Modal
             transparent={true}
             visible={isSectionModalVisible}
@@ -69,7 +67,14 @@ const SectionModal: React.FC<SectionModalProps> = ({
                         onPress={onClose}
                     />
                     {sections}
-                    <Button title="Add Section" onPress={onAdd} />
+                    <Separator />
+                    <Button
+                        title="Add Section"
+                        onPress={() => {
+                            onAdd();
+                            onClose();
+                        }}
+                    />
                 </View>
             </View>
         </Modal>
@@ -82,7 +87,7 @@ const styles = StyleSheet.create({
     wholeContainer: {
         flex: 1,
         justifyContent: "flex-end",
-        // backgroundColor: colors.modalBackground,
+        backgroundColor: colors.bottomModalBackground,
     },
     mainContainer: {
         backgroundColor: "white",

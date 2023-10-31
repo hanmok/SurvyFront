@@ -161,6 +161,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 value={questionTitle}
                                 onChangeText={setQuestionTitle}
                                 autoComplete="off"
+                                autoCorrect={false}
                             />
                             <View style={{ height: 16 }} />
                             <QuestionTypeSelectionBoxContainer

@@ -115,6 +115,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                 value={questionTitle}
                                 onChangeText={setQuestionTitle}
                                 autoComplete="off"
+                                autoCorrect={false}
                             />
                             <View style={{ height: 16 }} />
                             <QuestionTypeSelectionBoxContainer

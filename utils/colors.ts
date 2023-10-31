@@ -19,6 +19,7 @@ export const colors = {
     gray5: "#eee",
     transparent: "rgba(0,0,0,0)",
     modalBackground: "rgba(0, 0, 0, 0.75)",
+    bottomModalBackground: "rgba(0, 0, 0, 0.5)",
     unselectedQuestionBoxBG: "#DCEAFF",
     selectedQuestionBoxBG: "#5094FD",
     unselectedQuestionBoxText: "#777777",

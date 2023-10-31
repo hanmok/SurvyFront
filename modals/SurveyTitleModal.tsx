@@ -12,7 +12,7 @@ import { colors } from "../utils/colors";
 import TextButton from "../components/TextButton";
 import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 import { screenWidth } from "../utils/ScreenSize";
-import Spacer from "../components/Spacer";
+import Spacer from "../components/common/Spacer";
 
 interface SurveyTitleModalProps {
     setSurveyTitle: (string) => void;
@@ -30,78 +30,83 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
     setConfirmTapped,
 }) => {
     const [title, setTitle] = useState("");
-    const [modalVisible, setModalVisible] = useState(false);
+    // const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         console.log("modalVisible changed");
-    }, [modalVisible]);
+    }, [titleModalVisible]);
 
     return (
-        <View
+        <Modal
+            animationType="fade"
+            transparent={true}
+            // visible={modalVisible}
+            visible={titleModalVisible}
+            onRequestClose={() => {
+                // setModalVisible(false);
+                setTitleModalVisible(false);
+            }}
+        >
+            {/* <View
             style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundColor: "cyan",
+
             }}
-        >
+        > */}
             {/* Parent View 에 보이는 것 */}
-            <TextButton
+            {/* <TextButton
                 backgroundStyle={[styles.modalBGStyle]}
                 title={surveyTitle}
                 onPress={() => setModalVisible(true)}
                 textStyle={styles.modalTextStyle}
-            />
+            /> */}
 
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(false);
-                }}
-            >
-                <View style={styles.totalContainer}>
-                    <View style={styles.coreContainer}>
-                        <Text style={styles.infoTextContainer}>
-                            설문조사 제목을 입력해주세요.
-                        </Text>
-                        <TextInput
-                            style={styles.textInput}
-                            // onChangeText={setSurveyTitle}
-                            onChangeText={setTitle}
-                            value={title}
-                            placeholder="텍스트를 입력하세요"
+            <View style={styles.totalContainer}>
+                <View style={styles.coreContainer}>
+                    <Text style={styles.infoTextContainer}>
+                        설문조사 제목을 입력해주세요.
+                    </Text>
+                    <TextInput
+                        style={styles.textInput}
+                        onChangeText={setTitle}
+                        value={title}
+                        placeholder="텍스트를 입력하세요"
+                        autoCorrect={false}
+                        autoComplete="off"
+                    />
+                    <View style={styles.bottomContainer}>
+                        <TextButton
+                            title="닫기"
+                            // onPress={() => setModalVisible(false)}
+                            onPress={() => setTitleModalVisible(false)}
+                            textStyle={styles.bottomTextStyle}
+                            backgroundStyle={[styles.bottomButtonBackground]}
                         />
-                        <View style={styles.bottomContainer}>
-                            <TextButton
-                                title="닫기"
-                                onPress={() => setModalVisible(false)}
-                                textStyle={styles.bottomTextStyle}
-                                backgroundStyle={[
-                                    styles.bottomButtonBackground,
-                                ]}
-                            />
-                            <TextButton
-                                title="확인"
-                                onPress={() => {
-                                    setSurveyTitle(title);
-                                    setModalVisible(false);
-                                    setConfirmTapped(true);
-                                }}
-                                textStyle={[
-                                    styles.bottomTextStyle,
-                                    { fontWeight: "bold" },
-                                ]}
-                                backgroundStyle={[
-                                    styles.bottomButtonBackground,
-                                    { borderLeftWidth: 1 },
-                                ]}
-                            />
-                        </View>
+                        <TextButton
+                            title="확인"
+                            onPress={() => {
+                                setSurveyTitle(title);
+                                // setModalVisible(false);
+                                setTitleModalVisible(false);
+                                setConfirmTapped(true);
+                            }}
+                            textStyle={[
+                                styles.bottomTextStyle,
+                                { fontWeight: "bold" },
+                            ]}
+                            backgroundStyle={[
+                                styles.bottomButtonBackground,
+                                { borderLeftWidth: 1 },
+                            ]}
+                        />
                     </View>
                 </View>
-            </Modal>
-        </View>
+            </View>
+        </Modal>
+        // </View>
     );
 };
 
@@ -113,6 +118,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flex: 1, // 화면 모두 가리기
         backgroundColor: colors.modalBackground,
+        // backgroundColor: "magenta",Se
     },
     coreContainer: {
         borderRadius: 20,
@@ -156,12 +162,15 @@ const styles = StyleSheet.create({
     modalBGStyle: {
         borderColor: colors.deepMainColor,
         borderWidth: 5,
-        borderRadius: borderSizes.m10,
+        // borderRadius: borderSizes.m10,
+        borderTopLeftRadius: borderSizes.m10,
+        borderTopRightRadius: borderSizes.m10,
         height: 50,
         marginTop: marginSizes.xxs4,
         marginBottom: marginSizes.xxs4,
         // width: 250,
-        marginHorizontal: marginSizes.l20,
+        width: screenWidth - marginSizes.s12 * 2,
+        // marginHorizontal: marginSizes.l20,
     },
     modalTextStyle: {
         textAlign: "center",

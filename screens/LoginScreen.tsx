@@ -14,7 +14,7 @@ import {
 import { colors } from "../utils/colors";
 import TextButton from "../components/TextButton";
 import { screenWidth } from "../utils/ScreenSize";
-import Spacer from "../components/Spacer";
+import Spacer from "../components/common/Spacer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fontSizes } from "../utils/sizes";
 import { login } from "../API/UserAPI";

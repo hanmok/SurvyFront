@@ -1,12 +1,14 @@
 // import { NavigationTitle } from "./utils/NavigationTitle";
 // import { NavigationTitle } from "./utils/NavigationTitle";
 
+import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import { SurveyProps } from "../interfaces/Survey";
 
 export type RootStackParamList = {
     Home: undefined;
     Participate: { sectionId: number; surveyId: number };
-    Posting: undefined;
+    // Posting: { postingSurveyId: number | undefined };
+    Posting: { postingSurveyState: PostingSurveyState | undefined };
     MyPage: undefined;
     ParticipatedSurveys: undefined;
     PostedSurveys: undefined;

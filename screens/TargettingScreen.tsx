@@ -29,7 +29,7 @@ import { useEffect, useState } from "react";
 import AgeSlider from "../components/posting/AgeSlider";
 import GenderSelection from "../components/posting/GenderSelection";
 import { Entypo } from "@expo/vector-icons";
-import Spacer from "../components/Spacer";
+import Spacer from "../components/common/Spacer";
 
 import { log, logObject } from "../utils/Log";
 import { CustomLocation } from "../utils/Geo";
@@ -130,7 +130,8 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         setCostModalVisible(!isCostModalVisible);
     };
 
-    const finalConfirmAction = async (): Promise<ApiResponse> => {
+    // const finalConfirmAction = async (): Promise<ApiResponse> => {
+    const finalConfirmAction = async () => {
         setIsSendPressed(false);
         setCostModalVisible(!isCostModalVisible);
 
@@ -142,18 +143,21 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             isTargetMale = selectedGenderIndex % 2;
         }
 
-        // navigation.navigate(NavigationTitle.posting, {}, {replace: true})
-
-        navigation.navigate(NavigationTitle.posting);
+        // navigation.navigate(NavigationTitle.postingBase);
 
         const targetMinAge = ageRange[0];
         const targetMaxAge = ageRange[1];
         const costWithComma = price;
 
+        // sections, questions, selectableOptions
+        // 찍어봐야 겠는데?
+        logObject("[TargettingScreen] sections:", sections);
+        logObject("[TargettingScreen] questions", questions);
+
         const cost = parseInt(costWithComma.replace(/,/g, ""), 10);
         const reward = Math.floor(cost / 3 / parseInt(participationGoal));
 
-        return createSurvey(
+        await createSurvey(
             surveyTitle,
             parseInt(participationGoal),
             targetMinAge,
@@ -165,6 +169,8 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             reward,
             cost
         );
+
+        navigation.popToTop();
     };
 
     useEffect(() => {}, []);

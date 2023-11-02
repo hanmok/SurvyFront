@@ -1,15 +1,16 @@
+import GeoSelectionModal from "../modals/GeoSelectionModal";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
 import CostGuideModal from "../modals/CostGuideModal";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import BlockView from "../components/BlockView";
-
+import { Genre } from "../interfaces/Genre";
 import { ReactNode } from "react";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
-import { fontSizes } from "../utils/sizes";
+import { fontSizes, marginSizes } from "../utils/sizes";
 import React from "react";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import {
@@ -32,15 +33,18 @@ import { Entypo } from "@expo/vector-icons";
 import Spacer from "../components/common/Spacer";
 
 import { log, logObject } from "../utils/Log";
-import { CustomLocation } from "../utils/Geo";
+// import { CustomLocation } from "../utils/Geo";
 import { createSurvey } from "../API/SurveyAPI";
 import { RouteProp } from "@react-navigation/native";
 import GenreSelectionModal from "../modals/GenreSelectionModal";
+import { screenWidth } from "../utils/ScreenSize";
+import { GeoInfo } from "../interfaces/GeoInfo";
 
 type TargettingScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
     NavigationTitle.targetting
 >;
+
 type TargettingScreenRouteProp = RouteProp<
     RootStackParamList,
     NavigationTitle.targetting
@@ -66,28 +70,39 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
 
     const [isCostModalVisible, setCostModalVisible] = useState(false);
     const [isGenreModalVisible, setGenreModalVisible] = useState(false);
+    const [isGeoModalVisible, setIsGeoModalVisible] = useState(false);
+
+    const [selectedGeos, setSelectedGeos] = useState<GeoInfo[]>([]);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
     const [isSendPressed, setIsSendPressed] = useState(false);
     const [ageRange, setAgeRange] = useState<number[]>([20, 30]);
     const [price, setPrice] = useState<string>("0");
-    const [selectedLocations, setSelectedLocations] = useState<
-        CustomLocation[]
-    >([]);
+    const [selectedLocations, setSelectedLocations] = useState<GeoInfo[]>([]);
 
     const [isFree, setIsFree] = useState(true);
     const [selectedGenderIndex, setSelectedGender] = useState(2);
+    const [isSatisfied, setIsSatisfied] = useState(false);
+    const [isNextButtonTapped, setIsNextButtonTapped] = useState(false);
+
+    // useEffect(() => {
+    //     console.log(`gender selection: ${selectedGenderIndex}`);
+    // }, [selectedGenderIndex]);
+
+    // useEffect(() => {
+    //     logObject("ageRange:", ageRange);
+    // }, [ageRange]);
+
+    // useEffect(() => {
+    //     logObject("selectedGenres:", selectedGenres);
+    // }, [selectedGenres]);
 
     useEffect(() => {
-        console.log(`gender selection: ${selectedGenderIndex}`);
-    }, [selectedGenderIndex]);
-
-    useEffect(() => {
-        logObject("ageRange:", ageRange);
-    }, [ageRange]);
-
-    useEffect(() => {
-        logObject("selectedGenres:", selectedGenres);
-    }, [selectedGenres]);
+        if (selectedGeos.length !== 0 && selectedGenres.length !== 0) {
+            setIsSatisfied(true);
+        } else {
+            setIsSatisfied(false);
+        }
+    }, [ageRange, selectedGenderIndex, selectedGeos, selectedGenres]);
 
     useEffect(() => {
         if (isSendPressed) {
@@ -105,6 +120,50 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     useEffect(() => {
         logObject("participationGoal changed to ", participationGoal);
     }, [participationGoal]);
+
+    const renderGeoItem = ({ item }: { item: GeoInfo }) => {
+        return (
+            <View
+                style={{
+                    marginTop: 6,
+                    marginHorizontal: 4,
+                    paddingHorizontal: 6,
+                    borderRadius: 6,
+                    borderColor: colors.gray1,
+                    overflow: "hidden",
+                    borderWidth: 1,
+                    height: 30,
+                    justifyContent: "center",
+                    backgroundColor: "white",
+                }}
+            >
+                <Text>
+                    {item.state} {item.city}
+                </Text>
+            </View>
+        );
+    };
+
+    const renderGenreItem = ({ item }: { item: Genre }) => {
+        return (
+            <View
+                style={{
+                    marginTop: 6,
+                    marginHorizontal: 4,
+                    paddingHorizontal: 6,
+                    borderRadius: 6,
+                    borderColor: colors.gray1,
+                    overflow: "hidden",
+                    borderWidth: 1,
+                    height: 30,
+                    justifyContent: "center",
+                    backgroundColor: colors.white,
+                }}
+            >
+                <Text>{item.name}</Text>
+            </View>
+        );
+    };
 
     const expectedTimeInMin = Math.ceil(
         questions
@@ -130,12 +189,17 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         setCostModalVisible(!isCostModalVisible);
     };
 
+    const toggleGeoModal = () => {
+        setIsGeoModalVisible(!isGeoModalVisible);
+    };
+
     // const finalConfirmAction = async (): Promise<ApiResponse> => {
     const finalConfirmAction = async () => {
         setIsSendPressed(false);
         setCostModalVisible(!isCostModalVisible);
 
         const genreIds = selectedGenres.map(genre => genre.id);
+        const geoIds = selectedGeos.map(geo => geo.id);
 
         let isTargetMale: number | null = null;
 
@@ -143,14 +207,10 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             isTargetMale = selectedGenderIndex % 2;
         }
 
-        // navigation.navigate(NavigationTitle.postingBase);
-
         const targetMinAge = ageRange[0];
         const targetMaxAge = ageRange[1];
         const costWithComma = price;
 
-        // sections, questions, selectableOptions
-        // 찍어봐야 겠는데?
         logObject("[TargettingScreen] sections:", sections);
         logObject("[TargettingScreen] questions", questions);
 
@@ -163,6 +223,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             targetMinAge,
             targetMaxAge,
             genreIds,
+            geoIds,
             sections,
             questions,
             isTargetMale,
@@ -173,76 +234,18 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         navigation.popToTop();
     };
 
-    useEffect(() => {}, []);
-
-    const genreItem = ({ item }: { item: Genre }) => {
-        return (
-            <View
-                style={{
-                    borderColor: "black",
-                    borderRadius: 5,
-                    overflow: "hidden",
-                    borderWidth: 1,
-                    height: 30,
-                    marginHorizontal: 5,
-                    width: 50,
-                }}
-            >
-                <Text>{item.name}</Text>
-            </View>
-        );
-    };
     const toggleGenreModal = () => {
         setGenreModalVisible(!isGenreModalVisible);
-    };
-
-    const handleResign = () => {
-        console.log("resign tapped");
     };
 
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
 
-    const locationItem = ({ item }: { item: string }) => {
-        return (
-            <SelectableTextButton
-                title={item}
-                textStyle={{ alignSelf: "center" }}
-                backgroundStyle={styles.locationContainer}
-                selectedTextColor="white"
-                unselectedTextColor="black"
-                selectedBackgroundColor="magenta"
-                unselectedBackgroundColor={colors.transparent}
-                onPress={() => {
-                    let idx = selectedLocations.indexOf({ item });
-                    if (idx === -1) {
-                        setSelectedLocations(prev => [...prev, { item }]);
-                    } else {
-                        let prev = selectedLocations;
-                        prev.splice(idx, 1);
-                        setSelectedLocations(prev);
-                    }
-                    console.log("selected location: " + item);
-                }}
-            />
-        );
+    const confirmGeoSelection = (selectedGeos: GeoInfo[]) => {
+        setSelectedGeos(selectedGeos);
+        toggleGeoModal();
     };
-
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <View style={{ marginRight: 10 }}>
-                    <SimpleLineIcons
-                        name="paper-plane"
-                        size={24}
-                        color="black"
-                        onPress={handleSendButtonTapped}
-                    />
-                </View>
-            ),
-        });
-    });
 
     return (
         <>
@@ -258,105 +261,263 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                 setPrice={setPrice}
                 participationGoal={participationGoal}
             />
+
+            <GeoSelectionModal
+                onClose={toggleGeoModal}
+                confirmGeoSelection={confirmGeoSelection}
+                selectedGeos={selectedGeos}
+                isGeoModalVisible={isGeoModalVisible}
+            />
+
             <GenreSelectionModal
                 onClose={toggleGenreModal}
                 onGenreSelection={setSelectedGenres}
                 isGenreSelectionModalVisible={isGenreModalVisible}
+                preSelectedGenres={selectedGenres}
             />
+
+            {/* <ScrollView> */}
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         {/* Age */}
-                        <AgeSlider setAgeRange={setAgeRange} />
-                        {/* 성별 */}
-                        <View>
-                            <Text
-                                style={{
-                                    marginBottom: 20,
-                                    fontSize: fontSizes.m20,
-                                }}
-                            >
-                                성별
-                            </Text>
-                            <GenderSelection
-                                onGenderIndexSelection={setSelectedGender}
-                            />
-                        </View>
-                        {/* 지역 */}
-
-                        <View
-                            style={{ margin: 10, marginTop: 30, height: 320 }}
-                            // style={{ margin: 10, marginTop: 30, flex: 1 }}
-                        >
-                            <Text
-                                style={[
-                                    styles.locationTitle,
-                                    { marginBottom: 10 },
-                                ]}
-                            >
-                                지역
-                            </Text>
-
-                            <FlatList
-                                data={Geo[1]}
-                                renderItem={locationItem}
-                                keyExtractor={item => `${item[0]}`}
-                                numColumns={5}
+                        <View style={{ width: 300 }}>
+                            <AgeSlider setAgeRange={setAgeRange} />
+                            <View
                                 style={{
                                     backgroundColor: colors.gray4,
-                                    width: "100%",
+                                    height: 1,
+                                    width: screenWidth,
+                                    marginBottom: 20,
                                 }}
-                            />
+                            ></View>
                         </View>
-                        {/* Genre */}
-                        <View style={{ flex: 1 }}>
-                            <Text
-                                style={{
-                                    fontSize: fontSizes.m20,
-                                    // alignSelf: "center",
-                                    marginBottom: 10,
-                                }}
-                            >
-                                Genre
-                            </Text>
-                            {/* Horizontal Search*/}
-                            <View style={{ flexDirection: "row" }}>
-                                <TouchableOpacity
-                                    onPress={toggleGenreModal}
+                        {/* 성별 */}
+                        <View>
+                            <View style={{ width: 300 }}>
+                                <Text
                                     style={{
-                                        borderRadius: 10,
-                                        backgroundColor: "white",
-                                        overflow: "hidden",
-                                        borderColor: "black",
-                                        borderWidth: 1,
-                                        width: 200,
+                                        marginBottom: 20,
+                                        fontSize: fontSizes.m20,
                                     }}
-                                />
-                                <Spacer size={10} />
-                                <Entypo
-                                    name="magnifying-glass"
-                                    size={24}
-                                    color="black"
+                                >
+                                    성별
+                                </Text>
+                                <GenderSelection
+                                    onGenderIndexSelection={setSelectedGender}
                                 />
                             </View>
-                            {selectedGenres.length !== 0 && (
-                                <FlatList
-                                    data={selectedGenres}
-                                    renderItem={genreItem}
-                                    keyExtractor={item => `${item.id}`}
-                                    numColumns={5}
+                        </View>
+                        <View
+                            style={{
+                                backgroundColor: colors.gray4,
+                                height: 1,
+                                width: screenWidth,
+                                marginVertical: 20,
+                            }}
+                        ></View>
+                        {/* 지역 */}
+                        <View
+                            style={{
+                                flex: 1,
+                                marginBottom: 30,
+                                // backgroundColor: "cyan",
+                            }}
+                        >
+                            <View style={{ width: 300, alignSelf: "center" }}>
+                                <Text
                                     style={{
-                                        height: 40,
-                                        marginTop: 10,
-                                        width: "100%",
-                                        backgroundColor: "magenta",
+                                        fontSize: fontSizes.m20,
+                                        marginBottom: 10,
                                     }}
+                                >
+                                    지역
+                                </Text>
+                                {/* Search Box */}
+                                <View>
+                                    <View style={{ flexDirection: "row" }}>
+                                        <TouchableOpacity
+                                            onPress={toggleGeoModal}
+                                            style={{
+                                                borderRadius: 10,
+                                                backgroundColor: "white",
+                                                overflow: "hidden",
+                                                borderColor: "black",
+                                                borderWidth: 1,
+                                                width: 200,
+                                            }}
+                                        />
+                                        <Spacer size={10} />
+                                        <Entypo
+                                            name="magnifying-glass"
+                                            size={24}
+                                            color="black"
+                                        />
+                                    </View>
+                                </View>
+                            </View>
+
+                            {/* <View>
+                                <FlatList
+                                    data={selectedGeos}
+                                    renderItem={renderGeoItem}
+                                    keyExtractor={item => `${item.code}`}
+                                    // horizontal={true}
+                                    numColumns={3}
+                                    scrollEnabled={false}
                                 />
-                            )}
+                            </View> */}
+                            <View
+                                style={{
+                                    flex: 0.9,
+                                    flexDirection: "row",
+                                    flexWrap: "wrap",
+                                    marginTop: 10,
+                                    marginHorizontal: 30,
+                                }}
+                            >
+                                {selectedGeos.map(geo => (
+                                    <TextButton
+                                        title={`${geo.state} ${geo.city}`}
+                                        onPress={() => {}}
+                                        backgroundStyle={{
+                                            backgroundColor: colors.gray1,
+                                            padding: 4,
+                                            paddingHorizontal: 6,
+                                            marginHorizontal: 6,
+                                            borderRadius: 6,
+                                            height: 30,
+                                            marginVertical: 4,
+                                        }}
+                                        textStyle={{
+                                            color: colors.white,
+                                        }}
+                                    />
+                                ))}
+                            </View>
+                        </View>
+
+                        <View
+                            style={{
+                                backgroundColor: colors.gray4,
+                                height: 1,
+                                width: screenWidth,
+                                marginBottom: 20,
+                            }}
+                        ></View>
+
+                        {/* Genre */}
+                        <View
+                            style={{
+                                flex: 1,
+                                marginBottom: 60,
+                                // backgroundColor: "magenta",
+                            }}
+                        >
+                            <View style={{ width: 300, alignSelf: "center" }}>
+                                <Text
+                                    style={{
+                                        fontSize: fontSizes.m20,
+                                        marginBottom: 10,
+                                    }}
+                                >
+                                    카테고리
+                                </Text>
+                                {/* Search Modal */}
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        // justifyContent: "center",
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={toggleGenreModal}
+                                        style={{
+                                            borderRadius: 10,
+                                            backgroundColor: "white",
+                                            overflow: "hidden",
+                                            borderColor: "black",
+                                            borderWidth: 1,
+                                            width: 200,
+                                        }}
+                                    />
+                                    <Spacer size={10} />
+                                    <Entypo
+                                        name="magnifying-glass"
+                                        size={24}
+                                        color="black"
+                                    />
+                                </View>
+                            </View>
+
+                            {/* <FlatList
+                                data={selectedGenres}
+                                renderItem={renderGenreItem}
+                                keyExtractor={item => `${item.id}`}
+                                numColumns={3}
+                                scrollEnabled={false}
+                            /> */}
+
+                            <View
+                                style={{
+                                    flex: 0.9,
+                                    flexDirection: "row",
+                                    flexWrap: "wrap",
+                                    marginTop: 10,
+                                    marginHorizontal: 30,
+                                }}
+                            >
+                                {selectedGenres.map(genre => (
+                                    <TextButton
+                                        title={genre.name}
+                                        onPress={() => {}}
+                                        backgroundStyle={{
+                                            backgroundColor: colors.gray1,
+                                            padding: 4,
+                                            paddingHorizontal: 6,
+                                            marginHorizontal: 6,
+                                            borderRadius: 6,
+                                            height: 30,
+                                            marginVertical: 4,
+                                        }}
+                                        textStyle={{
+                                            color: colors.white,
+                                        }}
+                                    />
+                                ))}
+                            </View>
                         </View>
                     </View>
+
+                    {/* Next Button */}
+                    <TextButton
+                        backgroundStyle={{
+                            backgroundColor: isSatisfied
+                                ? "#ffffff"
+                                : "#b3b3b3", // inactive
+                            height: 46,
+                            marginBottom: 30,
+                            marginHorizontal: 20,
+                            borderRadius: 10,
+                            marginTop: 30,
+                        }}
+                        title="다음"
+                        textStyle={{
+                            // color: isSatisfied ? colors.black : "#cbcbcb",
+                            // color: "magenta",
+                            color: isSatisfied ? colors.black : "#cbcbcb",
+
+                            fontSize: 18,
+                            letterSpacing: 2,
+                        }}
+                        onPress={() => {
+                            // setIsNextButtonTapped(true);
+                            handleSendButtonTapped();
+                        }}
+                    />
                 </View>
             </TouchableWithoutFeedback>
+            {/* </ScrollView> */}
         </>
     );
 };
@@ -367,14 +528,12 @@ const styles = StyleSheet.create({
     eachBoxTextStyle: { fontSize: fontSizes.m20 },
     modalContainer: {
         flex: 1,
-        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        // backgroundColor: "rgba(0, 0, 0, 0.7)",
+        backgroundColor: colors.background,
     },
     modalContent: {
         flexGrow: 1,
-        // marginVertical: 60, // 전체 화면 관리
-        // marginHorizontal: 20,
-        backgroundColor: "white",
-        // borderRadius: 10,
+        backgroundColor: colors.background,
         justifyContent: "space-between",
         alignItems: "center",
         paddingTop: 20,
@@ -399,7 +558,7 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
         height: 40,
         alignItems: "center",
-        margin: 0,
+        // margin: 0,
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,
@@ -408,13 +567,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         height: 40,
         alignItems: "center",
-        margin: 0,
-    },
-    inactivatedStyle: {
-        backgroundColor: colors.gray2,
-    },
-    activatedStyle: {
-        backgroundColor: colors.white,
+        // margin: 0,
     },
     locationContainer: {
         width: 60,
@@ -428,6 +581,6 @@ const styles = StyleSheet.create({
     },
     locationTitle: {
         fontSize: fontSizes.m20,
-        marginLeft: 50,
+        // marginLeft: 50,
     },
 });

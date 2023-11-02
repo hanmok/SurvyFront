@@ -3,27 +3,31 @@ import Storage from "react-native-storage";
 import { UserState } from "../interfaces/UserState";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import { log, logObject } from "./Log";
+import { GeoInfo } from "../interfaces/GeoInfo";
 
 const storage = new Storage({
     storageBackend: AsyncStorage,
 });
 
 export const saveUserState = async (data: UserState) => {
-    await storage.save({ key: "userInfo", data: data });
+    await storage.save({ key: "userInfo", data });
 };
 
 export const loadUserState = async (): Promise<UserState> => {
-    return await storage
-        .load({
+    try {
+        const userState: UserState = await storage.load({
             key: "userInfo",
             autoSync: true,
             syncInBackground: true,
-        })
-        .catch(undefined);
-
-    return undefined;
+        });
+        return userState;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 };
 
+// PostingSurvey
 // 지금까지 .. 저장했던 것들과 함께 다같이 저장
 export const savePostingSurvey = async (data: PostingSurveyState) => {
     logObject("savePostingSurvey called, data: ", data);
@@ -50,28 +54,47 @@ export const savePostingSurvey = async (data: PostingSurveyState) => {
 export const loadSavedPostingSurveys = async (): Promise<
     PostingSurveyState[]
 > => {
-    const ret = await storage
-        .load({
+    try {
+        const postingSurveys: PostingSurveyState[] = await storage.load({
             key: "postingSurveys",
             autoSync: true,
             syncInBackground: true,
-        })
-        .catch(undefined);
-    logObject("ret", ret);
-    return ret;
+        });
+        return postingSurveys;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
 
-    // if (ret) {
-    //     return ret as PostingSurveyState[];
-    // } else {
-    //     return [] as PostingSurveyState[];
-    // }
-
-    // return ret;
-    // return await storage
+    // const ret = await storage
     //     .load({
     //         key: "postingSurveys",
     //         autoSync: true,
     //         syncInBackground: true,
     //     })
     //     .catch(undefined);
+    // logObject("ret", ret);
+    // return ret;
+};
+
+// Geo
+
+export const saveWholeGeos = async (data: GeoInfo[]) => {
+    logObject("saving geo data", data);
+    await storage.save({ key: "wholeGeoInfo", data });
+};
+
+export const loadWholeGeo = async (): Promise<GeoInfo[]> => {
+    console.log("loadWholeGeo called");
+    try {
+        const geoInfo: GeoInfo[] = await storage.load({
+            key: "wholeGeoInfo",
+            autoSync: true,
+            syncInBackground: true,
+        });
+        return geoInfo;
+    } catch (error) {
+        console.error("Error loading geo info:", error);
+        return null;
+    }
 };

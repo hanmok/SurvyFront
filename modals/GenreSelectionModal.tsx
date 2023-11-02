@@ -12,34 +12,46 @@ import { fontSizes } from "../utils/sizes";
 import SelectableTextButton from "../components/SelectableTextButton";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
-import { useEffect, useState } from "react";
+import { useEffect, useInsertionEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { getAllGenres } from "../API/GenreAPI";
 import { log, logObject } from "../utils/Log";
-import { screenWidth } from "../utils/ScreenSize";
+import { screenHeight, screenWidth } from "../utils/ScreenSize";
+import { Genre } from "../interfaces/Genre";
+import Spacer from "../components/common/Spacer";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface GenreSelectionModalProps {
     onClose: () => void;
     onGenreSelection: (selectedGenres: Genre[]) => void;
     isGenreSelectionModalVisible: boolean;
+    preSelectedGenres: Genre[];
 }
 
 const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
     onClose,
     onGenreSelection,
     isGenreSelectionModalVisible,
+    preSelectedGenres,
 }) => {
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
     const [satisfied, setSatisfied] = useState(false);
-    const [genres, setGenres] = useState<Genre[]>([]);
+    const [allGenres, setAllGenres] = useState<Genre[]>([]);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
+    const [showingGenres, setShowingGenres] = useState<Genre[]>([]);
+
+    const [userInput, setUserInput] = useState<string>("");
+
+    useEffect(() => {
+        setSelectedGenres(preSelectedGenres);
+    }, [preSelectedGenres]);
 
     const getGenres = async () => {
         getAllGenres().then(response => {
             logObject("fetched genres: ", response.data);
-            setGenres(response.data);
+            setAllGenres(response.data);
         });
     };
 
@@ -51,9 +63,11 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         const index = selectedGenres.indexOf(genre);
 
         if (index === -1) {
+            // 새로운 입력
             setSelectedGenres(prev => [...prev, genre]);
         } else {
-            let currentSelectedGenres = selectedGenres;
+            // 기존에 있는 입력.
+            let currentSelectedGenres = [...selectedGenres];
             currentSelectedGenres.splice(index, 1);
             setSelectedGenres(currentSelectedGenres);
         }
@@ -65,23 +79,42 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         log("num of selectedGenres: " + selectedGenres.length);
     }, [selectedGenres]);
 
-    const genreItem = ({ item }: { item: Genre }) => {
-        return (
-            <SelectableTextButton
-                title={item.name}
-                textStyle={{ alignSelf: "center" }}
-                selectedTextColor={colors.white}
-                unselectedTextColor="black"
-                selectedBackgroundColor={colors.magenta}
-                unselectedBackgroundColor={colors.transparent}
-                backgroundStyle={styles.locationContainer}
-                onPress={() => {
-                    toggleGenreSelection(item);
-                    console.log("selected genre: " + item.name);
-                }}
-            />
-        );
-    };
+    useEffect(() => {
+        if (userInput !== "") {
+            const genresToShow = allGenres.filter(genre =>
+                genre.name.includes(userInput)
+            );
+            setShowingGenres(genresToShow);
+        } else {
+            setShowingGenres(allGenres);
+        }
+    }, [userInput]);
+
+    // const genreItem = ({ item }: { item: Genre }) => {
+    //     return (
+    //         <TextButton
+    //             onPress={() => {
+    //                 toggleGenreSelection(item);
+    //             }}
+    //             title={item.name}
+    //             backgroundStyle={{
+    //                 height: 50,
+    //                 backgroundColor: selectedGenres.includes(item)
+    //                     ? colors.gray1
+    //                     : colors.white,
+    //                 marginHorizontal: 6,
+    //                 marginVertical: 4,
+    //                 borderRadius: 10,
+    //                 paddingHorizontal: 10,
+    //             }}
+    //             textStyle={{
+    //                 color: selectedGenres.includes(item)
+    //                     ? colors.white
+    //                     : colors.black,
+    //             }}
+    //         />
+    //     );
+    // };
 
     return (
         <Modal transparent={true} visible={isGenreSelectionModalVisible}>
@@ -92,44 +125,166 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                             style={{
                                 fontSize: fontSizes.m20,
                                 backgroundColor: colors.gray4,
-                                width: screenWidth - 40 * 2,
+                                // width: screenWidth - 40 * 2,
+                                alignSelf: "stretch",
                                 textAlign: "center",
                             }}
                         >
-                            Genre Modal
+                            카테고리 선택
                         </Text>
+
+                        <Spacer size={15} />
+
                         <View
                             style={{
-                                flexDirection: "row",
-                                height: 35,
-                                // marginVertical: 30,
-                                marginTop: 30,
-                                marginBottom: 20,
-                                justifyContent: "center",
+                                // flexDirection: "row",
+                                flexDirection: "column",
+                                flex: 1,
+                                marginHorizontal: 20,
+                                marginBottom: 15,
                             }}
                         >
-                            <TextInput
+                            {/* <FlatList
+                                data={tagsPerRow}
+                                renderItem={({ item }) => (
+                                    <View style={styles.rowContainer}>
+                                        {item.map((genre, genreIndex) => (
+                                            <View
+                                                style={styles.genreContainer}
+                                                key={genreIndex}
+                                            >
+                                                <Text style={styles.genreText}>
+                                                    {genre}
+                                                </Text>
+                                            </View>
+                                        ))}
+                                    </View>
+                                )}
+                            /> */}
+
+                            <View
                                 style={{
-                                    borderColor: "black",
-                                    borderRadius: 5,
-                                    overflow: "hidden",
-                                    borderWidth: 1,
-                                    width: 200,
+                                    marginTop: 10,
                                 }}
-                            />
-                            <Entypo
-                                name="magnifying-glass"
-                                size={24}
-                                color="black"
-                                style={{ alignSelf: "center", marginLeft: 10 }}
-                            />
+                            >
+                                {/* Search */}
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            borderRadius: 10,
+                                            backgroundColor: "white",
+                                            overflow: "hidden",
+                                            borderColor: "black",
+                                            borderWidth: 1,
+                                            width: 240,
+                                            height: 35,
+                                            justifyContent: "center",
+                                            paddingLeft: 10,
+                                        }}
+                                    >
+                                        <TextInput
+                                            value={userInput}
+                                            onChangeText={setUserInput}
+                                            placeholder="관련 카테고리는?"
+                                            style={{
+                                                fontSize: 16,
+                                            }}
+                                        />
+                                    </View>
+
+                                    <View
+                                        style={{
+                                            height: 30,
+                                            flexDirection: "row",
+                                        }}
+                                    ></View>
+                                    <Spacer size={10} />
+                                    <Entypo
+                                        name="magnifying-glass"
+                                        size={24}
+                                        color="black"
+                                    />
+                                </View>
+                                {/* selected Genres */}
+                                <View
+                                    style={{
+                                        borderBottomColor: colors.gray4,
+                                        borderBottomWidth: 1,
+                                        borderTopColor: colors.gray4,
+                                        borderTopWidth: 1,
+                                        flex: 0,
+                                        flexDirection: "row",
+                                        flexWrap: "wrap",
+                                        marginTop: 20,
+                                        minHeight: 40,
+                                    }}
+                                >
+                                    {selectedGenres.map(genre => (
+                                        <TextButton
+                                            title={genre.name}
+                                            onPress={() => {
+                                                toggleGenreSelection(genre);
+                                            }}
+                                            backgroundStyle={{
+                                                backgroundColor: colors.gray1,
+                                                padding: 4,
+                                                paddingHorizontal: 6,
+                                                marginHorizontal: 6,
+                                                borderRadius: 6,
+                                                height: 30,
+                                                marginVertical: 4,
+                                            }}
+                                            textStyle={{
+                                                color: colors.white,
+                                            }}
+                                        />
+                                    ))}
+                                </View>
+                            </View>
+
+                            <View
+                                style={{
+                                    flex: 0.9,
+                                    flexDirection: "row",
+                                    flexWrap: "wrap",
+                                    marginTop: 20,
+                                }}
+                            >
+                                {showingGenres.map(genre => (
+                                    <TextButton
+                                        title={genre.name}
+                                        onPress={() => {
+                                            toggleGenreSelection(genre);
+                                        }}
+                                        backgroundStyle={{
+                                            backgroundColor:
+                                                selectedGenres.includes(genre)
+                                                    ? colors.gray1
+                                                    : colors.white,
+                                            padding: 4,
+                                            paddingHorizontal: 6,
+                                            marginHorizontal: 6,
+                                            borderRadius: 6,
+                                            height: 30,
+                                            marginVertical: 4,
+                                        }}
+                                        textStyle={{
+                                            color: selectedGenres.includes(
+                                                genre
+                                            )
+                                                ? colors.white
+                                                : colors.black,
+                                        }}
+                                    />
+                                ))}
+                            </View>
                         </View>
-                        <FlatList
-                            data={genres}
-                            renderItem={genreItem}
-                            keyExtractor={item => `${item.id}`}
-                            numColumns={2}
-                        />
                         <View style={styles.bottomContainer}>
                             <TextButton
                                 title="취소"
@@ -165,35 +320,43 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         </Modal>
     );
 };
+
 export default GenreSelectionModal;
 
 const styles = StyleSheet.create({
     modalContainer: {
         flex: 1,
-        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
         borderColor: "black",
         borderRadius: 20,
         overflow: "hidden",
     },
     modalContent: {
-        flexGrow: 1,
-        // marginVertical: 60, // 전체 화면 관리
-        marginVertical: 80, // 전체 화면 관리
-        // marginHorizontal: 20,
-        marginHorizontal: 40,
-        backgroundColor: "white",
+        height: screenHeight - 100,
+        marginVertical: 40,
+        marginHorizontal: 20,
+        backgroundColor: colors.background,
         borderRadius: 10,
+        overflow: "hidden",
         justifyContent: "space-between",
         alignItems: "center",
-        // paddingTop: 20,
-        // gap: 10,
+    },
+
+    rowContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+    genreContainer: {
+        margin: 8,
+        padding: 8,
+        backgroundColor: colors.gray3,
+        borderRadius: 6,
     },
     bottomContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
     },
-
     bottomTextStyle: {
         textAlign: "center",
         fontSize: fontSizes.s16,
@@ -217,7 +380,6 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
-        // borderRadius: 30,
     },
     inactivatedStyle: {
         backgroundColor: colors.gray2,
@@ -234,7 +396,6 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         margin: 5,
         justifyContent: "center",
-        // marginVertical: 10,
     },
     locationTitle: {
         fontSize: fontSizes.m20,

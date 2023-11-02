@@ -8,7 +8,9 @@
 // // GET
 // // Header Authorization: KakaoAK restKey
 
+import { GeoInfo } from "../interfaces/GeoInfo";
 import { logObject } from "../utils/Log";
+import { API_BASE_URL } from "./API";
 
 // // Content-type: application/json;charset=UTF-8
 const restKEY = "5973832cf035c04ef3cd75c15c90c7cc";
@@ -74,3 +76,25 @@ interface GeoResponse {
 //         console.log("current latitude: " + latitude);
 //     });
 // };
+
+export async function fetchAllGeoInfos(): Promise<GeoInfo[]> {
+    const url = `${API_BASE_URL}/geo`;
+
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        const responseData: GeoInfo[] = await response.json();
+        // console.log(`geo response json: ${responseData}`);
+        logObject("geo response jsona", responseData);
+        return responseData;
+    } catch (error) {
+        console.error("geo fetching error", error);
+        throw error;
+    }
+}

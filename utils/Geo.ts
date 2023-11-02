@@ -306,7 +306,7 @@ const retSample = {
     ],
 };
 
-/** use in mymage */
+/** use in mypage */
 // useEffect(() => {
 //     const getPermissions = async () => {
 //         let { status } = await Location.requestForegroundPermissionsAsync();

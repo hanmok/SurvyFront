@@ -21,7 +21,6 @@ import { screenWidth } from "../utils/ScreenSize";
 import { commonStyles } from "../utils/CommonStyles";
 import CostSelectionContainer from "../CostSelectionContainer";
 import * as accounting from "accounting";
-// const accounting = require("accounting");
 
 interface CostGuideModalProps {
     onClose: () => void;

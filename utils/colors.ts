@@ -9,6 +9,7 @@ export const colors = {
     // lightMainTrans: "rgba(184, 212, 255, 0.7)",
     lightMainTrans: "rgba(150, 180, 220, 0.7)",
     blurredGray: "#E5E5E5",
+    sliderBlue: "#007AFF",
     inactiveBtnBG: "#C9C9C9",
     white: "#fff",
     black: "#000",

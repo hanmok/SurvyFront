@@ -1,5 +1,4 @@
-받은 데이터
-[{"id":462881555,"currentDate":"2023-10-31T07:30:12.125Z","title":"My Survy","sections":[{"id":108530679,"sequence":0,"questions":[]},{"id":251942009,"sequence":1,"questions":[]}],"questions":[{"id":867399171,"sectionId":108530679,"position":0,"text":"Sss1Qqq1","questionTypeId":100,"selectableOptions":[{"id":408196740,"questionId":867399171,"position":0,"value":"S1q1so1","isExtra":0}]},{"id":738269386,"sectionId":251942009,"position":0,"text":"Ss2q1","questionTypeId":200,"selectableOptions":[{"id":457601084,"questionId":738269386,"position":0,"value":"Ss2q1so1","isExtra":0}]}]}]
 
-가는 데이터는 정상이야.
-뭐가 문제지 ? 
+Survey Post 하고난 후, Storage 에서 제거하기. 
+
+Targetting 화면에서, 각 Section 별로 Divider 만들어주기. 

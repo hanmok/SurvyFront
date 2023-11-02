@@ -27,7 +27,7 @@ import { UserResponse, login } from "../API/UserAPI";
 import { useDispatch } from "react-redux";
 import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL, GQL_URL } from "../API/API";
-import { saveUserState } from "../utils/Storage";
+import { loadWholeGeo, saveUserState, saveWholeGeos } from "../utils/Storage";
 // import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
 import ImageButton from "../components/ImageButton";
@@ -37,6 +37,7 @@ import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 // import { getAllPostedSurveys } from "../API/gqlAPI";
 import { getSurveyQuery } from "../API/gqlQuery";
 import { RefreshControl } from "react-native-gesture-handler";
+import { fetchAllGeoInfos } from "../API/GeoAPI";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -189,10 +190,24 @@ function HomeScreen({
 
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {
+        const fetchGeos = async () => {
+            // const geoData = await loadWholeGeo();
+
+            // logObject("saved geoData:", geoData);
+
+            // if (!geoData) {
+            const allGeos = await fetchAllGeoInfos();
+            saveWholeGeos(allGeos);
+            // }
+        };
+        fetchGeos();
         updateSurveys();
+
         // getSurveyQuery(804);
         // getPostedSurveys(774);
         // getAllPostedSurveys(0);
+        // Get all Geo Infos
+        console.log("HomeScreen Testing");
     }, []);
 
     const renderItem = ({ item }: { item: Survey }) => (

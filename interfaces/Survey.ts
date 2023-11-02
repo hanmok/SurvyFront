@@ -8,10 +8,11 @@ export interface Survey {
     participationGoal: number;
     currentParticipation: number | undefined;
     initialSectionId: number | undefined;
-    geoCode: number;
+    // geoCode: number;
     targetMinAge: number;
     targetMaxAge: number;
     genreIds: number[];
+    geoIds: number[];
     isTargetMale: number | null;
     reward: number;
     cost: number;
@@ -23,10 +24,11 @@ export const makeSurvey = (
     userId: number,
     title: string,
     participationGoal: number,
-    geoCode: number,
+    // geoCode: number,
     targetMinAge: number,
     targetMaxAge: number,
     genreIds: number[],
+    geoIds: number[],
     isTargetMale: number | undefined,
     reward: number,
     cost: number,
@@ -40,10 +42,11 @@ export const makeSurvey = (
         // rewardRange: undefined,
         currentParticipation: 0,
         initialSectionId: undefined,
-        geoCode: geoCode,
+        // geoCode: geoCode,
         targetMinAge: targetMinAge,
         targetMaxAge: targetMaxAge,
         genreIds: genreIds,
+        geoIds: geoIds,
         isTargetMale: isTargetMale,
         reward: reward,
         cost: cost,

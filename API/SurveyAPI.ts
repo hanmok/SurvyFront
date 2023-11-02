@@ -20,6 +20,7 @@ export async function createSurvey(
     targetMinAge: number,
     targetMaxAge: number,
     genreIds: number[],
+    geoIds: number[],
     sections: Section[],
     questions: Question[],
     isTargetMale: number | undefined,
@@ -37,16 +38,17 @@ export async function createSurvey(
     });
 
     const userId = (await loadUserState()).userId;
-    const geoCode = 1100000000;
+    // const geoCode = 1100000000;
     const numOfSections = sections.length;
     const survey = makeSurvey(
         userId,
         surveyTitle,
         participationGoal,
-        geoCode,
+        // geoCode,
         targetMinAge,
         targetMaxAge,
         genreIds,
+        geoIds,
         isTargetMale,
         reward,
         cost,

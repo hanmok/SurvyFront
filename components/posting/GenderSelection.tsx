@@ -10,7 +10,6 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
 }) => {
     const [selectedGender, setSelectedGender] = useState(2);
 
-    // const genderOptions = ["남성", "여성", "무관"];
     const genderOptions = ["여성", "남성", "무관"];
 
     return (
@@ -29,7 +28,15 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
                             onGenderIndexSelection(index);
                         }}
                     >
-                        <Text>{option}</Text>
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                fontWeight: "bold",
+                                letterSpacing: 0.5,
+                            }}
+                        >
+                            {option}
+                        </Text>
                     </TouchableOpacity>
                 ))}
             </View>
@@ -46,18 +53,23 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
         // marginTop: 20,
+        gap: 0,
     },
     optionButton: {
         paddingVertical: 10,
-        paddingHorizontal: 20,
-        marginHorizontal: 10,
+        paddingHorizontal: 30,
+        // marginHorizontal: 10,
         borderWidth: 1,
         borderRadius: 5,
         borderColor: "#ccc",
+        // backgroundColor:
+        backgroundColor: "#dbdbdc",
     },
     selectedOptionButton: {
-        backgroundColor: "#4caf50",
-        borderColor: "#4caf50",
+        // backgroundColor: "#4caf50",
+        // backgroundColor: "#dbdbdc",
+        backgroundColor: "white",
+        // borderColor: "#4caf50",
     },
 });
 

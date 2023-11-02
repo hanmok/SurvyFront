@@ -33,26 +33,40 @@ const AgeSlider: React.FC<AgeSliderProps> = ({
             >
                 나이
             </Text>
-
+            <Text style={{ alignSelf: "center" }}>
+                {ages[0]} ~ {ages[1]}
+            </Text>
             <MultiSlider
                 values={ages}
                 sliderLength={250}
                 onValuesChange={handleSliderChange}
                 min={16}
-                max={100}
+                max={70}
                 step={1}
                 allowOverlap
                 snapped
-                containerStyle={{ marginTop: 20 }}
+                // trackStyle={{ backgroundColor: colors.sliderBlue }}
+                selectedStyle={{ backgroundColor: colors.sliderBlue }}
+                containerStyle={{
+                    // marginTop: 20,
+                    // backgroundColor: colors.sliderBlue,
+                    marginBottom: 20,
+                }}
+                enableLabel={true}
+                isMarkersSeparated={true}
+                customLabel={labelProps => {
+                    return <Text></Text>;
+                }}
+                // customLabel={<Text>asdnj</Text>}
                 markerStyle={{
-                    height: 20,
-                    width: 20,
+                    height: 16,
+                    width: 16,
+                    backgroundColor: colors.sliderBlue,
+                    overflow: "hidden",
+                    borderColor: colors.transparent,
                     // backgroundColor: "black",
                 }}
             />
-            <Text style={{ alignSelf: "center" }}>
-                {ages[0]} ~ {ages[1]}
-            </Text>
         </View>
     );
 };

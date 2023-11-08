@@ -17,8 +17,6 @@ const QuestionTypeSelectionBox: React.FC<QuestionTypeProps> = ({
     isSelected,
     onPress,
 }) => {
-    useEffect(() => {}, [isSelected]);
-
     const name = getQuestionType(index);
 
     return (

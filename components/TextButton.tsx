@@ -13,6 +13,7 @@ interface TextButtonProps {
     onPress: () => void;
     textStyle?: StyleProp<TextStyle>;
     backgroundStyle?: StyleProp<ViewStyle>;
+    isEnabled?: boolean;
 }
 
 const TextButton: React.FC<TextButtonProps> = ({
@@ -20,11 +21,13 @@ const TextButton: React.FC<TextButtonProps> = ({
     onPress,
     textStyle,
     backgroundStyle,
+    isEnabled = true,
 }) => {
     return (
         <TouchableOpacity
             style={[styles.container, backgroundStyle]}
             onPress={onPress}
+            disabled={!isEnabled}
         >
             <Text style={[styles.text, textStyle]}>{title}</Text>
         </TouchableOpacity>

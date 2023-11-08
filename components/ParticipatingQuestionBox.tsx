@@ -20,7 +20,6 @@ const ParticipatingQuestionBox: React.FC<ParticipatingQuestionProps> = ({
             <Text style={styles.textStyle}>
                 {position + 1}. {text}
             </Text>
-            {/* <Text>q_required: {required}</Text> */}
         </View>
     );
 };
@@ -29,11 +28,15 @@ export default ParticipatingQuestionBox;
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 12,
+        // marginLeft: 12,
+        marginLeft: 16,
         marginBottom: 12, // spacing between q and selectable-option
-        backgroundColor: colors.lightMainColor,
+        // backgroundColor: colors.lightMainColor,
+        // backgroundColor: colors.white
     },
     textStyle: {
-        fontSize: fontSizes.m20,
+        // fontSize: fontSizes.m20,
+        fontSize: 18,
+        fontWeight: "bold",
     },
 });

@@ -20,6 +20,7 @@ import {
     GQLQuestionType,
     GQLSelectableOption,
 } from "../interfaces/GQLInterface";
+import { commonStyles } from "../utils/CommonStyles";
 
 interface SelectablContainerProps {
     selectableOptions: GQLSelectableOption[];
@@ -76,9 +77,6 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                 questionType
             );
             switch (questionType.id) {
-                // case QuestionTypeId.SingleSelection:
-                // case QuestionTypeEnum.SingleSelection:
-                // case QuestionTypeIdEnum.SingleSelection:
                 case `${QuestionTypeIdEnum.SingleSelection}`:
                     dispatch(
                         selectSingleSelection({
@@ -90,10 +88,6 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     );
                     break;
 
-                // case QuestionTypeId.MultipleSelection:
-                // case QuestionTypeEnum.MultipleSelection:
-                // case QuestionTypeIdEnum.MultipleSelection:
-                // case "200":
                 case `${QuestionTypeIdEnum.MultipleSelection}`:
                     dispatch(
                         selectMultipleSelection({
@@ -116,11 +110,11 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     break;
             }
         },
-        // [dispatch, questionTypeId, questionIndex]
         [dispatch, questionType, questionIndex]
     );
 
     return (
+        // <View style={commonStyles.magenta}>
         <View>
             {selectableOptions.map((selectableOption, soIndex) => {
                 return (

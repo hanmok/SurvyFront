@@ -63,6 +63,7 @@ function ParticipatingScreen({
         NavigationTitle.participate
     >;
 }) {
+    const [isLoading, setIsLoading] = useState(false);
     const client = useApollo();
     const { loading, error, data } = useQuery<GQLSurveyResponse>(
         getSurveyQuery,
@@ -74,11 +75,11 @@ function ParticipatingScreen({
     );
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const [questions, setQuestions] = useState<GQLQuestion[]>([]);
-    // const [isLoading, setIsLoading] = useState<Boolean>(true);
-    const [selectableOptions, setSelectableOptions] = useState<
-        SelectableOption[]
-    >([]);
 
+    // const [answerPromises, setAnswerPromises] = useState<Promise<void>[]>([]);
+    const answerPromises: Promise<void>[] = [];
+
+    const [isNextTapped, setIsNextTapped] = useState(false);
     const shouldGoBack = useRef(false);
     const { sectionId, surveyId } = route.params;
     const dispatch = useDispatch();
@@ -87,14 +88,19 @@ function ParticipatingScreen({
         const ret = state.selector.selectedOptionIds;
         logObject("selectedSOIndexIds changed to", ret);
         return ret;
-        // return state.selector.selectedOptionIds;
     });
+    const [isSatisfied, setIsSatisfied] = useState(false);
+
+    useEffect(() => {
+        const satisfied =
+            selectedSOIndexIds &&
+            selectedSOIndexIds.every(arr => arr.length !== 0);
+        setIsSatisfied(satisfied);
+    }, [selectedSOIndexIds]);
 
     const textAnswers = useSelector((state: RootState) => {
         return state.selector.textAnswers;
     });
-
-    // const navigation = useNavigation();
 
     const [currentSurvey, setCurrentSurvey] = useState<GQLSurvey | null>(null);
 
@@ -118,37 +124,40 @@ function ParticipatingScreen({
         }
     }, [currentSectionIndex, data]);
 
-    useEffect(() => {
-        // 뒤로가기 버튼 누를 때 호출될 함수
-        const unsubscribe = navigation.addListener("beforeRemove", e => {
-            if (!shouldGoBack.current) {
-                e.preventDefault(); // 뒤로가기 막기
-                showAlertAndGoBack();
-            }
-        });
-        return unsubscribe;
-    }, [navigation]);
+    // useEffect(() => {
+    //     const showAlertAndGoBack = () => {
+    //         Alert.alert(
+    //             "경고",
+    //             "정말 뒤로가시겠습니까?",
+    //             [
+    //                 {
+    //                     text: "취소",
+    //                     style: "cancel",
+    //                 },
+    //                 {
+    //                     text: "확인",
+    //                     onPress: () => {
+    //                         shouldGoBack.current = true;
+    //                         navigation.goBack();
+    //                     },
+    //                 },
+    //             ],
+    //             { cancelable: false }
+    //         );
+    //     };
+    //         // navigation.addListener("")
+    //     // 뒤로가기 버튼 누를 때 호출될 함수
+    //     const unsubscribe = navigation.addListener("beforeRemove", e => {
+    //         if (!shouldGoBack.current) {
+    //             e.preventDefault(); // 뒤로가기 막기
+    //             showAlertAndGoBack();
+    //         }
+    //     });
+    //     return () => {
+    //         unsubscribe();
+    //     };
 
-    const showAlertAndGoBack = () => {
-        Alert.alert(
-            "경고",
-            "정말 뒤로가시겠습니까?",
-            [
-                {
-                    text: "취소",
-                    style: "cancel",
-                },
-                {
-                    text: "확인",
-                    onPress: () => {
-                        shouldGoBack.current = true;
-                        navigation.goBack();
-                    },
-                },
-            ],
-            { cancelable: false }
-        );
-    };
+    // }, [navigation]);
 
     const postSelectionAnswer = async (
         surveyId: number,
@@ -179,83 +188,93 @@ function ParticipatingScreen({
         );
     };
 
-    const handleNextScreen = () => {
+    const moveToNextScreen = () => {
         console.log("handleNextScreen called");
-        // navigation.goBack();
         navigation.navigate(NavigationTitle.endParticipation);
     };
 
-    const handleCompleteSection = async () => {
-        const userId = (await loadUserState()).userId;
-        console.log(`buttonTapAction called, userId: ${userId}`);
-        const promises = [];
+    // TODO: 이거.. 여기가 맞니? 버튼 눌린 변수와 연동시켜야함.
 
-        // ..?? selectedSOIndexIds 에 Text SO가 선택되어야 하는구나.
-        // selectedSOIndexIds 에서 textAnswers 를 빼야해요.
+    useEffect(() => {
+        const handleCompleteSection = async () => {
+            const userId = (await loadUserState()).userId;
+            console.log(`buttonTapAction called, userId: ${userId}`);
+            const promises: Promise<void>[] = [];
 
-        let selectableOptionIds: number[] = [];
-        for (let j = 0; j < textAnswers.length; j++) {
-            selectableOptionIds.push(textAnswers[j].selectableOptionId);
-            const customAnswer = textAnswers[j];
-            const postCall = postTextAnswer(customAnswer, userId, surveyId);
-            logObject("[ParticipatingScreen] postTextAnswer", { customAnswer });
-            promises.push(postCall);
-        }
+            // ..?? selectedSOIndexIds 에 Text SO가 선택되어야 하는구나.
+            // selectedSOIndexIds 에서 textAnswers 를 빼야해요.
 
-        for (let q = 0; q < questions.length; q++) {
-            for (let i = 0; i < selectedSOIndexIds[q].length; i++) {
-                const questionId = questions[q].id;
-                const selectableOptionId = selectedSOIndexIds[q][i];
+            let selectableOptionIds: number[] = [];
+            for (let j = 0; j < textAnswers.length; j++) {
+                selectableOptionIds.push(textAnswers[j].selectableOptionId);
+                const customAnswer = textAnswers[j];
+                const postCall = postTextAnswer(customAnswer, userId, surveyId);
+                logObject("[ParticipatingScreen] postTextAnswer", {
+                    customAnswer,
+                });
+                promises.push(postCall);
+            }
 
-                if (!selectableOptionIds.includes(selectableOptionId)) {
-                    const postCall = postSelectionAnswer(
-                        surveyId,
-                        userId,
-                        questionId,
-                        selectableOptionId
-                    );
-                    logObject("[ParticipatingScreen] postSelection", {
-                        questionId,
-                        selectableOptionId,
-                    });
-                    promises.push(postCall);
+            for (let q = 0; q < questions.length; q++) {
+                for (let i = 0; i < selectedSOIndexIds[q].length; i++) {
+                    const questionId = questions[q].id;
+                    const selectableOptionId = selectedSOIndexIds[q][i];
+
+                    if (!selectableOptionIds.includes(selectableOptionId)) {
+                        const postCall = postSelectionAnswer(
+                            surveyId,
+                            userId,
+                            questionId,
+                            selectableOptionId
+                        );
+                        logObject("[ParticipatingScreen] postSelection", {
+                            questionId,
+                            selectableOptionId,
+                        });
+                        promises.push(postCall);
+                    }
                 }
             }
-        }
 
-        await Promise.all(promises)
-            .then(() => {
-                console.log(
-                    `currentSectionIndex: ${currentSectionIndex}, number of sections: ${currentSurvey.sections.length}`
-                );
-                if (currentSectionIndex === currentSurvey.sections.length - 1) {
-                    // shouldGoBack.current = true;
-                    console.log(
-                        "currentSectionIndex === currentSurvey.numOfSections - 1"
-                    );
-                    createParticipate(surveyId, userId).then(() => {
-                        handleNextScreen();
-                    });
-                } else {
-                    console.log(
-                        "currentSectionIndex !== currentSurvey.numOfSections - 1"
-                    );
-
-                    dispatch(
-                        initialize(
-                            currentSurvey.sections[currentSectionIndex + 1]
-                                .questions.length
-                        )
-                    );
-                    setCurrentSectionIndex(currentSectionIndex + 1);
-                }
-            })
-            .catch(error => {
-                console.log(error);
+            promises.forEach(p => {
+                answerPromises.push(p);
             });
+
+            if (currentSectionIndex === currentSurvey.sections.length - 1) {
+                setIsLoading(true);
+                await Promise.all(answerPromises)
+                    .then(() => {
+                        createParticipate(surveyId, userId).then(() => {
+                            setIsLoading(false);
+                            moveToNextScreen();
+                        });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            } else {
+                dispatch(
+                    initialize(
+                        currentSurvey.sections[currentSectionIndex + 1]
+                            .questions.length
+                    )
+                );
+                setCurrentSectionIndex(currentSectionIndex + 1);
+            }
+        };
+
+        // await handleCompleteSection()
+        if (isNextTapped) {
+            handleCompleteSection();
+            setIsNextTapped(false);
+        }
+    }, [isNextTapped]);
+
+    const toggleNextTapped = () => {
+        setIsNextTapped(true);
     };
 
-    if (loading) {
+    if (loading || isLoading) {
         return (
             <ActivityIndicator
                 animating={loading}
@@ -293,19 +312,18 @@ function ParticipatingScreen({
                             ? "Finish"
                             : "Next"
                     }
-                    onPress={handleCompleteSection}
+                    onPress={toggleNextTapped}
                     textStyle={
-                        selectedSOIndexIds &&
-                        selectedSOIndexIds.every(arr => arr.length !== 0)
+                        isSatisfied
                             ? styles.activatedButtonText
                             : styles.inactivatedButtonText
                     }
                     backgroundStyle={
-                        selectedSOIndexIds &&
-                        selectedSOIndexIds.every(arr => arr.length !== 0)
+                        isSatisfied
                             ? styles.activatedFinishButtonBackground
                             : styles.inactivatedFinishButtonBackground
                     }
+                    isEnabled={isSatisfied}
                 />
             )
         );
@@ -342,8 +360,12 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
     },
     questionContainerBox: {
-        backgroundColor: colors.lightMainColor,
-        marginVertical: marginSizes.s12,
+        // backgroundColor: colors.lightMainColor,
+        backgroundColor: colors.white,
+        // marginVertical: marginSizes.s12,
+        // marginVertical: marginSizes.l20,
+        marginTop: 30,
+        // margin
         paddingVertical: 16,
         borderRadius: 20,
         overflow: "hidden",

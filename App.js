@@ -81,7 +81,9 @@ export default function App() {
                                 name={NavigationTitle.participate}
                                 component={ParticipatingScreen}
                                 options={{
-                                    headerBackTitleVisible: false,
+                                    // headerBackTitleVisible: false,
+                                    // headerback
+                                    // headerLeft: null,
                                     // TODO: 개발 끝나면 false 로 처리하기.
                                     // headerShown: false,
                                     headerStyle: {

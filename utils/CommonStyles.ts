@@ -16,4 +16,8 @@ export const commonStyles = StyleSheet.create({
         borderWidth: 1,
         overflow: "hidden",
     },
+
+    magenta: {
+        backgroundColor: "magenta",
+    },
 });

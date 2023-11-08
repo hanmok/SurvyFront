@@ -1,5 +1,6 @@
 // import { CustomAnswer } from "../features/selector/selectorSlice";
 import { CustomAnswer } from "../interfaces/CustomAnswer";
+import { log, logObject } from "../utils/Log";
 import { printObject } from "../utils/printObject";
 import { API_BASE_URL } from "./API";
 import _ from "lodash";
@@ -52,11 +53,10 @@ export async function createParticipate(
     // sectionId: number
 ): Promise<ApiResponse> {
     const url = `${API_BASE_URL}/participating`;
-    // const data = { surveyId, userId, sectionId };
     const data = { surveyId, userId };
 
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
-
+    logObject("createParticipate called, ", snakeData);
     try {
         const response = await fetch(url, {
             method: "POST",

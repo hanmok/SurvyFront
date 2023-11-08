@@ -139,6 +139,7 @@ function HomeScreen({
         }
     };
 
+    // GQL 로 바꿀 것. 왜? 쓸모 없는 정보때문에? 너무 많은데.. ? 뭐가 있는데?
     const updateSurveys = async () => {
         try {
             await fetch(`${API_BASE_URL}/survey`)
@@ -154,7 +155,6 @@ function HomeScreen({
                         currentParticipation: item.currentParticipation,
                         participationGoal: item.participationGoal,
                         initialSectionId: item.initialSectionId,
-                        // rewardRange: item.rewardRange,
                     }))
                 )
                 .then(surveys => {

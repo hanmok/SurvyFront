@@ -54,34 +54,14 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         console.log("question type id:", questionTypeId);
     }, []);
 
-    useEffect(() => {
-        console.log(
-            `questionTypeId: ${questionTypeId}, type: ${typeof questionTypeId}`
-        );
-        switch (questionTypeId) {
-            // case 100:
-            case "100":
-                console.log("questionTypeId is 100");
-                break;
-                // case 200:
-                console.log("questionTypeId is 200");
-                break;
-                // case 300:
-                console.log("questionTypeId is 300");
-                break;
-            default:
-                console.log("questionTypeId is default");
-                break;
-        }
-    }, []);
     const textInputRef = useRef(null);
 
-    const handleFocusTextInput = () => {
-        logObject("[SelectableOptionBox] focus called", textInputRef.current);
-        if (textInputRef.current) {
-            textInputRef.current.focus();
-        }
-    };
+    // const handleFocusTextInput = () => {
+    //     logObject("[SelectableOptionBox] focus called", textInputRef.current);
+    //     if (textInputRef.current) {
+    //         textInputRef.current.focus();
+    //     }
+    // };
 
     const [userInput, setUserInput] = useState("");
 
@@ -101,10 +81,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
 
     {
         switch (questionTypeId) {
-            // case QuestionTypeId.SingleSelection:
-            // case QuestionTypeIdEnum.SingleSelection:
-            // case 100:
-            // case "100":
             case `${QuestionTypeIdEnum.SingleSelection}`:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
@@ -184,9 +160,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 );
                 break;
 
-            // case QuestionTypeId.MultipleSelection:
-            // case QuestionTypeIdEnum.MultipleSelection:
-            // case "200":
             case `${QuestionTypeIdEnum.MultipleSelection}`:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
@@ -316,9 +289,12 @@ export default SelectableOptionBox;
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        paddingLeft: paddingSizes.m16,
+        // paddingLeft: paddingSizes.m16,
+        // backgroundColor: "magenta",
+        paddingLeft: 8,
         alignItems: "center",
-        marginTop: marginSizes.s12,
+        // marginTop: marginSizes.s12,
+        marginTop: 8,
     },
     textStyle: {
         fontSize: fontSizes.s16,
@@ -326,7 +302,6 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         flex: 1,
-        // padding: 16,
         paddingRight: 20,
         justifyContent: "center",
     },

@@ -322,7 +322,7 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                                 // height: 500,
                                 // flexGrow: 0.8,
                                 // flexGrow: 0.7,
-                                height: 600,
+                                height: 550,
                                 flexDirection: "row",
                             }}
                         >
@@ -346,7 +346,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                             <View
                                 style={{
                                     flex: 0.7,
-                                    // backgroundColor: colors.gray2,
                                 }}
                             >
                                 <FlatList

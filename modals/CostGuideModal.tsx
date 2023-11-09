@@ -84,7 +84,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                 textAlign: "center",
                             }}
                         >
-                            Cost Guide
+                            설문 요청 확정
                         </Text>
 
                         <View style={{ height: 300, width: 300 }}>
@@ -98,7 +98,10 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         onChangeText={setParticipationGoal}
                                         keyboardType="number-pad"
                                         placeholder="10"
-                                        style={commonStyles.font20}
+                                        style={[
+                                            commonStyles.font20,
+                                            { color: colors.gray2 },
+                                        ]}
                                     />
                                 </View>
                                 <View style={styles.rowContainer}>
@@ -119,7 +122,16 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         {price} 원
                                     </Text>
                                 </View>
-                                <View style={{ alignItems: "center" }}>
+                                <View
+                                    style={[
+                                        // styles.rowContainer,
+                                        {
+                                            alignItems: "center",
+                                            flexDirection: "column",
+                                            // backgroundColor: "magenta",
+                                        },
+                                    ]}
+                                >
                                     <CostSelectionContainer
                                         initialIndex={isFree ? 0 : 1}
                                         toggleFreeState={setIsFree}
@@ -193,6 +205,8 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
+        borderBottomLeftRadius: 10,
+        backgroundColor: "white",
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,

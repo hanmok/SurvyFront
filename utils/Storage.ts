@@ -5,12 +5,21 @@ import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import { log, logObject } from "./Log";
 import { GeoInfo } from "../interfaces/GeoInfo";
 
+// 이것들 Class 로 모두 묶어주기.
+
 const storage = new Storage({
     storageBackend: AsyncStorage,
 });
 
+export const getItem = async () => {
+    let data = await AsyncStorage.getItem("");
+    data = JSON.parse(data);
+    // data.
+};
+
 export const saveUserState = async (data: UserState) => {
-    await storage.save({ key: "userInfo", data });
+    // never expires
+    await storage.save({ key: "userInfo", data, expires: null });
 };
 
 export const loadUserState = async (): Promise<UserState> => {
@@ -20,6 +29,7 @@ export const loadUserState = async (): Promise<UserState> => {
             autoSync: true,
             syncInBackground: true,
         });
+
         return userState;
     } catch (error) {
         console.error(error);
@@ -28,11 +38,54 @@ export const loadUserState = async (): Promise<UserState> => {
 };
 
 // PostingSurvey
+
+export const initializePostingSurvey = async () => {
+    await storage.save({
+        key: "postingSurveys",
+        data: [],
+        expires: null,
+    });
+};
+
+export const deletePostingSurvey = async (postingSurveyId: number) => {
+    console.log(
+        `delePostingSurvey called, postingSurveyId: ${postingSurveyId}`
+    );
+    const prevData = await loadSavedPostingSurveys();
+
+    // const deletingIndex = prevData.findIndex(
+    //     postingSurvey => postingSurvey.id === postingSurveyId
+    // );
+
+    // if (deletingIndex !== -1) {
+    // const updatedData = prevData.splice(deletingIndex, 1);
+    //     console.log("postingSurvey deleted");
+    //     await storage.save({
+    //         key: "postingSurveys",
+    //         data: updatedData,
+    //         expires: null,
+    //     });
+    // }
+
+    const updatedData = prevData.filter(
+        postingSurvey => postingSurvey.id !== postingSurveyId
+    );
+
+    if (updatedData.length < prevData.length) {
+        console.log("postingSurvey deleted!");
+        await storage.save({
+            key: "postingSurveys",
+            data: updatedData,
+            expires: null,
+        });
+    } else {
+        console.log("postingSurvey not found");
+    }
+};
+
 // 지금까지 .. 저장했던 것들과 함께 다같이 저장
 export const savePostingSurvey = async (data: PostingSurveyState) => {
     logObject("savePostingSurvey called, data: ", data);
-
-    // await storage.save({ key: "postingSurveys", data: [data] });
 
     const prevData = await loadSavedPostingSurveys();
 
@@ -43,11 +96,17 @@ export const savePostingSurvey = async (data: PostingSurveyState) => {
         await storage.save({
             key: "postingSurveys",
             data: [...prevData, data],
+            // expires
+            expires: null,
         });
     } else {
         //  수정 후 저장, updated: 중복 제거 후 data
         const updated = prevData.splice(duplicate, 1);
-        await storage.save({ key: "postingSurveys", data: [...updated, data] });
+        await storage.save({
+            key: "postingSurveys",
+            data: [...updated, data],
+            expires: null,
+        });
     }
 };
 
@@ -60,28 +119,19 @@ export const loadSavedPostingSurveys = async (): Promise<
             autoSync: true,
             syncInBackground: true,
         });
+
         return postingSurveys;
     } catch (error) {
         console.error(error);
         return [];
     }
-
-    // const ret = await storage
-    //     .load({
-    //         key: "postingSurveys",
-    //         autoSync: true,
-    //         syncInBackground: true,
-    //     })
-    //     .catch(undefined);
-    // logObject("ret", ret);
-    // return ret;
 };
 
 // Geo
 
 export const saveWholeGeos = async (data: GeoInfo[]) => {
     logObject("saving geo data", data);
-    await storage.save({ key: "wholeGeoInfo", data });
+    await storage.save({ key: "wholeGeoInfo", data, expires: null });
 };
 
 export const loadWholeGeo = async (): Promise<GeoInfo[]> => {
@@ -92,6 +142,7 @@ export const loadWholeGeo = async (): Promise<GeoInfo[]> => {
             autoSync: true,
             syncInBackground: true,
         });
+
         return geoInfo;
     } catch (error) {
         console.error("Error loading geo info:", error);

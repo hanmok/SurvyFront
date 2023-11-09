@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, View, Text } from "react-native";
-import { Octicons } from "@expo/vector-icons";
+import { Feather, Octicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
@@ -33,14 +33,22 @@ export default function MainTabs() {
             <Tab.Screen
                 name="설문 요청"
                 // component={PostingScreen}
+                // name=""
                 component={PostingBaseScreen}
                 options={{
                     // headerShown: false,
+                    // tabBarLabel: "",
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Octicons
-                                name="upload"
-                                size={24}
+                            // <Octicons
+                            //     name="upload"
+                            //     size={24}
+                            //     color={focused ? "black" : "gray"}
+                            // />
+                            <Feather
+                                name="plus-circle"
+                                // size={24}
+                                size={30}
                                 color={focused ? "black" : "gray"}
                             />
                         );

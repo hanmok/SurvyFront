@@ -29,8 +29,12 @@ import {
     PostingSurveyState,
     isPostingSurveyState,
 } from "../interfaces/PostingSurveyState";
-import { loadSavedPostingSurveys } from "../utils/Storage";
+import {
+    initializePostingSurvey,
+    loadSavedPostingSurveys,
+} from "../utils/Storage";
 import { getDatePart } from "../utils/DateFormatter";
+import { useMyContext } from "./MyContext";
 
 type SectionItem = GQLSurvey | PostingSurveyState;
 
@@ -47,6 +51,8 @@ export default function PostingBaseScreen({
         NavigationTitle.postingBase
     >;
 }) {
+    const { ctxData, updateCtxData } = useMyContext();
+
     const postedRenderItem = ({ item }: { item: GQLSurvey }) => (
         <TouchableNativeFeedback
             onPress={() => {
@@ -91,10 +97,7 @@ export default function PostingBaseScreen({
         <TouchableNativeFeedback
             onPress={() => {
                 log(`${item.title} tapped`);
-
-                // navigation.navigate(NavigationTitle.response, {
-                //     surveyId: item.id,
-                // });
+                updateCtxData(item.id);
                 navigation.navigate(NavigationTitle.posting, {
                     postingSurveyState: item,
                 });
@@ -146,12 +149,25 @@ export default function PostingBaseScreen({
     const [postingSurveys, setPostingSurveys] = useState<
         PostingSurveyState[] | undefined
     >(undefined);
+
     const [isLoadingPostingSurveys, setIsLoadingPostingSurveys] =
         useState(true);
+
+    // useEffect(() => {
+    //     logObject("sectionData", sectionData);
+    //     if (sectionData && sectionData.length === 0) {
+    //         // move to add screen
+    //         navigation.navigate(NavigationTitle.posting, {
+    //             postingSurveyState: undefined,
+    //         });
+    //     }
+    // }, [sectionData]);
 
     useEffect(() => {
         const fetchSavedPostingSurveys = async () => {
             try {
+                // await initializePostingSurvey();
+
                 const allPostingSurveys = await loadSavedPostingSurveys();
                 logObject("postingSurveys:", allPostingSurveys);
                 setPostingSurveys(allPostingSurveys);
@@ -173,16 +189,25 @@ export default function PostingBaseScreen({
     }, [navigation]);
 
     useEffect(() => {
-        if (data?.user.posted_surveys) {
-            const updatedPostedSurveys: GQLSurvey[] =
-                removeTypenameAndConvertToCamelCase(data.user.posted_surveys);
-            setPostedSurveys(updatedPostedSurveys);
+        if (postingSurveys && postingSurveys.length !== 0) {
             setSectionData([
-                { title: "요청한 설문", data: updatedPostedSurveys },
+                // { title: "요청한 설문", data: updatedPostedSurveys },
                 { title: "작성중인 설문", data: postingSurveys },
             ]);
         }
-    }, [data, postingSurveys]);
+    }, [postingSurveys]);
+
+    // useEffect(() => {
+    //     if (data?.user.posted_surveys) {
+    //         // const updatedPostedSurveys: GQLSurvey[] =
+    //             // removeTypenameAndConvertToCamelCase(data.user.posted_surveys);
+    //         // setPostedSurveys(updatedPostedSurveys);
+    //         setSectionData([
+    //             // { title: "요청한 설문", data: updatedPostedSurveys },
+    //             { title: "작성중인 설문", data: postingSurveys },
+    //         ]);
+    //     }
+    // }, [data, postingSurveys]);
 
     if (loading) {
         <ActivityIndicator
@@ -194,62 +219,104 @@ export default function PostingBaseScreen({
     }
 
     return (
-        <View>
-            <View>
-                <SectionList
-                    sections={sectionData}
-                    keyExtractor={(item, index) => `${item.id + index}`}
-                    renderItem={({ item, section }) => {
-                        if (
-                            section.title === "요청한 설문" &&
-                            isGQLSurvey(item)
-                        ) {
-                            return postedRenderItem({ item });
-                        } else if (
-                            section.title === "작성중인 설문" &&
-                            isPostingSurveyState(item)
-                        ) {
-                            return postingRenderItem({ item });
+        <View style={{ flex: 1 }}>
+            {/* <View style={{ justifyContent: "center", flex: 1 }}> */}
+            {sectionData && sectionData.length !== 0 && (
+                <View style={{ flex: 1 }}>
+                    {/* TODO: FlatList 로 바꾸기. */}
+                    <SectionList
+                        sections={sectionData}
+                        keyExtractor={(item, index) => `${item.id + index}`}
+                        renderItem={({ item, section }) => {
+                            if (
+                                section.title === "요청한 설문" &&
+                                isGQLSurvey(item)
+                            ) {
+                                return postedRenderItem({ item });
+                            } else if (
+                                section.title === "작성중인 설문" &&
+                                isPostingSurveyState(item)
+                            ) {
+                                return postingRenderItem({ item });
+                            }
+                        }}
+                        SectionSeparatorComponent={() => <Spacer size={30} />}
+                        ItemSeparatorComponent={() => <Spacer size={10} />}
+                        renderSectionHeader={({ section }) => (
+                            <View>
+                                <Text
+                                    style={[
+                                        styles.sectionTitle,
+                                        { marginBottom: 20 },
+                                    ]}
+                                >
+                                    {section.title}
+                                </Text>
+                            </View>
+                        )}
+                        ListFooterComponent={
+                            <TextButton
+                                title="설문 만들기"
+                                onPress={() => {
+                                    navigation.navigate(
+                                        NavigationTitle.posting,
+                                        {
+                                            postingSurveyState: undefined,
+                                        }
+                                    );
+                                }}
+                                textStyle={{
+                                    textAlign: "center",
+                                    fontSize: 18,
+                                    fontWeight: "700",
+                                }}
+                                backgroundStyle={{
+                                    backgroundColor: "white",
+                                    // height: 40,
+                                    height: 60,
+                                    borderRadius: 16,
+                                    marginBottom: 30,
+                                    marginHorizontal: 20,
+                                    marginTop: 20,
+                                }}
+                            />
                         }
-                    }}
-                    SectionSeparatorComponent={() => <Spacer size={30} />}
-                    ItemSeparatorComponent={() => <Spacer size={10} />}
-                    renderSectionHeader={({ section }) => (
-                        <View>
-                            <Text
-                                style={[
-                                    styles.sectionTitle,
-                                    { marginBottom: 20 },
-                                ]}
-                            >
-                                {section.title}
-                            </Text>
-                        </View>
-                    )}
-                    ListFooterComponent={
-                        <TextButton
-                            title="설문 만들기"
-                            onPress={() => {
-                                navigation.navigate(NavigationTitle.posting, {
-                                    postingSurveyState: undefined,
-                                });
-                            }}
-                            textStyle={{
-                                textAlign: "center",
-                                fontSize: 18,
-                                fontWeight: "700",
-                            }}
-                            backgroundStyle={{
-                                backgroundColor: "white",
-                                height: 40,
-                                borderRadius: 16,
-                                marginBottom: 30,
-                                marginHorizontal: 20,
-                            }}
-                        />
-                    }
-                />
-            </View>
+                    />
+                </View>
+            )}
+
+            {sectionData && sectionData.length === 0 && (
+                <View style={{ justifyContent: "center", flex: 1 }}>
+                    {/* <View
+                        style={
+                            
+                        }
+                    > */}
+                    <TextButton
+                        title="설문 만들기"
+                        onPress={() => {
+                            navigation.navigate(NavigationTitle.posting, {
+                                postingSurveyState: undefined,
+                            });
+                        }}
+                        textStyle={{
+                            textAlign: "center",
+                            fontSize: 18,
+                            fontWeight: "700",
+                            // color: "magenta",
+                        }}
+                        backgroundStyle={{
+                            backgroundColor: "white",
+                            height: 60,
+                            borderRadius: 16,
+                            marginBottom: 30,
+                            marginHorizontal: 20,
+                            marginTop: 20,
+                        }}
+                    />
+                    {/* </View> */}
+                </View>
+            )}
         </View>
     );
 }

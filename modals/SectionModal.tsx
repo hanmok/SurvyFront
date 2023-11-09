@@ -1,4 +1,11 @@
-import { Button, Modal, StyleSheet, Text, View } from "react-native";
+import {
+    Button,
+    Modal,
+    StyleSheet,
+    Text,
+    TouchableNativeFeedback,
+    View,
+} from "react-native";
 import { colors } from "../utils/colors";
 import { useEffect } from "react";
 import { screenWidth } from "../utils/ScreenSize";
@@ -6,6 +13,7 @@ import { Feather } from "@expo/vector-icons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import React from "react";
 import Separator from "../components/common/Separator";
+import { log } from "../utils/Log";
 
 interface SectionModalProps {
     onClose: () => void;
@@ -57,26 +65,35 @@ const SectionModal: React.FC<SectionModalProps> = ({
             visible={isSectionModalVisible}
             animationType="slide"
         >
-            <View style={styles.wholeContainer}>
-                <View style={styles.mainContainer}>
-                    <Feather
-                        name="x"
-                        size={30}
-                        color="black"
-                        style={{ alignSelf: "flex-end", marginRight: 10 }}
-                        onPress={onClose}
-                    />
-                    {sections}
-                    <Separator />
-                    <Button
-                        title="Add Section"
-                        onPress={() => {
-                            onAdd();
-                            onClose();
-                        }}
-                    />
+            {/* <View style={styles.wholeContainer}> */}
+            <TouchableNativeFeedback
+                style={styles.wholeContainer}
+                onPress={() => {
+                    log("hi");
+                    onClose();
+                }}
+            >
+                <View style={styles.wholeContainer}>
+                    <View style={styles.mainContainer}>
+                        <Feather
+                            name="x"
+                            size={30}
+                            color="black"
+                            style={{ alignSelf: "flex-end", marginRight: 10 }}
+                            onPress={onClose}
+                        />
+                        {sections}
+                        <Separator />
+                        <Button
+                            title="Add Section"
+                            onPress={() => {
+                                onAdd();
+                                onClose();
+                            }}
+                        />
+                    </View>
                 </View>
-            </View>
+            </TouchableNativeFeedback>
         </Modal>
     );
 };

@@ -60,6 +60,7 @@ import { screenWidth } from "../utils/ScreenSize";
 import SectionModal from "../modals/SectionModal";
 import { RouteProp } from "@react-navigation/native";
 import { makeRandomNumber } from "../utils/GetRandomNumber";
+import PopupMenu from "../components/PopupMenu";
 
 export default function PostingScreen({
     navigation,
@@ -100,6 +101,7 @@ export default function PostingScreen({
         const prevSurvey = route.params.postingSurveyState;
         logObject("prevSurvey", prevSurvey);
         setPostingSurvey(prevSurvey);
+
         if (prevSurvey) {
             const prevSections = prevSurvey.sections;
             const prevQuestions = prevSurvey.questions;
@@ -113,16 +115,28 @@ export default function PostingScreen({
             setSurveyTitle(prevSurveyTitle);
         }
     }, []);
-
+    const [sectionAdded, setSectionAdded] = useState(false);
     const [isSatisfied, setIsSatisfied] = useState(false);
 
     const addSection = () => {
         const newSection = makeSection(sections.length);
+        setSectionAdded(true);
         setSections(prev => [...prev, newSection]);
+        // const nextSectionIndex =
+        // setCurrentSectionIndex(current)
+        // setSectionAdded(true)
     };
 
     useEffect(() => {
-        setIsSatisfied(questions.length !== 0); // 0 이 아니면 satisfied 는 true
+        if (sectionAdded) {
+            setSectionAdded(false);
+            const lastSectionIndex = sections.length - 1;
+            setCurrentSectionIndex(lastSectionIndex);
+        }
+    }, [sections]);
+
+    useEffect(() => {
+        setIsSatisfied(questions.length !== 0 && surveyTitle !== ""); // 0 이 아니면 satisfied 는 true
     }, [questions]);
 
     useEffect(() => {
@@ -175,60 +189,51 @@ export default function PostingScreen({
         navigation.setOptions({
             headerRight: () => (
                 <View style={styles.rightNavContainer}>
-                    {/* three-dot menu */}
-                    <Menu style={styles.threeDotMenu}>
-                        <MenuTrigger style={{ marginRight: 12 }}>
-                            <Entypo
-                                name="dots-three-horizontal"
-                                size={24}
-                                color="black"
-                            />
-                        </MenuTrigger>
-                        <MenuOptions
-                            customStyles={{
-                                optionsContainer: styles.optionsContainer,
-                            }}
-                            optionsContainerStyle={{
-                                marginTop: 20,
-                                marginRight: 10,
-                            }}
-                        >
-                            <MenuOption
-                                onSelect={handleFirstOptionTapped}
-                                style={styles.option}
-                            >
-                                <Text>순서 바꾸기</Text>
-                            </MenuOption>
-                            <View style={styles.divider} />
-                            <MenuOption
-                                onSelect={initializeAll}
-                                style={styles.option}
-                            >
-                                <Text>초기화</Text>
-                            </MenuOption>
-                            <View style={styles.divider} />
-                            <MenuOption
-                                onSelect={toggleInitializeCurrentSection}
-                                style={styles.option}
-                            >
-                                <Text>현재 Section 초기화</Text>
-                            </MenuOption>
-                            <MenuOption
-                                onSelect={toggleSave}
-                                style={styles.option}
-                            >
-                                <Text>저장</Text>
-                            </MenuOption>
-                        </MenuOptions>
-                    </Menu>
+                    <PopupMenu
+                        options={[
+                            {
+                                title: "순서 바꾸기",
+                                action: handleFirstOptionTapped,
+                            },
+                            {
+                                title: "초기화",
+                                action: initializeAll,
+                            },
+                            {
+                                title: "현재 Section 초기화",
+                                action: toggleInitializeCurrentSection,
+                            },
+                            {
+                                title: "저장",
+                                action: toggleSave,
+                            },
+                        ]}
+                    />
                 </View>
             ),
         });
     }, [navigation]);
 
+    // const toggleSave = () => {
+    //     if (surveyTitle !== "") {
+    //         setShouldSave(!shouldSave);
+    //     } else {
+    //         alert("설문 제목을 입력해주세요.");
+    //     }
+    // };
+
     const toggleSave = () => {
         setShouldSave(!shouldSave);
     };
+
+    useEffect(() => {
+        if (shouldSave) {
+            if (shouldSave && surveyTitle === "") {
+                alert("설문 제목을 입력해주세요.");
+            }
+            setShouldSave(false);
+        }
+    }, [shouldSave]);
 
     useEffect(() => {
         console.log("save tapped");
@@ -434,18 +439,25 @@ export default function PostingScreen({
                     setConfirmTapped={setConfirmTapped}
                 /> */}
                 <TextButton
-                    title={surveyTitle !== "" ? surveyTitle : "Survey Title"}
+                    title={surveyTitle !== "" ? surveyTitle : "설문 제목"}
                     onPress={() => {
                         toggleTitleModalVisible();
                     }}
-                    textStyle={{ fontSize: 22, fontWeight: "bold" }}
+                    textStyle={{
+                        fontSize: 22,
+                        fontWeight: "bold",
+                        color: surveyTitle !== "" ? "black" : "gray",
+                    }}
                     backgroundStyle={{
                         height: 44,
                         // marginRight: 12,
 
-                        borderTopLeftRadius: 12,
-                        borderTopRightRadius: 12,
+                        borderTopLeftRadius: 16,
+                        borderTopRightRadius: 16,
+                        borderBottomLeftRadius: 6,
+                        borderBottomRightRadius: 6,
                         backgroundColor: colors.gray4,
+                        marginBottom: 8,
                     }}
                 />
                 <TextButton
@@ -456,15 +468,18 @@ export default function PostingScreen({
                     textStyle={{
                         textAlignVertical: "center",
                         fontWeight: "600",
-                        color: "blue",
+                        // color: "blue",
+                        color: colors.gray3,
                     }}
                     backgroundStyle={[
                         styles.shadow,
                         {
                             justifyContent: "center",
                             backgroundColor: "white",
-                            borderBottomLeftRadius: 12,
-                            borderBottomRightRadius: 12,
+                            borderBottomLeftRadius: 16,
+                            borderBottomRightRadius: 16,
+                            borderTopLeftRadius: 6,
+                            borderTopRightRadius: 6,
                             height: 34,
                         },
                     ]}
@@ -477,6 +492,7 @@ export default function PostingScreen({
     const listFooter = () => {
         return (
             <View style={styles.listFooterStyle}>
+                {/* <PopupMenu /> */}
                 <TextButton
                     title="질문 추가"
                     onPress={toggleCreateModal}
@@ -696,7 +712,7 @@ const styles = StyleSheet.create({
         color: colors.black,
         textAlign: "center",
         fontSize: fontSizes.m20,
-        fontWeight: "500",
+        fontWeight: "600",
         borderRadius: 40,
     },
     expectedTime: {

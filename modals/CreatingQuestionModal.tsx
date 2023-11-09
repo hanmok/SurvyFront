@@ -26,6 +26,7 @@ import {
 import { log, logObject } from "../utils/Log";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
+import DefaultSwitch from "../components/DefaultSwitch";
 
 interface CreatingQuestionModalProps {
     isCreatingQuestionModalVisible: boolean;
@@ -235,17 +236,21 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                         >
                                             기타 옵션 추가
                                         </Text>
-                                        <Switch
+                                        {/* <Switch
                                             trackColor={{
-                                                false: "#767577",
-                                                true: "#81b0ff",
+                                                false: "cyan",
+                                                true: "#34C759",
                                             }}
                                             thumbColor={
-                                                isExtraOptionEnabled
-                                                    ? "#f5dd4b"
-                                                    : "#f4f3f4"
+                                                colors.white
                                             }
-                                            ios_backgroundColor="#3e3e3e"
+                                            ios_backgroundColor="#E5E5E5"
+                                            onValueChange={
+                                                toggleExtraOptionSwitch
+                                            }
+                                            value={isExtraOptionEnabled}
+                                        /> */}
+                                        <DefaultSwitch
                                             onValueChange={
                                                 toggleExtraOptionSwitch
                                             }
@@ -255,13 +260,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 )}
 
                                 <View style={{ height: 20 }} />
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                    }}
-                                ></View>
                             </View>
                         </View>
                         <View
@@ -285,10 +283,12 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 backgroundStyle={
                                     satisfied
                                         ? [
+                                              //   styles.bottomLeftButtonTextContainer,
                                               styles.bottomRightButtonTextContainer,
                                               styles.activatedStyle,
                                           ]
                                         : [
+                                              //   styles.bottomLeftButtonTextContainer,
                                               styles.bottomRightButtonTextContainer,
                                               styles.inactivatedStyle,
                                           ]
@@ -325,12 +325,13 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexDirection: "row",
         justifyContent: "center",
-        // borderWidth: 1,
         borderTopWidth: 1,
         borderRightWidth: 1,
         height: 40,
         alignItems: "center",
         margin: 0,
+        backgroundColor: "white",
+        borderBottomLeftRadius: 10,
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,
@@ -347,9 +348,11 @@ const styles = StyleSheet.create({
     },
     inactivatedStyle: {
         backgroundColor: colors.gray2,
+        borderBottomRightRadius: 10,
     },
     activatedStyle: {
         backgroundColor: colors.white,
+        borderBottomRightRadius: 10,
     },
 });
 

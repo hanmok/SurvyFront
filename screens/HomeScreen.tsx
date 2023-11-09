@@ -47,6 +47,7 @@ function HomeScreen({
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.home>;
 }) {
     const [refreshing, setRefreshing] = useState(false);
+
     const onRefresh = () => {
         setRefreshing(true);
         fetchSurveys().then(newSurveys => {

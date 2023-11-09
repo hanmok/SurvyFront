@@ -9,6 +9,7 @@ import {
 import { commonStyles } from "./utils/CommonStyles";
 import { colors } from "./utils/colors";
 import SingleSelectionButton from "./components/SingleSelectionButton";
+import { fontSizes } from "./utils/sizes";
 
 interface CostSelectionProps {
     initialIndex: number;
@@ -24,7 +25,7 @@ const CostSelectionContainer: React.FC<CostSelectionProps> = ({
         <View style={{ flexDirection: "row", gap: 5 }}>
             <SingleSelectionButton
                 index={0}
-                title="free"
+                title="Free"
                 selectedIndex={selectedIndex}
                 onPress={() => {
                     setSelectedIndex(0);
@@ -32,14 +33,21 @@ const CostSelectionContainer: React.FC<CostSelectionProps> = ({
                 }}
                 backgroundStyle={styles.buttonContainer}
                 textStyle={{ textAlign: "center" }}
-                selectedTextColor="white"
-                unselectedTextColor="black"
-                selectedBackgroundColor={colors.magenta}
-                unselectedBackgroundColor={colors.transparent}
+                unselectedTextStyle={{ color: colors.gray }}
+                unselectedBackgroundStyle={{
+                    backgroundColor: colors.transparent,
+                }}
+                selectedTextStyle={{
+                    color: colors.white,
+                    fontWeight: "bold",
+                    fontSize: fontSizes.s16,
+                }}
+                selectedBackgroundStyle={{ backgroundColor: colors.black }}
             />
+
             <SingleSelectionButton
                 index={1}
-                title="paid"
+                title="Paid"
                 selectedIndex={selectedIndex}
                 onPress={() => {
                     setSelectedIndex(1);
@@ -47,10 +55,16 @@ const CostSelectionContainer: React.FC<CostSelectionProps> = ({
                 }}
                 textStyle={{ textAlign: "center" }}
                 backgroundStyle={styles.buttonContainer}
-                selectedTextColor="white"
-                unselectedTextColor="black"
-                selectedBackgroundColor={colors.magenta}
-                unselectedBackgroundColor={colors.transparent}
+                unselectedTextStyle={{ color: colors.gray }}
+                unselectedBackgroundStyle={{
+                    backgroundColor: colors.transparent,
+                }}
+                selectedTextStyle={{
+                    color: colors.white,
+                    fontWeight: "bold",
+                    fontSize: fontSizes.s16,
+                }}
+                selectedBackgroundStyle={{ backgroundColor: colors.black }}
             />
         </View>
     );
@@ -60,7 +74,8 @@ const styles = StyleSheet.create({
     buttonContainer: {
         borderRadius: 5,
         height: 40,
-        width: 80,
+        // width: 80,
+        flex: 1,
         justifyContent: "center",
         borderWidth: 1,
         overflow: "hidden",

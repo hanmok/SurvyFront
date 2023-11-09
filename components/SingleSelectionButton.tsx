@@ -11,12 +11,15 @@ import {
 interface SingleSelectionButtonProps {
     title: string;
     onPress: () => void;
+
     textStyle?: StyleProp<TextStyle>;
     backgroundStyle?: StyleProp<ViewStyle>;
-    selectedTextColor: string;
-    selectedBackgroundColor: string;
-    unselectedTextColor: string;
-    unselectedBackgroundColor: string;
+
+    selectedTextStyle?: StyleProp<TextStyle>;
+    selectedBackgroundStyle?: StyleProp<ViewStyle>;
+
+    unselectedTextStyle?: StyleProp<TextStyle>;
+    unselectedBackgroundStyle?: StyleProp<ViewStyle>;
     selectedIndex: number;
     index: number;
 }
@@ -26,18 +29,14 @@ const SingleSelectionButton: React.FC<SingleSelectionButtonProps> = ({
     onPress,
     textStyle,
     backgroundStyle,
-    selectedTextColor,
-    selectedBackgroundColor,
-    unselectedTextColor,
-    unselectedBackgroundColor,
+    unselectedBackgroundStyle,
+    unselectedTextStyle,
+    selectedBackgroundStyle,
+    selectedTextStyle,
     selectedIndex,
     index,
 }) => {
     const [isSelected, setIsSelected] = useState(false);
-
-    const handleSelection = () => {
-        onPress();
-    };
 
     return (
         <TouchableOpacity
@@ -46,12 +45,12 @@ const SingleSelectionButton: React.FC<SingleSelectionButtonProps> = ({
                     ? [
                           styles.container,
                           backgroundStyle,
-                          { backgroundColor: selectedBackgroundColor },
+                          selectedBackgroundStyle,
                       ]
                     : [
                           styles.container,
                           backgroundStyle,
-                          { backgroundColor: unselectedBackgroundColor },
+                          unselectedBackgroundStyle,
                       ]
             }
             onPress={onPress}
@@ -59,8 +58,8 @@ const SingleSelectionButton: React.FC<SingleSelectionButtonProps> = ({
             <Text
                 style={
                     selectedIndex === index
-                        ? [textStyle, { color: selectedTextColor }]
-                        : [textStyle, { color: unselectedTextColor }]
+                        ? [textStyle, selectedTextStyle]
+                        : [textStyle, unselectedTextStyle]
                 }
             >
                 {title}

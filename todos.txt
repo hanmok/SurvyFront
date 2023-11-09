@@ -1,4 +1,6 @@
 
-Survey Post 하고난 후, Storage 에서 제거하기. 
+Done! Survey Post 하고난 후, Storage 에서 제거하기. 
 
-Targetting 화면에서, 각 Section 별로 Divider 만들어주기. 
+어떤 Action 을 취할 때, Message 가 있어야 할 것 같은데? 
+Post 완료 후에 이동하는 화면이 다른 곳이어야 하지 않을까?   
+Post 됐는지 안됐는지 알 수가 없잖아. 

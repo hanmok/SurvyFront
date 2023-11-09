@@ -80,7 +80,9 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
     }, [selectedGenres]);
 
     useEffect(() => {
-        if (userInput !== "") {
+        console.log(`userInput: ${userInput}`);
+        // if (userInput )
+        if (!userInput || userInput !== "") {
             const genresToShow = allGenres.filter(genre =>
                 genre.name.includes(userInput)
             );
@@ -88,7 +90,7 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         } else {
             setShowingGenres(allGenres);
         }
-    }, [userInput]);
+    }, [userInput, allGenres]);
 
     // const genreItem = ({ item }: { item: Genre }) => {
     //     return (
@@ -231,6 +233,7 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                                             onPress={() => {
                                                 toggleGenreSelection(genre);
                                             }}
+                                            key={genre.id}
                                             backgroundStyle={{
                                                 backgroundColor: colors.gray1,
                                                 padding: 4,
@@ -371,6 +374,8 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
+        backgroundColor: "white",
+        borderBottomLeftRadius: 10,
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,

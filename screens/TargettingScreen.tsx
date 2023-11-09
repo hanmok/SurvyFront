@@ -39,6 +39,8 @@ import { RouteProp } from "@react-navigation/native";
 import GenreSelectionModal from "../modals/GenreSelectionModal";
 import { screenWidth } from "../utils/ScreenSize";
 import { GeoInfo } from "../interfaces/GeoInfo";
+import { useMyContext } from "./MyContext";
+import { deletePostingSurvey } from "../utils/Storage";
 
 type TargettingScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -64,6 +66,8 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         toggleCostGuideModal();
     };
 
+    const { ctxData, updateCtxData } = useMyContext();
+
     // 여기에서 모두 처리해버리기.
     const [participationGoal, setParticipationGoal] = useState("10");
     const { surveyTitle, sections, questions } = route.params;
@@ -83,18 +87,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     const [selectedGenderIndex, setSelectedGender] = useState(2);
     const [isSatisfied, setIsSatisfied] = useState(false);
     const [isNextButtonTapped, setIsNextButtonTapped] = useState(false);
-
-    // useEffect(() => {
-    //     console.log(`gender selection: ${selectedGenderIndex}`);
-    // }, [selectedGenderIndex]);
-
-    // useEffect(() => {
-    //     logObject("ageRange:", ageRange);
-    // }, [ageRange]);
-
-    // useEffect(() => {
-    //     logObject("selectedGenres:", selectedGenres);
-    // }, [selectedGenres]);
 
     useEffect(() => {
         if (selectedGeos.length !== 0 && selectedGenres.length !== 0) {
@@ -193,7 +185,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         setIsGeoModalVisible(!isGeoModalVisible);
     };
 
-    // const finalConfirmAction = async (): Promise<ApiResponse> => {
     const finalConfirmAction = async () => {
         setIsSendPressed(false);
         setCostModalVisible(!isCostModalVisible);
@@ -231,7 +222,13 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             cost
         );
 
+        if (ctxData) {
+            await deletePostingSurvey(ctxData);
+        }
+        // 여기.. 그게 정말 없어야 하나.. ??
         navigation.popToTop();
+
+        // navigation.navigate(NavigationTitle.postedSurveys);
     };
 
     const toggleGenreModal = () => {
@@ -321,7 +318,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                             style={{
                                 flex: 1,
                                 marginBottom: 30,
-                                // backgroundColor: "cyan",
                             }}
                         >
                             <View style={{ width: 300, alignSelf: "center" }}>
@@ -356,24 +352,17 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                     </View>
                                 </View>
                             </View>
-
-                            {/* <View>
-                                <FlatList
-                                    data={selectedGeos}
-                                    renderItem={renderGeoItem}
-                                    keyExtractor={item => `${item.code}`}
-                                    // horizontal={true}
-                                    numColumns={3}
-                                    scrollEnabled={false}
-                                />
-                            </View> */}
+                            {/* 선택된 지역들 */}
                             <View
                                 style={{
-                                    flex: 0.9,
+                                    // flex: 0.9,
+                                    flex: 1,
                                     flexDirection: "row",
+                                    justifyContent: "flex-start",
                                     flexWrap: "wrap",
                                     marginTop: 10,
                                     marginHorizontal: 30,
+                                    // backgroundColor: "cyan",
                                 }}
                             >
                                 {selectedGeos.map(geo => (
@@ -389,6 +378,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                             height: 30,
                                             marginVertical: 4,
                                         }}
+                                        key={`${geo.id} ${geo.city}`}
                                         textStyle={{
                                             color: colors.white,
                                         }}
@@ -396,7 +386,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                 ))}
                             </View>
                         </View>
-
+                        {/* Separator */}
                         <View
                             style={{
                                 backgroundColor: colors.gray4,
@@ -411,7 +401,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                             style={{
                                 flex: 1,
                                 marginBottom: 60,
-                                // backgroundColor: "magenta",
                             }}
                         >
                             <View style={{ width: 300, alignSelf: "center" }}>
@@ -450,21 +439,16 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                 </View>
                             </View>
 
-                            {/* <FlatList
-                                data={selectedGenres}
-                                renderItem={renderGenreItem}
-                                keyExtractor={item => `${item.id}`}
-                                numColumns={3}
-                                scrollEnabled={false}
-                            /> */}
-
                             <View
                                 style={{
-                                    flex: 0.9,
+                                    // flex: 0.9,
+                                    flex: 1,
                                     flexDirection: "row",
+                                    justifyContent: "flex-start",
                                     flexWrap: "wrap",
                                     marginTop: 10,
                                     marginHorizontal: 30,
+                                    // backgroundColor: "magenta",
                                 }}
                             >
                                 {selectedGenres.map(genre => (
@@ -503,10 +487,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                         }}
                         title="다음"
                         textStyle={{
-                            // color: isSatisfied ? colors.black : "#cbcbcb",
-                            // color: "magenta",
                             color: isSatisfied ? colors.black : "#cbcbcb",
-
                             fontSize: 18,
                             letterSpacing: 2,
                         }}

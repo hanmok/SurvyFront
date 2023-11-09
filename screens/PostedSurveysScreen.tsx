@@ -30,6 +30,7 @@ function PostedSurveysScreen({
         getUserId();
     }, [userId]);
 
+    // 최신이 위로 가도록.
     return (
         <PostedSurveyItems
             userId={userId}

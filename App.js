@@ -21,6 +21,8 @@ import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 import SettingScreen from "./screens/SettingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import MyinfoScreen from "./screens/MyinfoScreen";
+import { MyProvider } from "./screens/MyContext";
+
 // import {
 //     ApolloProvider,
 //     ApolloClient,
@@ -37,7 +39,7 @@ import TargettingScreen from "./screens/TargettingScreen";
 import { TextInput } from "react-native-gesture-handler";
 import ResponseScreen from "./screens/ResponseScreen";
 import ParticipatingEndScreen from "./screens/ParticipatingEndScreen";
-
+// import { }
 // const client = new ApolloClient({
 //     uri: API_BASE_URL,
 //     cache: new InMemoryCache(),
@@ -49,12 +51,13 @@ export default function App() {
     return (
         // <ApolloProvider client={{ client }}>
         <ApolloProvider>
-            <Provider store={store}>
-                <MenuProvider>
-                    <NavigationContainer>
-                        <Stack.Navigator>
-                            {/* 테스트 용으로 막아둠 */}
-                            {/* <Stack.Screen
+            <MyProvider>
+                <Provider store={store}>
+                    <MenuProvider>
+                        <NavigationContainer>
+                            <Stack.Navigator>
+                                {/* 테스트 용으로 막아둠 */}
+                                {/* <Stack.Screen
                                 name={NavigationTitle.login}
                                 component={LoginScreen}
                                 options={{
@@ -62,7 +65,7 @@ export default function App() {
                                 }}
                             /> */}
 
-                            {/* <Stack.Screen
+                                {/* <Stack.Screen
                                 name={NavigationTitle.endParticipation}
                                 component={ParticipatingEndScreen}
                                 options={{
@@ -70,110 +73,111 @@ export default function App() {
                                 }}
                             /> */}
 
-                            <Stack.Screen
-                                name={NavigationTitle.mainTabs}
-                                component={MainTabs}
-                                options={{
-                                    headerShown: false,
-                                }}
-                            />
-                            <Stack.Screen
-                                name={NavigationTitle.participate}
-                                component={ParticipatingScreen}
-                                options={{
-                                    // headerBackTitleVisible: false,
-                                    // headerback
-                                    // headerLeft: null,
-                                    // TODO: 개발 끝나면 false 로 처리하기.
-                                    // headerShown: false,
-                                    headerStyle: {
-                                        backgroundColor: colors.background,
-                                    },
-                                }}
-                            />
-                            <Stack.Screen
-                                name={NavigationTitle.posting}
-                                component={PostingScreen}
-                                options={{
-                                    headerBackTitleVisible: false,
-                                    headerStyle: {
-                                        backgroundColor: colors.background,
-                                    },
-                                    headerRight: () => (
-                                        <ImageButton
-                                            img={require("./assets/selectedSingleSelection.png")}
-                                        />
-                                    ),
-                                }}
-                            />
+                                <Stack.Screen
+                                    name={NavigationTitle.mainTabs}
+                                    component={MainTabs}
+                                    options={{
+                                        headerShown: false,
+                                    }}
+                                />
+                                <Stack.Screen
+                                    name={NavigationTitle.participate}
+                                    component={ParticipatingScreen}
+                                    options={{
+                                        // headerBackTitleVisible: false,
+                                        // headerback
+                                        // headerLeft: null,
+                                        // TODO: 개발 끝나면 false 로 처리하기.
+                                        // headerShown: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                    }}
+                                />
+                                <Stack.Screen
+                                    name={NavigationTitle.posting}
+                                    component={PostingScreen}
+                                    options={{
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                        headerRight: () => (
+                                            <ImageButton
+                                                img={require("./assets/selectedSingleSelection.png")}
+                                            />
+                                        ),
+                                    }}
+                                />
 
-                            <Stack.Screen
-                                name={NavigationTitle.participatedSurveys}
-                                component={ParticipatedSurveysScreen}
-                                options={{
-                                    headerBackTitleVisible: false,
-                                    headerStyle: {
-                                        backgroundColor: colors.background,
-                                    },
-                                }}
-                            />
+                                <Stack.Screen
+                                    name={NavigationTitle.participatedSurveys}
+                                    component={ParticipatedSurveysScreen}
+                                    options={{
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                    }}
+                                />
 
-                            <Stack.Screen
-                                name={NavigationTitle.postedSurveys}
-                                component={PostedSurveysScreen}
-                                options={{
-                                    headerBackTitleVisible: false,
-                                    headerStyle: {
-                                        backgroundColor: colors.background,
-                                    },
-                                }}
-                            />
+                                <Stack.Screen
+                                    name={NavigationTitle.postedSurveys}
+                                    component={PostedSurveysScreen}
+                                    options={{
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                    }}
+                                />
 
-                            <Stack.Screen
-                                name={NavigationTitle.setting}
-                                component={SettingScreen}
-                                options={{
-                                    headerBackTitleVisible: false,
-                                    headerStyle: {
-                                        backgroundColor: colors.background,
-                                    },
-                                }}
-                            />
+                                <Stack.Screen
+                                    name={NavigationTitle.setting}
+                                    component={SettingScreen}
+                                    options={{
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                    }}
+                                />
 
-                            <Stack.Screen
-                                name={NavigationTitle.myinfo}
-                                component={MyinfoScreen}
-                                options={{
-                                    headerBackTitleVisible: false,
-                                    headerStyle: {
-                                        backgroundColor: colors.background,
-                                    },
-                                }}
-                            />
-                            <Stack.Screen
-                                name={NavigationTitle.targetting}
-                                component={TargettingScreen}
-                                options={{ headerBackTitleVisible: false }}
-                            />
+                                <Stack.Screen
+                                    name={NavigationTitle.myinfo}
+                                    component={MyinfoScreen}
+                                    options={{
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                    }}
+                                />
+                                <Stack.Screen
+                                    name={NavigationTitle.targetting}
+                                    component={TargettingScreen}
+                                    options={{ headerBackTitleVisible: false }}
+                                />
 
-                            <Stack.Screen
-                                name={NavigationTitle.response}
-                                component={ResponseScreen}
-                                options={{
-                                    headerBackTitleVisible: false,
-                                }}
-                            />
-                            <Stack.Screen
-                                name={NavigationTitle.endParticipation}
-                                component={ParticipatingEndScreen}
-                                options={{
-                                    headerShown: false,
-                                }}
-                            />
-                        </Stack.Navigator>
-                    </NavigationContainer>
-                </MenuProvider>
-            </Provider>
+                                <Stack.Screen
+                                    name={NavigationTitle.response}
+                                    component={ResponseScreen}
+                                    options={{
+                                        headerBackTitleVisible: false,
+                                    }}
+                                />
+                                <Stack.Screen
+                                    name={NavigationTitle.endParticipation}
+                                    component={ParticipatingEndScreen}
+                                    options={{
+                                        headerShown: false,
+                                    }}
+                                />
+                            </Stack.Navigator>
+                        </NavigationContainer>
+                    </MenuProvider>
+                </Provider>
+            </MyProvider>
         </ApolloProvider>
     );
 }

@@ -86,7 +86,14 @@ const DynamicTextInputsForModification = ({
                         padding: 10,
                         marginBottom: 10,
                     }}
-                    textStyle={{ color: colors.gray2 }}
+                    hasShadow={false}
+                    textStyle={{
+                        color: colors.gray3,
+                        fontSize: fontSizes.s16,
+                        fontWeight: "400",
+                        textAlign: "left",
+                    }}
+                    isEnabled={false}
                 />
             )}
             <TextButton
@@ -104,6 +111,7 @@ const DynamicTextInputsForModification = ({
                     fontSize: fontSizes.m20,
                 }}
                 onPress={handleAddInput}
+                isEnabled={false}
             />
         </View>
     );

@@ -25,6 +25,7 @@ import { log, logObject } from "../utils/Log";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
 import DynamicTextInputsForModification from "../components/posting/DynamicTextInputsForModification";
+import DefaultSwitch from "../components/DefaultSwitch";
 
 interface ModifyingQuestionModalProps {
     isModifyingQuestionModalVisible: boolean;
@@ -190,17 +191,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                         >
                                             기타 옵션 추가
                                         </Text>
-                                        <Switch
-                                            trackColor={{
-                                                false: "#767577",
-                                                true: "#81b0ff",
-                                            }}
-                                            thumbColor={
-                                                isExtraOptionEnabled
-                                                    ? "#f5dd4b"
-                                                    : "#f4f3f4"
-                                            }
-                                            ios_backgroundColor="#3e3e3e"
+                                        <DefaultSwitch
                                             onValueChange={
                                                 toggleExtraOptionSwitch
                                             }
@@ -208,15 +199,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                         />
                                     </View>
                                 )}
-
                                 <View style={{ height: 20 }} />
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                    }}
-                                ></View>
                             </View>
                         </View>
                         <View
@@ -339,6 +322,8 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
+        backgroundColor: "white",
+        borderBottomLeftRadius: 10,
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,
@@ -357,9 +342,11 @@ const styles = StyleSheet.create({
     },
     inactivatedStyle: {
         backgroundColor: colors.gray2,
+        borderBottomRightRadius: 10,
     },
     activatedStyle: {
         backgroundColor: colors.white,
+        borderBottomRightRadius: 10,
     },
 });
 

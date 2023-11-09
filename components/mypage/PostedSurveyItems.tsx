@@ -44,7 +44,6 @@ const PostedSurveyItems = ({
     const { loading, error, data } = useQuery<PostedSurveyResponse>(
         postedSurveyQuery,
         { client, variables: { userId: userId }, fetchPolicy: "no-cache" }
-        // { client, variables: { userId: 774 } }
     );
 
     const [postedSurveys, setPostedSurveys] = useState<GQLSurvey[]>([]);
@@ -55,6 +54,9 @@ const PostedSurveyItems = ({
             const updatedPostedSurveys: GQLSurvey[] =
                 removeTypenameAndConvertToCamelCase(data.user.posted_surveys);
             logObject("get postedSurveyObj", updatedPostedSurveys);
+            updatedPostedSurveys.sort((a, b) => {
+                return Number(b.createdAt) - Number(a.createdAt);
+            });
             setPostedSurveys(updatedPostedSurveys);
         }
     }, [data]);

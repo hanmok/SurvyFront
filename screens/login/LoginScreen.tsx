@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../utils/NavHelper";
+import { RootStackParamList } from "../../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
-import { NavigationTitle } from "../utils/NavHelper";
+import { NavigationTitle } from "../../utils/NavHelper";
 import {
     View,
     Text,
@@ -11,20 +11,20 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
 } from "react-native";
-import { colors } from "../utils/colors";
-import TextButton from "../components/TextButton";
-import { screenWidth } from "../utils/ScreenSize";
-import Spacer from "../components/common/Spacer";
+import { colors } from "../../utils/colors";
+import TextButton from "../../components/TextButton";
+import { screenWidth } from "../../utils/ScreenSize";
+import Spacer from "../../components/common/Spacer";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { fontSizes } from "../utils/sizes";
-import { login } from "../API/UserAPI";
-import { UserState } from "../interfaces/UserState";
-import { saveUserState } from "../utils/Storage";
+import { fontSizes } from "../../utils/sizes";
+import { login } from "../../API/UserAPI";
+import { UserState } from "../../interfaces/UserState";
+import { saveUserState } from "../../utils/Storage";
 import { useEffect, useRef, useState } from "react";
 import { Alert } from "react-native";
-import showMessageAlert from "../components/CustomAlert";
-import { logObject } from "../utils/Log";
-import { API_BASE_URL } from "../API/API";
+import showMessageAlert from "../../components/CustomAlert";
+import { log, logObject } from "../../utils/Log";
+import { API_BASE_URL } from "../../API/API";
 // import { Apollocient}
 import {
     // gql,
@@ -97,14 +97,14 @@ export default function LoginScreen({
             <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
                 <View style={[styles.mainContainer]}>
                     <Spacer size={40} />
-                    <View>
+                    {/* <View>
                         <Image source={require("../assets/coin.jpg")} />
-                    </View>
+                    </View> */}
 
                     <View>
                         <View style={styles.loginInfoContainer}>
                             <TextInput
-                                placeholder="Username"
+                                placeholder="아이디 입력"
                                 style={styles.textInputStyle}
                                 value={username}
                                 onChangeText={setUsername}
@@ -115,11 +115,11 @@ export default function LoginScreen({
                                 }}
                             />
                         </View>
-                        <View style={{ height: 20 }} />
+                        <View style={{ height: 4 }} />
                         <View style={styles.loginInfoContainer}>
                             <TextInput
                                 ref={passwordRef}
-                                placeholder="Password"
+                                placeholder="비밀번호 입력"
                                 style={styles.textInputStyle}
                                 value={password}
                                 onChangeText={setPassword}
@@ -153,29 +153,51 @@ export default function LoginScreen({
                                 styles.loginBackgroundStyle,
                             ]}
                         />
+                        <Spacer size={10}/>
+                            <TextButton
+                            title="Sign Up"
+                            onPress={() => {
+                                console.log("login tapped");
+                                // 성공시 여기 화면으로 넘어가기!
+                                loginAction(username, password);
+                            }}
+                            textStyle={styles.loginTextStyle}
+                            backgroundStyle={[
+                                styles.loginInfoContainer,
+                                styles.bottomButtonContainer,
+                                styles.loginBackgroundStyle,
+                            ]}
+                        />
                         {/* </View> */}
 
-                        <Spacer size={15} />
+                        <Spacer size={20} />
+                        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}> 
                         <TextButton
-                            title="Forgot Password?"
-                            onPress={() => {}}
+                            title="Forgot ID?"
+                            onPress={() => {
+                                log('forgot ID tapped')
+                            }}
                             textStyle={{
                                 color: colors.deepMainColor,
                                 fontWeight: "bold",
                             }}
                             backgroundStyle={{ alignItems: "center" }}
                         />
-                    </View>
-                    <View>
+
                         <TextButton
-                            title="Sign Up"
-                            onPress={() => {}}
+                            title="Forgot Password?"
+                            onPress={() => {
+                                log('forgot Password tapped')
+                            }}
                             textStyle={{
-                                fontSize: fontSizes.s16,
                                 color: colors.deepMainColor,
                                 fontWeight: "bold",
                             }}
+                            backgroundStyle={{ alignItems: "center" }}
                         />
+                        </View>
+                    </View>
+                    <View>
                     </View>
                 </View>
             </TouchableWithoutFeedback>

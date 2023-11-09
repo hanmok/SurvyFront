@@ -17,6 +17,7 @@ export type RootStackParamList = {
     Response: { surveyId: number };
     EndParticipation: undefined;
     PostingBase: undefined;
+    FindID: undefined;
 };
 
 export enum NavigationTitle {
@@ -34,4 +35,5 @@ export enum NavigationTitle {
     response = "Response",
     endParticipation = "EndParticipation",
     postingBase = "PostingBase",
+    findID = "FindID"
 }

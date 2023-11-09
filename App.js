@@ -19,7 +19,7 @@ import { MenuProvider } from "react-native-popup-menu";
 import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 import SettingScreen from "./screens/SettingScreen";
-import LoginScreen from "./screens/LoginScreen";
+import LoginScreen from "./screens/login/LoginScreen";
 import MyinfoScreen from "./screens/MyinfoScreen";
 import { MyProvider } from "./screens/MyContext";
 
@@ -39,7 +39,8 @@ import TargettingScreen from "./screens/TargettingScreen";
 import { TextInput } from "react-native-gesture-handler";
 import ResponseScreen from "./screens/ResponseScreen";
 import ParticipatingEndScreen from "./screens/ParticipatingEndScreen";
-// import { }
+import FindIDScreen from "./screens/login/FindIDScreen";
+
 // const client = new ApolloClient({
 //     uri: API_BASE_URL,
 //     cache: new InMemoryCache(),
@@ -65,7 +66,17 @@ export default function App() {
                                 }}
                             /> */}
 
-                                {/* <Stack.Screen
+                             <Stack.Screen
+                                //  name={NavigationTitle.findID}
+                                name="아이디 찾기"
+                                 component={FindIDScreen}
+                                //  options={{
+                                //      headerShown: false,
+                                //  }}
+                                /> 
+
+
+                            {/* <Stack.Screen
                                 name={NavigationTitle.endParticipation}
                                 component={ParticipatingEndScreen}
                                 options={{

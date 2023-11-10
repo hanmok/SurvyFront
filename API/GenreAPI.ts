@@ -1,7 +1,6 @@
 import { logObject } from "../utils/Log";
 import { API_BASE_URL } from "./API";
 import { Genre } from "../interfaces/Genre";
-
 export async function getAllGenres(): Promise<ApiResponse<[Genre]>> {
     const url = `${API_BASE_URL}/genre`;
     try {

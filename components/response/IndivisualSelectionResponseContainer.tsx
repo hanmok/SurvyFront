@@ -16,38 +16,21 @@ const IndivisualSelectionResponseContainer: React.FC<
     answers,
     selectedUserId,
 }) => {
-    const [selectedAnswers, setSelectedAnswers] = useState<GQLAnswer[]>([]);
     const [selectedSelectableOptions, setSelectedSelectableOptions] = useState<
         GQLSelectableOption[]
     >([]);
 
     useEffect(() => {
-        logObject(
-            "[IndivisualSelectionResponseContainer] passed answers: ",
-            answers
-        );
-        log(
-            "[IndivisualSelectionResponseContainer] passed userId: " +
-                selectedUserId
-        );
         const anss = answers.filter(
             answer => answer.user.id === selectedUserId
         );
-        logObject(
-            "[IndivisualSelectionResponseContainer] filtered answers",
-            anss
-        );
-        setSelectedAnswers(anss);
+
         const allSelectableOptionIds = anss.map(ans => ans.selectableOption.id);
 
         const selectedOptionsOnly = selectableOptions.filter(so =>
             allSelectableOptionIds.includes(so.id)
         );
         setSelectedSelectableOptions(selectedOptionsOnly);
-        logObject(
-            "[IndivisualSelectionResponseContainer] selectedOptionsOnly:",
-            selectedOptionsOnly
-        );
     }, [selectedUserId]);
 
     return (

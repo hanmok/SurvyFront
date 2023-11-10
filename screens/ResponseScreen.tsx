@@ -1,3 +1,4 @@
+// import * as Permissions from "expo-permissions";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 import {
@@ -49,6 +50,23 @@ import { Entypo, Feather, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import TextButton from "../components/TextButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+import * as XLSX from "xlsx";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import {
+    ArrayDictionary,
+    QuestionOrder,
+    SetDictionary,
+    StringDictionary,
+    Temp,
+} from "../utils/Dictionary";
+import { SheetData, getResultSheet } from "../API/AnswerAPI";
+
+interface EachRow {
+    userId: number;
+    answer: string[];
+}
+
 export default function ResponseScreen({
     navigation,
     route,
@@ -63,23 +81,56 @@ export default function ResponseScreen({
     const client = useApollo();
     const options = ["전체", "개별"];
 
+    const [generateTapped, setGenerateTapped] = useState(false);
+
     const [currentSequence, setCurrentSequence] = useState<number>(1);
     const [currentUserId, setCurrentUserId] = useState<number>(undefined);
-    // const [indivisualAnswers, setIndivisualAnswers] = useState<GQLAnswer[]>([]);
+
+    const generateExcel = (sheetData: SheetData, title: string) => {
+        const firstRow = sheetData.questionInOrder.map(q => q.text);
+        firstRow.unshift("");
+
+        const sum: string[][] = [firstRow];
+        const otherRows: string[][] = [];
+        sheetData.userResponses.forEach(str => {
+            otherRows.push(str);
+            sum.push(str);
+        });
+
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.aoa_to_sheet(sum);
+
+        XLSX.utils.book_append_sheet(wb, ws, title, true);
+
+        console.log("title: " + title);
+
+        const sanitizedName = title.replace(/[\\/:*?"<>|]/g, "");
+        let testFileName = "survey Result";
+
+        const base64 = XLSX.write(wb, { type: "base64" });
+        const filename = FileSystem.documentDirectory + `survey_responses.xlsx`;
+        FileSystem.writeAsStringAsync(filename, base64, {
+            encoding: FileSystem.EncodingType.Base64,
+        }).then(() => {
+            Sharing.shareAsync(filename);
+        });
+    };
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <View style={{ marginRight: 10 }}>
-                    <TouchableOpacity
-                        onPress={() => console.log("Share btn tapped!")}
-                    >
+                    <View>
                         <Ionicons
                             name="ios-share-outline"
                             size={30}
                             color="black"
+                            onPress={() => {
+                                console.log("hi");
+                                setGenerateTapped(true);
+                            }}
                         />
-                    </TouchableOpacity>
+                    </View>
                 </View>
             ),
         });
@@ -129,6 +180,22 @@ export default function ResponseScreen({
     >([]);
 
     useEffect(() => {
+        const getExcelSheet = async () => {
+            getResultSheet(surveyId).then(response => {
+                logObject("sheet data:", response);
+                if (response.data) {
+                    const sheetResponse = response.data;
+                    generateExcel(sheetResponse, survey.title);
+                }
+            });
+        };
+        if (setGenerateTapped && survey) {
+            getExcelSheet();
+            setGenerateTapped(false);
+        }
+    }, [surveyId, generateTapped, survey]);
+
+    useEffect(() => {
         if (participatings && participatings.length !== 0) {
             logObject(
                 "[ResponseScreen] currentSequence changed, participatings ",
@@ -143,7 +210,6 @@ export default function ResponseScreen({
                 "[ResponseScreen] currentUserId set to",
                 correspondingUserId
             );
-
             setCurrentUserId(correspondingUserId);
         }
     }, [currentSequence, participatings]);
@@ -193,37 +259,55 @@ export default function ResponseScreen({
             logObject("survey:", survey);
             logObject("answers:", answers);
 
+            survey.sections.sort((sec1, sec2) => sec1.sequence - sec2.sequence);
             survey.sections.forEach(section => {
                 // question sorted 된거 사용하기.
                 section.questions.sort();
                 section.questions.forEach((question, index) => {
                     const selectableOptions = question.selectableOptions;
-
+                    // question.section.sequence
                     // q id 가 같은 질문들
-                    const tempAnswers = answers.filter(
+                    const correspondingAnswers = answers.filter(
                         ans => ans.question.id === question.id
                     );
-
+                    const userId = correspondingAnswers[0].user.id;
+                    // section 에 대한 정보가 없음.
+                    const questionTitle = ` ${question.position + 1}. ${
+                        question.text
+                    }`;
                     const props: QuestionResponseContainerProps = {
-                        questionTitle: ` ${question.position + 1}. ${
-                            question.text
-                        }`,
+                        sectionSequence: section.sequence,
+                        questionTitle: questionTitle,
                         selectableOptions: selectableOptions,
-                        answers: tempAnswers,
+                        answers: correspondingAnswers,
                         questionTypeId: String(question.questionType.id),
-                        selectedUserId: undefined,
-                        // questionType: questionType,
+                        selectedUserId: userId,
                     };
                     // logObject("prop obj", props);
-
+                    logObject("QuestionResponseContainer: ", props);
                     tempQuestionResponseContainerProps.push(props);
                 });
             });
             setResponseProps(tempQuestionResponseContainerProps);
         }
     }, [answers, survey]);
-    // }, [surveyData, answersData]);
 
+    useEffect(() => {
+        if (responseProps.length !== 0) {
+            let workbook = XLSX.utils.book_new();
+            const questionTitles = responseProps.map(rp => rp.questionTitle);
+
+            // selectedUserId 를 기준으로, 데이터 정렬시키기.
+            const eachRows: EachRow[] = [];
+
+            // userId 와 participating 의 created_at 이용해서 sort
+
+            let workspace = XLSX.utils.aoa_to_sheet([questionTitles]);
+            // make excel sheet !
+        }
+    }, [responseProps]);
+
+    // Participating 은 ?
     if (surveyError) {
         return <Text>survey Error</Text>;
     }
@@ -275,6 +359,7 @@ export default function ResponseScreen({
     > = ({ item }) => {
         return item.questionTypeId !== "300" ? (
             <OverallSelectionResponseContainer
+                sectionSequence={item.sectionSequence}
                 questionTitle={item.questionTitle}
                 selectableOptions={item.selectableOptions}
                 answers={item.answers}
@@ -283,6 +368,7 @@ export default function ResponseScreen({
             />
         ) : (
             <OverallEssayResponseContainer
+                sectionSequence={item.sectionSequence}
                 questionTitle={item.questionTitle}
                 selectableOptions={[]} // 필요 없음.
                 answers={item.answers}
@@ -312,6 +398,7 @@ export default function ResponseScreen({
     > = ({ item }) => {
         return item.questionTypeId !== "300" ? (
             <IndivisualSelectionResponseContainer
+                sectionSequence={item.sectionSequence}
                 questionTitle={item.questionTitle}
                 selectableOptions={item.selectableOptions}
                 answers={item.answers}
@@ -320,12 +407,27 @@ export default function ResponseScreen({
             />
         ) : (
             <IndivisualEssayResponseContainer
+                sectionSequence={item.sectionSequence}
                 questionTitle={item.questionTitle}
                 selectableOptions={[]} // 필요 없음.
                 answers={item.answers}
                 questionTypeId={item.questionTypeId}
                 selectedUserId={currentUserId}
             />
+        );
+    };
+
+    const listHeader = () => {
+        return (
+            <Text
+                style={{
+                    fontSize: 22,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                }}
+            >
+                {survey ? survey.title : ""}
+            </Text>
         );
     };
 
@@ -337,15 +439,6 @@ export default function ResponseScreen({
                     currentUserId: {currentUserId ?? 0}
                 </Text>
             )}
-            <Text
-                style={{
-                    fontSize: 22,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                }}
-            >
-                {survey ? survey.title : ""}
-            </Text>
             <View
                 style={{ height: 30, flex: 1, justifyContent: "space-between" }}
             >
@@ -358,6 +451,7 @@ export default function ResponseScreen({
                             ItemSeparatorComponent={() => {
                                 return <View style={{ height: 10 }} />;
                             }}
+                            ListHeaderComponent={listHeader}
                         />
                     ) : (
                         <FlatList
@@ -367,6 +461,7 @@ export default function ResponseScreen({
                             ItemSeparatorComponent={() => {
                                 return <View style={{ height: 10 }} />;
                             }}
+                            ListHeaderComponent={listHeader}
                         />
                     )}
                 </>

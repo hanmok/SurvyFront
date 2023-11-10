@@ -34,11 +34,15 @@ import ImageButton from "../components/ImageButton";
 import { logObject } from "../utils/Log";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
-// import { getAllPostedSurveys } from "../API/gqlAPI";
 import { getSurveyQuery } from "../API/gqlQuery";
 import { RefreshControl } from "react-native-gesture-handler";
 import { fetchAllGeoInfos } from "../API/GeoAPI";
 
+import * as XLSX from "xlsx";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+
+// TODO:
 const screenWidth = Dimensions.get("window").width;
 
 function HomeScreen({
@@ -47,6 +51,60 @@ function HomeScreen({
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.home>;
 }) {
     const [refreshing, setRefreshing] = useState(false);
+    const generateExcel = () => {
+        console.log("generateExcel called");
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.aoa_to_sheet([
+            // work sheet
+            ["Odd", "Even", "Total"],
+            // [1, 2, { t: "n", v: 3, f: "A2+B2" }],
+            // [3, 4, { t: "n", v: 7, f: "A3+B3" }],
+            // [5, 6, { t: "n", v: 10, f: "A4+B4" }],
+            [1, 2, { t: "n", f: "A2+B2" }],
+            [3, 4, { t: "n", f: "A3+B3" }],
+            [5, 6, { t: "n", f: "A4+B4" }],
+        ]);
+        // Odd | Even | Total
+        //  1      2    3
+        //  3      4    7
+        //  5      6    11
+
+        XLSX.utils.book_append_sheet(wb, ws, "MyFirstSheet", true);
+
+        let ws2 = XLSX.utils.aoa_to_sheet([
+            ["Odd*2", "Even*2", "Total"],
+            [
+                { t: "n", f: "MyFirstSheet!A2*2" },
+                { t: "n", f: "MyFirstSheet!B2*2" },
+                { t: "n", f: "A2+B2" },
+            ],
+            [
+                { t: "n", f: "MyFirstSheet!A3*2" },
+                { t: "n", f: "MyFirstSheet!B3*2" },
+                { t: "n", f: "A3+B3" },
+            ],
+            [
+                { t: "n", f: "MyFirstSheet!A4*2" },
+                { t: "n", f: "MyFirstSheet!B4*2" },
+                { t: "n", f: "A4+B4" },
+            ],
+        ]);
+
+        // Odd | Even | Total
+        //  2      4      6
+        //  6      8     14
+        //  10      12    22
+
+        XLSX.utils.book_append_sheet(wb, ws2, "MySecondSheet", true);
+
+        const base64 = XLSX.write(wb, { type: "base64" });
+        const filename = FileSystem.documentDirectory + "MyExcel.xlsx";
+        FileSystem.writeAsStringAsync(filename, base64, {
+            encoding: FileSystem.EncodingType.Base64,
+        }).then(() => {
+            Sharing.shareAsync(filename);
+        });
+    };
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -78,6 +136,10 @@ function HomeScreen({
                             name="magnify-expand"
                             size={24}
                             color="black"
+                            onPress={() => {
+                                console.log("hi");
+                                generateExcel();
+                            }}
                         />
                     </TouchableOpacity>
 
@@ -169,45 +231,15 @@ function HomeScreen({
         }
     };
 
-    // working code
-    // async function fetchGreeting() {
-    //     // const response = await fetch("http://localhost:3000/graphql", {
-    //     const response = await fetch(GQL_URL, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //             // query: fetchAllPostedSurveys2,
-    //             query: postedSurveyUsingUserIdQuery(804),
-    //         }),
-    //     });
-    //     const { data } = await response.json();
-    //     const result = JSON.stringify(data);
-    //     logObject(`[HomeScreen] fetch ㅅㅂqq: `, result);
-    //     logObject("[HomeScreen] fetch data: ", data);
-    //     return data;
-    // }
-
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {
         const fetchGeos = async () => {
-            // const geoData = await loadWholeGeo();
-
-            // logObject("saved geoData:", geoData);
-
-            // if (!geoData) {
             const allGeos = await fetchAllGeoInfos();
             saveWholeGeos(allGeos);
-            // }
         };
         fetchGeos();
         updateSurveys();
 
-        // getSurveyQuery(804);
-        // getPostedSurveys(774);
-        // getAllPostedSurveys(0);
-        // Get all Geo Infos
         console.log("HomeScreen Testing");
     }, []);
 
@@ -237,38 +269,7 @@ function HomeScreen({
     }
 
     return (
-        // <SafeAreaView style={styles.container} edges={["top"]}>
         <SafeAreaView style={styles.container} edges={[]}>
-            {/* <GreetingComponent /> */}
-            {/* <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginHorizontal: 10,
-                    height: 30,
-                    // justifyContent: "center",
-                }}
-            > */}
-            {/* <CollectedMoney amount={10000} /> */}
-            {/* <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        marginRight: 20,
-                        paddingTop: 10,
-                        // height: 30,
-                    }}
-                > */}
-            {/* <Ionicons
-                        name="md-notifications-outline"
-                        size={24}
-                        color="black"
-                        onPress={() => {
-                            console.log("[HomeScreen] notification btn tapped");
-                        }}
-                    /> */}
-            {/* </View> */}
-            {/* </View> */}
             <View style={styles.subContainer}>
                 <FlatList
                     data={surveys}

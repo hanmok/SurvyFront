@@ -1,138 +1,71 @@
- // answers
- 
- [
-  {
-    "id": "34",
-    "question": {
-      "id": "456904"
-    },
-    "selectableOption": {
-      "id": "469404",
-      "value": "옵1"
-    },
-    "answerText": null
-  },
-  {
-    "id": "44",
-    "question": {
-      "id": "456914"
-    },
-    "selectableOption": {
-      "id": "469444",
-      "value": "옵22"
-    },
-    "answerText": null
-  },
-  {
-    "id": "54",
-    "question": {
-      "id": "456924"
-    },
-    "selectableOption": {
-      "id": "469464",
-      "value": "ph"
-    },
-    "answerText": "Gggggg"
-  },
-  {
-    "id": "74",
-    "question": {
-      "id": "456904"
-    },
-    "selectableOption": {
-      "id": "469414",
-      "value": "옵2"
-    },
-    "answerText": null
-  },
-  {
-    "id": "94",
-    "question": {
-      "id": "456914"
-    },
-    "selectableOption": {
-      "id": "469434",
-      "value": "옵11"
-    },
-    "answerText": null
-  },
-  {
-    "id": "104",
-    "question": {
-      "id": "456914"
-    },
-    "selectableOption": {
-      "id": "469444",
-      "value": "옵22"
-    },
-    "answerText": null
-  },
-  {
-    "id": "124",
-    "question": {
-      "id": "456924"
-    },
-    "selectableOption": {
-      "id": "469464",
-      "value": "ph"
-    },
-    "answerText": "Bbbbbbb"
-  }
-]
+const generateExcel = (sheetData: SheetData, title: string) => {
+        const firstRow = sheetData.questionInOrder.map(q => q.text);
+        firstRow.unshift("");
 
+        // const otherRows = sheetData.userResponses
+        const sum: string[][] = [firstRow];
+        const otherRows: string[][] = [];
+        sheetData.userResponses.forEach(str => {
+            otherRows.push(str);
+            sum.push(str);
+        });
 
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.aoa_to_sheet(sum);
+        // let ws = XLSX.utils.aoa_to_sheet([
+        //     // work sheet
+        //     ["Odd", "Even", "Total"],
+        //     // [1, 2, { t: "n", v: 3, f: "A2+B2" }],
+        //     // [3, 4, { t: "n", v: 7, f: "A3+B3" }],
+        //     // [5, 6, { t: "n", v: 10, f: "A4+B4" }],
+        //     [1, 2, { t: "n", f: "A2+B2" }], // f: formula
+        //     [3, 4, { t: "n", f: "A3+B3" }],
+        //     [5, 6, { t: "n", f: "A4+B4" }],
+        // ]);
 
- // survey
- {
-  "sections": [
-    {
-      "sequence": 0,
-      "questions": [
-        {
-          "id": "456884",
-          "position": 0,
-          "text": "질무우우운",
-          "questionType": {
-            "id": "100"
-          },
-          "selectableOptions": [
-            {
-              "id": "469364",
-              "position": 0,
-              "value": "옵셔어어어언1",
-              "isExtra": 0
-            },
-            {
-              "id": "469374",
-              "position": 1,
-              "value": "기타",
-              "isExtra": 1
-            }
-          ]
-        },
-        {
-          "id": "456894",
-          "position": 1,
-          "text": "질무우운2",
-          "questionType": {
-            "id": "200"
-          },
-          "selectableOptions": [
-            {
-              "id": "469384",
-              "position": 0,
-              "value": "다중 옵션1111",
-              "isExtra": 0
-            },
-            {
-              "id": "469394",
-              "position": 1,
-              "value": "기타",
-              "isExtra": 1
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+        // Odd | Even | Total
+        //  1      2    3
+        //  3      4    7
+        //  5      6    11
+
+        XLSX.utils.book_append_sheet(wb, ws, title, true);
+
+        // let ws2 = XLSX.utils.aoa_to_sheet([
+        //     ["Odd*2", "Even*2", "Total"],
+        //     [
+        //         { t: "n", f: "MyFirstSheet!A2*2" },
+        //         { t: "n", f: "MyFirstSheet!B2*2" },
+        //         { t: "n", f: "A2+B2" },
+        //     ],
+        //     [
+        //         { t: "n", f: "MyFirstSheet!A3*2" },
+        //         { t: "n", f: "MyFirstSheet!B3*2" },
+        //         { t: "n", f: "A3+B3" },
+        //     ],
+        //     [
+        //         { t: "n", f: "MyFirstSheet!A4*2" },
+        //         { t: "n", f: "MyFirstSheet!B4*2" },
+        //         { t: "n", f: "A4+B4" },
+        //     ],
+        // ]);
+
+        // Odd | Even | Total
+        //  2      4      6
+        //  6      8     14
+        //  10      12    22
+
+        // XLSX.utils.book_append_sheet(wb, ws2, "MySecondSheet", true);
+
+        console.log("title: " + title);
+
+        const sanitizedName = title.replace(/[\\/:*?"<>|]/g, "");
+        let testFileName = "survey Result";
+
+        const base64 = XLSX.write(wb, { type: "base64" });
+        const filename = FileSystem.documentDirectory + `survey_responses.xlsx`;
+        FileSystem.writeAsStringAsync(filename, base64, {
+            encoding: FileSystem.EncodingType.Base64,
+        }).then(() => {
+            Sharing.shareAsync(filename);
+        });
+    };

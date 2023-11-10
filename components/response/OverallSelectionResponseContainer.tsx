@@ -6,8 +6,9 @@ import { screenWidth } from "../../utils/ScreenSize";
 import { colors } from "../../utils/colors";
 import { getQuestionType } from "../../QuestionType";
 
-/** questionTitle, selectableOptions, answers */
+/** response, questionTitle, selectableOptions, answers, selectedUserId */
 export interface QuestionResponseContainerProps {
+    sectionSequence: number;
     questionTitle: string;
     selectableOptions: GQLSelectableOption[];
     questionTypeId: string;

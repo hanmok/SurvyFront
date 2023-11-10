@@ -59,7 +59,12 @@ export const getSurveyQuery = gql`
         }
     }
 `;
-
+/**
+ * 이 변수는 어떤 용도로 사용되는 변수입니다.
+ * 여러 줄에 걸쳐 설명을 추가할 수 있습니다.
+ *
+ * @type {number}
+ */
 export const getAnswersQuery = gql`
     query Answers($surveyId: ID!) {
         answers(survey_id: $surveyId) {

@@ -49,10 +49,6 @@ import {
 import { GQLQuestion, GQLSurvey } from "../interfaces/GQLInterface";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-interface Dictionary<T> {
-    [key: number]: Set<T>;
-}
-
 function ParticipatingScreen({
     route,
     navigation,

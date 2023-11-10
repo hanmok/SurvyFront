@@ -46,7 +46,7 @@ export interface GQLSelectableOption {
     section: GQLSection;
     isExtra: number;
 }
-
+/** id, username, collectedReward, ... */
 export interface GQLUser {
     id: number;
     username: string;
@@ -70,7 +70,7 @@ export interface GQLSurvey {
     code: string;
     isPublic: number;
     isCompleted: number;
-    sections: [GQLSection];
+    sections: [GQLSection]; // FIXME: 이게 맞아? 일단.. 잘 되고 있으니까 놔두기.
 }
 
 // export function isGQLSurvey(item: any): item is GQLSurvey {
@@ -104,6 +104,7 @@ export function isGQLSurvey(item: any): item is GQLSurvey {
     return ret;
 }
 
+/** id, question, selectableOption, user, survey, answerText */
 export interface GQLAnswer {
     id: number;
     question: GQLQuestion;

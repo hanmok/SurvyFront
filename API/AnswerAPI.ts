@@ -5,6 +5,22 @@ import { printObject } from "../utils/printObject";
 import { API_BASE_URL } from "./API";
 import _ from "lodash";
 
+export interface QuestionInOrder {
+    id: number;
+    position: number;
+    text: string;
+}
+
+// export interface UserResponses {
+//     date: string;
+//     answer: string;
+// }
+
+export interface SheetData {
+    questionInOrder: QuestionInOrder[];
+    userResponses: string[][];
+}
+
 export async function postAnswer(
     surveyId: number,
     questionId: number,
@@ -77,6 +93,29 @@ export async function createParticipate(
         return responseData;
     } catch (error) {
         console.error("createParticipate error", error);
+        throw error;
+    }
+}
+
+export async function getResultSheet(
+    surveyId: number
+): Promise<ApiResponse<SheetData>> {
+    const url = `${API_BASE_URL}/survey/${surveyId}/sheet`;
+
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!response.ok) {
+            throw new Error("get All Response error!!");
+        }
+
+        const responseData: ApiResponse<SheetData> = await response.json();
+        return responseData;
+    } catch (error) {
         throw error;
     }
 }

@@ -15,7 +15,6 @@ import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
 import { useEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
-import { getAllGenres } from "../API/GenreAPI";
 import { log, logObject } from "../utils/Log";
 import { screenWidth } from "../utils/ScreenSize";
 import { commonStyles } from "../utils/CommonStyles";

@@ -7,7 +7,7 @@ interface CustomContextProps {
     updateLoadingStatus: (isLoading: boolean) => void;
 }
 
-// const {isLoadingStatus, updateLoadingStatus} = useCustomContext()
+// const {updateLoadingStatus} = useCustomContext()
 
 const CustomContext = createContext<CustomContextProps | undefined>(undefined);
 

@@ -5,7 +5,6 @@ import {
     Button,
     FlatList,
     Dimensions,
-    ActivityIndicator,
     TouchableOpacity,
 } from "react-native";
 // import { getPostedSurveys, getSurvey } from "../API/gqlAPI";
@@ -41,6 +40,7 @@ import { fetchAllGeoInfos } from "../API/GeoAPI";
 import * as XLSX from "xlsx";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
+import { useCustomContext } from "../features/context/CustomContext";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -257,16 +257,11 @@ function HomeScreen({
         />
     );
 
-    if (isLoading) {
-        return (
-            <ActivityIndicator
-                animating={isLoading}
-                style={{ flex: 1 }}
-                size={"large"}
-                color={colors.deepMainColor}
-            />
-        );
-    }
+    const { isLoadingStatus, updateLoadingStatus } = useCustomContext();
+
+    useEffect(() => {
+        updateLoadingStatus(isLoading);
+    }, [isLoading]);
 
     return (
         <SafeAreaView style={styles.container} edges={[]}>

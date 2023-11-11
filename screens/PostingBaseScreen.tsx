@@ -1,7 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 import {
-    ActivityIndicator,
     FlatList,
     SectionList,
     StyleSheet,
@@ -35,6 +34,7 @@ import {
 } from "../utils/Storage";
 import { getDatePart } from "../utils/DateFormatter";
 import { useMyContext } from "./MyContext";
+import { useCustomContext } from "../features/context/CustomContext";
 
 type SectionItem = GQLSurvey | PostingSurveyState;
 
@@ -209,14 +209,10 @@ export default function PostingBaseScreen({
     //     }
     // }, [data, postingSurveys]);
 
-    if (loading) {
-        <ActivityIndicator
-            animating={loading}
-            style={{ flex: 1 }}
-            size={"large"}
-            color={colors.deepMainColor}
-        />;
-    }
+    const { updateLoadingStatus } = useCustomContext();
+    useEffect(() => {
+        updateLoadingStatus(loading);
+    }, [loading]);
 
     return (
         <View style={{ flex: 1 }}>

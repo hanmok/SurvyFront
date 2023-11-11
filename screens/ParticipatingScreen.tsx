@@ -7,7 +7,6 @@ import {
     Alert,
     KeyboardAvoidingView,
     Platform,
-    ActivityIndicator,
 } from "react-native";
 import { colors } from "../utils/colors";
 import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
@@ -48,6 +47,7 @@ import {
 } from "../interfaces/SurveyResponse";
 import { GQLQuestion, GQLSurvey } from "../interfaces/GQLInterface";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useCustomContext } from "../features/context/CustomContext";
 
 function ParticipatingScreen({
     route,
@@ -270,16 +270,10 @@ function ParticipatingScreen({
         setIsNextTapped(true);
     };
 
-    if (loading || isLoading) {
-        return (
-            <ActivityIndicator
-                animating={loading}
-                style={{ flex: 1 }}
-                size={"large"}
-                color={colors.deepMainColor}
-            />
-        );
-    }
+    const { updateLoadingStatus } = useCustomContext();
+    useEffect(() => {
+        updateLoadingStatus(loading || isLoading);
+    }, [loading, isLoading]);
 
     const renderItem = ({ item }: { item: GQLQuestion }) => (
         <View style={styles.questionContainerBox}>

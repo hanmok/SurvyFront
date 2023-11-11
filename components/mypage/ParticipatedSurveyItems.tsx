@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 // import { participatedSurveyQuery, postedSurveyQuery } from "../../API/gqlQuery";
 import { participatedSurveyQuery } from "../../API/gqlQuery";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text } from "react-native";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useApollo } from "../../ApolloProvider";
@@ -9,6 +9,8 @@ import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
 import { convertKeysToCamelCase } from "../../utils/SnakeToCamel";
 import { colors } from "../../utils/colors";
+import { useCustomContext } from "../../features/context/CustomContext";
+import { useEffect } from "react";
 
 interface ParticipatedSurveyItem {
     title: string;
@@ -34,17 +36,11 @@ const ParticipatedSurveyItems = ({ userId }) => {
             convertKeysToCamelCase(item)
         ) || [];
 
-    if (loading) {
-        return (
-            <ActivityIndicator
-                animating={loading}
-                style={{ flex: 1 }}
-                size={"large"}
-                color={colors.deepMainColor}
-            />
-        );
-        // return <Text>Loading...</Text>;
-    }
+    const { updateLoadingStatus } = useCustomContext();
+
+    useEffect(() => {
+        updateLoadingStatus(loading);
+    }, [loading]);
 
     if (error) {
         return <Text>Error: {error.message}</Text>;

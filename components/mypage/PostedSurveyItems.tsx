@@ -1,11 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { postedSurveyQuery } from "../../API/gqlQuery";
-import {
-    View,
-    Text,
-    TouchableNativeFeedback,
-    ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableNativeFeedback } from "react-native";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useApollo } from "../../ApolloProvider";
@@ -22,6 +17,7 @@ import { logObject } from "../../utils/Log";
 import { GQLSurvey } from "../../interfaces/GQLInterface";
 import { colors } from "../../utils/colors";
 import { PostedSurveyResponse } from "../../API/gqlResponses";
+import { useCustomContext } from "../../features/context/CustomContext";
 
 interface PostedSurveyItem {
     title: string;
@@ -61,15 +57,10 @@ const PostedSurveyItems = ({
         }
     }, [data]);
 
-    if (loading) {
-        // return <Text>Loading...</Text>;
-        <ActivityIndicator
-            animating={loading}
-            style={{ flex: 1 }}
-            size={"large"}
-            color={colors.deepMainColor}
-        />;
-    }
+    const { updateLoadingStatus } = useCustomContext();
+    useEffect(() => {
+        updateLoadingStatus(loading);
+    }, [loading]);
 
     if (error) {
         // console.error(error);

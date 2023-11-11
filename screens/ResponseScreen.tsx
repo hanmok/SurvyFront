@@ -1,13 +1,7 @@
 // import * as Permissions from "expo-permissions";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
-import {
-    ActivityIndicator,
-    FlatList,
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
 import {
@@ -61,6 +55,7 @@ import {
     Temp,
 } from "../utils/Dictionary";
 import { SheetData, getResultSheet } from "../API/AnswerAPI";
+import { useCustomContext } from "../features/context/CustomContext";
 
 interface EachRow {
     userId: number;
@@ -320,24 +315,12 @@ export default function ResponseScreen({
         return <Text>Participating Error</Text>;
     }
 
+    const { updateLoadingStatus } = useCustomContext();
     useEffect(() => {
-        if (surveyLoading || answersLoading || participatingLoading) {
-            setIsLoading(true);
-        } else {
-            setIsLoading(false);
-        }
-    }, [surveyLoading, answersLoading, participatingLoading]);
-
-    if (surveyLoading || answersLoading || participatingLoading) {
-        return (
-            <ActivityIndicator
-                animating={isLoading}
-                style={{ flex: 1 }}
-                size={"large"}
-                color={colors.deepMainColor}
-            />
+        updateLoadingStatus(
+            surveyLoading || answersLoading || participatingLoading
         );
-    }
+    }, [surveyLoading, answersLoading, participatingLoading]);
 
     const countUp = () => {
         const updatedSequence = currentSequence + 1;

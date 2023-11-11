@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../utils/NavHelper";
+import { RootStackParamList } from "../../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
-import { NavigationTitle } from "../utils/NavHelper";
+import { NavigationTitle } from "../../utils/NavHelper";
 import {
     View,
     Text,
@@ -11,20 +11,20 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
 } from "react-native";
-import { colors } from "../utils/colors";
-import TextButton from "../components/TextButton";
-import { screenWidth } from "../utils/ScreenSize";
-import Spacer from "../components/common/Spacer";
+import { colors } from "../../utils/colors";
+import TextButton from "../../components/TextButton";
+import { screenWidth } from "../../utils/ScreenSize";
+import Spacer from "../../components/common/Spacer";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { fontSizes } from "../utils/sizes";
-import { login } from "../API/UserAPI";
-import { UserState } from "../interfaces/UserState";
-import { saveUserState } from "../utils/Storage";
+import { fontSizes } from "../../utils/sizes";
+import { login } from "../../API/UserAPI";
+import { UserState } from "../../interfaces/UserState";
+import { saveUserState } from "../../utils/Storage";
 import { useEffect, useRef, useState } from "react";
 import { Alert } from "react-native";
-import showMessageAlert from "../components/CustomAlert";
-import { logObject } from "../utils/Log";
-import { API_BASE_URL } from "../API/API";
+import showMessageAlert from "../../components/CustomAlert";
+import { log, logObject } from "../../utils/Log";
+import { API_BASE_URL } from "../../API/API";
 // import { Apollocient}
 import {
     // gql,
@@ -67,11 +67,11 @@ export default function LoginScreen({
         );
 
         if (username === "") {
-            showMessageAlert("Empty username", "please enter username");
+            showMessageAlert("아이디 미입력", "아이디를 입력해주세요.");
             return;
         }
         if (password === "") {
-            showMessageAlert("Empty password", "please enter password");
+            showMessageAlert("비밀번호 미입력", "비밀번호를 입력해주세요");
             return;
         }
 
@@ -97,14 +97,14 @@ export default function LoginScreen({
             <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
                 <View style={[styles.mainContainer]}>
                     <Spacer size={40} />
-                    <View>
+                    {/* <View>
                         <Image source={require("../assets/coin.jpg")} />
-                    </View>
+                    </View> */}
 
                     <View>
                         <View style={styles.loginInfoContainer}>
                             <TextInput
-                                placeholder="Username"
+                                placeholder="아이디 입력"
                                 style={styles.textInputStyle}
                                 value={username}
                                 onChangeText={setUsername}
@@ -115,11 +115,11 @@ export default function LoginScreen({
                                 }}
                             />
                         </View>
-                        <View style={{ height: 20 }} />
+                        <View style={{ height: 4 }} />
                         <View style={styles.loginInfoContainer}>
                             <TextInput
                                 ref={passwordRef}
-                                placeholder="Password"
+                                placeholder="비밀번호 입력"
                                 style={styles.textInputStyle}
                                 value={password}
                                 onChangeText={setPassword}
@@ -133,14 +133,9 @@ export default function LoginScreen({
                             />
                         </View>
                         <View style={{ height: 30 }} />
-                        {/* <View
-                    style={[
-                        styles.loginInfoContainer,
-                        styles.bottomButtonContainer,
-                    ]}
-                > */}
+
                         <TextButton
-                            title="Login"
+                            title="로그인"
                             onPress={() => {
                                 console.log("login tapped");
                                 // 성공시 여기 화면으로 넘어가기!
@@ -151,32 +146,66 @@ export default function LoginScreen({
                                 styles.loginInfoContainer,
                                 styles.bottomButtonContainer,
                                 styles.loginBackgroundStyle,
+                                { marginBottom: 10, marginTop: 30 },
+                            ]}
+                        />
+                        <Spacer size={10} />
+                        <TextButton
+                            title="회원가입"
+                            onPress={() => {
+                                console.log("login tapped");
+                                // 성공시 여기 화면으로 넘어가기!
+                                // loginAction(username, password);
+                                navigation.navigate(NavigationTitle.signup);
+                            }}
+                            textStyle={styles.loginTextStyle}
+                            backgroundStyle={[
+                                styles.loginInfoContainer,
+                                styles.bottomButtonContainer,
+                                styles.loginBackgroundStyle,
                             ]}
                         />
                         {/* </View> */}
 
-                        <Spacer size={15} />
-                        <TextButton
-                            title="Forgot Password?"
-                            onPress={() => {}}
-                            textStyle={{
-                                color: colors.deepMainColor,
-                                fontWeight: "bold",
+                        <Spacer size={20} />
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-around",
                             }}
-                            backgroundStyle={{ alignItems: "center" }}
-                        />
+                        >
+                            <TextButton
+                                title="아이디 찾기"
+                                onPress={() => {
+                                    log("forgot ID tapped");
+                                    navigation.navigate(NavigationTitle.findID);
+                                }}
+                                textStyle={{
+                                    color: colors.deepMainColor,
+                                    fontWeight: "bold",
+                                }}
+                                backgroundStyle={{ alignItems: "center" }}
+                                hasShadow={false}
+                            />
+
+                            <TextButton
+                                title="비밀번호 찾기"
+                                onPress={() => {
+                                    log("forgot Password tapped");
+                                    navigation.navigate(
+                                        NavigationTitle.findPassword
+                                    );
+                                }}
+                                textStyle={{
+                                    color: colors.deepMainColor,
+                                    fontWeight: "bold",
+                                }}
+                                hasShadow={false}
+                                backgroundStyle={{ alignItems: "center" }}
+                            />
+                        </View>
                     </View>
-                    <View>
-                        <TextButton
-                            title="Sign Up"
-                            onPress={() => {}}
-                            textStyle={{
-                                fontSize: fontSizes.s16,
-                                color: colors.deepMainColor,
-                                fontWeight: "bold",
-                            }}
-                        />
-                    </View>
+                    <View></View>
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>
@@ -193,7 +222,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: colors.gray3,
         borderWidth: 2,
-        height: 50,
+        height: 45,
         flexDirection: "row",
         marginHorizontal: 20,
     },

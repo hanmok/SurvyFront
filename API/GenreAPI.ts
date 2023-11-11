@@ -1,6 +1,7 @@
 import { logObject } from "../utils/Log";
 import { API_BASE_URL } from "./API";
 import { Genre } from "../interfaces/Genre";
+
 export async function getAllGenres(): Promise<ApiResponse<[Genre]>> {
     const url = `${API_BASE_URL}/genre`;
     try {
@@ -10,6 +11,7 @@ export async function getAllGenres(): Promise<ApiResponse<[Genre]>> {
                 "Content-Type": "application/json",
             },
         });
+
         if (!response.ok) {
             console.log(`get all genre error!!`);
             throw new Error("get all genre error!!");

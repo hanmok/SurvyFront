@@ -3,28 +3,35 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 interface GenderSelectionProps {
     onGenderIndexSelection: (number) => void;
+    selectionOptions: string[];
+    selectedIndex: number;
 }
 
 const GenderSelection: React.FC<GenderSelectionProps> = ({
     onGenderIndexSelection,
+    selectionOptions,
+    selectedIndex,
 }) => {
-    const [selectedGender, setSelectedGender] = useState(2);
-
-    const genderOptions = ["여성", "남성", "무관"];
+    // const [selectedGender, setSelectedGender] = useState(2);
 
     return (
         <View style={styles.container}>
             <View style={styles.buttonContainer}>
-                {genderOptions.map((option, index) => (
+                {selectionOptions.map((option, index) => (
                     <TouchableOpacity
                         key={index}
                         style={[
                             styles.optionButton,
-                            selectedGender === index &&
+                            ,
+                            {
+                                flex: 1 / selectionOptions.length,
+                                alignItems: "center",
+                            },
+                            selectedIndex === index &&
                                 styles.selectedOptionButton,
                         ]}
                         onPress={() => {
-                            setSelectedGender(index);
+                            // setSelectedGender(index);
                             onGenderIndexSelection(index);
                         }}
                     >
@@ -47,29 +54,24 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
 const styles = StyleSheet.create({
     container: {
         // flex: 1,
+        // flex: 1,
         // justifyContent: "center",
         // alignItems: "center",
     },
     buttonContainer: {
         flexDirection: "row",
-        // marginTop: 20,
         gap: 0,
     },
     optionButton: {
         paddingVertical: 10,
         paddingHorizontal: 30,
-        // marginHorizontal: 10,
         borderWidth: 1,
         borderRadius: 5,
         borderColor: "#ccc",
-        // backgroundColor:
         backgroundColor: "#dbdbdc",
     },
     selectedOptionButton: {
-        // backgroundColor: "#4caf50",
-        // backgroundColor: "#dbdbdc",
         backgroundColor: "white",
-        // borderColor: "#4caf50",
     },
 });
 

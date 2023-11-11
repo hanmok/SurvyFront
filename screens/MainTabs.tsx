@@ -10,15 +10,15 @@ import HomeScreen from "./HomeScreen";
 import SurveyParticipateScreen from "./ParticipatingScreen";
 import PostingScreen from "./PostingScreen";
 import PostingBaseScreen from "./PostingBaseScreen";
+import { NavigationTitle } from "../utils/NavHelper";
 
 export default function MainTabs() {
     return (
         <Tab.Navigator>
             <Tab.Screen
-                name="홈"
+                name={NavigationTitle.home}
                 component={HomeScreen}
                 options={{
-                    // headerShown: false,
                     tabBarIcon: ({ focused }) => {
                         return (
                             <Foundation

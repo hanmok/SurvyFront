@@ -7,8 +7,6 @@ interface CustomContextProps {
     updateLoadingStatus: (isLoading: boolean) => void;
 }
 
-// const {updateLoadingStatus} = useCustomContext()
-
 const CustomContext = createContext<CustomContextProps | undefined>(undefined);
 
 interface CustomProviderProps {
@@ -17,7 +15,7 @@ interface CustomProviderProps {
 
 export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
     const [postingSurveyId, setPostingSurveyId] = useState<number>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const updatePostingSurveyId = (newId: number) => {
         setPostingSurveyId(newId);

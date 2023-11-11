@@ -31,12 +31,22 @@ const TextButton: React.FC<TextButtonProps> = ({
                 styles.container,
                 backgroundStyle,
                 hasShadow && styles.shadow,
+                // { backgroundColor: "black" },
+                // { alignItems: "center" },
             ]}
             onPress={onPress}
             disabled={!isEnabled}
             activeOpacity={!isEnabled ? 1 : 0.2}
         >
-            <Text style={[styles.text, textStyle]}>{title}</Text>
+            <Text
+                style={[
+                    styles.text,
+                    textStyle,
+                    // { backgroundColor: "cyan" }
+                ]}
+            >
+                {title}
+            </Text>
         </TouchableOpacity>
     );
 };

@@ -19,7 +19,8 @@ import { MenuProvider } from "react-native-popup-menu";
 import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 import SettingScreen from "./screens/SettingScreen";
-import LoginScreen from "./screens/LoginScreen";
+
+import LoginScreen from "./screens/login/LoginScreen";
 import MyinfoScreen from "./screens/MyinfoScreen";
 // import {
 //     CustomProvider,
@@ -34,9 +35,13 @@ import TargettingScreen from "./screens/TargettingScreen";
 import { TextInput } from "react-native-gesture-handler";
 import ResponseScreen from "./screens/ResponseScreen";
 import ParticipatingEndScreen from "./screens/ParticipatingEndScreen";
-// import { LoadingIndicator } from "./features/LoadingIndicator";
 import { LoadingIndicator } from "./features/LoadingIndicator";
 import { CustomProvider } from "./features/context/CustomContext";
+import FindIDScreen from "./screens/login/FindIDScreen";
+import FindPasswordScreen from "./screens/login/FindPasswordScreen";
+import PasswordSettingScreen from "./screens/login/PasswordSettingScreen";
+import FoundIDScreen from "./screens/login/FoundIDScreen";
+import SignUpScreen from "./screens/login/SignupScreen";
 
 // export default function App() {
 const App: React.FC = () => {
@@ -48,13 +53,22 @@ const App: React.FC = () => {
                         <NavigationContainer>
                             <Stack.Navigator>
                                 {/* 테스트 용으로 막아둠 */}
-                                {/* <Stack.Screen
-                                name={NavigationTitle.login}
-                                component={LoginScreen}
-                                options={{
-                                    headerShown: false,
-                                }}
-                            /> */}
+                                <Stack.Screen
+                                    name={NavigationTitle.login}
+                                    component={LoginScreen}
+                                    options={{
+                                        headerShown: false,
+                                    }}
+                                />
+
+                                <Stack.Screen
+                                    name={NavigationTitle.signup}
+                                    component={SignUpScreen}
+                                    options={({ route }) => ({
+                                        headerTitle: "회원가입",
+                                        headerBackTitleVisible: false,
+                                    })}
+                                />
 
                                 {/* <Stack.Screen
                                 name={NavigationTitle.endParticipation}
@@ -63,6 +77,44 @@ const App: React.FC = () => {
                                     headerShown: false,
                                 }}
                             /> */}
+
+                                <Stack.Screen
+                                    name={NavigationTitle.findID}
+                                    component={FindIDScreen}
+                                    options={({ route }) => ({
+                                        headerTitle: "아이디 찾기",
+                                        headerBackTitleVisible: false,
+                                    })}
+                                />
+
+                                <Stack.Screen
+                                    name={NavigationTitle.foundID}
+                                    component={FoundIDScreen}
+                                    options={({ route }) => ({
+                                        headerTitle: "아이디 찾기",
+                                        headerBackTitleVisible: false,
+                                    })}
+                                />
+
+                                <Stack.Screen
+                                    name={NavigationTitle.findPassword}
+                                    component={FindPasswordScreen}
+                                    options={({ route }) => ({
+                                        headerTitle: "비밀번호 찾기",
+                                        // headerBackTitle = "false",
+                                        headerBackTitleVisible: false,
+                                    })}
+                                />
+
+                                <Stack.Screen
+                                    name={NavigationTitle.settingPassword}
+                                    // name="비밀번호 재설정"
+                                    component={PasswordSettingScreen}
+                                    // options={}
+                                    options={({ route }) => ({
+                                        headerTitle: "비밀번호 재설정",
+                                    })}
+                                />
 
                                 <Stack.Screen
                                     name={NavigationTitle.mainTabs}

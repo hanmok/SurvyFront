@@ -5,6 +5,7 @@ export const colors = {
     gray: "#AAA",
     darkGray: "#444",
     deepMainColor: "#66A1FF",
+    deeperMainColor: "#226DE5",
     lightMainColor: "#B8D4FF",
     // lightMainTrans: "rgba(184, 212, 255, 0.7)",
     lightMainTrans: "rgba(150, 180, 220, 0.7)",

@@ -84,7 +84,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     const [selectedLocations, setSelectedLocations] = useState<GeoInfo[]>([]);
 
     const [isFree, setIsFree] = useState(true);
-    const [selectedGenderIndex, setSelectedGender] = useState(2);
+    const [selectedGenderIndex, setSelectedGender] = useState<null>(null);
     const [isSatisfied, setIsSatisfied] = useState(false);
     const [isNextButtonTapped, setIsNextButtonTapped] = useState(false);
 
@@ -194,7 +194,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
 
         let isTargetMale: number | null = null;
 
-        if (selectedGenderIndex < 2) {
+        if (selectedGenderIndex && selectedGenderIndex < 2) {
             isTargetMale = selectedGenderIndex % 2;
         }
 
@@ -302,6 +302,8 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                 </Text>
                                 <GenderSelection
                                     onGenderIndexSelection={setSelectedGender}
+                                    selectionOptions={["여성", "남성", "무관"]}
+                                    selectedIndex={selectedGenderIndex}
                                 />
                             </View>
                         </View>

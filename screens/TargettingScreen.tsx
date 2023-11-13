@@ -39,7 +39,8 @@ import { RouteProp } from "@react-navigation/native";
 import GenreSelectionModal from "../modals/GenreSelectionModal";
 import { screenWidth } from "../utils/ScreenSize";
 import { GeoInfo } from "../interfaces/GeoInfo";
-import { useMyContext } from "./MyContext";
+// import { useCustomContext } from "./MyContext";
+import { useCustomContext } from "../features/context/CustomContext";
 import { deletePostingSurvey } from "../utils/Storage";
 
 type TargettingScreenNavigationProp = StackNavigationProp<
@@ -66,8 +67,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         toggleCostGuideModal();
     };
 
-    const { ctxData, updateCtxData } = useMyContext();
-
     // 여기에서 모두 처리해버리기.
     const [participationGoal, setParticipationGoal] = useState("10");
     const { surveyTitle, sections, questions } = route.params;
@@ -87,6 +86,9 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     const [selectedGenderIndex, setSelectedGender] = useState<null>(null);
     const [isSatisfied, setIsSatisfied] = useState(false);
     const [isNextButtonTapped, setIsNextButtonTapped] = useState(false);
+
+    const { updateLoadingStatus, postingSurveyId, updatePostingSurveyId } =
+        useCustomContext();
 
     useEffect(() => {
         if (selectedGeos.length !== 0 && selectedGenres.length !== 0) {
@@ -222,9 +224,14 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             cost
         );
 
-        if (ctxData) {
-            await deletePostingSurvey(ctxData);
+        // if (ctxData) {
+        //     await deletePostingSurvey(ctxData);
+        // }
+
+        if (postingSurveyId) {
+            await deletePostingSurvey(postingSurveyId);
         }
+
         // 여기.. 그게 정말 없어야 하나.. ??
         navigation.popToTop();
 

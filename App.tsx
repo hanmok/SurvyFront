@@ -53,7 +53,8 @@ const App: React.FC = () => {
                         <NavigationContainer>
                             <Stack.Navigator>
                                 {/* 테스트 용으로 막아둠 */}
-                                <Stack.Screen
+
+                                {/* <Stack.Screen
                                     name={NavigationTitle.login}
                                     component={LoginScreen}
                                     options={{
@@ -70,13 +71,13 @@ const App: React.FC = () => {
                                     })}
                                 />
 
-                                {/* <Stack.Screen
+                                <Stack.Screen
                                 name={NavigationTitle.endParticipation}
                                 component={ParticipatingEndScreen}
                                 options={{
                                     headerShown: false,
                                 }}
-                            /> */}
+                            />
 
                                 <Stack.Screen
                                     name={NavigationTitle.findID}
@@ -114,7 +115,7 @@ const App: React.FC = () => {
                                     options={({ route }) => ({
                                         headerTitle: "비밀번호 재설정",
                                     })}
-                                />
+                                /> */}
 
                                 <Stack.Screen
                                     name={NavigationTitle.mainTabs}

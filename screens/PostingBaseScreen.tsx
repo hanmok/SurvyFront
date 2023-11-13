@@ -33,7 +33,7 @@ import {
     loadSavedPostingSurveys,
 } from "../utils/Storage";
 import { getDatePart } from "../utils/DateFormatter";
-import { useMyContext } from "./MyContext";
+// import { useCustomContext } from "./MyContext";
 import { useCustomContext } from "../features/context/CustomContext";
 
 type SectionItem = GQLSurvey | PostingSurveyState;
@@ -51,8 +51,6 @@ export default function PostingBaseScreen({
         NavigationTitle.postingBase
     >;
 }) {
-    const { ctxData, updateCtxData } = useMyContext();
-
     const postedRenderItem = ({ item }: { item: GQLSurvey }) => (
         <TouchableNativeFeedback
             onPress={() => {
@@ -97,7 +95,7 @@ export default function PostingBaseScreen({
         <TouchableNativeFeedback
             onPress={() => {
                 log(`${item.title} tapped`);
-                updateCtxData(item.id);
+                updatePostingSurveyId(item.id);
                 navigation.navigate(NavigationTitle.posting, {
                     postingSurveyState: item,
                 });
@@ -209,7 +207,9 @@ export default function PostingBaseScreen({
     //     }
     // }, [data, postingSurveys]);
 
-    const { updateLoadingStatus } = useCustomContext();
+    const { updateLoadingStatus, postingSurveyId, updatePostingSurveyId } =
+        useCustomContext();
+
     useEffect(() => {
         updateLoadingStatus(loading);
     }, [loading]);

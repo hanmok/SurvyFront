@@ -17,7 +17,6 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
     currentParticipation,
     participationGoal,
     onPress,
-    // genres
 }) => {
     return (
         <TouchableNativeFeedback onPress={onPress}>
@@ -31,17 +30,7 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                         flexDirection: "row-reverse",
                         alignItems: "flex-end",
                     }}
-                >
-                    {/* <TextButton
-                        title="참여하기 >"
-                        onPress={onPress}
-                        textStyle={styles.participateButtonText}
-                        backgroundStyle={{
-                            backgroundColor: colors.white,
-                            overflow: "hidden",
-                        }}
-                    /> */}
-                </View>
+                ></View>
             </View>
         </TouchableNativeFeedback>
     );
@@ -51,7 +40,8 @@ export default AvailableSurvey;
 
 const styles = StyleSheet.create({
     container: {
-        height: 120,
+        // height: 120,
+        paddingBottom: 16,
         borderRadius: 20,
         backgroundColor: colors.surveyBoxBackground,
         shadowColor: "#000",

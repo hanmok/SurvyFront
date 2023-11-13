@@ -7,7 +7,6 @@ import {
     Dimensions,
     TouchableOpacity,
 } from "react-native";
-// import { getPostedSurveys, getSurvey } from "../API/gqlAPI";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { borderSizes, marginSizes } from "../utils/sizes";
@@ -21,15 +20,12 @@ import { RootStackParamList } from "../utils/NavHelper";
 import { Survey } from "../interfaces/Survey";
 import { Counter } from "../features/counter/Counter";
 import { ResponseForm } from "../interfaces/ResponseForm";
-// import { UserResponse, login } from "../API/API";
 import { UserResponse, login } from "../API/UserAPI";
 import { useDispatch } from "react-redux";
 import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL, GQL_URL } from "../API/API";
 import { loadWholeGeo, saveUserState, saveWholeGeos } from "../utils/Storage";
-// import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
-import ImageButton from "../components/ImageButton";
 import { logObject } from "../utils/Log";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -37,9 +33,6 @@ import { getSurveyQuery } from "../API/gqlQuery";
 import { RefreshControl } from "react-native-gesture-handler";
 import { fetchAllGeoInfos } from "../API/GeoAPI";
 
-import * as XLSX from "xlsx";
-import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
 import { useCustomContext } from "../features/context/CustomContext";
 
 // TODO:
@@ -51,60 +44,6 @@ function HomeScreen({
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.home>;
 }) {
     const [refreshing, setRefreshing] = useState(false);
-    const generateExcel = () => {
-        console.log("generateExcel called");
-        let wb = XLSX.utils.book_new();
-        let ws = XLSX.utils.aoa_to_sheet([
-            // work sheet
-            ["Odd", "Even", "Total"],
-            // [1, 2, { t: "n", v: 3, f: "A2+B2" }],
-            // [3, 4, { t: "n", v: 7, f: "A3+B3" }],
-            // [5, 6, { t: "n", v: 10, f: "A4+B4" }],
-            [1, 2, { t: "n", f: "A2+B2" }],
-            [3, 4, { t: "n", f: "A3+B3" }],
-            [5, 6, { t: "n", f: "A4+B4" }],
-        ]);
-        // Odd | Even | Total
-        //  1      2    3
-        //  3      4    7
-        //  5      6    11
-
-        XLSX.utils.book_append_sheet(wb, ws, "MyFirstSheet", true);
-
-        let ws2 = XLSX.utils.aoa_to_sheet([
-            ["Odd*2", "Even*2", "Total"],
-            [
-                { t: "n", f: "MyFirstSheet!A2*2" },
-                { t: "n", f: "MyFirstSheet!B2*2" },
-                { t: "n", f: "A2+B2" },
-            ],
-            [
-                { t: "n", f: "MyFirstSheet!A3*2" },
-                { t: "n", f: "MyFirstSheet!B3*2" },
-                { t: "n", f: "A3+B3" },
-            ],
-            [
-                { t: "n", f: "MyFirstSheet!A4*2" },
-                { t: "n", f: "MyFirstSheet!B4*2" },
-                { t: "n", f: "A4+B4" },
-            ],
-        ]);
-
-        // Odd | Even | Total
-        //  2      4      6
-        //  6      8     14
-        //  10      12    22
-
-        XLSX.utils.book_append_sheet(wb, ws2, "MySecondSheet", true);
-
-        const base64 = XLSX.write(wb, { type: "base64" });
-        const filename = FileSystem.documentDirectory + "MyExcel.xlsx";
-        FileSystem.writeAsStringAsync(filename, base64, {
-            encoding: FileSystem.EncodingType.Base64,
-        }).then(() => {
-            Sharing.shareAsync(filename);
-        });
-    };
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -114,8 +53,6 @@ function HomeScreen({
         });
     };
 
-    const postingNavTitle = NavigationTitle.posting;
-    const dispatch = useDispatch();
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -138,18 +75,9 @@ function HomeScreen({
                             color="black"
                             onPress={() => {
                                 console.log("hi");
-                                generateExcel();
                             }}
                         />
                     </TouchableOpacity>
-
-                    {/* <View style={{ width: 10 }}></View>
-                    <TouchableOpacity
-                        onPress={() => console.log("Share tapped!")}
-                        style={{ marginRight: 10 }}
-                    >
-                        <Feather name="bell" size={24} color="black" />
-                    </TouchableOpacity> */}
                 </View>
             ),
             headerLeft: () => (
@@ -173,8 +101,6 @@ function HomeScreen({
                 setUser(userState);
             } catch (error) {
                 console.error("fetch User", error);
-                // TODO: handle error
-                // console.log(error);
             }
         };
         fetchUser();
@@ -227,7 +153,6 @@ function HomeScreen({
                 });
         } catch (error) {
             console.error("error fetching surveys", error);
-            // console.log("Error fetching data: ", error.message);
         }
     };
 
@@ -237,6 +162,7 @@ function HomeScreen({
             const allGeos = await fetchAllGeoInfos();
             saveWholeGeos(allGeos);
         };
+
         fetchGeos();
         updateSurveys();
 
@@ -257,7 +183,7 @@ function HomeScreen({
         />
     );
 
-    const { isLoadingStatus, updateLoadingStatus } = useCustomContext();
+    const { updateLoadingStatus } = useCustomContext();
 
     useEffect(() => {
         updateLoadingStatus(isLoading);

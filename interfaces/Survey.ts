@@ -1,3 +1,4 @@
+import { Genre } from "./Genre";
 import { Question } from "./Question";
 import { Section } from "./Section";
 
@@ -18,6 +19,7 @@ export interface Survey {
     cost: number;
     numOfSections: number;
     sections: Section[];
+    genres: Genre[];
 }
 
 export const makeSurvey = (
@@ -52,6 +54,7 @@ export const makeSurvey = (
         cost: cost,
         numOfSections,
         sections: [],
+        genres: [],
     };
     return survey;
 };

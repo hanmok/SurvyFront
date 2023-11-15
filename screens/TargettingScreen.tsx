@@ -15,7 +15,6 @@ import React from "react";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import {
     Button,
-    FlatList,
     Keyboard,
     Modal,
     TextInput,
@@ -114,50 +113,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     useEffect(() => {
         logObject("participationGoal changed to ", participationGoal);
     }, [participationGoal]);
-
-    const renderGeoItem = ({ item }: { item: GeoInfo }) => {
-        return (
-            <View
-                style={{
-                    marginTop: 6,
-                    marginHorizontal: 4,
-                    paddingHorizontal: 6,
-                    borderRadius: 6,
-                    borderColor: colors.gray1,
-                    overflow: "hidden",
-                    borderWidth: 1,
-                    height: 30,
-                    justifyContent: "center",
-                    backgroundColor: "white",
-                }}
-            >
-                <Text>
-                    {item.state} {item.city}
-                </Text>
-            </View>
-        );
-    };
-
-    const renderGenreItem = ({ item }: { item: Genre }) => {
-        return (
-            <View
-                style={{
-                    marginTop: 6,
-                    marginHorizontal: 4,
-                    paddingHorizontal: 6,
-                    borderRadius: 6,
-                    borderColor: colors.gray1,
-                    overflow: "hidden",
-                    borderWidth: 1,
-                    height: 30,
-                    justifyContent: "center",
-                    backgroundColor: colors.white,
-                }}
-            >
-                <Text>{item.name}</Text>
-            </View>
-        );
-    };
 
     const expectedTimeInMin = Math.ceil(
         questions

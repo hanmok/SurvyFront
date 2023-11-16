@@ -1,7 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 import { View, Text, StyleSheet } from "react-native";
-import TextButton from "../components/TextButton";
 import DescriptionTextButton from "../components/DescriptionTextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { fontSizes } from "../utils/sizes";
@@ -58,8 +57,6 @@ function ParticipatingEndScreen({
                     backgroundStyle={{
                         borderRadius: 12,
                         overflow: "hidden",
-                        // borderWidth: 1,
-                        // borderColor: "black",
                         padding: 10,
                         backgroundColor: "white",
                     }}
@@ -73,7 +70,6 @@ export default ParticipatingEndScreen;
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 20,
-        // marginVertical: 100,
         marginTop: 100,
         marginBottom: 70,
         justifyContent: "space-between",

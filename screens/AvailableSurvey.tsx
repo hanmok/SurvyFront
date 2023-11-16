@@ -1,8 +1,6 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableNativeFeedback } from "react-native";
 import { colors } from "../utils/colors";
-import TextButton from "../components/TextButton";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { fontSizes, marginSizes } from "../utils/sizes";
 import { Genre } from "../interfaces/Genre";
 import Spacer from "../components/common/Spacer";
@@ -46,7 +44,6 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                 <Spacer size={10} />
                 {genres && genres.length !== 0 ? (
                     <View style={{ marginLeft: 8, flexDirection: "row" }}>
-                        {/* Horizontal List 로 만들어야함..  */}
                         {genres.map(genre => (
                             <GenreBox name={genre.name} />
                         ))}
@@ -75,25 +72,11 @@ export default AvailableSurvey;
 
 const styles = StyleSheet.create({
     container: {
-        // height: 120,
-        // paddingBottom: 16,
         paddingTop: 6,
         // paddingBottom: 30,
         paddingBottom: 80,
         paddingLeft: 20,
-        // borderRadius: 20,
         backgroundColor: colors.surveyBoxBackground,
-
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 4,
-        //     height: 4,
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 4,
-        // elevation: 2,
-
-        // marginHorizontal: 20,
     },
     titleText: {
         color: colors.black,

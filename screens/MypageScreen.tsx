@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import BlockView from "../components/BlockView";
 import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
 import ImageButton from "../components/ImageButton";
-import { Ionicons } from "@expo/vector-icons";
+
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { log, logObject } from "../utils/Log";
 import { RootStackParamList } from "../utils/NavHelper";
-// import { NavigationTitle } from "../utils/NavigationTitle";
+
 import { NavigationTitle } from "../utils/NavHelper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { loadUserState } from "../utils/Storage";
@@ -75,23 +75,11 @@ function MypageScreen({
                     justifyContent: "flex-end",
                     height: 90,
                     width: screenWidth,
-                    // width: 400,
                     backgroundColor: "white",
                     paddingHorizontal: paddingSizes.xl24,
                     paddingTop: 40,
-                    // paddingBottom: 20,
                 }}
             >
-                {/* <Text
-                    style={{
-                        alignSelf: "center",
-                        fontSize: fontSizes.m20,
-                        fontWeight: "bold",
-                    }}
-                >
-                    nickname
-                </Text> */}
-
                 <ImageButton
                     img={require("../assets/settingIcon.png")}
                     size={24}

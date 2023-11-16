@@ -8,9 +8,6 @@ interface CollectedMoneyProps {
     amount: number;
 }
 
-// 동전 모양 추가해야함
-// , 추가해야함 완료
-// 동그란 것에 가둬야함.
 const CollectedMoney: React.FC<CollectedMoneyProps> = ({ amount }) => {
     const formattedNumber = accounting.formatNumber(amount);
     return (
@@ -44,12 +41,10 @@ const styles = StyleSheet.create({
         width: 120,
         marginHorizontal: 12,
         marginTop: 12,
-        // alignSelf: "flex-end", // 오른쪽으로 밀착
         alignSelf: "flex-start",
         justifyContent: "center",
     },
     subContainer: {
-        // contains image and text
         flexDirection: "row",
         justifyContent: "center",
         borderRadius: borderSizes.m10,
@@ -64,13 +59,13 @@ const styles = StyleSheet.create({
         color: "#3255ED",
         fontSize: fontSizes.s16,
         fontWeight: "bold",
-        textAlign: "center", // 수평 중앙정렬
+        textAlign: "center",
         borderRadius: borderSizes.m10,
         paddingRight: paddingSizes.xxs4,
     },
     centeredTextContainer: {
-        justifyContent: "center", // 수직 중앙 정렬
-        alignItems: "center", // 수평 중앙 정렬
+        justifyContent: "center",
+        alignItems: "center",
         height: 30,
         flexDirection: "row",
         borderRadius: borderSizes.m10,

@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 import { fontSizes } from "../../utils/sizes";
 import TextButton from "../../components/TextButton";
 import { useEffect, useState } from "react";
@@ -88,15 +88,12 @@ export default function FindPasswordScreen({
                         }}
                         backgroundStyle={{
                             marginBottom: 12,
-                            // backgroundColor: colors.white,
                         }}
                         hasShadow={false}
                         textStyle={styles.authText}
                     />
                     <View
-                        style={
-                            isPhoneAuthTapped === true ? styles.selectedBar : {}
-                        }
+                        style={isPhoneAuthTapped && styles.selectedBar}
                     ></View>
                 </View>
                 <View style={[styles.authBackground, { marginRight: 10 }]}>
@@ -111,9 +108,7 @@ export default function FindPasswordScreen({
                     />
                     <View
                         style={
-                            isPhoneAuthTapped === false
-                                ? styles.selectedBar
-                                : {}
+                            isPhoneAuthTapped === false && styles.selectedBar
                         }
                     ></View>
                 </View>
@@ -193,7 +188,7 @@ export default function FindPasswordScreen({
                     title="인증번호 받기"
                     onPress={() => {
                         // navigation.navigate(NavigationTitle.settingPassword)
-                        navigate();
+                        navigate(); // TODO: ?? clearify
                     }}
                     backgroundStyle={[
                         styles.authButtonBackground,

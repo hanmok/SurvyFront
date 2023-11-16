@@ -90,7 +90,7 @@ export async function fetchAllGeoInfos(): Promise<GeoInfo[]> {
         }
 
         const responseData: GeoInfo[] = await response.json();
-        // console.log(`geo response json: ${responseData}`);
+
         logObject("geo response jsona", responseData);
         return responseData;
     } catch (error) {

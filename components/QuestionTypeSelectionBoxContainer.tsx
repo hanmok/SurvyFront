@@ -46,7 +46,6 @@ const QuestionTypeSelectionBoxContainer: React.FC<
                     handleSelect(QuestionTypeId.Essay);
                 }}
             />
-            {/* <QuestionTypeSelectionBox index={3} /> */}
         </View>
     );
 };

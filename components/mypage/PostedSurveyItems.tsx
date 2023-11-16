@@ -6,16 +6,11 @@ import { FlatList } from "react-native-gesture-handler";
 import { useApollo } from "../../ApolloProvider";
 import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
-import {
-    convertKeysToCamelCase,
-    removeTypenameAndConvertToCamelCase,
-} from "../../utils/SnakeToCamel";
+import { removeTypenameAndConvertToCamelCase } from "../../utils/SnakeToCamel";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 import { useEffect, useState } from "react";
 import { logObject } from "../../utils/Log";
 import { GQLSurvey } from "../../interfaces/GQLInterface";
-import { colors } from "../../utils/colors";
 import { PostedSurveyResponse } from "../../API/gqlResponses";
 import { useCustomContext } from "../../features/context/CustomContext";
 
@@ -63,7 +58,6 @@ const PostedSurveyItems = ({
     }, [loading]);
 
     if (error) {
-        // console.error(error);
         return <Text>Error: {error.message}</Text>;
     }
 

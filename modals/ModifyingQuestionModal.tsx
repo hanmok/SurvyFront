@@ -13,9 +13,7 @@ import {
 } from "react-native";
 import { fontSizes } from "../utils/sizes";
 import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
-import { Switch } from "react-native";
 import { Question } from "../interfaces/Question";
-// import { QuestionTypeId, getQuestionTypeIndex } from "../QuestionType";
 import { QuestionTypeId } from "../QuestionType";
 import {
     SelectableOption,
@@ -87,7 +85,6 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
             dynamicInputValues[0] !== ""
         ) {
             setSatisfied(true);
-            // console.log(`satisfied: true`);
         } else if (
             questionTypeId === QuestionTypeId.Essay &&
             questionTitle !== ""
@@ -97,7 +94,6 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
             setSatisfied(false);
         }
     }, [questionTypeId, questionTitle, dynamicInputValues]);
-    // }, [questionType, questionTitle]);
 
     return (
         <Modal
@@ -121,9 +117,6 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                             <View style={{ height: 16 }} />
                             <QuestionTypeSelectionBoxContainer
                                 handleSelect={setQuestionTypeId}
-                                // preselectedIndex={getQuestionTypeIndex(
-                                //     questionTypeId
-                                // )}
                                 preselectedIndex={questionTypeId}
                             />
                         </View>
@@ -181,7 +174,6 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                     <View
                                         style={{
                                             flexDirection: "row",
-                                            // justifyContent: "center",
                                             justifyContent: "space-between",
                                             alignItems: "center",
                                         }}
@@ -233,7 +225,6 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                     if (
                                         questionTypeId === QuestionTypeId.Essay
                                     ) {
-                                        // selectableOptions
                                         const selectableOption =
                                             makeSelectableOption(
                                                 selectedQuestion.id,
@@ -245,7 +236,6 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                             selectableOption
                                         );
                                     } else {
-                                        log(`modify called`);
                                         secondTexts.map((optionText, index) => {
                                             if (optionText !== "") {
                                                 const selectableOption =
@@ -316,7 +306,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexDirection: "row",
         justifyContent: "center",
-        // borderWidth: 1,
         borderTopWidth: 1,
         borderRightWidth: 1,
         height: 40,
@@ -329,9 +318,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexDirection: "row",
         justifyContent: "center",
-        // borderWidth: 1,
         borderTopWidth: 1,
-        // borderRightWidth: 1,
         height: 40,
         alignItems: "center",
         margin: 0,

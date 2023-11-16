@@ -3,9 +3,7 @@ import { QuestionResponseContainerProps } from "./OverallSelectionResponseContai
 import { getQuestionType } from "../../QuestionType";
 import { fontSizes } from "../../utils/sizes";
 import { useEffect, useState } from "react";
-import { GQLAnswer, GQLSelectableOption } from "../../interfaces/GQLInterface";
-import { SelectableOption } from "../../interfaces/SelectableOption";
-import { log, logObject } from "../../utils/Log";
+import { GQLSelectableOption } from "../../interfaces/GQLInterface";
 
 const IndivisualSelectionResponseContainer: React.FC<
     QuestionResponseContainerProps

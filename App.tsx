@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,29 +9,16 @@ import ParticipatingScreen from "./screens/ParticipatingScreen";
 import { colors } from "./utils/colors";
 import { Provider } from "react-redux";
 import store from "./store";
-// import { NavigationTitle } from "./utils/NavigationTitle";
 import { NavigationTitle } from "./utils/NavHelper";
-import CustomNavButton from "./components/posting/CustomNavButton";
-import { log } from "./utils/Log";
 import ImageButton from "./components/ImageButton";
 import { MenuProvider } from "react-native-popup-menu";
 import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 import SettingScreen from "./screens/SettingScreen";
-
 import LoginScreen from "./screens/login/LoginScreen";
 import MyinfoScreen from "./screens/MyinfoScreen";
-// import {
-//     CustomProvider,
-//     useCustomContext,
-// } from "./features/context/CustomContext";
-
-import { gql, useQuery } from "@apollo/client";
 import { ApolloProvider } from "./ApolloProvider";
-import { API_BASE_URL, GQL_URL } from "./API/API";
-import { useEffect } from "react";
 import TargettingScreen from "./screens/TargettingScreen";
-import { TextInput } from "react-native-gesture-handler";
 import ResponseScreen from "./screens/ResponseScreen";
 import ParticipatingEndScreen from "./screens/ParticipatingEndScreen";
 import { LoadingIndicator } from "./features/LoadingIndicator";

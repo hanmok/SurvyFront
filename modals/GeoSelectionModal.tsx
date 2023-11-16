@@ -2,40 +2,28 @@
 import React, { useEffect, useState } from "react";
 import { GeoInfo } from "../interfaces/GeoInfo";
 import { Modal, StyleSheet, Text, View } from "react-native";
-import {
-    FlatList,
-    TextInput,
-    TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import TextButton from "../components/TextButton";
 import { loadWholeGeo } from "../utils/Storage";
-import { Entypo } from "@expo/vector-icons";
-import { screenHeight, screenWidth } from "../utils/ScreenSize";
+import { screenHeight } from "../utils/ScreenSize";
 import { log, logObject } from "../utils/Log";
 import Spacer from "../components/common/Spacer";
-import { makeRandomNumber } from "../utils/GetRandomNumber";
 
 interface GeoSelectionModalProps {
     onClose: () => void;
-    // onConfirm: () => void;
     confirmGeoSelection: (selectedGeos: GeoInfo[]) => void;
     isGeoModalVisible: boolean;
     selectedGeos: GeoInfo[];
 }
 
-// FC: Function Component
-// TODO: '전국' 을 안했음..
 const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
     onClose,
     confirmGeoSelection,
     isGeoModalVisible,
     selectedGeos,
 }) => {
-    // 1,100,000,000 // 십억.. 그럼.. 어떻게 해야하지 ?? 보이는 Survey 는 뭐로 해야뎌? 음.. code 를 null 로 설정하는건?
-    // 아니면 100 이런 애매한 숫자. null 은 약간 위험할 수 있겠다.
-
     const [selectedState, setSelectedState] = useState<GeoInfo>(null);
     const [selectedCity, setSelectedCity] = useState<GeoInfo>(null);
     const [selectedCities, setSelectedCities] = useState<GeoInfo[]>([]);
@@ -47,8 +35,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
     const [citiesToShow, setCitiesToShow] = useState<GeoInfo[]>([]);
 
     const initialize = () => {
-        // setCities([]);
-        // setStates([]);
         setSelectedCities([]);
         setSelectedStates([]);
     };
@@ -59,24 +45,14 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
 
     useEffect(() => {
         setSelectedCities(selectedGeos); // 이거.. 나눠야 하는거 아니야 ? State, 도시로 나뉘잖아.
-        // selectedGeos 에는.. small 만 있을거야. 그런데,
 
         const statesOnly = selectedGeos.map(geo => geo.state);
-        // statesOnly
         const uniqueStates = new Set(statesOnly);
-
         const preselectedStates = allStates.filter(state => {
             return uniqueStates.has(state.state);
         });
         setSelectedStates(preselectedStates);
-        // setSelectedStates
     }, [selectedGeos]);
-
-    // 초기화 버튼을 잠시 둘까?
-
-    // useEffect(() => {
-    //     const preSelectedStates = selectedGeos;
-    // }, []);
 
     useEffect(() => {
         // 전체를 포함하는게 있으면, 나머지 것들은 없애야함.
@@ -90,7 +66,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
 
             // 어떤 경우든지, 이미 선택되어있는 것이 다시 눌린 경우에는 바로 없애줘야한다.
             if (preSelectedCities.includes(selectedCity)) {
-                log("flag 1");
                 // logObject('sele')
                 const thatIndex = preSelectedCities.findIndex(
                     city => city.code === selectedCity.code
@@ -105,7 +80,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
             }
             // 전체를 선택한 경우 -> 같은 state, 다른 city 제외.
             else if (selectedCity.city === "전체") {
-                log("flag 2");
                 preSelectedCities = preSelectedCities.filter(
                     city => city.state !== selectedCity.state
                 );
@@ -122,7 +96,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
             }
             // 전체가 아닌 city 중 이미 있는 것이 눌렀을 때 -> 제거
             else if (preSelectedCities.includes(selectedCity)) {
-                log("flag 3");
                 const idx = preSelectedCities.findIndex(
                     ct => ct.id === selectedCity.id
                 );
@@ -146,14 +119,12 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                 )
             ) {
                 // preSelectedSmallCities 중에서, selectedSmallCity 와 같은 State 를 가진 것들 중  '전체'를 지워야한다.
-                log("flag 4");
                 const thatIndex = preSelectedCities.findIndex(
                     city =>
                         city.state === selectedCity.state &&
                         city.city === "전체"
                 );
 
-                // const updated = preSelectedCities.splice(thatIndex, 1);
                 preSelectedCities.splice(thatIndex, 1); // 새로 추가해야지.
                 preSelectedCities = preSelectedCities.filter(
                     city => city.state !== "전국"
@@ -165,7 +136,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                 );
                 setSelectedStates([...updatedSelectedStates]);
             } else {
-                log("flag 5");
                 preSelectedCities = preSelectedCities.filter(
                     city => city.state !== "전국"
                 );
@@ -177,7 +147,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                 setSelectedStates([...updatedSelectedStates]);
             }
         }
-        // selectedCity(null);
         setSelectedCity(null);
     }, [selectedCity]);
 
@@ -190,8 +159,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
             const allGeos = await loadWholeGeo();
             setGeos(allGeos);
 
-            // 대도시
-            // 여기서부터 뭔가 문제인데? 어.. ㅋㅋㅋㅋ state 는 모두 "전체" 가 선택된 상황. ㅇㅋ
             const sortedStates = allGeos.filter(
                 geo => geo.city === "전체" && geo.state !== "전국"
             );
@@ -200,7 +167,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
             sortedStates.unshift(전국);
 
             setAllStates(sortedStates);
-            // logObject("sortedStates", sortedStates);
         };
         getAllGeos();
     }, []);
@@ -316,12 +282,7 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                         {/* Horizontal  */}
                         <View
                             style={{
-                                // backgroundColor: "magenta",
                                 alignSelf: "stretch",
-                                // flexGrow: 0.8,
-                                // height: 500,
-                                // flexGrow: 0.8,
-                                // flexGrow: 0.7,
                                 height: 550,
                                 flexDirection: "row",
                             }}
@@ -339,10 +300,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                                     keyExtractor={item => `${item.id}`}
                                 />
                             </View>
-                            {/* <View
-                            style={{ backgroundColor: colors.gray4, width: 14 }}
-                        ></View> */}
-                            {/* Right */}
                             <View
                                 style={{
                                     flex: 0.7,
@@ -361,16 +318,12 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                         title="초기화"
                         onPress={initialize}
                         backgroundStyle={{
-                            // backgroundColor: "magenta",
-                            // backgroundColor: colors.gray3,
                             backgroundColor: colors.gray1,
-                            // flex: 1,
                             flexDirection: "column",
                             alignSelf: "stretch",
                             padding: 10,
                             marginHorizontal: 10,
                             borderRadius: 10,
-                            // marginVertical: 20,
                         }}
                         textStyle={{ color: "white" }}
                     />
@@ -422,7 +375,6 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     modalContent: {
-        // flexGrow: 0.9,
         height: screenHeight - 100,
         marginVertical: 40,
         marginHorizontal: 20,
@@ -430,7 +382,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         overflow: "hidden",
         justifyContent: "space-between",
-        // justifyContent: ''
         alignItems: "center",
     },
     bottomContainer: {
@@ -459,7 +410,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         height: 40,
         alignItems: "center",
-        // borderRadius: 30,
     },
     inactivatedStyle: {
         backgroundColor: colors.gray2,
@@ -475,7 +425,5 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         flex: 1,
-        // gap: 30,
-        // marginHorizontal: 20,
     },
 });

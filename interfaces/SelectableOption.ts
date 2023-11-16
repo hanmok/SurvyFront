@@ -1,10 +1,3 @@
-// export type SelectableOption = {
-//     id: number | undefined;
-//     questionId: number;
-//     position: number;
-//     value: string;
-// };
-
 import { makeRandomNumber, randomNumber } from "../utils/GetRandomNumber";
 
 export interface SelectableOption {

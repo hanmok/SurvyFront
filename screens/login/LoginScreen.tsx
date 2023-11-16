@@ -1,13 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../utils/NavHelper";
-// import { NavigationTitle } from "../utils/NavigationTitle";
+
 import { NavigationTitle } from "../../utils/NavHelper";
 import {
     View,
-    Text,
     StyleSheet,
     TextInput,
-    Image,
     TouchableWithoutFeedback,
     Keyboard,
 } from "react-native";
@@ -21,19 +19,11 @@ import { autoSignin, login } from "../../API/UserAPI";
 import { UserState } from "../../interfaces/UserState";
 import { loadUserState, saveUserState } from "../../utils/Storage";
 import { useEffect, useRef, useState } from "react";
-import { Alert } from "react-native";
+
 import showMessageAlert from "../../components/CustomAlert";
 import { log, logObject } from "../../utils/Log";
 import { API_BASE_URL } from "../../API/API";
-// import { Apollocient}
-import {
-    // gql,
-    useQuery,
-    ApolloProvider,
-    InMemoryCache,
-    ApolloClient,
-} from "@apollo/client";
-import { GraphQLClient, gql } from "graphql-request";
+
 import { useCustomContext } from "../../features/context/CustomContext";
 
 export default function LoginScreen({
@@ -49,9 +39,7 @@ export default function LoginScreen({
     const passwordRef = useRef(null);
 
     const handleKeyPress = ref => {
-        // if (event.key === 'Enter') {
         ref.current.focus();
-        // }
     };
 
     useEffect(() => {
@@ -121,14 +109,10 @@ export default function LoginScreen({
     };
 
     return (
-        // <View style={styles.mainContainer}>
         <SafeAreaView style={styles.mainContainer}>
             <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
                 <View style={[styles.mainContainer]}>
                     <Spacer size={40} />
-                    {/* <View>
-                        <Image source={require("../assets/coin.jpg")} />
-                    </View> */}
 
                     <View>
                         <View style={styles.loginInfoContainer}>
@@ -187,7 +171,7 @@ export default function LoginScreen({
                             onPress={() => {
                                 console.log("login tapped");
                                 // 성공시 여기 화면으로 넘어가기!
-                                // loginAction(username, password);
+
                                 navigation.navigate(NavigationTitle.signup);
                             }}
                             textStyle={styles.loginTextStyle}
@@ -197,7 +181,6 @@ export default function LoginScreen({
                                 styles.loginBackgroundStyle,
                             ]}
                         />
-                        {/* </View> */}
 
                         <Spacer size={20} />
                         <View

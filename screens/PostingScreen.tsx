@@ -9,16 +9,16 @@ import {
     paddingSizes,
 } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Spacer from "../components/common/Spacer";
+
 import TextButton from "../components/TextButton";
 // import PostingQuestionBox from "../components/PostingQuestionBox";
 import { useState } from "react";
-import { QuestionTypeKorean } from "../QuestionType";
+
 import { Question } from "../interfaces/Question";
-import { fakeQuestions } from "../fakeQuestion";
+
 import PostingQuestionBox from "../components/posting/PostingQuestionBox";
 import CreatingQuestionModal from "../modals/CreatingQuestionModal";
-import ImageButton from "../components/ImageButton";
+
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
@@ -26,40 +26,20 @@ import { NavigationTitle } from "../utils/NavHelper";
 
 import { log, logObject } from "../utils/Log";
 import ModifyingQuestionModal from "../modals/ModifyingQuestionModal";
-import {
-    Menu,
-    MenuOption,
-    MenuOptions,
-    MenuProvider,
-    MenuTrigger,
-} from "react-native-popup-menu";
 import * as Location from "expo-location";
-import {
-    Entypo,
-    Feather,
-    Foundation,
-    SimpleLineIcons,
-} from "@expo/vector-icons";
-import { SelectableOption } from "../interfaces/SelectableOption";
+
 import { Section, makeSection } from "../interfaces/Section";
 
-import { createSurvey, postWholeSurvey } from "../API/SurveyAPI";
-import {
-    loadSavedPostingSurveys,
-    loadUserState,
-    savePostingSurvey,
-} from "../utils/Storage";
+import { loadSavedPostingSurveys, savePostingSurvey } from "../utils/Storage";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import {
     PostingSurveyState,
     makePostingSurveyState,
 } from "../interfaces/PostingSurveyState";
 import { getAddress } from "../API/GeoAPI";
-import { commonStyles } from "../utils/CommonStyles";
-import { screenWidth } from "../utils/ScreenSize";
+
 import SectionModal from "../modals/SectionModal";
 import { RouteProp } from "@react-navigation/native";
-import { makeRandomNumber } from "../utils/GetRandomNumber";
 import PopupMenu from "../components/PopupMenu";
 
 export default function PostingScreen({
@@ -91,7 +71,6 @@ export default function PostingScreen({
     const [isNextButtonTapped, setIsNextButtonTapped] = useState(false);
     const [shouldInitializeCurrentSection, setShouldInitializeCurrentSection] =
         useState(false);
-    const [isAddingSectionTapped, setIsAddingSectionTapped] = useState(false);
 
     const [postingSurvey, setPostingSurvey] = useState<
         PostingSurveyState | undefined
@@ -122,9 +101,6 @@ export default function PostingScreen({
         const newSection = makeSection(sections.length);
         setSectionAdded(true);
         setSections(prev => [...prev, newSection]);
-        // const nextSectionIndex =
-        // setCurrentSectionIndex(current)
-        // setSectionAdded(true)
     };
 
     useEffect(() => {
@@ -213,14 +189,6 @@ export default function PostingScreen({
             ),
         });
     }, [navigation]);
-
-    // const toggleSave = () => {
-    //     if (surveyTitle !== "") {
-    //         setShouldSave(!shouldSave);
-    //     } else {
-    //         alert("설문 제목을 입력해주세요.");
-    //     }
-    // };
 
     const toggleSave = () => {
         setShouldSave(!shouldSave);

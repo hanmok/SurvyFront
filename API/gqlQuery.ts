@@ -1,11 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const greeting = gql`
-    query {
-        greeting
-    }
-`;
-
 export const participatedSurveyQuery = gql`
     query ParticipatedSurveys($userId: ID!) {
         user(id: $userId) {
@@ -18,7 +12,6 @@ export const participatedSurveyQuery = gql`
     }
 `;
 
-// 이렇게 사용하기!
 export const postedSurveyQuery = gql`
     query postedSurveys($userId: ID!) {
         user(id: $userId) {

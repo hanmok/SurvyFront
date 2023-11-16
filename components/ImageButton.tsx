@@ -18,15 +18,12 @@ interface ImageButtonProps {
 }
 
 const ImageButton: React.FC<ImageButtonProps> = ({
-    // source,
     img,
     onPress,
     imageStyle,
     backgroundStyle,
     size,
 }) => {
-    // const uri = `asset:/assets/${source}`; // 이미지 파일의 절대 경로
-
     return (
         <TouchableOpacity
             style={[styles.container, backgroundStyle]}

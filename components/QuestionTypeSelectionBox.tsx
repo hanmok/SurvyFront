@@ -21,11 +21,8 @@ const QuestionTypeSelectionBox: React.FC<QuestionTypeProps> = ({
 
     return (
         <TextButton
-            // onPress={() => onPress}
             onPress={onPress}
-            // title={name}
             title={name}
-            // onPress={toggleSelection}
             textStyle={
                 isSelected
                     ? [styles.commonText, styles.selectedText]

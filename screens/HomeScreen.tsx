@@ -1,27 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {
-    View,
-    Text,
-    Button,
-    FlatList,
-    Dimensions,
-    TouchableOpacity,
-} from "react-native";
+import { View, FlatList, Dimensions, TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { borderSizes, marginSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvailableSurvey from "./AvailableSurvey";
 import CollectedMoney from "../components/CollectedMoney";
-import axios from "axios";
-import TextButton from "../components/TextButton";
+
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
 import { Survey } from "../interfaces/Survey";
-import { Counter } from "../features/counter/Counter";
-import { ResponseForm } from "../interfaces/ResponseForm";
+
 import { UserResponse, login } from "../API/UserAPI";
-import { useDispatch } from "react-redux";
+
 import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL, GQL_URL } from "../API/API";
 import { loadWholeGeo, saveUserState, saveWholeGeos } from "../utils/Storage";
@@ -199,11 +190,9 @@ function HomeScreen({
                     renderItem={renderItem}
                     keyExtractor={item => `${item.id}${item.title}`}
                     ItemSeparatorComponent={() => (
-                        // <View style={{ height: 16 }} />
                         <View style={{ height: 3 }} />
                     )}
                     contentContainerStyle={{ justifyContent: "flex-start" }}
-                    // style={styles.surveyListContainer}
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
@@ -219,17 +208,13 @@ function HomeScreen({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: "space-between",
+
         justifyContent: "flex-start",
         backgroundColor: colors.background,
-        // gap: 10,
     },
     subContainer: {
-        // marginTop: 5,
         justifyContent: "flex-end",
         alignItems: "stretch",
-        // paddingBottom: 20,
-        // backgroundColor: "magenta",
     },
 
     floatingButtonContainer: {
@@ -252,15 +237,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignSelf: "stretch",
         flexBasis: 40,
-        // backgroundColor: colors.magenta,
+
         paddingTop: 10,
         paddingBottom: 16,
     },
-    surveyListContainer: {
-        // paddingTop: 20,
-        // marginHorizontal: marginSizes.m16,
-        // backgroundColor: "magenta",
-    },
+
     requestText: {
         textAlign: "center",
         color: "white",

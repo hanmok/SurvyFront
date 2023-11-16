@@ -30,7 +30,6 @@ import OverallSelectionResponseContainer from "../components/response/OverallSel
 import { QuestionResponseContainerProps } from "../components/response/OverallSelectionResponseContainer";
 import { ListRenderItem } from "react-native";
 import { fontSizes, marginSizes } from "../utils/sizes";
-import { convertIdToType } from "../enums/QuestionTypeEnum";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
 import OverallEssayResponseContainer from "../components/response/OverallEssayResponseContainer";

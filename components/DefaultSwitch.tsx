@@ -1,6 +1,4 @@
 import React from "react";
-import { FC } from "react";
-import { View } from "react-native";
 import { Switch } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
 

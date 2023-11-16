@@ -24,7 +24,6 @@ const SelectableTextButton: React.FC<TextButtonProps> = ({
     onPress,
     textStyle,
     backgroundStyle,
-
     selectedTextColor,
     selectedBackgroundColor,
     unselectedTextColor,

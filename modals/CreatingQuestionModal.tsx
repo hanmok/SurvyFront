@@ -1,11 +1,8 @@
-// CustomModal.tsx
-
 import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
     Modal,
-    TouchableOpacity,
     StyleSheet,
     TextInput,
     TouchableWithoutFeedback,
@@ -44,7 +41,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
     const [questionTitle, setQuestionTitle] = useState("");
     const [isExtraOptionEnabled, setIsExtraOptionEnabled] = useState(false);
     const [dynamicInputValues, setDynamicInputValues] = useState([""]);
-    // const [questionType, setQuestionType] = useState<QuestionType>(undefined);
     const [questionTypeId, SetQuestionTypeId] =
         useState<QuestionTypeId>(undefined);
     const [satisfied, setSatisfied] = useState<boolean>(false);
@@ -128,16 +124,12 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
         } else {
             setSatisfied(false);
         }
-        // console.log(
-        //     `questionTitle: ${questionTitle}, questionType: ${questionType}, dynamicInputValues: ${dynamicInputValues}`
-        // );
     }, [questionTypeId, questionTitle, dynamicInputValues]);
 
     useEffect(() => {
         setDynamicInputValues([""]);
         setQuestionTitle("");
         setPlaceHolder("");
-        // setQuestionType(undefined);
         SetQuestionTypeId(undefined);
     }, [isCreatingQuestionModalVisible]);
 
@@ -236,20 +228,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                         >
                                             기타 옵션 추가
                                         </Text>
-                                        {/* <Switch
-                                            trackColor={{
-                                                false: "cyan",
-                                                true: "#34C759",
-                                            }}
-                                            thumbColor={
-                                                colors.white
-                                            }
-                                            ios_backgroundColor="#E5E5E5"
-                                            onValueChange={
-                                                toggleExtraOptionSwitch
-                                            }
-                                            value={isExtraOptionEnabled}
-                                        /> */}
                                         <DefaultSwitch
                                             onValueChange={
                                                 toggleExtraOptionSwitch
@@ -283,12 +261,10 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 backgroundStyle={
                                     satisfied
                                         ? [
-                                              //   styles.bottomLeftButtonTextContainer,
                                               styles.bottomRightButtonTextContainer,
                                               styles.activatedStyle,
                                           ]
                                         : [
-                                              //   styles.bottomLeftButtonTextContainer,
                                               styles.bottomRightButtonTextContainer,
                                               styles.inactivatedStyle,
                                           ]

@@ -12,7 +12,7 @@ const DynamicTextInputsForModification = ({
     setSecondTexts,
     isExtraOptionEnabled,
 }) => {
-    const [inputValues, setInputValues] = useState([""]); // 초기에 빈상태.
+    const [inputValues, setInputValues] = useState([""]);
 
     useEffect(() => {
         setParentInputValues(inputValues);
@@ -24,16 +24,10 @@ const DynamicTextInputsForModification = ({
 
     useEffect(() => {
         setInputValues(parentInputValues);
-        // console.log(`dynamicTextInput renders, ${parentInputValues}`);
-
-        return () => {
-            // setDynamicInputValues(inputValues);
-        };
     }, [parentInputValues]);
 
     useEffect(() => {
         return () => {
-            // log(`current inputValues: ${}`)
             logObject(`current input Values: `, inputValues);
             setParentInputValues(inputValues);
         };

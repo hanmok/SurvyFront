@@ -1,4 +1,3 @@
-// import { Answer, GQLAnswer } from "./Answer";
 import { GQLAnswer, GQLParticipating, GQLSurvey } from "./GQLInterface";
 import { Survey } from "./Survey";
 
@@ -11,7 +10,6 @@ export interface GQLSurveyResponse {
 }
 
 export interface GQLAnswerResponse {
-    // answers: Answer[];
     answers: GQLAnswer[];
 }
 

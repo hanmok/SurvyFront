@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
         height: 2,
         alignSelf: "stretch",
     },
-    unselectedBar: {},
     guideText: {
         fontSize: fontSizes.s16,
     },

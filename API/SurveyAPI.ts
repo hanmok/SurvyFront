@@ -44,7 +44,6 @@ export async function createSurvey(
         userId,
         surveyTitle,
         participationGoal,
-        // geoCode,
         targetMinAge,
         targetMaxAge,
         genreIds,

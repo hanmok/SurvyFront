@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { numberOfQuestions } from "../../types/types";
 import { CustomAnswer, makeCustomAnswer } from "../../interfaces/CustomAnswer";
-// import { CustomAnswer } from "../interfaces/CustomAnswer";
 import { log, logObject } from "../../utils/Log";
 
 interface SelectorState {
@@ -30,7 +29,6 @@ export const selectorSlice = createSlice({
             state.textAnswers = [];
             console.log("[selectorSlice], initialize called");
         },
-        // singleSelection, multipleSelection 두 경우 모두 textInput Action 에도 해당하는 경우에는 ?
 
         selectSingleSelection: (
             state,
@@ -101,7 +99,6 @@ export const selectorSlice = createSlice({
 
             // 기타 옵션인 경우
             if (answerText !== "") {
-                // state.selectedOptionIds[questionIndex].push(selectedSOId)
                 // 이미 있는지 보기.
                 const existingIndex = state.textAnswers.findIndex(
                     customAnswer =>

@@ -44,12 +44,16 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
             <View style={styles.container}>
                 <Text style={styles.titleText}>{title}</Text>
                 <Spacer size={10} />
-                {genres && genres.length !== 0 && (
+                {genres && genres.length !== 0 ? (
                     <View style={{ marginLeft: 8, flexDirection: "row" }}>
                         {/* Horizontal List 로 만들어야함..  */}
                         {genres.map(genre => (
                             <GenreBox name={genre.name} />
                         ))}
+                    </View>
+                ) : (
+                    <View style={{ marginLeft: 8, flexDirection: "row" }}>
+                        <GenreBox name="일반" />
                     </View>
                 )}
 
@@ -74,7 +78,8 @@ const styles = StyleSheet.create({
         // height: 120,
         // paddingBottom: 16,
         paddingTop: 6,
-        paddingBottom: 30,
+        // paddingBottom: 30,
+        paddingBottom: 80,
         paddingLeft: 20,
         // borderRadius: 20,
         backgroundColor: colors.surveyBoxBackground,

@@ -7,6 +7,7 @@
 //     // refreshToken: string;
 // }
 
+/** userId, accessToken, refreshToken */
 interface User {
     userId: number;
     accessToken: string;

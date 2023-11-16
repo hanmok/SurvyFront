@@ -88,23 +88,23 @@ function HomeScreen({
         });
     }, [navigation]);
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const userResponse = await login("kkk@gmail.com", "kkkk");
-                const { userId, accessToken, refreshToken } = userResponse.data;
-                const userState: UserState = {
-                    userId,
-                    accessToken,
-                    refreshToken,
-                };
-                setUser(userState);
-            } catch (error) {
-                console.error("fetch User", error);
-            }
-        };
-        fetchUser();
-    }, []);
+    // useEffect(() => {
+    //     const fetchUser = async () => {
+    //         try {
+    //             const userResponse = await login("kkk@gmail.com", "kkkk");
+    //             const { userId, accessToken, refreshToken } = userResponse.data;
+    //             const userState: UserState = {
+    //                 userId,
+    //                 accessToken,
+    //                 refreshToken,
+    //             };
+    //             setUser(userState);
+    //         } catch (error) {
+    //             console.error("fetch User", error);
+    //         }
+    //     };
+    //     fetchUser();
+    // }, []);
 
     const fetchSurveys = async () => {
         try {
@@ -197,7 +197,7 @@ function HomeScreen({
                 <FlatList
                     data={surveys}
                     renderItem={renderItem}
-                    keyExtractor={item => `${item.id}`}
+                    keyExtractor={item => `${item.id}${item.title}`}
                     ItemSeparatorComponent={() => (
                         // <View style={{ height: 16 }} />
                         <View style={{ height: 3 }} />

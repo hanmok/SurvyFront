@@ -17,9 +17,9 @@ import { screenWidth } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fontSizes } from "../../utils/sizes";
-import { login } from "../../API/UserAPI";
+import { autoSignin, login } from "../../API/UserAPI";
 import { UserState } from "../../interfaces/UserState";
-import { saveUserState } from "../../utils/Storage";
+import { loadUserState, saveUserState } from "../../utils/Storage";
 import { useEffect, useRef, useState } from "react";
 import { Alert } from "react-native";
 import showMessageAlert from "../../components/CustomAlert";
@@ -55,9 +55,31 @@ export default function LoginScreen({
     };
 
     useEffect(() => {
-        setUsername("");
-        setPassword("");
+        const fetchPrevInfo = async () => {
+            const prevUserState = await loadUserState();
+            if (prevUserState.refreshToken) {
+                // auto Signin
+                const userResponse = await autoSignin(
+                    prevUserState.refreshToken
+                );
+                const userState: UserState = { ...userResponse.data };
+                logObject("userState", userState);
+
+                await saveUserState({ ...userState });
+                navigation.navigate(NavigationTitle.mainTabs);
+            }
+        };
+        fetchPrevInfo();
+        // setUsername("");
+        // setPassword("");
     }, []);
+
+    useEffect(() => {
+        const unsubscribeFocus = navigation.addListener("focus", () => {
+            setPassword("");
+        });
+        return unsubscribeFocus;
+    }, [navigation]);
 
     const handleDismissKeyboard = () => {
         console.log("dismiss keyboard called");
@@ -83,6 +105,7 @@ export default function LoginScreen({
             const userResponse = await login(username, password);
             const { userId, accessToken, refreshToken } = userResponse.data;
             const userState: UserState = { userId, accessToken, refreshToken };
+            logObject("userState", userState);
             await saveUserState(userState);
 
             navigation.navigate(NavigationTitle.mainTabs, undefined);
@@ -115,6 +138,7 @@ export default function LoginScreen({
                                 value={username}
                                 onChangeText={setUsername}
                                 keyboardType="email-address"
+                                autoCapitalize="none"
                                 onSubmitEditing={() => {
                                     console.log("[LoginScreen] return tapped");
                                     handleKeyPress(passwordRef);
@@ -130,6 +154,7 @@ export default function LoginScreen({
                                 value={password}
                                 onChangeText={setPassword}
                                 secureTextEntry={true}
+                                autoCapitalize="none"
                                 onSubmitEditing={() => {
                                     console.log(
                                         "[LoginScreen] return tapped from password textinput"
@@ -138,6 +163,7 @@ export default function LoginScreen({
                                 }}
                             />
                         </View>
+
                         <View style={{ height: 30 }} />
 
                         <TextButton

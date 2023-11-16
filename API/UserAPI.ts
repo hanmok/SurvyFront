@@ -32,6 +32,31 @@ export async function login(
     }
 }
 
+export async function autoSignin(refreshToken: string): Promise<UserResponse> {
+    const url = `${API_BASE_URL}/user/auto-signin`;
+    const data = { refreshToken };
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        const responseData: UserResponse = await response.json();
+        console.log(`userResponse from autoSignin: ${responseData}`);
+        return responseData;
+    } catch (error) {
+        console.error("login error", error);
+        throw error;
+    }
+}
+
 export async function fetchParticipatedSurveys(
     userId: number
 ): Promise<number[]> {

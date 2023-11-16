@@ -11,6 +11,8 @@ const storage = new Storage({
     storageBackend: AsyncStorage,
 });
 
+class MyStorage extends Storage {}
+
 export const getItem = async () => {
     let data = await AsyncStorage.getItem("");
     data = JSON.parse(data);

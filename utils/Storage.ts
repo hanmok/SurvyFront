@@ -1,6 +1,6 @@
+import { UserState } from "./../interfaces/UserState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Storage from "react-native-storage";
-import { UserState } from "../interfaces/UserState";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import { log, logObject } from "./Log";
 import { GeoInfo } from "../interfaces/GeoInfo";
@@ -19,6 +19,7 @@ export const getItem = async () => {
 
 export const saveUserState = async (data: UserState) => {
     // never expires
+    logObject("savedUserState", data);
     await storage.save({ key: "userInfo", data, expires: null });
 };
 
@@ -29,6 +30,7 @@ export const loadUserState = async (): Promise<UserState> => {
             autoSync: true,
             syncInBackground: true,
         });
+        logObject("loadedUserState", userState);
 
         return userState;
     } catch (error) {

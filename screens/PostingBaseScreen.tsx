@@ -190,7 +190,7 @@ export default function PostingBaseScreen({
         if (postingSurveys && postingSurveys.length !== 0) {
             setSectionData([
                 // { title: "요청한 설문", data: updatedPostedSurveys },
-                { title: "작성중인 설문", data: postingSurveys },
+                { title: "작성중", data: postingSurveys },
             ]);
         }
     }, [postingSurveys]);

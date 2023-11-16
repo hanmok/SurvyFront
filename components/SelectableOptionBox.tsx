@@ -15,7 +15,6 @@ import { Button } from "react-native";
 import ImageButton from "./ImageButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { QuestionTypeId } from "../QuestionType";
 import { colors } from "../utils/colors";
 import { log, logObject } from "../utils/Log";
 import { GQLQuestionType } from "../interfaces/GQLInterface";
@@ -246,7 +245,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                     <View style={styles.textContainer}>
                         <TextInput
                             ref={textInputRef}
-                            placeholder="hi"
+                            placeholder="답변을 입력해주세요."
                             // multiline
                             numberOfLines={5}
                             style={styles.textInput}
@@ -266,13 +265,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             }}
                             returnKeyType="done"
                         />
-                        <Button
-                            title="submit"
-                            onPress={() => {
-                                handleUserInput(userInput);
-                                onPress();
-                            }}
-                        />
                     </View>
                 );
                 break;
@@ -289,11 +281,8 @@ export default SelectableOptionBox;
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        // paddingLeft: paddingSizes.m16,
-        // backgroundColor: "magenta",
         paddingLeft: 8,
         alignItems: "center",
-        // marginTop: marginSizes.s12,
         marginTop: 8,
     },
     textStyle: {
@@ -303,18 +292,21 @@ const styles = StyleSheet.create({
     textContainer: {
         flex: 1,
         paddingRight: 20,
+        // borderRadius: 6,
         justifyContent: "center",
     },
     textInput: {
         borderWidth: 1,
         borderColor: "#ccc",
+        borderRadius: 6,
         padding: 10,
         fontSize: 16,
         textAlignVertical: "top", // 텍스트 상단 정렬
     },
     extraInput: {
-        backgroundColor: colors.lightMainTrans,
-        marginLeft: marginSizes.s12,
+        // backgroundColor: colors.lightMainTrans,
+        // marginLeft: marginSizes.s12,
+        marginLeft: 8,
         fontSize: fontSizes.s16,
         paddingVertical: 5,
         paddingLeft: 5,

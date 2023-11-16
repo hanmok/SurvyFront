@@ -72,7 +72,7 @@ function MypageScreen({
             <View
                 style={{
                     flexDirection: "row",
-                    justifyContent: "space-between",
+                    justifyContent: "flex-end",
                     height: 90,
                     width: screenWidth,
                     // width: 400,
@@ -82,7 +82,7 @@ function MypageScreen({
                     // paddingBottom: 20,
                 }}
             >
-                <Text
+                {/* <Text
                     style={{
                         alignSelf: "center",
                         fontSize: fontSizes.m20,
@@ -90,7 +90,7 @@ function MypageScreen({
                     }}
                 >
                     nickname
-                </Text>
+                </Text> */}
 
                 <ImageButton
                     img={require("../assets/settingIcon.png")}

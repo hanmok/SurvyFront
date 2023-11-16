@@ -83,7 +83,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                 textAlign: "center",
                             }}
                         >
-                            설문 요청 확정
+                            설문 제출
                         </Text>
 
                         <View style={{ height: 300, width: 300 }}>

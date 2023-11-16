@@ -27,12 +27,12 @@ const AgeSlider: React.FC<AgeSliderProps> = ({
         <View>
             <Text
                 style={{
-                    // alignSelf: "center",
                     fontSize: fontSizes.m20,
                 }}
             >
                 나이
             </Text>
+
             <Text style={{ alignSelf: "center" }}>
                 {ages[0]} ~ {ages[1]}
             </Text>

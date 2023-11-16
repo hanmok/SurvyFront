@@ -54,7 +54,7 @@ const App: React.FC = () => {
                             <Stack.Navigator>
                                 {/* 테스트 용으로 막아둠 */}
 
-                                {/* <Stack.Screen
+                                <Stack.Screen
                                     name={NavigationTitle.login}
                                     component={LoginScreen}
                                     options={{
@@ -70,14 +70,6 @@ const App: React.FC = () => {
                                         headerBackTitleVisible: false,
                                     })}
                                 />
-
-                                <Stack.Screen
-                                name={NavigationTitle.endParticipation}
-                                component={ParticipatingEndScreen}
-                                options={{
-                                    headerShown: false,
-                                }}
-                            />
 
                                 <Stack.Screen
                                     name={NavigationTitle.findID}
@@ -102,7 +94,6 @@ const App: React.FC = () => {
                                     component={FindPasswordScreen}
                                     options={({ route }) => ({
                                         headerTitle: "비밀번호 찾기",
-                                        // headerBackTitle = "false",
                                         headerBackTitleVisible: false,
                                     })}
                                 />
@@ -115,7 +106,7 @@ const App: React.FC = () => {
                                     options={({ route }) => ({
                                         headerTitle: "비밀번호 재설정",
                                     })}
-                                /> */}
+                                />
 
                                 <Stack.Screen
                                     name={NavigationTitle.mainTabs}
@@ -127,21 +118,29 @@ const App: React.FC = () => {
                                 <Stack.Screen
                                     name={NavigationTitle.participate}
                                     component={ParticipatingScreen}
-                                    options={{
-                                        // headerBackTitleVisible: false,
-                                        // headerback
-                                        // headerLeft: null,
-                                        // TODO: 개발 끝나면 false 로 처리하기.
-                                        // headerShown: false,
+                                    // options={{
+                                    //     // headerBackTitleVisible: false,
+                                    //     // headerback
+                                    //     // headerLeft: null,
+                                    //     // TODO: 개발 끝나면 false 로 처리하기.
+                                    //     // headerShown: false,
+                                    //     // headerStyle: {
+                                    //     //     backgroundColor: colors.background,
+                                    //     // },
+                                    // }}
+                                    options={({ route }) => ({
+                                        headerTitle: "",
+                                        headerBackTitleVisible: false,
                                         headerStyle: {
                                             backgroundColor: colors.background,
                                         },
-                                    }}
+                                    })}
                                 />
                                 <Stack.Screen
                                     name={NavigationTitle.posting}
                                     component={PostingScreen}
-                                    options={{
+                                    options={({ route }) => ({
+                                        headerTitle: "설문 작성",
                                         headerBackTitleVisible: false,
                                         headerStyle: {
                                             backgroundColor: colors.background,
@@ -151,7 +150,7 @@ const App: React.FC = () => {
                                                 img={require("./assets/selectedSingleSelection.png")}
                                             />
                                         ),
-                                    }}
+                                    })}
                                 />
 
                                 <Stack.Screen
@@ -190,17 +189,24 @@ const App: React.FC = () => {
                                 <Stack.Screen
                                     name={NavigationTitle.myinfo}
                                     component={MyinfoScreen}
-                                    options={{
+                                    options={({ route }) => ({
+                                        headerTitle: "내 정보",
                                         headerBackTitleVisible: false,
                                         headerStyle: {
                                             backgroundColor: colors.background,
                                         },
-                                    }}
+                                    })}
                                 />
                                 <Stack.Screen
                                     name={NavigationTitle.targetting}
                                     component={TargettingScreen}
-                                    options={{ headerBackTitleVisible: false }}
+                                    options={({ route }) => ({
+                                        headerTitle: "참여자 조건 설정",
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                    })}
                                 />
 
                                 <Stack.Screen

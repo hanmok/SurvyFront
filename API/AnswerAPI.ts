@@ -38,7 +38,6 @@ export async function postAnswer(
     };
 
     const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
-    // printObject(snakeData, "[AnswerAPI] postAnswer");
 
     try {
         const response = await fetch(url, {
@@ -50,7 +49,8 @@ export async function postAnswer(
         });
 
         if (!response.ok) {
-            throw new Error("postSelectionAnswer error!!");
+            logObject("postingData", snakeData);
+            throw new Error("postAnswer error!!");
         }
 
         const responseData: ApiResponse = await response.json();
@@ -58,7 +58,7 @@ export async function postAnswer(
 
         return responseData;
     } catch (error) {
-        console.error("postSelectionAnswer error!", error);
+        console.error("postAnswer error!", error);
         throw error;
     }
 }

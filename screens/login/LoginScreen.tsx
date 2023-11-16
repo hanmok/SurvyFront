@@ -34,12 +34,15 @@ import {
     ApolloClient,
 } from "@apollo/client";
 import { GraphQLClient, gql } from "graphql-request";
+import { useCustomContext } from "../../features/context/CustomContext";
 
 export default function LoginScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.login>;
 }) {
+    const { updateLoadingStatus } = useCustomContext();
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -76,6 +79,7 @@ export default function LoginScreen({
         }
 
         try {
+            updateLoadingStatus(true);
             const userResponse = await login(username, password);
             const { userId, accessToken, refreshToken } = userResponse.data;
             const userState: UserState = { userId, accessToken, refreshToken };
@@ -84,10 +88,12 @@ export default function LoginScreen({
             navigation.navigate(NavigationTitle.mainTabs, undefined);
         } catch (error) {
             showMessageAlert(
-                "Wrong Login Info",
-                "Check Username or Password Again"
+                "잘못된 로그인 정보입니다",
+                "아이디 또는 비밀번호를 다시 확인해주세요."
             );
             console.error("[LoginScreen], login error:", error);
+        } finally {
+            updateLoadingStatus(false);
         }
     };
 

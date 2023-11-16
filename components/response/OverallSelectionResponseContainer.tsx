@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
     },
     bar: {
         height: 30,
-
         marginBottom: 10,
         justifyContent: "center",
         marginLeft: 10,

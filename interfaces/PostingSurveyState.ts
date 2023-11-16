@@ -2,8 +2,6 @@ import { makeRandomNumber, randomNumber } from "../utils/GetRandomNumber";
 import { log, logObject } from "../utils/Log";
 import { Question } from "./Question";
 import { Section } from "./Section";
-import { SelectableOption } from "./SelectableOption";
-import { Survey } from "./Survey";
 
 export interface PostingSurveyState {
     currentDate: Date;

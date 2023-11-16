@@ -1,34 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-    View,
-    Text,
-    StyleSheet,
-    TextInput,
-    NativeSyntheticEvent,
-    TextInputSubmitEditingEventData,
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-} from "react-native";
-import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
-import { Button } from "react-native";
+import { View, Text, StyleSheet, TextInput, Keyboard } from "react-native";
+import { fontSizes, marginSizes } from "../utils/sizes";
 import ImageButton from "./ImageButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { colors } from "../utils/colors";
-import { log, logObject } from "../utils/Log";
-import { GQLQuestionType } from "../interfaces/GQLInterface";
-import {
-    QuestionTypeEnum,
-    QuestionTypeIdEnum,
-} from "../enums/QuestionTypeEnum";
+import { logObject } from "../utils/Log";
+import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
 
 interface SelectableOptionProps {
     id: number;
     questionId: number;
     position: number;
     value: string;
-    // questionTypeId: number;
     questionTypeId: string;
     onPress?: () => void;
     handleUserInput?: (text: string) => void;
@@ -54,13 +37,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     }, []);
 
     const textInputRef = useRef(null);
-
-    // const handleFocusTextInput = () => {
-    //     logObject("[SelectableOptionBox] focus called", textInputRef.current);
-    //     if (textInputRef.current) {
-    //         textInputRef.current.focus();
-    //     }
-    // };
 
     const [userInput, setUserInput] = useState("");
 
@@ -304,8 +280,6 @@ const styles = StyleSheet.create({
         textAlignVertical: "top", // 텍스트 상단 정렬
     },
     extraInput: {
-        // backgroundColor: colors.lightMainTrans,
-        // marginLeft: marginSizes.s12,
         marginLeft: 8,
         fontSize: fontSizes.s16,
         paddingVertical: 5,

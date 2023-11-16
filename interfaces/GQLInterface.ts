@@ -46,6 +46,7 @@ export interface GQLSelectableOption {
     section: GQLSection;
     isExtra: number;
 }
+
 /** id, username, collectedReward, ... */
 export interface GQLUser {
     id: number;

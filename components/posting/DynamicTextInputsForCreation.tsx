@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     View,
-    Text,
     TextInput,
-    Button,
     StyleSheet,
     TouchableWithoutFeedback,
     Keyboard,
@@ -20,10 +18,6 @@ const DynamicTextInputsForCreation = ({
     isExtraOptionEnabled,
 }) => {
     const [inputValues, setInputValues] = useState([""]);
-
-    useEffect(() => {
-        // console.log(`dynamicTextInput renders, ${dynamicInputValues}`);
-    }, [dynamicInputValues]);
 
     useEffect(() => {
         setDynamicInputValues(inputValues);

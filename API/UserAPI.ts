@@ -50,10 +50,8 @@ export async function fetchParticipatedSurveys(
             throw new Error("Network response was not ok");
         }
         console.log(`response.json: ${response.json}`);
-        // const responseData: Promise<number[]> = await response.json();
         const responseData: number[] = await response.json();
         console.log(`fetched surveyIds: ${responseData}`);
-        // console.log(`userResponse id: ${responseData.data.userId}`);
 
         return responseData;
     } catch (error) {

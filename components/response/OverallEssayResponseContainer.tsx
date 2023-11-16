@@ -1,20 +1,10 @@
 import { View, StyleSheet, FlatList, Text } from "react-native";
 import { fontSizes } from "../../utils/sizes";
-import { SelectableOption } from "../../interfaces/SelectableOption";
-// import { Answer, GQLAnswer } from "../interfaces/Answer";
 import { GQLAnswer, GQLSelectableOption } from "../../interfaces/GQLInterface";
-import { useState } from "react";
-import {
-    QuestionTypeEnum,
-    convertIdToType,
-} from "../../enums/QuestionTypeEnum";
 import { screenWidth } from "../../utils/ScreenSize";
-import { colors } from "../../utils/colors";
 import { getQuestionType } from "../../QuestionType";
 import { QuestionResponseContainerProps } from "./OverallSelectionResponseContainer";
-/** questionTitle, selectableOptions, answers */
 
-// 이거.. 나눠야 하는거 아닐까?
 const OverallEssayResponseContainer: React.FC<
     QuestionResponseContainerProps
 > = ({

@@ -18,7 +18,6 @@ export function Counter() {
                 title="Increment"
             ></Button>
             <Button
-                // onPress={() => dispatch(decrement())}
                 onPress={() => dispatch(incrementByAmount(5))}
                 title="Decrement"
             ></Button>

@@ -1,14 +1,12 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 import {
-    FlatList,
     SectionList,
     StyleSheet,
     TouchableNativeFeedback,
     View,
 } from "react-native";
 import { Text } from "react-native";
-import { Button } from "react-native";
 import TextButton from "../components/TextButton";
 import { useApollo } from "../ApolloProvider";
 import { useQuery } from "@apollo/client";
@@ -17,7 +15,6 @@ import { postedSurveyQuery } from "../API/gqlQuery";
 import { fontSizes } from "../utils/sizes";
 import { useEffect, useState } from "react";
 import { GQLSurvey, isGQLSurvey } from "../interfaces/GQLInterface";
-import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { colors } from "../utils/colors";
 import { log, logObject } from "../utils/Log";
 import Spacer from "../components/common/Spacer";
@@ -28,12 +25,8 @@ import {
     PostingSurveyState,
     isPostingSurveyState,
 } from "../interfaces/PostingSurveyState";
-import {
-    initializePostingSurvey,
-    loadSavedPostingSurveys,
-} from "../utils/Storage";
+import { loadSavedPostingSurveys } from "../utils/Storage";
 import { getDatePart } from "../utils/DateFormatter";
-// import { useCustomContext } from "./MyContext";
 import { useCustomContext } from "../features/context/CustomContext";
 
 type SectionItem = GQLSurvey | PostingSurveyState;
@@ -164,8 +157,6 @@ export default function PostingBaseScreen({
     useEffect(() => {
         const fetchSavedPostingSurveys = async () => {
             try {
-                // await initializePostingSurvey();
-
                 const allPostingSurveys = await loadSavedPostingSurveys();
                 logObject("postingSurveys:", allPostingSurveys);
                 setPostingSurveys(allPostingSurveys);
@@ -283,11 +274,6 @@ export default function PostingBaseScreen({
 
             {sectionData && sectionData.length === 0 && (
                 <View style={{ justifyContent: "center", flex: 1 }}>
-                    {/* <View
-                        style={
-                            
-                        }
-                    > */}
                     <TextButton
                         title="설문 만들기"
                         onPress={() => {
@@ -299,7 +285,6 @@ export default function PostingBaseScreen({
                             textAlign: "center",
                             fontSize: 18,
                             fontWeight: "700",
-                            // color: "magenta",
                         }}
                         backgroundStyle={{
                             backgroundColor: "white",
@@ -310,7 +295,6 @@ export default function PostingBaseScreen({
                             marginTop: 20,
                         }}
                     />
-                    {/* </View> */}
                 </View>
             )}
         </View>
@@ -322,7 +306,6 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.l24,
         fontWeight: "bold",
         textAlign: "center",
-        // borderTopColor: "#969696",
         borderTopColor: colors.black,
         backgroundColor: "#d9d9d9",
         borderTopWidth: 1,

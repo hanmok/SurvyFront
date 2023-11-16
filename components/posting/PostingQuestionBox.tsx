@@ -1,15 +1,8 @@
 import React from "react";
 import { Question } from "../../interfaces/Question";
-import {
-    StyleSheet,
-    View,
-    Text,
-    TouchableOpacity,
-    Touchable,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import ImageButton from "../ImageButton";
 import { colors } from "../../utils/colors";
-import QuestionTypeSelectionBoxContainer from "../QuestionTypeSelectionBoxContainer";
 import {
     QuestionTypeKorean,
     QuestionTypeId,
@@ -17,7 +10,6 @@ import {
     // getQuestionTypeIndex,
 } from "../../QuestionType";
 import { fontSizes } from "../../utils/sizes";
-import { screenWidth } from "../../utils/ScreenSize";
 
 // Question 을 받도록, 전체가 버튼.
 
@@ -42,8 +34,6 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
             {question.selectableOptions.map(option => (
                 <>
                     {(() => {
-                        // switch (question.questionType) {
-                        //     case QuestionType.SingleSelection:
                         switch (question.questionTypeId) {
                             case QuestionTypeId.SingleSelection:
                                 return (
@@ -55,7 +45,6 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                         <Text>{option.value}</Text>
                                     </View>
                                 );
-                            // case QuestionType.MultiSelection:
                             case QuestionTypeId.MultipleSelection:
                                 return (
                                     <View style={styles.rowContainer}>
@@ -66,7 +55,6 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                         <Text>{option.value}</Text>
                                     </View>
                                 );
-                            // case QuestionType.Essay:
                             case QuestionTypeId.Essay:
                                 return (
                                     <View>

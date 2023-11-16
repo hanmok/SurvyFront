@@ -4,31 +4,26 @@ import {
     StyleSheet,
     Text,
     View,
-    Alert,
     KeyboardAvoidingView,
     Platform,
 } from "react-native";
 import { colors } from "../utils/colors";
 import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../utils/NavHelper";
-import { Question } from "../interfaces/Question";
-import { SelectableOption } from "../interfaces/SelectableOption";
-import SelectableOptionBox from "../components/SelectableOptionBox";
+
 import ParticipatingQuestionBox from "../components/ParticipatingQuestionBox";
 import TextButton from "../components/TextButton";
-import { useNavigation } from "@react-navigation/native";
+
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
 import { initialize } from "../features/selector/selectorSlice";
 import { CustomAnswer } from "../interfaces/CustomAnswer";
 import { useSelector, useDispatch } from "react-redux";
-import { Answer } from "../interfaces/Answer";
+
 import { RootState } from "../store";
 import { createParticipate, postAnswer } from "../API/AnswerAPI";
-import { API_BASE_URL } from "../API/API";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loadUserState } from "../utils/Storage";
 // import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
@@ -38,7 +33,7 @@ import {
 } from "../utils/SnakeToCamel";
 import { useApollo } from "../ApolloProvider";
 import { useQuery } from "@apollo/client";
-import { Survey } from "../interfaces/Survey";
+
 import { getSurveyQuery } from "../API/gqlQuery";
 import { log, logObject } from "../utils/Log";
 import {
@@ -72,7 +67,6 @@ function ParticipatingScreen({
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const [questions, setQuestions] = useState<GQLQuestion[]>([]);
 
-    // const [answerPromises, setAnswerPromises] = useState<Promise<void>[]>([]);
     const answerPromises: Promise<void>[] = [];
 
     const [isNextTapped, setIsNextTapped] = useState(false);
@@ -116,7 +110,6 @@ function ParticipatingScreen({
             logObject("currentSection:", currentSection);
             setQuestions(currentSection.questions);
             dispatch(initialize(currentSection.questions.length));
-            // setIsLoading(false);
         }
     }, [currentSectionIndex, data]);
 
@@ -259,7 +252,6 @@ function ParticipatingScreen({
             }
         };
 
-        // await handleCompleteSection()
         if (isNextTapped) {
             handleCompleteSection();
             setIsNextTapped(false);
@@ -328,8 +320,7 @@ function ParticipatingScreen({
                 style={styles.flatListStyle}
                 data={questions}
                 renderItem={renderItem}
-                // keyExtractor={item => `${item.selectableOptions[0].id} `}
-                keyExtractor={item => `${item.id} `}
+                keyExtractor={item => `${item.id}${item.text} `}
                 ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
                 ListFooterComponent={listFooter}
             />
@@ -342,7 +333,6 @@ export default ParticipatingScreen;
 const styles = StyleSheet.create({
     container: {
         alignItems: "center",
-        // marginHorizontal: 10,
         marginHorizontal: 20,
         marginBottom: 30,
     },
@@ -350,12 +340,8 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
     },
     questionContainerBox: {
-        // backgroundColor: colors.lightMainColor,
         backgroundColor: colors.white,
-        // marginVertical: marginSizes.s12,
-        // marginVertical: marginSizes.l20,
         marginTop: 30,
-        // margin
         paddingVertical: 16,
         borderRadius: 20,
         overflow: "hidden",
@@ -376,13 +362,11 @@ const styles = StyleSheet.create({
     },
     activatedFinishButtonBackground: {
         marginTop: 20,
-        // backgroundColor: colors.gray3,
         backgroundColor: "#666",
         alignSelf: "stretch",
         padding: 10,
         borderRadius: borderSizes.m10,
         height: 40,
-        // width: 100,
     },
     inactivatedFinishButtonBackground: {
         marginTop: 20,
@@ -391,6 +375,5 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: borderSizes.m10,
         height: 40,
-        // width: 100,
     },
 });

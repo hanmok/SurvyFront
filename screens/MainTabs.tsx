@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image, View, Text } from "react-native";
 import { Feather, Octicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,8 +6,6 @@ const Tab = createBottomTabNavigator();
 
 import MypageScreen from "./MypageScreen";
 import HomeScreen from "./HomeScreen";
-import SurveyParticipateScreen from "./ParticipatingScreen";
-import PostingScreen from "./PostingScreen";
 import PostingBaseScreen from "./PostingBaseScreen";
 import { NavigationTitle } from "../utils/NavHelper";
 

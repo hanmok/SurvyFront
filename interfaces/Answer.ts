@@ -1,5 +1,3 @@
-/** selectableOptionId, sequence, answerText */
-
 /** questionId, selectableOptionId, userId, surveyId, answerText */
 
 export interface Answer {

@@ -1,5 +1,4 @@
 import {
-    FlatList,
     Keyboard,
     Modal,
     StyleSheet,
@@ -10,12 +9,9 @@ import {
 } from "react-native";
 
 import { fontSizes } from "../utils/sizes";
-import SelectableTextButton from "../components/SelectableTextButton";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
 import { useEffect, useState } from "react";
-import { Entypo } from "@expo/vector-icons";
-import { log, logObject } from "../utils/Log";
 import { screenWidth } from "../utils/ScreenSize";
 import { commonStyles } from "../utils/CommonStyles";
 import CostSelectionContainer from "../CostSelectionContainer";
@@ -50,8 +46,6 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
         Keyboard.dismiss();
     };
 
-    // const [participationGoal, setParticipationGoal] = useState("10");
-
     useEffect(() => {
         console.log(`[CostGuideModal], isFree: ${isFree}, price: ${price}`);
         if (isFree) {
@@ -67,8 +61,6 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
             setPrice(`${numWithComma}`);
         }
     }, [price, isFree, isCostGuideModalVisible, participationGoal]);
-
-    const toggleCostGuideSelection = () => {};
 
     return (
         <Modal transparent={true} visible={isCostGuideModalVisible}>
@@ -117,17 +109,14 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         가격
                                     </Text>
                                     <Text style={commonStyles.font16}>
-                                        {/* {parseInt(participationGoal || "10") * 5 * 300}{" "}원 */}
                                         {price} 원
                                     </Text>
                                 </View>
                                 <View
                                     style={[
-                                        // styles.rowContainer,
                                         {
                                             alignItems: "center",
                                             flexDirection: "column",
-                                            // backgroundColor: "magenta",
                                         },
                                     ]}
                                 >
@@ -215,7 +204,6 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
-        // borderRadius: 30,
     },
     inactivatedStyle: {
         backgroundColor: colors.gray2,

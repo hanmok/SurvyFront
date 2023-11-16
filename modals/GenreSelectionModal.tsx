@@ -9,17 +9,15 @@ import {
     View,
 } from "react-native";
 import { fontSizes } from "../utils/sizes";
-import SelectableTextButton from "../components/SelectableTextButton";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
-import { useEffect, useInsertionEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { getAllGenres } from "../API/GenreAPI";
 import { log, logObject } from "../utils/Log";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { Genre } from "../interfaces/Genre";
 import Spacer from "../components/common/Spacer";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface GenreSelectionModalProps {
     onClose: () => void;
@@ -41,7 +39,6 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
     const [allGenres, setAllGenres] = useState<Genre[]>([]);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
     const [showingGenres, setShowingGenres] = useState<Genre[]>([]);
-
     const [userInput, setUserInput] = useState<string>("");
 
     useEffect(() => {
@@ -81,7 +78,7 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
 
     useEffect(() => {
         console.log(`userInput: ${userInput}`);
-        // if (userInput )
+
         if (!userInput || userInput !== "") {
             const genresToShow = allGenres.filter(genre =>
                 genre.name.includes(userInput)
@@ -91,32 +88,6 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
             setShowingGenres(allGenres);
         }
     }, [userInput, allGenres]);
-
-    // const genreItem = ({ item }: { item: Genre }) => {
-    //     return (
-    //         <TextButton
-    //             onPress={() => {
-    //                 toggleGenreSelection(item);
-    //             }}
-    //             title={item.name}
-    //             backgroundStyle={{
-    //                 height: 50,
-    //                 backgroundColor: selectedGenres.includes(item)
-    //                     ? colors.gray1
-    //                     : colors.white,
-    //                 marginHorizontal: 6,
-    //                 marginVertical: 4,
-    //                 borderRadius: 10,
-    //                 paddingHorizontal: 10,
-    //             }}
-    //             textStyle={{
-    //                 color: selectedGenres.includes(item)
-    //                     ? colors.white
-    //                     : colors.black,
-    //             }}
-    //         />
-    //     );
-    // };
 
     return (
         <Modal transparent={true} visible={isGenreSelectionModalVisible}>
@@ -139,31 +110,12 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
 
                         <View
                             style={{
-                                // flexDirection: "row",
                                 flexDirection: "column",
                                 flex: 1,
                                 marginHorizontal: 20,
                                 marginBottom: 15,
                             }}
                         >
-                            {/* <FlatList
-                                data={tagsPerRow}
-                                renderItem={({ item }) => (
-                                    <View style={styles.rowContainer}>
-                                        {item.map((genre, genreIndex) => (
-                                            <View
-                                                style={styles.genreContainer}
-                                                key={genreIndex}
-                                            >
-                                                <Text style={styles.genreText}>
-                                                    {genre}
-                                                </Text>
-                                            </View>
-                                        ))}
-                                    </View>
-                                )}
-                            /> */}
-
                             <View
                                 style={{
                                     marginTop: 10,

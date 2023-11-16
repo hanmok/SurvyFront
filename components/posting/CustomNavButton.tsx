@@ -1,5 +1,5 @@
 import React from "react";
-import { ImageRequireSource, View } from "react-native";
+import { ImageRequireSource } from "react-native";
 import ImageButton from "../ImageButton";
 
 interface CustomNavButtonProps {

@@ -1,15 +1,7 @@
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { fontSizes } from "../../utils/sizes";
-import { SelectableOption } from "../../interfaces/SelectableOption";
-// import { Answer, GQLAnswer } from "../interfaces/Answer";
-import { GQLAnswer, GQLSelectableOption } from "../../interfaces/GQLInterface";
 import { useEffect, useState } from "react";
-import {
-    QuestionTypeEnum,
-    convertIdToType,
-} from "../../enums/QuestionTypeEnum";
-import { screenWidth } from "../../utils/ScreenSize";
-import { colors } from "../../utils/colors";
+
 import { getQuestionType } from "../../QuestionType";
 import { QuestionResponseContainerProps } from "./OverallSelectionResponseContainer";
 import { log, logObject } from "../../utils/Log";

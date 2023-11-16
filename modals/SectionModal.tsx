@@ -2,15 +2,12 @@ import {
     Button,
     Modal,
     StyleSheet,
-    Text,
     TouchableNativeFeedback,
     View,
 } from "react-native";
 import { colors } from "../utils/colors";
 import { useEffect } from "react";
-import { screenWidth } from "../utils/ScreenSize";
 import { Feather } from "@expo/vector-icons";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import React from "react";
 import Separator from "../components/common/Separator";
 import { log } from "../utils/Log";
@@ -30,10 +27,6 @@ const SectionModal: React.FC<SectionModalProps> = ({
     onAdd,
     onSelection,
 }) => {
-    const toggleVisible = () => {
-        onClose();
-    };
-
     useEffect(() => {
         console.log(`current numOfSections: ${numOfSections}`);
     }, [numOfSections]);
@@ -48,13 +41,6 @@ const SectionModal: React.FC<SectionModalProps> = ({
                     onClose();
                 }}
             />
-            {/* Separator */}
-            {/* <View
-                style={{
-                    backgroundColor: colors.gray5,
-                    height: 1,
-                }}
-            /> */}
             <Separator />
         </View>
     ));
@@ -65,7 +51,6 @@ const SectionModal: React.FC<SectionModalProps> = ({
             visible={isSectionModalVisible}
             animationType="slide"
         >
-            {/* <View style={styles.wholeContainer}> */}
             <TouchableNativeFeedback
                 style={styles.wholeContainer}
                 onPress={() => {

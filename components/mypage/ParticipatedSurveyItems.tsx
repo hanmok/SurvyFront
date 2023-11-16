@@ -1,14 +1,11 @@
 import { useQuery } from "@apollo/client";
-// import { participatedSurveyQuery, postedSurveyQuery } from "../../API/gqlQuery";
 import { participatedSurveyQuery } from "../../API/gqlQuery";
 import { View, Text } from "react-native";
-import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useApollo } from "../../ApolloProvider";
 import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
 import { convertKeysToCamelCase } from "../../utils/SnakeToCamel";
-import { colors } from "../../utils/colors";
 import { useCustomContext } from "../../features/context/CustomContext";
 import { useEffect } from "react";
 
@@ -86,7 +83,7 @@ const ParticipatedSurveyItems = ({ userId }) => {
             )}
             // keyExtractor={item => `${item.code}${item.created_at}`}
 
-            keyExtractor={item => `${item.id}`}
+            keyExtractor={item => `${item.id}${item.title}`}
         />
     );
 };

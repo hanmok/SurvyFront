@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-    View,
-    TextInput,
-    Button,
-    Modal,
-    Alert,
-    StyleSheet,
-    Text,
-} from "react-native";
+import { View, TextInput, Modal, StyleSheet, Text } from "react-native";
 import { colors } from "../utils/colors";
 import TextButton from "../components/TextButton";
 import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 import { screenWidth } from "../utils/ScreenSize";
-import Spacer from "../components/common/Spacer";
 
 interface SurveyTitleModalProps {
     setSurveyTitle: (string) => void;
@@ -24,13 +15,11 @@ interface SurveyTitleModalProps {
 
 const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
     setSurveyTitle,
-    surveyTitle,
     titleModalVisible,
     setTitleModalVisible,
     setConfirmTapped,
 }) => {
     const [title, setTitle] = useState("");
-    // const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         console.log("modalVisible changed");
@@ -40,30 +29,11 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
         <Modal
             animationType="fade"
             transparent={true}
-            // visible={modalVisible}
             visible={titleModalVisible}
             onRequestClose={() => {
-                // setModalVisible(false);
                 setTitleModalVisible(false);
             }}
         >
-            {/* <View
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "cyan",
-
-            }}
-        > */}
-            {/* Parent View 에 보이는 것 */}
-            {/* <TextButton
-                backgroundStyle={[styles.modalBGStyle]}
-                title={surveyTitle}
-                onPress={() => setModalVisible(true)}
-                textStyle={styles.modalTextStyle}
-            /> */}
-
             <View style={styles.totalContainer}>
                 <View style={styles.coreContainer}>
                     <Text style={styles.infoTextContainer}>
@@ -80,7 +50,6 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                     <View style={styles.bottomContainer}>
                         <TextButton
                             title="닫기"
-                            // onPress={() => setModalVisible(false)}
                             onPress={() => setTitleModalVisible(false)}
                             textStyle={styles.bottomTextStyle}
                             backgroundStyle={[styles.bottomButtonBackground]}
@@ -89,7 +58,6 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                             title="확인"
                             onPress={() => {
                                 setSurveyTitle(title);
-                                // setModalVisible(false);
                                 setTitleModalVisible(false);
                                 setConfirmTapped(true);
                             }}
@@ -106,7 +74,6 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                 </View>
             </View>
         </Modal>
-        // </View>
     );
 };
 
@@ -118,14 +85,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flex: 1, // 화면 모두 가리기
         backgroundColor: colors.modalBackground,
-        // backgroundColor: "magenta",Se
     },
     coreContainer: {
         borderRadius: 20,
         overflow: "hidden",
         borderWidth: 2,
         backgroundColor: colors.gray5,
-        // backgroundColor: "white",
     },
     infoTextContainer: {
         margin: 10,
@@ -162,15 +127,14 @@ const styles = StyleSheet.create({
     modalBGStyle: {
         borderColor: colors.deepMainColor,
         borderWidth: 5,
-        // borderRadius: borderSizes.m10,
+
         borderTopLeftRadius: borderSizes.m10,
         borderTopRightRadius: borderSizes.m10,
         height: 50,
         marginTop: marginSizes.xxs4,
         marginBottom: marginSizes.xxs4,
-        // width: 250,
+
         width: screenWidth - marginSizes.s12 * 2,
-        // marginHorizontal: marginSizes.l20,
     },
     modalTextStyle: {
         textAlign: "center",

@@ -11,11 +11,6 @@ export interface QuestionInOrder {
     text: string;
 }
 
-// export interface UserResponses {
-//     date: string;
-//     answer: string;
-// }
-
 export interface SheetData {
     questionInOrder: QuestionInOrder[];
     userResponses: string[][];

@@ -12,10 +12,8 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
     selectionOptions,
     selectedIndex,
 }) => {
-    // const [selectedGender, setSelectedGender] = useState(2);
-
     return (
-        <View style={styles.container}>
+        <View>
             <View style={styles.buttonContainer}>
                 {selectionOptions.map((option, index) => (
                     <TouchableOpacity
@@ -31,7 +29,6 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
                                 styles.selectedOptionButton,
                         ]}
                         onPress={() => {
-                            // setSelectedGender(index);
                             onGenderIndexSelection(index);
                         }}
                     >
@@ -52,12 +49,6 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
 };
 
 const styles = StyleSheet.create({
-    container: {
-        // flex: 1,
-        // flex: 1,
-        // justifyContent: "center",
-        // alignItems: "center",
-    },
     buttonContainer: {
         flexDirection: "row",
         gap: 0,

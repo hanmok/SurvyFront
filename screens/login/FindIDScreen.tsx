@@ -84,17 +84,12 @@ export default function FindIDScreen({
                         }}
                         backgroundStyle={{
                             marginBottom: 12,
-                            // backgroundColor: colors.white,
                         }}
                         hasShadow={false}
                         textStyle={styles.authText}
                     />
                     <View
-                        style={
-                            isPhoneAuthTapped === true
-                                ? styles.selectedBar
-                                : styles.unselectedBar
-                        }
+                        style={isPhoneAuthTapped && styles.selectedBar}
                     ></View>
                 </View>
                 <View style={[styles.authBackground, { marginRight: 10 }]}>
@@ -108,11 +103,7 @@ export default function FindIDScreen({
                         backgroundStyle={{ marginBottom: 12 }}
                     />
                     <View
-                        style={
-                            isPhoneAuthTapped === false
-                                ? styles.selectedBar
-                                : styles.unselectedBar
-                        }
+                        style={isPhoneAuthTapped && styles.selectedBar}
                     ></View>
                 </View>
             </View>
@@ -239,7 +230,7 @@ const styles = StyleSheet.create({
         height: 2,
         alignSelf: "stretch",
     },
-    unselectedBar: {},
+
     guideText: {
         fontSize: fontSizes.s16,
     },

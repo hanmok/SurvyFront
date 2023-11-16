@@ -5,22 +5,15 @@ import { fontSizes } from "../../utils/sizes";
 import { colors } from "../../utils/colors";
 
 interface AgeSliderProps {
-    // ageRange: number[];
     setAgeRange: (ages: number[]) => void;
 }
 
-// const AgeSlider = (ages: number[]) => {
-const AgeSlider: React.FC<AgeSliderProps> = ({
-    // ageRange,
-    // setAgeRange
-    setAgeRange,
-}) => {
+const AgeSlider: React.FC<AgeSliderProps> = ({ setAgeRange }) => {
     const [ages, setAges] = useState([20, 30]);
 
     const handleSliderChange = values => {
         setAges(values);
         setAgeRange(values);
-        // setAgeRange(values);
     };
 
     return (
@@ -45,11 +38,8 @@ const AgeSlider: React.FC<AgeSliderProps> = ({
                 step={1}
                 allowOverlap
                 snapped
-                // trackStyle={{ backgroundColor: colors.sliderBlue }}
                 selectedStyle={{ backgroundColor: colors.sliderBlue }}
                 containerStyle={{
-                    // marginTop: 20,
-                    // backgroundColor: colors.sliderBlue,
                     marginBottom: 20,
                 }}
                 enableLabel={true}
@@ -57,14 +47,12 @@ const AgeSlider: React.FC<AgeSliderProps> = ({
                 customLabel={labelProps => {
                     return <Text></Text>;
                 }}
-                // customLabel={<Text>asdnj</Text>}
                 markerStyle={{
                     height: 16,
                     width: 16,
                     backgroundColor: colors.sliderBlue,
                     overflow: "hidden",
                     borderColor: colors.transparent,
-                    // backgroundColor: "black",
                 }}
             />
         </View>

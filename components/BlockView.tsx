@@ -19,7 +19,6 @@ interface BlockProps {
 
 const BlockView: React.FC<BlockProps> = ({
     onPress,
-    textStyle,
     backgroundStyle,
     children,
 }) => {
@@ -42,7 +41,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: colors.white,
         paddingLeft: 20,
-        // alignItems: "center",
     },
     text: { fontSize: fontSizes.l24 },
 });

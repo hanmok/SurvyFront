@@ -1,12 +1,9 @@
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Entypo, Ionicons } from "@expo/vector-icons";
-import { Alert, Modal, StyleSheet, Animated, Easing } from "react-native";
+import { Entypo } from "@expo/vector-icons";
+import { Modal, StyleSheet, Animated, Easing } from "react-native";
 import { useRef, useState } from "react";
-import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
-import Spacer from "./common/Spacer";
-// import Animated from "react-native-reanimated";
 
 interface PopupOption {
     title: string;
@@ -17,7 +14,6 @@ interface PopupProps {
     options: PopupOption[];
 }
 
-// const PopupMenu = () => {
 const PopupMenu: React.FC<PopupProps> = ({ options }) => {
     const [visible, setVisible] = useState(false);
     const scale = useRef(new Animated.Value(0)).current;
@@ -32,39 +28,13 @@ const PopupMenu: React.FC<PopupProps> = ({ options }) => {
         }).start(() => to === 0 && setVisible(false));
     }
 
-    // const options = [
-    //     {
-    //         title: "option 1",
-    //         icon: "navigate",
-    //         action: () => alert("option 1"),
-    //     },
-    //     {
-    //         title: "option 2",
-    //         icon: "push",
-    //         action: () => console.log("option 2"),
-    //     },
-    //     {
-    //         title: "option 3",
-    //         icon: "navigate",
-    //         action: () => console.log("option 3"),
-    //     },
-    //     {
-    //         title: "option 4",
-    //         icon: "navigate",
-    //         action: () => console.log("option 4"),
-    //     },
-    // ];
     return (
         <>
             <TouchableOpacity
                 onPress={() => {
-                    // console.log("tapped");
-                    // setVisible(true);
-                    // setVisible(true);
                     resizeBox(1);
                 }}
             >
-                {/* <Entypo name="plus" size={26} /> */}
                 <Entypo
                     name="dots-three-horizontal"
                     size={24}
@@ -131,7 +101,6 @@ const styles = StyleSheet.create({
         borderColor: "#333",
         borderWidth: 1,
         backgroundColor: "#fff",
-        // backgroundColor: "magenta",
         paddingHorizontal: 10,
         position: "absolute",
         top: 80,
@@ -139,8 +108,6 @@ const styles = StyleSheet.create({
     },
     option: {
         flexDirection: "row",
-        // justifyContent: "space-around",
-        // alignItems: "center",
         alignItems: "flex-end",
         paddingVertical: 7,
         borderBottomColor: "#ccc",

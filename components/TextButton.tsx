@@ -31,22 +31,12 @@ const TextButton: React.FC<TextButtonProps> = ({
                 styles.container,
                 backgroundStyle,
                 hasShadow && styles.shadow,
-                // { backgroundColor: "black" },
-                // { alignItems: "center" },
             ]}
             onPress={onPress}
             disabled={!isEnabled}
             activeOpacity={!isEnabled ? 1 : 0.2}
         >
-            <Text
-                style={[
-                    styles.text,
-                    textStyle,
-                    // { backgroundColor: "cyan" }
-                ]}
-            >
-                {title}
-            </Text>
+            <Text style={[styles.text, textStyle]}>{title}</Text>
         </TouchableOpacity>
     );
 };
@@ -54,14 +44,6 @@ const TextButton: React.FC<TextButtonProps> = ({
 const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 4,
-        //     height: 4,
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 4,
-        // elevation: 2,
     },
     text: { textAlign: "center" },
     shadow: {

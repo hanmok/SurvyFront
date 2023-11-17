@@ -7,6 +7,7 @@ export const participatedSurveyQuery = gql`
                 title
                 reward
                 id
+                created_at
             }
         }
     }

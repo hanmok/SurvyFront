@@ -1,18 +1,7 @@
-import { useQuery } from "@apollo/client";
-import { postedSurveyQuery } from "../../API/gqlQuery";
 import { View, Text, TouchableNativeFeedback } from "react-native";
-import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { useApollo } from "../../ApolloProvider";
 import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
-import { removeTypenameAndConvertToCamelCase } from "../../utils/SnakeToCamel";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useEffect, useState } from "react";
-import { logObject } from "../../utils/Log";
-import { GQLSurvey } from "../../interfaces/GQLInterface";
-import { PostedSurveyResponse } from "../../API/gqlResponses";
-import { useCustomContext } from "../../features/context/CustomContext";
 
 interface PostedSurveyItem {
     title: string;
@@ -24,43 +13,12 @@ interface PostedSurveyItem {
 }
 
 const PostedSurveyItems = ({
-    userId,
     handleTapAction,
+    postedSurveys,
 }: {
-    userId: number;
     handleTapAction: (number) => void;
+    postedSurveys: PostedSurveyItem[];
 }) => {
-    const client = useApollo();
-
-    const { loading, error, data } = useQuery<PostedSurveyResponse>(
-        postedSurveyQuery,
-        { client, variables: { userId: userId }, fetchPolicy: "no-cache" }
-    );
-
-    const [postedSurveys, setPostedSurveys] = useState<GQLSurvey[]>([]);
-
-    useEffect(() => {
-        if (data?.user.posted_surveys) {
-            logObject("get postedSurveyObj using user", data.user);
-            const updatedPostedSurveys: GQLSurvey[] =
-                removeTypenameAndConvertToCamelCase(data.user.posted_surveys);
-            logObject("get postedSurveyObj", updatedPostedSurveys);
-            updatedPostedSurveys.sort((a, b) => {
-                return Number(b.createdAt) - Number(a.createdAt);
-            });
-            setPostedSurveys(updatedPostedSurveys);
-        }
-    }, [data]);
-
-    const { updateLoadingStatus } = useCustomContext();
-    useEffect(() => {
-        updateLoadingStatus(loading);
-    }, [loading]);
-
-    if (error) {
-        return <Text>Error: {error.message}</Text>;
-    }
-
     return (
         <FlatList
             data={postedSurveys}

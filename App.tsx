@@ -142,23 +142,31 @@ const App: React.FC = () => {
                                 <Stack.Screen
                                     name={NavigationTitle.participatedSurveys}
                                     component={ParticipatedSurveysScreen}
-                                    options={{
+                                    options={({ route }) => ({
+                                        headerTitle: "참여한 설문",
                                         headerBackTitleVisible: false,
                                         headerStyle: {
                                             backgroundColor: colors.background,
                                         },
-                                    }}
+                                    })}
                                 />
 
                                 <Stack.Screen
                                     name={NavigationTitle.postedSurveys}
                                     component={PostedSurveysScreen}
-                                    options={{
+                                    options={({ route }) => ({
+                                        headerTitle: "요청한 설문",
                                         headerBackTitleVisible: false,
                                         headerStyle: {
                                             backgroundColor: colors.background,
                                         },
-                                    }}
+                                    })}
+                                    // options={{
+                                    //     headerBackTitleVisible: false,
+                                    //     headerStyle: {
+                                    //         backgroundColor: colors.background,
+                                    //     },
+                                    // }}
                                 />
 
                                 <Stack.Screen

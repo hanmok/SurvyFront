@@ -1,48 +1,14 @@
-import { useQuery } from "@apollo/client";
-import { participatedSurveyQuery } from "../../API/gqlQuery";
 import { View, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { useApollo } from "../../ApolloProvider";
 import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
-import { convertKeysToCamelCase } from "../../utils/SnakeToCamel";
-import { useCustomContext } from "../../features/context/CustomContext";
-import { useEffect } from "react";
-
-interface ParticipatedSurveyItem {
-    title: string;
-    reward: number;
-    id: number;
-}
-
-interface ParticipatedSurveyResponse {
-    user: {
-        participated_surveys: ParticipatedSurveyItem[];
-    };
-}
-
-const ParticipatedSurveyItems = ({ userId }) => {
-    const client = useApollo();
-    const { loading, error, data } = useQuery<ParticipatedSurveyResponse>(
-        participatedSurveyQuery,
-        { client, variables: { userId: userId }, fetchPolicy: "no-cache" }
-    );
-
-    const participatedSurveys: ParticipatedSurveyItem[] =
-        data?.user.participated_surveys.map(item =>
-            convertKeysToCamelCase(item)
-        ) || [];
-
-    const { updateLoadingStatus } = useCustomContext();
-
-    useEffect(() => {
-        updateLoadingStatus(loading);
-    }, [loading]);
-
-    if (error) {
-        return <Text>Error: {error.message}</Text>;
-    }
-
+import { ParticipatedSurveyItem } from "../../screens/ParticipatedSurveysScreen";
+import accounting from "accounting";
+const ParticipatedSurveyItems = ({
+    participatedSurveys,
+}: {
+    participatedSurveys: ParticipatedSurveyItem[];
+}) => {
     return (
         <FlatList
             data={participatedSurveys}
@@ -74,13 +40,12 @@ const ParticipatedSurveyItems = ({ userId }) => {
                         >
                             {item.title}
                         </Text>
-                        <Text>
-                            +{item.reward}
-                            {/* {item.current_participation} / {item.participation_goal} */}
-                        </Text>
+                        <Text>+{accounting.formatNumber(item.reward)} P</Text>
                     </View>
+                    {/* <Text>{convertTime(item.createdAt)}</Text> */}
                 </View>
             )}
+            // 참여한 날짜가 아니야.
             // keyExtractor={item => `${item.code}${item.created_at}`}
 
             keyExtractor={item => `${item.id}${item.title}`}
@@ -89,7 +54,7 @@ const ParticipatedSurveyItems = ({ userId }) => {
 };
 
 const convertTime = (number: number) => {
-    const date = new Date(number);
+    const date = new Date(number * 1000);
     return date.toLocaleDateString().split("/").reverse().join(".");
 };
 

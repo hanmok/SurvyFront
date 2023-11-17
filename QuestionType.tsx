@@ -5,6 +5,8 @@ export enum QuestionTypeKorean {
     Essay = "서술형",
 }
 
+export type QuestionTypeIds = 100 | 200 | 300;
+
 export enum QuestionTypeId {
     SingleSelection = 100,
     MultipleSelection = 200,

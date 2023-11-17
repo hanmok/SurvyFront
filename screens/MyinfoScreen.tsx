@@ -19,9 +19,6 @@ function MyinfoScreen({
             }}
         >
             <BlockView>
-                <Text style={{ fontSize: fontSizes.m20 }}>닉네임</Text>
-            </BlockView>
-            <BlockView>
                 <Text style={{ fontSize: fontSizes.m20 }}>기본 정보</Text>
             </BlockView>
             <BlockView onPress={() => console.log("hi")}>

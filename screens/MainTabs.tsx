@@ -14,7 +14,7 @@ export default function MainTabs() {
     return (
         <Tab.Navigator>
             <Tab.Screen
-                name={NavigationTitle.home}
+                name="홈"
                 component={HomeScreen}
                 options={({ route }) => ({
                     headerTitle: "가능 설문 목록",
@@ -29,21 +29,6 @@ export default function MainTabs() {
                     },
                 })}
             />
-            {/* <Tab.Screen
-                name="설문 요청"
-                component={PostingBaseScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <Feather
-                                name="plus-circle"
-                                size={30}
-                                color={focused ? "black" : "gray"}
-                            />
-                        );
-                    },
-                }}
-            /> */}
             <Tab.Screen
                 name="마이페이지"
                 component={MypageScreen}

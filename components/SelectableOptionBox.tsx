@@ -67,28 +67,31 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             onPress={onPress}
                         />
                         {isExtra === 1 ? (
-                            <TextInput
-                                placeholder="기타"
-                                value={userInput}
-                                onChangeText={setUserInput}
-                                style={styles.extraInput}
-                                // return 누른 후 호출되는거 확인함.
-                                onSubmitEditing={() => {
-                                    console.log(`${userInput} has submitted`);
-                                    logObject(
-                                        `[SelectableOptionBox] submitting text`,
-                                        userInput
-                                    );
-                                    handleUserInput(userInput);
-                                }}
-                                onEndEditing={() => {
-                                    logObject(
-                                        "onEndEditing, userInput",
-                                        userInput
-                                    );
-                                    handleUserInput(userInput);
-                                }}
-                            />
+                            <View style={styles.textContainer}>
+                                <TextInput
+                                    placeholder="기타"
+                                    value={userInput}
+                                    onChangeText={setUserInput}
+                                    style={styles.extraInput}
+                                    onSubmitEditing={() => {
+                                        console.log(
+                                            `${userInput} has submitted`
+                                        );
+                                        logObject(
+                                            `[SelectableOptionBox] submitting text`,
+                                            userInput
+                                        );
+                                        handleUserInput(userInput);
+                                    }}
+                                    onEndEditing={() => {
+                                        logObject(
+                                            "onEndEditing, userInput",
+                                            userInput
+                                        );
+                                        handleUserInput(userInput);
+                                    }}
+                                />
+                            </View>
                         ) : (
                             // </View>
                             <Text style={styles.textStyle}>{value}</Text>
@@ -268,7 +271,10 @@ const styles = StyleSheet.create({
     textContainer: {
         flex: 1,
         paddingRight: 20,
+        marginHorizontal: 6,
+        marginBottom: 4,
         // borderRadius: 6,
+        // backgroundColor: "magenta",
         justifyContent: "center",
     },
     textInput: {
@@ -284,6 +290,12 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.s16,
         paddingVertical: 5,
         paddingLeft: 5,
-        width: 200,
+        // width: 200,
+        marginHorizontal: 10,
+        minWidth: 250,
+        // backgroundColor: "cyan",
+        borderColor: "#ccc",
+        borderWidth: 1,
+        borderRadius: 6,
     },
 });

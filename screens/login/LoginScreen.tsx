@@ -53,7 +53,7 @@ export default function LoginScreen({
 					const userResponse = await autoSignin(
 						prevUserState.refreshToken
 					);
-					const userState: UserState = { ...userResponse.data };
+					const userState: UserState = { ...userResponse };
 					logObject("userState", userState);
 
 					// await saveUserState({ ...userState });
@@ -106,7 +106,7 @@ export default function LoginScreen({
 		try {
 			updateLoadingStatus(true);
 			const userResponse = await signin(username, password);
-			const { userId, accessToken, refreshToken } = userResponse.data;
+			const { userId, accessToken, refreshToken } = userResponse;
 			const userState: UserState = { userId, accessToken, refreshToken };
 
 			logObject("userState", userState);

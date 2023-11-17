@@ -40,7 +40,8 @@ import { screenWidth } from "../utils/ScreenSize";
 import { GeoInfo } from "../interfaces/GeoInfo";
 // import { useCustomContext } from "./MyContext";
 import { useCustomContext } from "../features/context/CustomContext";
-import { deletePostingSurvey } from "../utils/Storage";
+import { initializePostingSurvey } from "../utils/PostingSurveyStorage";
+// import { deletePostingSurvey } from "../utils/Storage";
 
 type TargettingScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -184,7 +185,8 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         // }
 
         if (postingSurveyId) {
-            await deletePostingSurvey(postingSurveyId);
+            // await deletePostingSurvey(postingSurveyId);
+            initializePostingSurvey();
         }
 
         // 여기.. 그게 정말 없어야 하나.. ??

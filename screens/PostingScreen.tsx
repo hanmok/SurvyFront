@@ -30,7 +30,7 @@ import * as Location from "expo-location";
 
 import { Section, makeSection } from "../interfaces/Section";
 
-import { loadSavedPostingSurveys, savePostingSurvey } from "../utils/Storage";
+// import { loadSavedPostingSurveys, savePostingSurvey } from "../utils/Storage";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import {
     PostingSurveyState,
@@ -41,6 +41,11 @@ import { getAddress } from "../API/GeoAPI";
 import SectionModal from "../modals/SectionModal";
 import { RouteProp } from "@react-navigation/native";
 import PopupMenu from "../components/PopupMenu";
+import {
+    initializePostingSurvey,
+    loadPostingSurvey,
+    savePostingSurvey,
+} from "../utils/PostingSurveyStorage";
 
 export default function PostingScreen({
     navigation,
@@ -216,6 +221,7 @@ export default function PostingScreen({
                                 sections,
                                 questions,
                             });
+                        // await savePostingSurvey(newSurvey);
                         await savePostingSurvey(newSurvey);
                     } else {
                         // 기존에 있었음. id 는 그대로 사용. 나머지는 지금까지 데이터.
@@ -229,7 +235,8 @@ export default function PostingScreen({
                         await savePostingSurvey(updatedSurvey);
                     }
 
-                    const savedObject = await loadSavedPostingSurveys();
+                    // const savedObject = await loadSavedPostingSurveys();
+                    const savedObject = await loadPostingSurvey();
                     logObject("total saved object:", savedObject);
                 } catch (error) {
                     console.error(error);
@@ -278,6 +285,9 @@ export default function PostingScreen({
         const firstSection = sections[0];
         setSections([firstSection]);
         setSurveyTitle("");
+        await initializePostingSurvey();
+        const confirmed = await loadPostingSurvey();
+        logObject("postingSurvey", confirmed);
     };
 
     // 3. 현재 Section 만 초기화
@@ -595,6 +605,7 @@ export default function PostingScreen({
                         fontSize: 18,
                         letterSpacing: 2,
                     }}
+                    hasShadow={false}
                     onPress={() => {
                         setIsNextButtonTapped(true);
                     }}

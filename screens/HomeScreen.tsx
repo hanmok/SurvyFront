@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, FlatList, Dimensions, TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
-import { borderSizes, marginSizes } from "../utils/sizes";
+import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvailableSurvey from "./AvailableSurvey";
 import CollectedMoney from "../components/CollectedMoney";
@@ -16,7 +16,12 @@ import { API_BASE_URL, GQL_URL } from "../API/API";
 import { loadWholeGeo, saveUserState, saveWholeGeos } from "../utils/Storage";
 import { NavigationTitle } from "../utils/NavHelper";
 import { log, logObject } from "../utils/Log";
-import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+    Feather,
+    Ionicons,
+    MaterialCommunityIcons,
+    Octicons,
+} from "@expo/vector-icons";
 
 import { getSurveyQuery } from "../API/gqlQuery";
 import { RefreshControl } from "react-native-gesture-handler";
@@ -25,6 +30,9 @@ import { fetchAllGeoInfos } from "../API/GeoAPI";
 import { useCustomContext } from "../features/context/CustomContext";
 import { getSurveys } from "../API/SurveyAPI";
 import { getUserDetail } from "../API/UserAPI";
+import { DefaultModal } from "../modals/DefaultModal";
+import { loadPostingSurvey } from "../utils/PostingSurveyStorage";
+import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -137,6 +145,22 @@ function HomeScreen({
         console.log("HomeScreen Testing");
     }, []);
 
+    const [postingSurvey, setPostingSurvey] =
+        useState<PostingSurveyState>(undefined);
+
+    useEffect(() => {
+        const postingSurvey = async () => {
+            const result = await loadPostingSurvey();
+            if (result) {
+                setPostingSurvey(result);
+            }
+            logObject("postingSurvey", result);
+        };
+        postingSurvey();
+    }, [postingSurvey]);
+
+    const [postBtnTapped, setPostBtnTapped] = useState(false);
+
     const renderItem = ({ item }: { item: Survey }) => (
         <AvailableSurvey
             title={item.title}
@@ -158,9 +182,59 @@ function HomeScreen({
         updateLoadingStatus(isLoading);
     }, [isLoading]);
 
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const navigateWith = (postingSurvey: PostingSurveyState | null) => {
+        navigation.navigate(NavigationTitle.posting, {
+            postingSurveyState: postingSurvey,
+        });
+        console.log("navigate to posting!");
+    };
+
+    const toggleModalVisibility = () => {
+        setIsModalVisible(!isModalVisible);
+    };
+
+    useEffect(() => {
+        const fetchPostingSurvey = async () => {
+            const ret = await loadPostingSurvey();
+            setPostingSurvey(ret);
+        };
+        const unsubscribeFocus = navigation.addListener("focus", () => {
+            setIsModalVisible(false);
+            fetchPostingSurvey();
+        });
+        return unsubscribeFocus;
+    }, [navigation]);
+
     return (
         <SafeAreaView style={styles.container} edges={[]}>
             <View style={styles.subContainer}>
+                {postingSurvey && (
+                    <DefaultModal
+                        title="작성중인 설문이 있습니다"
+                        description="이어서 작성할까요?"
+                        firstSelectionText="이어서 작성할게요"
+                        onFirstSelection={() => {
+                            setIsModalVisible(false);
+                            navigation.navigate(NavigationTitle.posting, {
+                                postingSurveyState: postingSurvey,
+                            });
+                        }}
+                        secondSelectionText="새로 작성할게요"
+                        onSecondSelection={() => {
+                            setIsModalVisible(false);
+                            navigation.navigate(NavigationTitle.posting, {
+                                postingSurveyState: null,
+                            });
+                        }}
+                        isModalVisible={isModalVisible}
+                        onClose={() => {
+                            console.log("onClose tapped");
+                            toggleModalVisibility();
+                        }}
+                    />
+                )}
                 <FlatList
                     data={surveys}
                     renderItem={renderItem}
@@ -176,6 +250,21 @@ function HomeScreen({
                         />
                     }
                 />
+                <TouchableOpacity
+                    style={styles.floatingButton}
+                    onPress={() => {
+                        if (postingSurvey) {
+                            toggleModalVisibility();
+                        } else {
+                            navigation.navigate(NavigationTitle.posting, {
+                                postingSurveyState: null,
+                            });
+                            // moveToPostingScreen();
+                        }
+                    }}
+                >
+                    <Octicons name="plus-circle" size={60} color="black" />
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
@@ -192,7 +281,15 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         alignItems: "stretch",
     },
-
+    floatingButton: {
+        backgroundColor: colors.gray4,
+        bottom: 20,
+        right: 20,
+        position: "absolute",
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+    },
     floatingButtonContainer: {
         alignItems: "center",
         position: "absolute",

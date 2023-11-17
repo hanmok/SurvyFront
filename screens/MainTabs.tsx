@@ -2,12 +2,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather, Octicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-const Tab = createBottomTabNavigator();
 
 import MypageScreen from "./MypageScreen";
 import HomeScreen from "./HomeScreen";
-import PostingBaseScreen from "./PostingBaseScreen";
+// import PostingBaseScreen from "./PostingBaseScreen";
 import { NavigationTitle } from "../utils/NavHelper";
+
+const Tab = createBottomTabNavigator();
 
 export default function MainTabs() {
     return (
@@ -28,7 +29,7 @@ export default function MainTabs() {
                     },
                 })}
             />
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="설문 요청"
                 component={PostingBaseScreen}
                 options={{
@@ -42,7 +43,7 @@ export default function MainTabs() {
                         );
                     },
                 }}
-            />
+            /> */}
             <Tab.Screen
                 name="마이페이지"
                 component={MypageScreen}

@@ -7,8 +7,8 @@ import { logObject } from "../utils/Log";
 import { printObject } from "../utils/printObject";
 import { API_BASE_URL } from "./API";
 import _ from "lodash";
-import { loadUserState } from "./../utils/Storage";
 import { makeSurvey } from "../interfaces/Survey";
+import { useCustomContext } from "../features/context/CustomContext";
 
 function convertToSnakeCase(obj) {
     return _.mapKeys(obj, (value, key) => _.snakeCase(key));
@@ -37,8 +37,8 @@ export async function createSurvey(
         });
     });
 
-    const userId = (await loadUserState()).userId;
-    // const geoCode = 1100000000;
+    const { userId, accessToken } = useCustomContext();
+
     const numOfSections = sections.length;
     const survey = makeSurvey(
         userId,
@@ -60,7 +60,8 @@ export async function createSurvey(
         survey,
         sections,
         questions,
-        dummySelectableOptions
+        dummySelectableOptions,
+        accessToken
     );
 }
 
@@ -68,7 +69,8 @@ export async function postWholeSurvey(
     survey: Survey,
     sections: Section[],
     questions: Question[],
-    selectableOptions: SelectableOption[]
+    selectableOptions: SelectableOption[],
+    accessToken: string
 ): Promise<ApiResponse> {
     console.log("hello!!");
     const url = `${API_BASE_URL}/survey/whole`;
@@ -89,6 +91,7 @@ export async function postWholeSurvey(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify(snakeData),
         });
@@ -104,3 +107,29 @@ export async function postWholeSurvey(
         throw error;
     }
 }
+
+export const getSurveys = async (accessToken: string) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/survey`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        const jsonData = await response.json();
+
+        const surveys: Survey[] = jsonData.data.map((item: Survey) => ({
+            title: item.title,
+            id: item.id,
+            currentParticipation: item.currentParticipation,
+            participationGoal: item.participationGoal,
+            initialSectionId: item.initialSectionId,
+            genres: item.genres,
+            // rewardRange: item.rewardRange,
+        }));
+
+        return surveys; // 이 부분이 수정된 부분. 함수가 Promise<[Survey]>를 반환하게 함
+    } catch (error) {
+        throw new Error("error fetching survey");
+    }
+};

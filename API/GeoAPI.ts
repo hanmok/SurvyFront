@@ -91,7 +91,7 @@ export async function fetchAllGeoInfos(): Promise<GeoInfo[]> {
 
         const responseData: GeoInfo[] = await response.json();
 
-        logObject("geo response jsona", responseData);
+        // logObject("geo response jsona", responseData);
         return responseData;
     } catch (error) {
         console.error("geo fetching error", error);

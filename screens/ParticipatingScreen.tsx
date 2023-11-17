@@ -158,7 +158,14 @@ function ParticipatingScreen({
             questionId,
             selectableOptionId,
         });
-        await postAnswer(surveyId, questionId, selectableOptionId, "", userId);
+        await postAnswer(
+            surveyId,
+            questionId,
+            selectableOptionId,
+            "",
+            userId,
+            accessToken
+        );
     };
 
     const postTextAnswer = async (
@@ -173,7 +180,8 @@ function ParticipatingScreen({
             questionId,
             selectableOptionId,
             answerText,
-            userId
+            userId,
+            accessToken
         );
     };
 
@@ -183,10 +191,9 @@ function ParticipatingScreen({
     };
 
     // TODO: 이거.. 여기가 맞니? 버튼 눌린 변수와 연동시켜야함.
-
+    const { userId, accessToken } = useCustomContext();
     useEffect(() => {
         const handleCompleteSection = async () => {
-            const userId = (await loadUserState()).userId;
             console.log(`buttonTapAction called, userId: ${userId}`);
             const promises: Promise<void>[] = [];
 
@@ -233,10 +240,12 @@ function ParticipatingScreen({
                 setIsLoading(true);
                 await Promise.all(answerPromises)
                     .then(() => {
-                        createParticipate(surveyId, userId).then(() => {
-                            setIsLoading(false);
-                            moveToNextScreen();
-                        });
+                        createParticipate(surveyId, userId, accessToken).then(
+                            () => {
+                                setIsLoading(false);
+                                moveToNextScreen();
+                            }
+                        );
                     })
                     .catch(error => {
                         console.log(error);

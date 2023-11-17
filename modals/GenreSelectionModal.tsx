@@ -18,6 +18,7 @@ import { log, logObject } from "../utils/Log";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { Genre } from "../interfaces/Genre";
 import Spacer from "../components/common/Spacer";
+import { useCustomContext } from "../features/context/CustomContext";
 
 interface GenreSelectionModalProps {
     onClose: () => void;
@@ -45,8 +46,10 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         setSelectedGenres(preSelectedGenres);
     }, [preSelectedGenres]);
 
+    const { accessToken } = useCustomContext();
+
     const getGenres = async () => {
-        getAllGenres().then(response => {
+        getAllGenres(accessToken).then(response => {
             logObject("fetched genres: ", response.data);
             setAllGenres(response.data);
         });

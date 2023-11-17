@@ -11,8 +11,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
 import { Survey } from "../interfaces/Survey";
 
-import { UserResponse, login } from "../API/UserAPI";
-
 import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL, GQL_URL } from "../API/API";
 import { loadWholeGeo, saveUserState, saveWholeGeos } from "../utils/Storage";
@@ -25,6 +23,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 import { fetchAllGeoInfos } from "../API/GeoAPI";
 
 import { useCustomContext } from "../features/context/CustomContext";
+import { getSurveys } from "../API/SurveyAPI";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -51,6 +50,8 @@ function HomeScreen({
         await saveUserState(userState);
     };
 
+    const { userDetail } = useCustomContext();
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -73,79 +74,34 @@ function HomeScreen({
             ),
             headerLeft: () => (
                 <View style={{ marginBottom: 15 }}>
-                    <CollectedMoney amount={10000} />
+                    <CollectedMoney
+                        amount={
+                            userDetail !== null ? userDetail.collectedReward : 0
+                        }
+                    />
                 </View>
             ),
         });
     }, [navigation]);
 
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         try {
-    //             const userResponse = await login("kkk@gmail.com", "kkkk");
-    //             const { userId, accessToken, refreshToken } = userResponse.data;
-    //             const userState: UserState = {
-    //                 userId,
-    //                 accessToken,
-    //                 refreshToken,
-    //             };
-    //             setUser(userState);
-    //         } catch (error) {
-    //             console.error("fetch User", error);
-    //         }
-    //     };
-    //     fetchUser();
-    // }, []);
+    const { accessToken } = useCustomContext();
 
     const fetchSurveys = async () => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/survey`);
-            const jsonData = await response.json();
-
-            logObject("fetching survey result: ", jsonData);
-
-            const surveys: Survey[] = jsonData.data.map((item: Survey) => ({
-                title: item.title,
-                id: item.id,
-                currentParticipation: item.currentParticipation,
-                participationGoal: item.participationGoal,
-                initialSectionId: item.initialSectionId,
-                genres: item.genres,
-                // rewardRange: item.rewardRange,
-            }));
-
-            return surveys; // 이 부분이 수정된 부분. 함수가 Promise<[Survey]>를 반환하게 함
-        } catch (error) {
-            throw new Error("error fetching survey");
-        }
+        const ret = await getSurveys(accessToken).catch(error => {
+            throw new Error("error fetching surveys");
+        });
+        return ret;
     };
 
     const updateSurveys = async () => {
-        try {
-            await fetch(`${API_BASE_URL}/survey`)
-                .then(response => response.json())
-                .then(jsonData => {
-                    logObject("fetching survey result: ", jsonData);
-                    return jsonData;
-                })
-                .then(jsonData =>
-                    jsonData.data.map((item: Survey) => ({
-                        title: item.title,
-                        id: item.id,
-                        currentParticipation: item.currentParticipation,
-                        participationGoal: item.participationGoal,
-                        initialSectionId: item.initialSectionId,
-                        genres: item.genres,
-                    }))
-                )
-                .then(surveys => {
-                    console.log(`umm.. `, surveys);
-                    setIsLoading(false);
-                    setSurveys(surveys);
-                });
-        } catch (error) {
-            console.error("error fetching surveys", error);
-        }
+        await getSurveys(accessToken)
+            .then(surveys => {
+                setIsLoading(false);
+                setSurveys(surveys);
+            })
+            .catch(error => {
+                console.error("error updating surveys");
+            });
     };
 
     // Component 가 Rendering 될 때 API 호출

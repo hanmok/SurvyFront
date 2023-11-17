@@ -71,6 +71,7 @@ export default function ResponseScreen({
     >;
     route: RouteProp<RootStackParamList, NavigationTitle.response>;
 }) {
+    const { accessToken } = useCustomContext();
     const { surveyId } = route.params;
     const client = useApollo();
     const options = ["전체", "개별"];
@@ -175,7 +176,7 @@ export default function ResponseScreen({
 
     useEffect(() => {
         const getExcelSheet = async () => {
-            getResultSheet(surveyId).then(response => {
+            getResultSheet(surveyId, accessToken).then(response => {
                 logObject("sheet data:", response);
                 if (response.data) {
                     const sheetResponse = response.data;

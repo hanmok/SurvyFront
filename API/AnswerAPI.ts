@@ -21,7 +21,8 @@ export async function postAnswer(
     questionId: number,
     selectableOptionId: number,
     answerText: string,
-    userId: number
+    userId: number,
+    accessToken: string
 ): Promise<ApiResponse> {
     const url = `${API_BASE_URL}/answer`;
     const data = {
@@ -39,6 +40,7 @@ export async function postAnswer(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify(snakeData),
         });
@@ -60,7 +62,8 @@ export async function postAnswer(
 
 export async function createParticipate(
     surveyId: number,
-    userId: number
+    userId: number,
+    accessToken: string
     // sectionId: number
 ): Promise<ApiResponse> {
     const url = `${API_BASE_URL}/participating`;
@@ -73,6 +76,7 @@ export async function createParticipate(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify(snakeData),
         });
@@ -93,7 +97,8 @@ export async function createParticipate(
 }
 
 export async function getResultSheet(
-    surveyId: number
+    surveyId: number,
+    accessToken: string
 ): Promise<ApiResponse<SheetData>> {
     const url = `${API_BASE_URL}/survey/${surveyId}/sheet`;
 
@@ -102,6 +107,7 @@ export async function getResultSheet(
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
             },
         });
         if (!response.ok) {

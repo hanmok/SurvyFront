@@ -3,6 +3,7 @@ import { loadUserState } from "../utils/Storage";
 import PostedSurveyItems from "../components/mypage/PostedSurveyItems";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
+import { useCustomContext } from "../features/context/CustomContext";
 
 function PostedSurveysScreen({
     navigation,
@@ -12,15 +13,9 @@ function PostedSurveysScreen({
         NavigationTitle.postedSurveys
     >;
 }) {
-    const [userId, setUserId] = useState<number>(null);
+    // const [userId, setUserId] = useState<number>(null);
 
-    useEffect(() => {
-        const getUserId = async () => {
-            const userId = await loadUserState();
-            setUserId(userId.userId);
-        };
-        getUserId();
-    }, [userId]);
+    const { accessToken, userId } = useCustomContext();
 
     // 최신이 위로 가도록.
     return (

@@ -4,10 +4,12 @@ import { RootStackParamList } from "../utils/NavHelper";
 import { NavigationTitle } from "../utils/NavHelper";
 import { View, Text, StyleSheet } from "react-native";
 import BlockView from "../components/BlockView";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
+import { removeUser } from "../API/UserAPI";
+import { useCustomContext } from "../features/context/CustomContext";
 
 function SettingScreen({
     navigation,
@@ -29,6 +31,20 @@ function SettingScreen({
     const handleResign = () => {
         console.log("resign tapped");
     };
+
+    const [resignTapped, setResignTapped] = useState(false);
+    const { userId, accessToken } = useCustomContext();
+
+    useEffect(() => {
+        const resign = async (userId: number, accessToken: string) => {
+            await removeUser(userId, accessToken);
+            navigation.popToTop();
+        };
+
+        if (resignTapped) {
+            resign(userId, accessToken);
+        }
+    }, [resignTapped]);
 
     return (
         <View>
@@ -101,7 +117,9 @@ function SettingScreen({
                 <View style={{ alignItems: "center" }}>
                     <TextButton
                         title="회원 탈퇴"
-                        onPress={handleResign}
+                        onPress={() => {
+                            setResignTapped(true);
+                        }}
                         textStyle={{ color: colors.gray3 }}
                     />
                     <View

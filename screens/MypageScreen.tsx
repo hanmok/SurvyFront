@@ -11,8 +11,10 @@ import { RootStackParamList } from "../utils/NavHelper";
 import { NavigationTitle } from "../utils/NavHelper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { loadUserState } from "../utils/Storage";
-import axios from "axios";
 import { API_BASE_URL } from "../API/API";
+import { getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
+import { useCustomContext } from "../features/context/CustomContext";
+// import { getParticipatedSurveyIds, getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 
 function MypageScreen({
     navigation,
@@ -22,34 +24,28 @@ function MypageScreen({
     const [numOfParticipatedSurveys, setNumOfParticipatedSurveys] =
         useState<number>(0);
     const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
-
+    const { userId, accessToken } = useCustomContext();
     const getNumbers = async () => {
-        const myUserId = (await loadUserState()).userId;
-
-        axios({
-            method: "GET",
-            url: `${API_BASE_URL}/user/${myUserId}/participated-surveys`,
-        })
-            .then(res => {
-                console.log(res.data);
-                logObject(`participated surveys`, res.data);
-                return res.data;
-            })
-            .then(res => {
-                setNumOfParticipatedSurveys(res.data.length);
-            })
-            .catch(err => {});
-
-        axios({
-            method: "GET",
-            url: `${API_BASE_URL}/user/${myUserId}/posted-surveys`,
-        })
-            .then(res => {
-                logObject(`posted surveys`, res.data);
-                return res.data;
-            })
-            .then(res => setNumOfPostedSurveys(res.data.length))
-            .catch(err => {});
+        // axios({
+        //     method: "GET",
+        //     url: `${API_BASE_URL}/user/${myUserId}/participated-surveys`,
+        //     // headers:
+        // })
+        //     .then(res => {
+        //         console.log(res.data);
+        //         logObject(`participated surveys`, res.data);
+        //         return res.data;
+        //     })
+        //     .then(res => {
+        //         setNumOfParticipatedSurveys(res.data.length);
+        //     })
+        //     .catch(err => {});
+        await getPostedSurveyIds(userId, accessToken).then(postings =>
+            setNumOfPostedSurveys(postings.length)
+        );
+        await getParticipatedSurveyIds(userId, accessToken).then(
+            participatings => setNumOfParticipatedSurveys(participatings.length)
+        );
     };
 
     const navigateToSetting = () => {

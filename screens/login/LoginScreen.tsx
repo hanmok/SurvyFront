@@ -1,6 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../utils/NavHelper";
-
 import { NavigationTitle } from "../../utils/NavHelper";
 import {
     View,
@@ -15,15 +14,13 @@ import { screenWidth } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fontSizes } from "../../utils/sizes";
-import { autoSignin, login } from "../../API/UserAPI";
+import { autoSignin, getUserDetail, signin } from "../../API/UserAPI";
 import { UserState } from "../../interfaces/UserState";
 import { loadUserState, saveUserState } from "../../utils/Storage";
 import { useEffect, useRef, useState } from "react";
-
 import showMessageAlert from "../../components/CustomAlert";
 import { log, logObject } from "../../utils/Log";
 import { API_BASE_URL } from "../../API/API";
-
 import { useCustomContext } from "../../features/context/CustomContext";
 
 export default function LoginScreen({
@@ -42,24 +39,39 @@ export default function LoginScreen({
         ref.current.focus();
     };
 
+    const { updateUserDetail, updateAccessToken, updateUserId } =
+        useCustomContext();
+
     useEffect(() => {
         const fetchPrevInfo = async () => {
             const prevUserState = await loadUserState();
             if (prevUserState.refreshToken) {
-                // auto Signin
-                const userResponse = await autoSignin(
-                    prevUserState.refreshToken
-                );
-                const userState: UserState = { ...userResponse.data };
-                logObject("userState", userState);
+                // 만약, 만료되었으면?
+                try {
+                    const userResponse = await autoSignin(
+                        prevUserState.refreshToken
+                    );
+                    const userState: UserState = { ...userResponse.data };
+                    logObject("userState", userState);
 
-                await saveUserState({ ...userState });
-                navigation.navigate(NavigationTitle.mainTabs);
+                    await saveUserState({ ...userState });
+                    updateAccessToken(userState.accessToken);
+                    updateUserId(userState.userId);
+
+                    console.log("getUserDetail called");
+                    const userDetail = await getUserDetail(
+                        userState.accessToken
+                    );
+                    logObject("userDetail", userDetail);
+                    updateUserDetail(userDetail);
+
+                    navigation.navigate(NavigationTitle.mainTabs);
+                } catch (error) {
+                    alert(error.message);
+                }
             }
         };
         fetchPrevInfo();
-        // setUsername("");
-        // setPassword("");
     }, []);
 
     useEffect(() => {
@@ -90,11 +102,17 @@ export default function LoginScreen({
 
         try {
             updateLoadingStatus(true);
-            const userResponse = await login(username, password);
+            const userResponse = await signin(username, password);
             const { userId, accessToken, refreshToken } = userResponse.data;
             const userState: UserState = { userId, accessToken, refreshToken };
+
             logObject("userState", userState);
+
+            const userDetail = await getUserDetail(userState.accessToken);
+            logObject("userDetail", userDetail);
             await saveUserState(userState);
+            updateAccessToken(userState.accessToken);
+            updateUserId(userState.userId);
 
             navigation.navigate(NavigationTitle.mainTabs, undefined);
         } catch (error) {

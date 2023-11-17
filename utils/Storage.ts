@@ -134,7 +134,7 @@ export const loadSavedPostingSurveys = async (): Promise<
 // Geo
 
 export const saveWholeGeos = async (data: GeoInfo[]) => {
-    logObject("saving geo data", data);
+    // logObject("saving geo data", data);
     await storage.save({ key: "wholeGeoInfo", data, expires: null });
 };
 

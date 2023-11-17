@@ -1,19 +1,10 @@
 import { useEffect, useState } from "react";
-import { loadUserState } from "../utils/Storage";
 
 import ParticipatedSurveyItems from "../components/mypage/ParticipatedSurveyItems";
+import { useCustomContext } from "../features/context/CustomContext";
 
 function ParticipatedSurveysScreen() {
-    const [userId, setUserId] = useState<number>(null);
-
-    useEffect(() => {
-        const getUserId = async () => {
-            const userId = await loadUserState();
-            setUserId(userId.userId);
-        };
-
-        getUserId();
-    }, [userId]);
+    const { userId } = useCustomContext();
 
     return <ParticipatedSurveyItems userId={userId} />;
 }

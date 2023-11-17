@@ -1,65 +1,70 @@
-import { UserState } from "./../interfaces/UserState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Storage from "react-native-storage";
-import { PostingSurveyState } from "../interfaces/PostingSurveyState";
-import { log, logObject } from "./Log";
+import { UserState } from "../interfaces/UserState";
 import { GeoInfo } from "../interfaces/GeoInfo";
+import { logObject } from "./Log";
 
-// 이것들 Class 로 모두 묶어주기.
+class UserDataManager {
+	private storage: Storage;
 
-export const storage = new Storage({
-    storageBackend: AsyncStorage,
-});
+	constructor() {
+		this.storage = new Storage({
+			storageBackend: AsyncStorage,
+		});
+	}
 
-class MyStorage extends Storage {}
+	public async saveUserState(data: UserState) {
+		logObject("savedUserState", data);
+		await this.storage.save({ key: "userInfo", data, expires: null });
+	}
 
-export const getItem = async () => {
-    let data = await AsyncStorage.getItem("");
-    data = JSON.parse(data);
-    // data.
-};
+	public async loadUserState(): Promise<UserState> {
+		try {
+			const userState: UserState = await this.storage.load({
+				key: "userInfo",
+				autoSync: true,
+				syncInBackground: true,
+			});
+			logObject("loadedUserState", userState);
 
-export const saveUserState = async (data: UserState) => {
-    // never expires
-    logObject("savedUserState", data);
-    await storage.save({ key: "userInfo", data, expires: null });
-};
+			return userState;
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
+	}
+}
 
-export const loadUserState = async (): Promise<UserState> => {
-    try {
-        const userState: UserState = await storage.load({
-            key: "userInfo",
-            autoSync: true,
-            syncInBackground: true,
-        });
-        logObject("loadedUserState", userState);
+class GeoDataManager {
+	private storage: Storage;
 
-        return userState;
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
-};
+	constructor() {
+		this.storage = new Storage({
+			storageBackend: AsyncStorage,
+		});
+	}
 
-// Geo
+	public async saveWholeGeos(data: GeoInfo[]) {
+		// logObject("saving geo data", data);
+		await this.storage.save({ key: "wholeGeoInfo", data, expires: null });
+	}
 
-export const saveWholeGeos = async (data: GeoInfo[]) => {
-    // logObject("saving geo data", data);
-    await storage.save({ key: "wholeGeoInfo", data, expires: null });
-};
+	public async loadWholeGeo(): Promise<GeoInfo[]> {
+		console.log("loadWholeGeo called");
+		try {
+			const geoInfo: GeoInfo[] = await this.storage.load({
+				key: "wholeGeoInfo",
+				autoSync: true,
+				syncInBackground: true,
+			});
 
-export const loadWholeGeo = async (): Promise<GeoInfo[]> => {
-    console.log("loadWholeGeo called");
-    try {
-        const geoInfo: GeoInfo[] = await storage.load({
-            key: "wholeGeoInfo",
-            autoSync: true,
-            syncInBackground: true,
-        });
+			return geoInfo;
+		} catch (error) {
+			console.error("Error loading geo info:", error);
+			return null;
+		}
+	}
+}
 
-        return geoInfo;
-    } catch (error) {
-        console.error("Error loading geo info:", error);
-        return null;
-    }
-};
+export const userDataManager = new UserDataManager();
+export const geoDataManager = new GeoDataManager();

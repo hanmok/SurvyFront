@@ -15,7 +15,7 @@ import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL, GQL_URL } from "../API/API";
 import { loadWholeGeo, saveUserState, saveWholeGeos } from "../utils/Storage";
 import { NavigationTitle } from "../utils/NavHelper";
-import { logObject } from "../utils/Log";
+import { log, logObject } from "../utils/Log";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { getSurveyQuery } from "../API/gqlQuery";
@@ -24,6 +24,7 @@ import { fetchAllGeoInfos } from "../API/GeoAPI";
 
 import { useCustomContext } from "../features/context/CustomContext";
 import { getSurveys } from "../API/SurveyAPI";
+import { getUserDetail } from "../API/UserAPI";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -50,7 +51,24 @@ function HomeScreen({
         await saveUserState(userState);
     };
 
-    const { userDetail } = useCustomContext();
+    const { userDetail, updateUserDetail } = useCustomContext();
+
+    useEffect(() => {
+        const fetchUserDetail = async () => {
+            try {
+                const detailInfo = await getUserDetail(accessToken);
+                updateUserDetail(detailInfo);
+            } catch (error) {
+                throw new Error(error.message);
+            }
+        };
+
+        const unsubscribeFocus = navigation.addListener("focus", () => {
+            fetchUserDetail();
+        });
+
+        return unsubscribeFocus;
+    }, [navigation]);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -82,7 +100,9 @@ function HomeScreen({
                 </View>
             ),
         });
-    }, [navigation]);
+        logObject("userDetail flag", userDetail);
+        // log(`collected money ${userDetail.collectedReward}`);
+    }, [navigation, userDetail]);
 
     const { accessToken } = useCustomContext();
 

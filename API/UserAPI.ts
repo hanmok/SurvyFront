@@ -1,6 +1,7 @@
 import { API_BASE_URL } from "./API";
 import { logObject } from "../utils/Log";
 import { UserState } from "../interfaces/UserState";
+import { UserDetail } from "../features/context/CustomContext";
 
 export type UserResponse = ApiResponse<UserState>;
 
@@ -146,7 +147,7 @@ export async function getUserDetail(accessToken: string) {
         });
 
         // Handle the response data
-        const ret = await response.json();
+        const ret: UserDetail = await response.json();
         logObject("User Details", ret);
         return ret;
     } catch (error) {

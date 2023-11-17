@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from "react";
 import { UserState } from "../../interfaces/UserState";
 import { AccessToken, UserId } from "../../types/types";
 
-interface UserDetail {
+export interface UserDetail {
     collectedReward: number;
     birthDate: string | null;
     age: number | null;

@@ -34,6 +34,7 @@ import { getUserDetail } from "../API/UserAPI";
 import { DefaultModal } from "../modals/DefaultModal";
 import { loadPostingSurvey } from "../utils/PostingSurveyStorage";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
+import Spacer from "../components/common/Spacer";
 
 // TODO: ..?? 이거 아닌데 ?
 // const width = Dimensions.get("window").width;
@@ -240,9 +241,7 @@ function HomeScreen({
 					data={surveys}
 					renderItem={renderItem}
 					keyExtractor={(item) => `${item.id}${item.title}`}
-					ItemSeparatorComponent={() => (
-						<View style={{ height: 3 }} />
-					)}
+					ItemSeparatorComponent={() => <Spacer size={3} />}
 					contentContainerStyle={{ justifyContent: "flex-start" }}
 					refreshControl={
 						<RefreshControl
@@ -260,7 +259,6 @@ function HomeScreen({
 							navigation.navigate(NavigationTitle.posting, {
 								postingSurveyState: null,
 							});
-							// moveToPostingScreen();
 						}
 					}}
 				>
@@ -274,7 +272,6 @@ function HomeScreen({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-
 		justifyContent: "flex-start",
 		backgroundColor: colors.background,
 	},

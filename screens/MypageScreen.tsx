@@ -4,7 +4,8 @@ import BlockView from "../components/BlockView";
 import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
 import ImageButton from "../components/ImageButton";
 
-import { screenHeight, screenWidth } from "../utils/ScreenSize";
+import { Dimensions } from "react-native";
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 import { log, logObject } from "../utils/Log";
 import { RootStackParamList } from "../utils/NavHelper";
 
@@ -17,136 +18,137 @@ import { useCustomContext } from "../features/context/CustomContext";
 // import { getParticipatedSurveyIds, getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 
 function MypageScreen({
-    navigation,
+	navigation,
 }: {
-    navigation: StackNavigationProp<RootStackParamList, NavigationTitle.mypage>;
+	navigation: StackNavigationProp<RootStackParamList, NavigationTitle.mypage>;
 }) {
-    const [numOfParticipatedSurveys, setNumOfParticipatedSurveys] =
-        useState<number>(0);
-    const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
-    const { userId, accessToken } = useCustomContext();
-    const getNumbers = async () => {
-        // axios({
-        //     method: "GET",
-        //     url: `${API_BASE_URL}/user/${myUserId}/participated-surveys`,
-        //     // headers:
-        // })
-        //     .then(res => {
-        //         console.log(res.data);
-        //         logObject(`participated surveys`, res.data);
-        //         return res.data;
-        //     })
-        //     .then(res => {
-        //         setNumOfParticipatedSurveys(res.data.length);
-        //     })
-        //     .catch(err => {});
-        await getPostedSurveyIds(userId, accessToken).then(postings =>
-            setNumOfPostedSurveys(postings.length)
-        );
-        await getParticipatedSurveyIds(userId, accessToken).then(
-            participatings => setNumOfParticipatedSurveys(participatings.length)
-        );
-    };
+	const [numOfParticipatedSurveys, setNumOfParticipatedSurveys] =
+		useState<number>(0);
+	const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
+	const { userId, accessToken } = useCustomContext();
+	const getNumbers = async () => {
+		// axios({
+		//     method: "GET",
+		//     url: `${API_BASE_URL}/user/${myUserId}/participated-surveys`,
+		//     // headers:
+		// })
+		//     .then(res => {
+		//         console.log(res.data);
+		//         logObject(`participated surveys`, res.data);
+		//         return res.data;
+		//     })
+		//     .then(res => {
+		//         setNumOfParticipatedSurveys(res.data.length);
+		//     })
+		//     .catch(err => {});
+		await getPostedSurveyIds(userId, accessToken).then((postings) =>
+			setNumOfPostedSurveys(postings.length)
+		);
+		await getParticipatedSurveyIds(userId, accessToken).then(
+			(participatings) =>
+				setNumOfParticipatedSurveys(participatings.length)
+		);
+	};
 
-    const navigateToSetting = () => {
-        navigation.navigate(NavigationTitle.setting);
-    };
+	const navigateToSetting = () => {
+		navigation.navigate(NavigationTitle.setting);
+	};
 
-    const navigateToMyInfo = () => {
-        navigation.navigate(NavigationTitle.myinfo);
-    };
+	const navigateToMyInfo = () => {
+		navigation.navigate(NavigationTitle.myinfo);
+	};
 
-    useEffect(() => {
-        getNumbers();
-        console.log("[MypageScreen] screenWidth: ", screenWidth);
-        console.log("[MypageScreen] screenHeight: ", screenHeight);
-    }, [numOfParticipatedSurveys, numOfPostedSurveys]);
+	useEffect(() => {
+		getNumbers();
+		console.log("[MypageScreen] width: ", screenWidth);
+		console.log("[MypageScreen] height: ", screenHeight);
+	}, [numOfParticipatedSurveys, numOfPostedSurveys]);
 
-    return (
-        <View style={{ flex: 1, alignItems: "center" }}>
-            {/*  Navigation Bar */}
-            <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                    height: 90,
-                    width: screenWidth,
-                    backgroundColor: "white",
-                    paddingHorizontal: paddingSizes.xl24,
-                    paddingTop: 40,
-                }}
-            >
-                <ImageButton
-                    img={require("../assets/settingIcon.png")}
-                    size={24}
-                    onPress={navigateToSetting}
-                />
-            </View>
+	return (
+		<View style={{ flex: 1, alignItems: "center" }}>
+			{/*  Navigation Bar */}
+			<View
+				style={{
+					flexDirection: "row",
+					justifyContent: "flex-end",
+					height: 90,
+					width: screenWidth,
+					backgroundColor: "white",
+					paddingHorizontal: paddingSizes.xl24,
+					paddingTop: 40,
+				}}
+			>
+				<ImageButton
+					img={require("../assets/settingIcon.png")}
+					size={24}
+					onPress={navigateToSetting}
+				/>
+			</View>
 
-            <View
-                style={{
-                    alignSelf: "stretch",
-                    marginHorizontal: marginSizes.l20,
-                    rowGap: 20,
-                    marginTop: marginSizes.xxl28,
-                }}
-            >
-                <BlockView
-                    onPress={() => {
-                        navigateToMyInfo();
-                    }}
-                >
-                    <Text style={[styles.eachBoxTextStyle, { padding: 20 }]}>
-                        내 정보
-                    </Text>
-                </BlockView>
+			<View
+				style={{
+					alignSelf: "stretch",
+					marginHorizontal: marginSizes.l20,
+					rowGap: 20,
+					marginTop: marginSizes.xxl28,
+				}}
+			>
+				<BlockView
+					onPress={() => {
+						navigateToMyInfo();
+					}}
+				>
+					<Text style={[styles.eachBoxTextStyle, { padding: 20 }]}>
+						내 정보
+					</Text>
+				</BlockView>
 
-                <BlockView
-                    onPress={() => {
-                        navigation.navigate(
-                            NavigationTitle.participatedSurveys
-                        );
-                    }}
-                >
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            padding: 20,
-                        }}
-                    >
-                        <Text style={styles.eachBoxTextStyle}>참여한 설문</Text>
-                        <Text style={styles.eachBoxTextStyle}>
-                            {numOfParticipatedSurveys} 개
-                        </Text>
-                    </View>
-                </BlockView>
+				<BlockView
+					onPress={() => {
+						navigation.navigate(
+							NavigationTitle.participatedSurveys
+						);
+					}}
+				>
+					<View
+						style={{
+							flexDirection: "row",
+							justifyContent: "space-between",
+							padding: 20,
+						}}
+					>
+						<Text style={styles.eachBoxTextStyle}>참여한 설문</Text>
+						<Text style={styles.eachBoxTextStyle}>
+							{numOfParticipatedSurveys} 개
+						</Text>
+					</View>
+				</BlockView>
 
-                <BlockView
-                    onPress={() => {
-                        navigation.navigate(NavigationTitle.postedSurveys);
-                    }}
-                >
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            padding: 20,
-                        }}
-                    >
-                        <Text style={styles.eachBoxTextStyle}>요청한 설문</Text>
-                        <Text style={styles.eachBoxTextStyle}>
-                            {numOfPostedSurveys} 개
-                        </Text>
-                    </View>
-                </BlockView>
-            </View>
-        </View>
-    );
+				<BlockView
+					onPress={() => {
+						navigation.navigate(NavigationTitle.postedSurveys);
+					}}
+				>
+					<View
+						style={{
+							flexDirection: "row",
+							justifyContent: "space-between",
+							padding: 20,
+						}}
+					>
+						<Text style={styles.eachBoxTextStyle}>요청한 설문</Text>
+						<Text style={styles.eachBoxTextStyle}>
+							{numOfPostedSurveys} 개
+						</Text>
+					</View>
+				</BlockView>
+			</View>
+		</View>
+	);
 }
 
 export default MypageScreen;
 
 const styles = StyleSheet.create({
-    eachBoxTextStyle: { fontSize: fontSizes.m20 },
+	eachBoxTextStyle: { fontSize: fontSizes.m20 },
 });

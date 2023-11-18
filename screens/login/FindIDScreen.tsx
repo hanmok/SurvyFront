@@ -84,7 +84,7 @@ export default function FindIDScreen({
 						textStyle={styles.authText}
 					/>
 					<View
-						style={isPhoneAuthTapped ? styles.selectedBar : {}}
+						style={isPhoneAuthTapped && styles.selectedBar}
 					></View>
 				</View>
 				<View style={[styles.authBackground, { marginRight: 10 }]}>
@@ -98,7 +98,9 @@ export default function FindIDScreen({
 						backgroundStyle={{ marginBottom: 12 }}
 					/>
 					<View
-						style={isPhoneAuthTapped ? {} : styles.selectedBar}
+						style={
+							isPhoneAuthTapped === false && styles.selectedBar
+						}
 					></View>
 				</View>
 			</View>

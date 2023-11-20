@@ -6,7 +6,10 @@ import {
     View,
     KeyboardAvoidingView,
     Platform,
+    Keyboard,
+    TouchableNativeFeedback,
 } from "react-native";
+
 import { colors } from "../utils/colors";
 import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 
@@ -93,6 +96,11 @@ function ParticipatingScreen({
     });
 
     const [currentSurvey, setCurrentSurvey] = useState<GQLSurvey | null>(null);
+
+    const dismissKeyboard = () => {
+        console.log("keyboard dismissed");
+        Keyboard.dismiss();
+    };
 
     useEffect(() => {
         console.log("passed survey id:", surveyId);
@@ -296,27 +304,30 @@ function ParticipatingScreen({
     const listFooter = () => {
         return (
             currentSurvey !== null && (
-                <TextButton
-                    title={
-                        currentSectionIndex ===
-                        currentSurvey.sections.length - 1
-                            ? "제출"
-                            : "다음"
-                    }
-                    onPress={toggleNextTapped}
-                    textStyle={
-                        isSatisfied
-                            ? styles.activatedButtonText
-                            : styles.inactivatedButtonText
-                    }
-                    backgroundStyle={
-                        isSatisfied
-                            ? styles.activatedFinishButtonBackground
-                            : styles.inactivatedFinishButtonBackground
-                    }
-                    hasShadow={false}
-                    isEnabled={isSatisfied}
-                />
+                <View>
+                    <TextButton
+                        title={
+                            currentSectionIndex ===
+                            currentSurvey.sections.length - 1
+                                ? "제출"
+                                : "다음"
+                        }
+                        onPress={toggleNextTapped}
+                        textStyle={
+                            isSatisfied
+                                ? styles.activatedButtonText
+                                : styles.inactivatedButtonText
+                        }
+                        backgroundStyle={
+                            isSatisfied
+                                ? styles.activatedFinishButtonBackground
+                                : styles.inactivatedFinishButtonBackground
+                        }
+                        hasShadow={false}
+                        isEnabled={isSatisfied}
+                    />
+                    {/* <View style={{ height: 500 }}></View> */}
+                </View>
             )
         );
     };
@@ -324,17 +335,27 @@ function ParticipatingScreen({
     return (
         <KeyboardAvoidingView
             style={styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            // behavior={Platform.OS === "ios" ? "position" : "position"}
+            behavior="position"
         >
-            <FlatList
-                style={styles.flatListStyle}
-                data={questions}
-                renderItem={renderItem}
-                keyExtractor={item => `${item.id}${item.text} `}
-                // ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
-                ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-                ListFooterComponent={listFooter}
-            />
+            <TouchableNativeFeedback
+                onPress={dismissKeyboard}
+                // style={styles.container}
+            >
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        style={styles.flatListStyle}
+                        data={questions}
+                        renderItem={renderItem}
+                        keyExtractor={item => `${item.id}${item.text} `}
+                        // ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+                        ItemSeparatorComponent={() => (
+                            <View style={{ height: 10 }} />
+                        )}
+                        ListFooterComponent={listFooter}
+                    />
+                </View>
+            </TouchableNativeFeedback>
         </KeyboardAvoidingView>
     );
 }
@@ -346,6 +367,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginHorizontal: 20,
         marginBottom: 30,
+        flex: 1,
     },
     flatListStyle: {
         alignSelf: "stretch",

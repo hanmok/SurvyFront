@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { logObject } from "../utils/Log";
 import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
+import CustomAccessoryView from "../utils/CustomAccessoryView";
 
 interface SelectableOptionProps {
     id: number;
@@ -235,9 +236,12 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         <TextInput
                             ref={textInputRef}
                             placeholder="답변을 입력해주세요."
-                            // multiline
-                            numberOfLines={5}
-                            style={styles.textInput}
+                            multiline
+                            numberOfLines={2} // Initial number of line
+                            style={[
+                                styles.textInput,
+                                // { height: Math.max(35, userInput.length * 10) },
+                            ]}
                             autoCorrect={false}
                             value={userInput}
                             onChangeText={setUserInput}
@@ -287,6 +291,7 @@ const styles = StyleSheet.create({
         // backgroundColor: "magenta",
         justifyContent: "center",
     },
+    essayInput: {},
     textInput: {
         borderWidth: 1,
         borderColor: "#ccc",

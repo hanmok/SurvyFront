@@ -117,6 +117,7 @@ const App: React.FC = () => {
                                     options={({ route }) => ({
                                         headerTitle: "",
                                         headerBackTitleVisible: false,
+                                        headerLeft: null,
                                         headerStyle: {
                                             backgroundColor: colors.background,
                                         },

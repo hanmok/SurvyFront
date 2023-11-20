@@ -14,6 +14,7 @@ import Spacer from "../../components/common/Spacer";
 import { Entypo } from "@expo/vector-icons";
 import TextButton from "../../components/TextButton";
 import { areSetsEqual, setDifference } from "../../utils/Set";
+import { DefaultModal } from "../../modals/DefaultModal";
 
 function MyGenreScreen({
     navigation,
@@ -30,7 +31,7 @@ function MyGenreScreen({
     const [userInput, setUserInput] = useState<string>("");
     const [showingGenres, setShowingGenres] = useState<Genre[]>([]);
 
-    const maxSelection = 5;
+    const maxGenreSelection = 5;
 
     const [confirmTapped, setConfirmTapped] = useState(false);
 
@@ -67,7 +68,11 @@ function MyGenreScreen({
         logObject("index: ", index);
         if (index === -1) {
             // 새로운 입력
-            setSelectedGenres(prev => [...prev, genre]);
+            if (selectedGenres.length >= maxGenreSelection) {
+                alert("관심사는 5개까지만 설정할 수 있습니다.");
+            } else {
+                setSelectedGenres(prev => [...prev, genre]);
+            }
         } else {
             // 기존에 있는 입력.
             let currentSelectedGenres = [...selectedGenres];
@@ -121,7 +126,7 @@ function MyGenreScreen({
                         <TextInput
                             value={userInput}
                             onChangeText={setUserInput}
-                            placeholder="관련 카테고리는?"
+                            placeholder="관심 카테고리는?"
                             style={{
                                 fontSize: 16,
                             }}

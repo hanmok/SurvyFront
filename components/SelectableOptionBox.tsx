@@ -150,28 +150,32 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             onPress={onPress}
                         />
                         {isExtra === 1 ? (
-                            <TextInput
-                                placeholder="기타"
-                                value={userInput}
-                                onChangeText={setUserInput}
-                                style={styles.extraInput}
-                                // return 누른 후 호출되는거 확인함.
-                                onSubmitEditing={() => {
-                                    console.log(`${userInput} has submitted`);
-                                    logObject(
-                                        `[SelectableOptionBox] submitting text`,
-                                        userInput
-                                    );
-                                    handleUserInput(userInput);
-                                }}
-                                onEndEditing={() => {
-                                    logObject(
-                                        "onEndEditing, userInput",
-                                        userInput
-                                    );
-                                    handleUserInput(userInput);
-                                }}
-                            />
+                            <View style={styles.textContainer}>
+                                <TextInput
+                                    placeholder="기타"
+                                    value={userInput}
+                                    onChangeText={setUserInput}
+                                    style={styles.extraInput}
+                                    // return 누른 후 호출되는거 확인함.
+                                    onSubmitEditing={() => {
+                                        console.log(
+                                            `${userInput} has submitted`
+                                        );
+                                        logObject(
+                                            `[SelectableOptionBox] submitting text`,
+                                            userInput
+                                        );
+                                        handleUserInput(userInput);
+                                    }}
+                                    onEndEditing={() => {
+                                        logObject(
+                                            "onEndEditing, userInput",
+                                            userInput
+                                        );
+                                        handleUserInput(userInput);
+                                    }}
+                                />
+                            </View>
                         ) : (
                             // </View>
                             <Text style={styles.textStyle}>{value}</Text>

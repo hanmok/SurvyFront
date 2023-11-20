@@ -11,18 +11,17 @@ import {
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import TextButton from "./TextButton";
+import { screenWidth } from "../utils/ScreenSize";
 
-interface PointBlockProps {
-    onPress?: () => void;
+interface ReputationBlockProps {
     textStyle?: StyleProp<TextStyle>;
     backgroundStyle?: StyleProp<ViewStyle>;
-    collectedReward: number;
+    reputation: number;
 }
 
-const PointBlockView: React.FC<PointBlockProps> = ({
-    onPress,
+const ReputationBlockView: React.FC<ReputationBlockProps> = ({
     backgroundStyle,
-    collectedReward = 0,
+    reputation = 0,
 }) => {
     return (
         <View
@@ -31,37 +30,33 @@ const PointBlockView: React.FC<PointBlockProps> = ({
             <View>
                 <View style={styles.topContainer}>
                     <Text style={[styles.eachBoxTextStyle, { padding: 20 }]}>
-                        포인트
+                        신뢰도
                     </Text>
                     <Text
                         style={[styles.eachBoxTextStyle, { paddingRight: 20 }]}
                     >
-                        {collectedReward} P
+                        Lv. {Math.max(reputation / 100, 1)}
                     </Text>
                 </View>
-
-                <View
-                    style={{
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                        marginHorizontal: 20,
-                        // paddingRight: 30,
-                        paddingHorizontal: 20,
-                        // borderRadius: 8,
-                    }}
-                >
-                    <TextButton
-                        title="내역"
-                        onPress={() => {}}
-                        backgroundStyle={styles.buttonBackground}
-                        textStyle={styles.buttonText}
-                    />
-                    <TextButton
-                        title="출금"
-                        onPress={() => {}}
-                        backgroundStyle={styles.buttonBackground}
-                        textStyle={styles.buttonText}
-                    />
+                {/* Bottom Bar */}
+                <View style={{ alignItems: "center" }}>
+                    <View
+                        style={[
+                            styles.progressBar,
+                            { width: screenWidth - 100 },
+                        ]}
+                    >
+                        <View
+                            style={[
+                                styles.progressBar,
+                                {
+                                    width:
+                                        (screenWidth - 100) * (reputation / 50),
+                                    backgroundColor: colors.black,
+                                },
+                            ]}
+                        ></View>
+                    </View>
                 </View>
             </View>
         </View>
@@ -70,7 +65,12 @@ const PointBlockView: React.FC<PointBlockProps> = ({
 
 const styles = StyleSheet.create({
     container: {
-        height: 120,
+        height: 100,
+    },
+    progressBar: {
+        backgroundColor: colors.gray4,
+        height: 6,
+        borderRadius: 3,
     },
     basicContainer: {
         borderRadius: 10,
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PointBlockView;
+export default ReputationBlockView;

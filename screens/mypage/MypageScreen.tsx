@@ -19,6 +19,7 @@ import {
 import { useCustomContext } from "../../features/context/CustomContext";
 import TextButton from "../../components/TextButton";
 import PointBlockView from "../../components/PointBlockView";
+import ReputationBlockView from "../../components/ReputationBlockView";
 // import { getParticipatedSurveyIds, getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 
 function MypageScreen({
@@ -143,15 +144,7 @@ function MypageScreen({
                     collectedReward={userDetail?.collectedReward}
                 />
 
-                <BlockView
-                    onPress={() => {
-                        // navigateToMyInfo();
-                    }}
-                >
-                    <Text style={[styles.eachBoxTextStyle, { padding: 20 }]}>
-                        신뢰도
-                    </Text>
-                </BlockView>
+                <ReputationBlockView reputation={userDetail?.reputation} />
             </View>
         </View>
     );

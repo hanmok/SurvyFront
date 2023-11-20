@@ -132,3 +132,32 @@ export async function fetchParticipatedSurveys(
         },
     });
 }
+
+export async function updateUserGenres(
+    userId: number,
+    accessToken: string,
+    genreIds: number[]
+) {
+    const url = `${API_BASE_URL}/user-genre/user/${userId}/genres`;
+
+    // const data = { userId, genreIds };
+    const snakeData = {
+        user_id: userId,
+        genre_ids: genreIds,
+    };
+
+    logObject("sending Data from updateUserGenres", snakeData);
+
+    return fetchData(
+        url,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(snakeData),
+        },
+        "updateUserGenres"
+    );
+}

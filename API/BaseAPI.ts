@@ -21,7 +21,7 @@ export async function fetchData<T>(
 
         const apiResponse = await response.json();
         const result: T = apiResponse.data;
-        logObject(`API ${message} Result:`, result);
+        logObject(`API ${message} Result`, result);
         return result;
         // return apiResponse.data;
     } catch (error) {

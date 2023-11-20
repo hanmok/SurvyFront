@@ -97,54 +97,19 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
-                        <Text
-                            style={{
-                                fontSize: fontSizes.m20,
-                                backgroundColor: colors.gray4,
-                                // width: screenWidth - 40 * 2,
-                                alignSelf: "stretch",
-                                textAlign: "center",
-                            }}
-                        >
-                            카테고리 선택
-                        </Text>
+                        <Text style={styles.modalNameText}>카테고리 선택</Text>
 
                         <Spacer size={15} />
 
-                        <View
-                            style={{
-                                flexDirection: "column",
-                                flex: 1,
-                                marginHorizontal: 20,
-                                marginBottom: 15,
-                            }}
-                        >
+                        <View style={styles.coreContentsContainer}>
                             <View
                                 style={{
                                     marginTop: 10,
                                 }}
                             >
                                 {/* Search */}
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <View
-                                        style={{
-                                            borderRadius: 10,
-                                            backgroundColor: "white",
-                                            overflow: "hidden",
-                                            borderColor: "black",
-                                            borderWidth: 1,
-                                            width: 240,
-                                            height: 35,
-                                            justifyContent: "center",
-                                            paddingLeft: 10,
-                                        }}
-                                    >
+                                <View style={styles.searchContainer}>
+                                    <View style={styles.searchTextBox}>
                                         <TextInput
                                             value={userInput}
                                             onChangeText={setUserInput}
@@ -169,19 +134,7 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                                     />
                                 </View>
                                 {/* selected Genres */}
-                                <View
-                                    style={{
-                                        borderBottomColor: colors.gray4,
-                                        borderBottomWidth: 1,
-                                        borderTopColor: colors.gray4,
-                                        borderTopWidth: 1,
-                                        flex: 0,
-                                        flexDirection: "row",
-                                        flexWrap: "wrap",
-                                        marginTop: 20,
-                                        minHeight: 40,
-                                    }}
-                                >
+                                <View style={styles.genreListWrapper}>
                                     {selectedGenres.map(genre => (
                                         <TextButton
                                             title={genre.name}
@@ -189,15 +142,9 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                                                 toggleGenreSelection(genre);
                                             }}
                                             key={genre.id}
-                                            backgroundStyle={{
-                                                backgroundColor: colors.gray1,
-                                                padding: 4,
-                                                paddingHorizontal: 6,
-                                                marginHorizontal: 6,
-                                                borderRadius: 6,
-                                                height: 30,
-                                                marginVertical: 4,
-                                            }}
+                                            backgroundStyle={
+                                                styles.genreButtonBG
+                                            }
                                             textStyle={{
                                                 color: colors.white,
                                             }}
@@ -300,16 +247,67 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
     },
+    modalNameText: {
+        fontSize: fontSizes.m20,
+        backgroundColor: colors.gray4,
+        alignSelf: "stretch",
+        textAlign: "center",
+    },
+    coreContentsContainer: {
+        flexDirection: "column",
+        flex: 1,
+        marginHorizontal: 20,
+        marginBottom: 15,
+    },
+    searchContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    searchTextBox: {
+        borderRadius: 10,
+        backgroundColor: "white",
+        overflow: "hidden",
+        borderColor: "black",
+        borderWidth: 1,
+        width: 240,
+        height: 35,
+        justifyContent: "center",
+        paddingLeft: 10,
+    },
+
+    genreListWrapper: {
+        borderBottomColor: colors.gray4,
+        borderBottomWidth: 1,
+        borderTopColor: colors.gray4,
+        borderTopWidth: 1,
+        flex: 0,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginTop: 20,
+        minHeight: 40,
+    },
 
     rowContainer: {
         flexDirection: "row",
         justifyContent: "center",
     },
+
     genreContainer: {
         margin: 8,
         padding: 8,
         backgroundColor: colors.gray3,
         borderRadius: 6,
+    },
+
+    genreButtonBG: {
+        backgroundColor: colors.gray1,
+        padding: 4,
+        paddingHorizontal: 6,
+        marginHorizontal: 6,
+        borderRadius: 6,
+        height: 30,
+        marginVertical: 4,
     },
     bottomContainer: {
         flexDirection: "row",

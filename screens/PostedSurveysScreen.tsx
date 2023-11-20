@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { loadUserState } from "../utils/Storage";
+// import { loadUserState } from "../utils/Storage";
 import PostedSurveyItems from "../components/mypage/PostedSurveyItems";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";

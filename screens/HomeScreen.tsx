@@ -13,7 +13,7 @@ import { Survey } from "../interfaces/Survey";
 
 import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL, GQL_URL } from "../API/API";
-import { loadWholeGeo, saveUserState, saveWholeGeos } from "../utils/Storage";
+// import { loadWholeGeo, saveUserState, saveWholeGeos } from "../utils/Storage";
 import { NavigationTitle } from "../utils/NavHelper";
 import { log, logObject } from "../utils/Log";
 import {
@@ -31,8 +31,10 @@ import { useCustomContext } from "../features/context/CustomContext";
 import { getSurveys } from "../API/SurveyAPI";
 import { getUserDetail } from "../API/UserAPI";
 import { DefaultModal } from "../modals/DefaultModal";
-import { loadPostingSurvey } from "../utils/PostingSurveyStorage";
+// import { loadPostingSurvey } from "../utils/PostingSurveyStorage";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
+import { geoDataManager } from "../utils/Storage";
+import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -46,7 +48,8 @@ function HomeScreen({
 
     const onRefresh = () => {
         setRefreshing(true);
-        fetchSurveys().then(newSurveys => {
+        // fetchSurveys().then(newSurveys => {
+        getSurveys(accessToken).then(newSurveys => {
             setSurveys(newSurveys);
             setRefreshing(false);
         });
@@ -55,9 +58,9 @@ function HomeScreen({
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const setUser = async (userState: UserState) => {
-        await saveUserState(userState);
-    };
+    // const setUser = async (userState: UserState) => {
+    //     await saveUserState(userState);
+    // };
 
     const { userDetail, updateUserDetail } = useCustomContext();
 
@@ -114,12 +117,12 @@ function HomeScreen({
 
     const { accessToken } = useCustomContext();
 
-    const fetchSurveys = async () => {
-        const ret = await getSurveys(accessToken).catch(error => {
-            throw new Error("error fetching surveys");
-        });
-        return ret;
-    };
+    // const fetchSurveys = async () => {
+    //     const ret = await getSurveys(accessToken).catch(error => {
+    //         throw new Error("error fetching surveys");
+    //     });
+    //     return ret;
+    // };
 
     const updateSurveys = async () => {
         await getSurveys(accessToken)
@@ -136,7 +139,8 @@ function HomeScreen({
     useEffect(() => {
         const fetchGeos = async () => {
             const allGeos = await fetchAllGeoInfos();
-            saveWholeGeos(allGeos);
+            // saveWholeGeos(allGeos);
+            geoDataManager.saveWholeGeos(allGeos);
         };
 
         fetchGeos();
@@ -150,7 +154,8 @@ function HomeScreen({
 
     useEffect(() => {
         const postingSurvey = async () => {
-            const result = await loadPostingSurvey();
+            // const result = await loadPostingSurvey();
+            const result = await postingSurveyDataManager.load();
             if (result) {
                 setPostingSurvey(result);
             }
@@ -197,7 +202,8 @@ function HomeScreen({
 
     useEffect(() => {
         const fetchPostingSurvey = async () => {
-            const ret = await loadPostingSurvey();
+            // const ret = await loadPostingSurvey();
+            const ret = await postingSurveyDataManager.load();
             setPostingSurvey(ret);
         };
         const unsubscribeFocus = navigation.addListener("focus", () => {

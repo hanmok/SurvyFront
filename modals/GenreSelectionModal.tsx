@@ -50,8 +50,8 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
 
     const getGenres = async () => {
         getAllGenres(accessToken).then(response => {
-            logObject("fetched genres: ", response.data);
-            setAllGenres(response.data);
+            logObject("fetched genres: ", response);
+            setAllGenres(response);
         });
     };
 

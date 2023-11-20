@@ -178,8 +178,8 @@ export default function ResponseScreen({
         const getExcelSheet = async () => {
             getResultSheet(surveyId, accessToken).then(response => {
                 logObject("sheet data:", response);
-                if (response.data) {
-                    const sheetResponse = response.data;
+                if (response) {
+                    const sheetResponse = response;
                     generateExcel(sheetResponse, survey.title);
                 }
             });

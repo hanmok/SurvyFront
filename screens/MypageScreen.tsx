@@ -10,7 +10,7 @@ import { RootStackParamList } from "../utils/NavHelper";
 
 import { NavigationTitle } from "../utils/NavHelper";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { loadUserState } from "../utils/Storage";
+// import { loadUserState } from "../utils/Storage";
 import { API_BASE_URL } from "../API/API";
 import { getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 import { useCustomContext } from "../features/context/CustomContext";

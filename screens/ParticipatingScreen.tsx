@@ -387,7 +387,5 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: borderSizes.m10,
         height: 40,
-        // marginHorizontal: 10,
-        // marginBottom: 10,
     },
 });

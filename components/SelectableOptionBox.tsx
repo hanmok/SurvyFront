@@ -108,28 +108,32 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             }}
                         />
                         {isExtra === 1 ? (
-                            <TextInput
-                                ref={textInputRef}
-                                placeholder="기타"
-                                value={userInput}
-                                onChangeText={setUserInput}
-                                style={styles.extraInput}
-                                // return 누른 후 호출되는거 확인함.
-                                onSubmitEditing={() => {
-                                    console.log(`${userInput} has submitted`);
-                                }}
-                                onFocus={() => {
-                                    onPress();
-                                    console.log("기타 tapped");
-                                }}
-                                onEndEditing={() => {
-                                    logObject(
-                                        "onEndEditing, userInput",
-                                        userInput
-                                    );
-                                    handleUserInput(userInput);
-                                }}
-                            />
+                            <View style={styles.textContainer}>
+                                <TextInput
+                                    ref={textInputRef}
+                                    placeholder="기타"
+                                    value={userInput}
+                                    onChangeText={setUserInput}
+                                    style={styles.extraInput}
+                                    // return 누른 후 호출되는거 확인함.
+                                    onSubmitEditing={() => {
+                                        console.log(
+                                            `${userInput} has submitted`
+                                        );
+                                    }}
+                                    onFocus={() => {
+                                        onPress();
+                                        console.log("기타 tapped");
+                                    }}
+                                    onEndEditing={() => {
+                                        logObject(
+                                            "onEndEditing, userInput",
+                                            userInput
+                                        );
+                                        handleUserInput(userInput);
+                                    }}
+                                />
+                            </View>
                         ) : (
                             // </View>
                             <Text style={styles.textStyle}>{value}</Text>
@@ -193,36 +197,38 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             }}
                         />
                         {isExtra === 1 ? (
-                            <TextInput
-                                ref={textInputRef}
-                                placeholder="기타"
-                                value={userInput}
-                                onChangeText={setUserInput}
-                                style={styles.extraInput}
-                                // return 누른 후 호출되는거 확인함.
-                                onSubmitEditing={() => {
-                                    console.log(`${userInput} has submitted`);
-                                }}
-                                onFocus={() => {
-                                    onPress();
-                                    console.log("기타 tapped");
-                                }}
-                                onEndEditing={() => {
-                                    logObject(
-                                        "onEndEditing, userInput",
-                                        userInput
-                                    );
-                                    handleUserInput(userInput);
-                                }}
-                            />
+                            <View style={styles.textContainer}>
+                                <TextInput
+                                    ref={textInputRef}
+                                    placeholder="기타"
+                                    value={userInput}
+                                    onChangeText={setUserInput}
+                                    style={styles.extraInput}
+                                    // return 누른 후 호출되는거 확인함.
+                                    onSubmitEditing={() => {
+                                        console.log(
+                                            `${userInput} has submitted`
+                                        );
+                                    }}
+                                    onFocus={() => {
+                                        onPress();
+                                        console.log("기타 tapped");
+                                    }}
+                                    onEndEditing={() => {
+                                        logObject(
+                                            "onEndEditing, userInput",
+                                            userInput
+                                        );
+                                        handleUserInput(userInput);
+                                    }}
+                                />
+                            </View>
                         ) : (
                             <Text style={styles.textStyle}>{value}</Text>
                         )}
                     </View>
                 );
                 break;
-            // default:
-            // case "300":
             case `${QuestionTypeIdEnum.Essay}`:
                 selectableOptionComponent = (
                     <View style={styles.textContainer}>

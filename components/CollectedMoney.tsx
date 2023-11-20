@@ -8,30 +8,32 @@ interface CollectedMoneyProps {
     amount: number;
 }
 
-const CollectedMoney: React.FC<CollectedMoneyProps> = ({ amount }) => {
-    const formattedNumber = accounting.formatNumber(amount);
-    return (
-        <View style={styles.container}>
-            <View style={styles.subContainer}>
-                <View
-                    style={[
-                        styles.centeredTextContainer,
-                        styles.overflowHidden,
-                    ]}
-                >
-                    <Image
-                        source={require("../assets/coin.jpg")}
-                        style={styles.img}
-                    />
+const CollectedMoney: React.FC<CollectedMoneyProps> = React.memo(
+    ({ amount }) => {
+        const formattedNumber = accounting.formatNumber(amount);
+        return (
+            <View style={styles.container}>
+                <View style={styles.subContainer}>
+                    <View
+                        style={[
+                            styles.centeredTextContainer,
+                            styles.overflowHidden,
+                        ]}
+                    >
+                        <Image
+                            source={require("../assets/coin.jpg")}
+                            style={styles.img}
+                        />
 
-                    <Text style={styles.collectedMoney} numberOfLines={1}>
-                        {formattedNumber} P
-                    </Text>
+                        <Text style={styles.collectedMoney} numberOfLines={1}>
+                            {formattedNumber} P
+                        </Text>
+                    </View>
                 </View>
             </View>
-        </View>
-    );
-};
+        );
+    }
+);
 
 export default CollectedMoney;
 

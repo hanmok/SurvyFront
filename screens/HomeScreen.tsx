@@ -48,7 +48,6 @@ function HomeScreen({
 
     const onRefresh = () => {
         setRefreshing(true);
-        // fetchSurveys().then(newSurveys => {
         getSurveys(accessToken).then(newSurveys => {
             setSurveys(newSurveys);
             setRefreshing(false);
@@ -57,17 +56,13 @@ function HomeScreen({
 
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-
-    // const setUser = async (userState: UserState) => {
-    //     await saveUserState(userState);
-    // };
-
     const { userDetail, updateUserDetail } = useCustomContext();
 
     useEffect(() => {
         const fetchUserDetail = async () => {
             try {
                 const detailInfo = await getUserDetail(accessToken);
+                logObject("userDetail", detailInfo);
                 updateUserDetail(detailInfo);
             } catch (error) {
                 throw new Error(error.message);
@@ -105,7 +100,8 @@ function HomeScreen({
                 <View style={{ marginBottom: 15 }}>
                     <CollectedMoney
                         amount={
-                            userDetail !== null ? userDetail.collectedReward : 0
+                            // userDetail !== null ? userDetail.collectedReward : 0
+                            userDetail?.collectedReward ?? 0
                         }
                     />
                 </View>
@@ -204,7 +200,9 @@ function HomeScreen({
         const fetchPostingSurvey = async () => {
             // const ret = await loadPostingSurvey();
             const ret = await postingSurveyDataManager.load();
-            setPostingSurvey(ret);
+            if (ret) {
+                setPostingSurvey(ret);
+            }
         };
         const unsubscribeFocus = navigation.addListener("focus", () => {
             setIsModalVisible(false);

@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, TextInput, Keyboard } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TextInput,
+    Keyboard,
+    InputAccessoryView,
+    Button,
+} from "react-native";
 import { fontSizes, marginSizes } from "../utils/sizes";
 import ImageButton from "./ImageButton";
 import { useSelector } from "react-redux";
@@ -7,6 +15,8 @@ import { RootState } from "../store";
 import { logObject } from "../utils/Log";
 import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
 import CustomAccessoryView from "../utils/CustomAccessoryView";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import TextButton from "./TextButton";
 
 interface SelectableOptionProps {
     id: number;
@@ -54,6 +64,13 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     if (selectedIndexIds == null) {
         return <Text>selectedIndexes: null </Text>;
     }
+
+    const completeInput = (input: string) => {
+        handleUserInput(input);
+        Keyboard.dismiss();
+    };
+
+    const inputAccessoryViewId = "accessoryViewId";
 
     {
         switch (questionTypeId) {
@@ -233,6 +250,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
             case `${QuestionTypeIdEnum.Essay}`:
                 selectableOptionComponent = (
                     <View style={styles.textContainer}>
+                        {/* <KeyboardAwareScrollView> */}
                         <TextInput
                             ref={textInputRef}
                             placeholder="답변을 입력해주세요."
@@ -257,12 +275,37 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 logObject("onEndEditing, userInput", userInput);
                             }}
                             returnKeyType="done"
+                            inputAccessoryViewID={inputAccessoryViewId}
+                            // https://reactnative.dev/docs/inputaccessoryview
                         />
+                        <InputAccessoryView
+                            nativeID={inputAccessoryViewId}
+                            style={styles.accessoryView}
+                        >
+                            <View
+                                style={[
+                                    {
+                                        // flexDirection: "row",
+                                        // justifyContent: "flex-end",
+                                        backgroundColor: "#F3F4F6",
+                                        paddingRight: 20,
+                                        borderTopColor: "#A8B7B6",
+                                        borderTopWidth: 1,
+                                    },
+                                    styles.accessoryContent,
+                                ]}
+                            >
+                                <Button
+                                    title="완료"
+                                    onPress={() => {
+                                        completeInput(userInput);
+                                    }}
+                                />
+                            </View>
+                        </InputAccessoryView>
                     </View>
                 );
                 break;
-            // default:
-            //     throw new console.error("Question type error");
         }
     }
 
@@ -312,5 +355,22 @@ const styles = StyleSheet.create({
         borderColor: "#ccc",
         borderWidth: 1,
         borderRadius: 6,
+    },
+
+    accessoryView: {
+        position: "absolute",
+        bottom: 0, // Set the distance from the bottom of the screen
+        left: 0,
+        right: 0,
+        backgroundColor: "#F3F4F6",
+        borderTopColor: "#A8B7B6",
+        borderTopWidth: 1,
+    },
+    accessoryContent: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        paddingRight: 20,
+        alignItems: "center",
+        height: "100%", // Ensure the content takes the full height
     },
 });

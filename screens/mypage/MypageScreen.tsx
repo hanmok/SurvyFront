@@ -17,6 +17,8 @@ import {
     getPostedSurveyIds,
 } from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
+import TextButton from "../../components/TextButton";
+import PointBlockView from "../../components/PointBlockView";
 // import { getParticipatedSurveyIds, getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 
 function MypageScreen({
@@ -37,6 +39,8 @@ function MypageScreen({
             participatings => setNumOfParticipatedSurveys(participatings.length)
         );
     };
+
+    const { userDetail } = useCustomContext();
 
     const navigateToSetting = () => {
         navigation.navigate(NavigationTitle.setting);
@@ -130,6 +134,23 @@ function MypageScreen({
                             {numOfPostedSurveys} 개
                         </Text>
                     </View>
+                </BlockView>
+
+                <PointBlockView
+                    onPress={() => {
+                        // navigateToMyInfo();
+                    }}
+                    collectedReward={userDetail?.collectedReward}
+                />
+
+                <BlockView
+                    onPress={() => {
+                        // navigateToMyInfo();
+                    }}
+                >
+                    <Text style={[styles.eachBoxTextStyle, { padding: 20 }]}>
+                        신뢰도
+                    </Text>
                 </BlockView>
             </View>
         </View>

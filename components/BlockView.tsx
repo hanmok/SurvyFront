@@ -15,16 +15,22 @@ interface BlockProps {
     textStyle?: StyleProp<TextStyle>;
     backgroundStyle?: StyleProp<ViewStyle>;
     children: ReactNode;
+    isSmall?: boolean;
 }
 
 const BlockView: React.FC<BlockProps> = ({
     onPress,
     backgroundStyle,
     children,
+    isSmall = true,
 }) => {
     return (
         <TouchableOpacity
-            style={[styles.container, styles.basicContainer, backgroundStyle]}
+            style={[
+                isSmall ? styles.smallContainer : styles.bigContainer,
+                styles.basicContainer,
+                backgroundStyle,
+            ]}
             onPress={onPress}
         >
             {children}
@@ -33,9 +39,14 @@ const BlockView: React.FC<BlockProps> = ({
 };
 
 const styles = StyleSheet.create({
-    container: {
+    smallContainer: {
         justifyContent: "center",
         height: 60,
+    },
+
+    bigContainer: {
+        justifyContent: "center",
+        height: 120,
     },
     basicContainer: {
         borderRadius: 10,

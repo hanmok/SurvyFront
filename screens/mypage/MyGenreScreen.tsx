@@ -200,7 +200,8 @@ function MyGenreScreen({
                     }}
                     backgroundStyle={{
                         // activated, inactivated
-                        backgroundColor: "magenta",
+                        // backgroundColor: "magenta",
+                        backgroundColor: colors.white,
                         borderRadius: 8,
                         height: 45,
                     }}

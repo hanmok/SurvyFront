@@ -138,9 +138,8 @@ function MypageScreen({
                 </BlockView>
 
                 <PointBlockView
-                    onPress={() => {
-                        // navigateToMyInfo();
-                    }}
+                    onPressHistory={() => {}}
+                    onPressWithdrawal={() => {}}
                     collectedReward={userDetail?.collectedReward}
                 />
 

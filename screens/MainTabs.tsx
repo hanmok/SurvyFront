@@ -3,7 +3,7 @@ import { Feather, Octicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
-import MypageScreen from "./MypageScreen";
+import MypageScreen from "./mypage/MypageScreen";
 import HomeScreen from "./HomeScreen";
 // import PostingBaseScreen from "./PostingBaseScreen";
 import { NavigationTitle } from "../utils/NavHelper";

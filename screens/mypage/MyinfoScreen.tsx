@@ -1,15 +1,19 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../utils/NavHelper";
-import { NavigationTitle } from "../utils/NavHelper";
+import { RootStackParamList } from "../../utils/NavHelper";
+import { NavigationTitle } from "../../utils/NavHelper";
 
 import { View, Text } from "react-native";
-import BlockView from "../components/BlockView";
-import { fontSizes, marginSizes } from "../utils/sizes";
+import BlockView from "../../components/BlockView";
+import { fontSizes, marginSizes } from "../../utils/sizes";
 function MyinfoScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.myinfo>;
 }) {
+    const moveToCategory = () => {
+        navigation.navigate(NavigationTitle.myGenre);
+    };
+
     return (
         <View
             style={{
@@ -21,7 +25,13 @@ function MyinfoScreen({
             <BlockView>
                 <Text style={{ fontSize: fontSizes.m20 }}>기본 정보</Text>
             </BlockView>
-            <BlockView onPress={() => console.log("hi")}>
+            <BlockView
+                onPress={() => {
+                    console.log("hi");
+                    // moveToCategory();
+                    navigation.navigate(NavigationTitle.myGenre);
+                }}
+            >
                 <Text style={{ fontSize: fontSizes.m20 }}>관심사</Text>
             </BlockView>
 

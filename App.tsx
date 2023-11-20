@@ -14,9 +14,9 @@ import ImageButton from "./components/ImageButton";
 import { MenuProvider } from "react-native-popup-menu";
 import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
-import SettingScreen from "./screens/SettingScreen";
+import SettingScreen from "./screens/mypage/SettingScreen";
 import LoginScreen from "./screens/login/LoginScreen";
-import MyinfoScreen from "./screens/MyinfoScreen";
+import MyinfoScreen from "./screens/mypage/MyinfoScreen";
 import { ApolloProvider } from "./ApolloProvider";
 import TargettingScreen from "./screens/TargettingScreen";
 import ResponseScreen from "./screens/ResponseScreen";
@@ -28,6 +28,7 @@ import FindPasswordScreen from "./screens/login/FindPasswordScreen";
 import PasswordSettingScreen from "./screens/login/PasswordSettingScreen";
 import FoundIDScreen from "./screens/login/FoundIDScreen";
 import SignUpScreen from "./screens/login/SignupScreen";
+import MyGenreScreen from "./screens/mypage/MyGenreScreen";
 
 // export default function App() {
 const App: React.FC = () => {
@@ -192,6 +193,19 @@ const App: React.FC = () => {
                                         },
                                     })}
                                 />
+
+                                <Stack.Screen
+                                    name={NavigationTitle.myGenre}
+                                    component={MyGenreScreen}
+                                    options={({ route }) => ({
+                                        headerTitle: "내 관심사",
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                    })}
+                                />
+
                                 <Stack.Screen
                                     name={NavigationTitle.targetting}
                                     component={TargettingScreen}

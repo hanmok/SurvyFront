@@ -1,15 +1,15 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../utils/NavHelper";
+import { RootStackParamList } from "../../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
-import { NavigationTitle } from "../utils/NavHelper";
+import { NavigationTitle } from "../../utils/NavHelper";
 import { View, Text, StyleSheet } from "react-native";
-import BlockView from "../components/BlockView";
+import BlockView from "../../components/BlockView";
 import { ReactNode, useEffect, useState } from "react";
-import TextButton from "../components/TextButton";
-import { colors } from "../utils/colors";
-import { fontSizes } from "../utils/sizes";
-import { removeUser } from "../API/UserAPI";
-import { useCustomContext } from "../features/context/CustomContext";
+import TextButton from "../../components/TextButton";
+import { colors } from "../../utils/colors";
+import { fontSizes } from "../../utils/sizes";
+import { removeUser } from "../../API/UserAPI";
+import { useCustomContext } from "../../features/context/CustomContext";
 
 function SettingScreen({
     navigation,

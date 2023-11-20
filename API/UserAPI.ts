@@ -3,6 +3,8 @@ import { logObject } from "../utils/Log";
 import { UserState } from "../interfaces/UserState";
 import { UserDetail } from "../features/context/CustomContext";
 import { fetchData } from "./BaseAPI";
+import { UserGenre } from "../interfaces/UserGenre";
+import { Genre } from "../interfaces/Genre";
 
 export type UserResponse = ApiResponse<UserState>;
 
@@ -87,6 +89,20 @@ export async function getUserDetail(accessToken: string) {
             },
         },
         "userDetail"
+    );
+}
+
+export async function getUserGenres(accessToken: string, userId: number) {
+    const url = `${API_BASE_URL}/user-genre/user/${userId}`;
+    return fetchData<Genre[]>(
+        url,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+            },
+        },
+        "userGenre"
     );
 }
 

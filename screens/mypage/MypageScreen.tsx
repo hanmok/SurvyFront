@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
-import BlockView from "../components/BlockView";
-import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
-import ImageButton from "../components/ImageButton";
+import BlockView from "../../components/BlockView";
+import { fontSizes, marginSizes, paddingSizes } from "../../utils/sizes";
+import ImageButton from "../../components/ImageButton";
 
-import { screenHeight, screenWidth } from "../utils/ScreenSize";
-import { log, logObject } from "../utils/Log";
-import { RootStackParamList } from "../utils/NavHelper";
+import { screenHeight, screenWidth } from "../../utils/ScreenSize";
+import { log, logObject } from "../../utils/Log";
+import { RootStackParamList } from "../../utils/NavHelper";
 
-import { NavigationTitle } from "../utils/NavHelper";
+import { NavigationTitle } from "../../utils/NavHelper";
 import { StackNavigationProp } from "@react-navigation/stack";
 // import { loadUserState } from "../utils/Storage";
-import { API_BASE_URL } from "../API/API";
-import { getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
-import { useCustomContext } from "../features/context/CustomContext";
+import { API_BASE_URL } from "../../API/API";
+import {
+    getParticipatedSurveyIds,
+    getPostedSurveyIds,
+} from "../../API/UserAPI";
+import { useCustomContext } from "../../features/context/CustomContext";
 // import { getParticipatedSurveyIds, getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 
 function MypageScreen({
@@ -25,21 +28,8 @@ function MypageScreen({
         useState<number>(0);
     const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
     const { userId, accessToken } = useCustomContext();
+
     const getNumbers = async () => {
-        // axios({
-        //     method: "GET",
-        //     url: `${API_BASE_URL}/user/${myUserId}/participated-surveys`,
-        //     // headers:
-        // })
-        //     .then(res => {
-        //         console.log(res.data);
-        //         logObject(`participated surveys`, res.data);
-        //         return res.data;
-        //     })
-        //     .then(res => {
-        //         setNumOfParticipatedSurveys(res.data.length);
-        //     })
-        //     .catch(err => {});
         await getPostedSurveyIds(userId, accessToken).then(postings =>
             setNumOfPostedSurveys(postings.length)
         );
@@ -77,7 +67,8 @@ function MypageScreen({
                 }}
             >
                 <ImageButton
-                    img={require("../assets/settingIcon.png")}
+                    // img={require("../assets/settingIcon.png")}
+                    img={require("../../assets/settingIcon.png")}
                     size={24}
                     onPress={navigateToSetting}
                 />

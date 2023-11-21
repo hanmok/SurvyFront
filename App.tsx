@@ -175,12 +175,19 @@ const App: React.FC = () => {
                                 <Stack.Screen
                                     name={NavigationTitle.setting}
                                     component={SettingScreen}
-                                    options={{
+                                    // options={{
+                                    //     headerBackTitleVisible: false,
+                                    //     headerStyle: {
+                                    //         backgroundColor: colors.background,
+                                    //     },
+                                    // }}
+                                    options={({ route }) => ({
                                         headerBackTitleVisible: false,
+                                        headerTitle: "설정",
                                         headerStyle: {
                                             backgroundColor: colors.background,
                                         },
-                                    }}
+                                    })}
                                 />
 
                                 <Stack.Screen

@@ -65,9 +65,10 @@ function SettingScreen({
                 >
                     <BlockView
                         onPress={() => {
-                            navigation.navigate(
-                                NavigationTitle.participatedSurveys
-                            );
+                            // navigation.navigate(
+                            //     NavigationTitle.participatedSurveys
+                            // );
+                            console.log("이용약관 tapped");
                         }}
                     >
                         <Text

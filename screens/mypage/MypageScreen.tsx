@@ -43,9 +43,9 @@ function MypageScreen({
 
     const { userDetail } = useCustomContext();
 
-    const navigateToSetting = () => {
-        navigation.navigate(NavigationTitle.setting);
-    };
+    // const navigateToSetting = () => {
+    //     navigation.navigate(NavigationTitle.setting);
+    // };
 
     const navigateToMyInfo = () => {
         navigation.navigate(NavigationTitle.myinfo);
@@ -59,26 +59,6 @@ function MypageScreen({
 
     return (
         <View style={{ flex: 1, alignItems: "center" }}>
-            {/*  Navigation Bar */}
-            <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                    height: 90,
-                    width: screenWidth,
-                    backgroundColor: "white",
-                    paddingHorizontal: paddingSizes.xl24,
-                    paddingTop: 40,
-                }}
-            >
-                <ImageButton
-                    // img={require("../assets/settingIcon.png")}
-                    img={require("../../assets/settingIcon.png")}
-                    size={24}
-                    onPress={navigateToSetting}
-                />
-            </View>
-
             <View
                 style={{
                     alignSelf: "stretch",
@@ -142,7 +122,6 @@ function MypageScreen({
                     onPressWithdrawal={() => {}}
                     collectedReward={userDetail?.collectedReward}
                 />
-
                 <ReputationBlockView reputation={userDetail?.reputation} />
             </View>
         </View>

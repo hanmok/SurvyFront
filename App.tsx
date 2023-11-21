@@ -16,7 +16,8 @@ import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 import SettingScreen from "./screens/mypage/SettingScreen";
 import LoginScreen from "./screens/login/LoginScreen";
-import MyinfoScreen from "./screens/mypage/MyinfoScreen";
+// import MyinfoScreen from "./screens/mypage/MyInfoScreen";
+import MyInfoScreen from "./screens/mypage/MyinfoScreen";
 import { ApolloProvider } from "./ApolloProvider";
 import TargettingScreen from "./screens/TargettingScreen";
 import ResponseScreen from "./screens/ResponseScreen";
@@ -184,7 +185,7 @@ const App: React.FC = () => {
 
                                 <Stack.Screen
                                     name={NavigationTitle.myinfo}
-                                    component={MyinfoScreen}
+                                    component={MyInfoScreen}
                                     options={({ route }) => ({
                                         headerTitle: "내 정보",
                                         headerBackTitleVisible: false,

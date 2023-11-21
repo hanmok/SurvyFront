@@ -14,7 +14,7 @@ import { colors } from "../../utils/colors";
 import { GeoInfo } from "../../interfaces/GeoInfo";
 
 // 내 정보
-function MyinfoScreen({
+function MyInfoScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.myinfo>;
@@ -229,4 +229,4 @@ function MyinfoScreen({
     );
 }
 
-export default MyinfoScreen;
+export default MyInfoScreen;

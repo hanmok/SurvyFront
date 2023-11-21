@@ -14,6 +14,7 @@ interface BlockProps {
     onPress?: () => void;
     textStyle?: StyleProp<TextStyle>;
     backgroundStyle?: StyleProp<ViewStyle>;
+    size?: number;
     children: ReactNode;
 }
 
@@ -21,10 +22,16 @@ const BlockView: React.FC<BlockProps> = ({
     onPress,
     backgroundStyle,
     children,
+    size = 60,
 }) => {
     return (
         <TouchableOpacity
-            style={[styles.container, styles.basicContainer, backgroundStyle]}
+            style={[
+                styles.container,
+                styles.basicContainer,
+                backgroundStyle,
+                { height: size },
+            ]}
             onPress={onPress}
         >
             {children}

@@ -96,6 +96,7 @@ export async function getUserGenres(accessToken: string, userId: number) {
     const url = `${API_BASE_URL}/user-genre/user/${userId}`;
     return fetchData<Genre[]>(
         url,
+
         {
             headers: {
                 "Content-Type": "application/json",

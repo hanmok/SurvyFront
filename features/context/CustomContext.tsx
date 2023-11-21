@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { UserState } from "../../interfaces/UserState";
 import { AccessToken, UserId } from "../../types/types";
+import { GeoInfo } from "../../interfaces/GeoInfo";
 
 export interface UserDetail {
     collectedReward: number;
@@ -9,6 +10,14 @@ export interface UserDetail {
     isMale: number | null;
     reputation: number;
     fatigue: number;
+    homeAddress: GeoInfo | null;
+    officeAddress: GeoInfo | null;
+    occupation: Occupation | null;
+}
+
+export interface Occupation {
+    id: number;
+    name: string;
 }
 
 interface CustomContextProps {
@@ -22,6 +31,10 @@ interface CustomContextProps {
     updateAccessToken: (newToken: AccessToken) => void;
     userId: UserId;
     updateUserId: (newUserId: UserId) => void;
+    homeAddress: GeoInfo;
+    updateHomeAddress: (newHomeAddress: GeoInfo) => void;
+    officeAddress: GeoInfo;
+    updateOfficeAddress: (newOfficeAddress: GeoInfo) => void;
 }
 
 const CustomContext = createContext<CustomContextProps | undefined>(undefined);
@@ -36,6 +49,8 @@ export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
     const [userDetail, setUserDetail] = useState<UserDetail>(null);
     const [accessToken, setAccessToken] = useState<AccessToken>(null);
     const [userId, setUserId] = useState<UserId>(null);
+    const [homeAddress, setHomeAddress] = useState<GeoInfo | null>(null);
+    const [officeAddress, setOfficeAddress] = useState<GeoInfo | null>(null);
 
     const updatePostingSurveyId = (newId: number) => {
         setPostingSurveyId(newId);
@@ -57,6 +72,14 @@ export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
         setUserId(userId);
     };
 
+    const updateHomeAddress = (homeAddress: GeoInfo) => {
+        setHomeAddress(homeAddress);
+    };
+
+    const updateOfficeAddress = (officeAddress: GeoInfo) => {
+        setOfficeAddress(officeAddress);
+    };
+
     return (
         <CustomContext.Provider
             value={{
@@ -70,6 +93,10 @@ export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
                 updateAccessToken,
                 userId,
                 updateUserId,
+                homeAddress,
+                updateHomeAddress,
+                officeAddress,
+                updateOfficeAddress,
             }}
         >
             {children}

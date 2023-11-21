@@ -56,7 +56,6 @@ function SettingScreen({
                     alignContent: "stretch",
                 }}
             >
-                <View style={{ height: 40 }}></View>
                 <View
                     style={{
                         alignSelf: "stretch",
@@ -64,20 +63,6 @@ function SettingScreen({
                         gap: 15,
                     }}
                 >
-                    <BlockView
-                        onPress={() => {
-                            navigation.navigate(
-                                NavigationTitle.participatedSurveys
-                            );
-                        }}
-                    >
-                        <Text
-                            style={[styles.eachBoxTextStyle, { padding: 20 }]}
-                        >
-                            닉네임 변경
-                        </Text>
-                    </BlockView>
-
                     <BlockView
                         onPress={() => {
                             navigation.navigate(

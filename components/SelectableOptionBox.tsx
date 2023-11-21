@@ -13,17 +13,21 @@ import ImageButton from "./ImageButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { logObject } from "../utils/Log";
-import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
-import CustomAccessoryView from "../utils/CustomAccessoryView";
+// import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
+import { QuestionTypeId } from "../QuestionType";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import TextButton from "./TextButton";
+import SelectionButton from "./SelectionButton";
+import { QuestionTypeIdStrings } from "../QuestionType";
+import CompleteAccessoryView from "./CompleteAccessoryView";
 
 interface SelectableOptionProps {
     id: number;
     questionId: number;
     position: number;
     value: string;
-    questionTypeId: string;
+    // questionTypeId: string;
+    questionTypeId: QuestionTypeIdStrings;
     onPress?: () => void;
     handleUserInput?: (text: string) => void;
     questionIndex: number;
@@ -66,6 +70,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     }
 
     const completeInput = (input: string) => {
+        console.log("completeInput tapped");
         handleUserInput(input);
         Keyboard.dismiss();
     };
@@ -74,7 +79,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
 
     {
         switch (questionTypeId) {
-            case `${QuestionTypeIdEnum.SingleSelection}`:
+            case `${QuestionTypeId.SingleSelection}`:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
@@ -92,9 +97,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                     onChangeText={setUserInput}
                                     style={styles.extraInput}
                                     onSubmitEditing={() => {
-                                        console.log(
-                                            `${userInput} has submitted`
-                                        );
                                         logObject(
                                             `[SelectableOptionBox] submitting text`,
                                             userInput
@@ -111,8 +113,12 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 />
                             </View>
                         ) : (
-                            // </View>
-                            <Text style={styles.textStyle}>{value}</Text>
+                            <TextButton
+                                title={value}
+                                onPress={onPress}
+                                textStyle={styles.textStyle}
+                                hasShadow={false}
+                            />
                         )}
                     </View>
                 ) : (
@@ -120,10 +126,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/unselectedSingleSelection.png")}
-                            onPress={() => {
-                                onPress();
-                                // handleFocusTextInput();
-                            }}
+                            onPress={onPress}
                         />
                         {isExtra === 1 ? (
                             <View style={styles.textContainer}>
@@ -153,14 +156,21 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 />
                             </View>
                         ) : (
-                            // </View>
-                            <Text style={styles.textStyle}>{value}</Text>
+                            <TextButton
+                                title={value}
+                                onPress={onPress}
+                                textStyle={styles.textStyle}
+                                hasShadow={false}
+                                backgroundStyle={{
+                                    flex: 1,
+                                }}
+                            />
                         )}
                     </View>
                 );
                 break;
 
-            case `${QuestionTypeIdEnum.MultipleSelection}`:
+            case `${QuestionTypeId.MultipleSelection}`:
                 selectableOptionComponent = selectedIndexIds[
                     questionIndex
                 ].includes(id) ? (
@@ -168,7 +178,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                     <View style={styles.container}>
                         <ImageButton
                             img={require("../assets/selectedMultipleSelection.png")}
-                            backgroundStyle={{ justifyContent: "center" }}
+                            // backgroundStyle={{ justifyContent: "center" }}
                             onPress={onPress}
                         />
                         {isExtra === 1 ? (
@@ -180,9 +190,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                     style={styles.extraInput}
                                     // return 누른 후 호출되는거 확인함.
                                     onSubmitEditing={() => {
-                                        console.log(
-                                            `${userInput} has submitted`
-                                        );
                                         logObject(
                                             `[SelectableOptionBox] submitting text`,
                                             userInput
@@ -199,20 +206,25 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 />
                             </View>
                         ) : (
-                            // </View>
-                            <Text style={styles.textStyle}>{value}</Text>
+                            <TextButton
+                                title={value}
+                                onPress={onPress}
+                                textStyle={styles.textStyle}
+                                hasShadow={false}
+                                backgroundStyle={{
+                                    flex: 1,
+                                }}
+                            />
                         )}
                     </View>
                 ) : (
                     // 선택 되어있지 않은 상태
                     <View style={styles.container}>
+                        {/* 이거... 하나로 할 수 있을 것 같은데? */}
                         <ImageButton
                             img={require("../assets/unselectedMultipleSelection.png")}
-                            backgroundStyle={{ justifyContent: "center" }}
-                            onPress={() => {
-                                onPress();
-                                // handleFocusTextInput();
-                            }}
+                            // backgroundStyle={{ justifyContent: "center" }}
+                            onPress={onPress}
                         />
                         {isExtra === 1 ? (
                             <View style={styles.textContainer}>
@@ -242,12 +254,20 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 />
                             </View>
                         ) : (
-                            <Text style={styles.textStyle}>{value}</Text>
+                            <TextButton
+                                title={value}
+                                onPress={onPress}
+                                textStyle={styles.textStyle}
+                                hasShadow={false}
+                                backgroundStyle={{
+                                    flex: 1,
+                                }}
+                            />
                         )}
                     </View>
                 );
                 break;
-            case `${QuestionTypeIdEnum.Essay}`:
+            case `${QuestionTypeId.Essay}`:
                 selectableOptionComponent = (
                     <View style={styles.textContainer}>
                         {/* <KeyboardAwareScrollView> */}
@@ -272,37 +292,41 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 Keyboard.dismiss();
                             }} // 리턴 키 누를 때 호출
                             onEndEditing={() => {
+                                handleUserInput(userInput);
                                 logObject("onEndEditing, userInput", userInput);
                             }}
                             returnKeyType="done"
                             inputAccessoryViewID={inputAccessoryViewId}
                             // https://reactnative.dev/docs/inputaccessoryview
                         />
+
                         <InputAccessoryView
                             nativeID={inputAccessoryViewId}
                             style={styles.accessoryView}
                         >
                             <View
                                 style={[
-                                    {
-                                        // flexDirection: "row",
-                                        // justifyContent: "flex-end",
-                                        backgroundColor: "#F3F4F6",
-                                        paddingRight: 20,
-                                        borderTopColor: "#A8B7B6",
-                                        borderTopWidth: 1,
-                                    },
+                                    styles.accessoryBorder,
                                     styles.accessoryContent,
                                 ]}
                             >
                                 <Button
                                     title="완료"
                                     onPress={() => {
-                                        completeInput(userInput);
+                                        // completeInput(userInput);
+                                        console.log("completeInput tapped");
+                                        handleUserInput(userInput);
+                                        Keyboard.dismiss();
                                     }}
                                 />
                             </View>
                         </InputAccessoryView>
+                        {/* <CompleteAccessoryView
+                            id={inputAccessoryViewId}
+                            onPress={() => {
+                                completeInput(userInput);
+                            }}
+                        /> */}
                     </View>
                 );
                 break;
@@ -324,14 +348,14 @@ const styles = StyleSheet.create({
     textStyle: {
         fontSize: fontSizes.s16,
         marginLeft: marginSizes.s12,
+        textAlign: "left",
     },
     textContainer: {
         flex: 1,
         paddingRight: 20,
         marginHorizontal: 6,
-        marginBottom: 4,
-        // borderRadius: 6,
-        // backgroundColor: "magenta",
+        // marginBottom: 4,
+        // marginTop: -7,
         justifyContent: "center",
     },
     essayInput: {},
@@ -372,5 +396,11 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         alignItems: "center",
         height: "100%", // Ensure the content takes the full height
+    },
+    accessoryBorder: {
+        backgroundColor: "#F3F4F6",
+        paddingRight: 20,
+        borderTopColor: "#A8B7B6",
+        borderTopWidth: 1,
     },
 });

@@ -85,6 +85,7 @@ function ParticipatingScreen({
     const [isSatisfied, setIsSatisfied] = useState(false);
 
     useEffect(() => {
+        logObject("selectedSoIndexIds", selectedSOIndexIds);
         const satisfied =
             selectedSOIndexIds &&
             selectedSOIndexIds.every(arr => arr.length !== 0);
@@ -313,11 +314,12 @@ function ParticipatingScreen({
                                 : "다음"
                         }
                         onPress={toggleNextTapped}
-                        textStyle={
+                        textStyle={[
+                            { letterSpacing: 10 },
                             isSatisfied
                                 ? styles.activatedButtonText
-                                : styles.inactivatedButtonText
-                        }
+                                : styles.inactivatedButtonText,
+                        ]}
                         backgroundStyle={
                             isSatisfied
                                 ? styles.activatedFinishButtonBackground
@@ -385,13 +387,11 @@ const styles = StyleSheet.create({
     activatedButtonText: {
         textAlign: "center",
         fontSize: fontSizes.m20,
-        letterSpacing: 1,
         color: "#fff",
     },
     inactivatedButtonText: {
         textAlign: "center",
         fontSize: fontSizes.m20,
-        letterSpacing: 1,
         color: "#DDD",
     },
     activatedFinishButtonBackground: {

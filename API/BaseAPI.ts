@@ -13,7 +13,7 @@ export async function fetchData<T>(
 ): Promise<T> {
     try {
         const response = await fetch(url, options);
-
+        logObject(`api called, url:${url}, options`, options);
         if (!response.ok) {
             throw new Error("Network response was not ok");
         }
@@ -22,6 +22,7 @@ export async function fetchData<T>(
         const apiResponse = await response.json();
         const result: T = apiResponse.data;
         logObject(`API ${message} Result`, result);
+
         return result;
         // return apiResponse.data;
     } catch (error) {

@@ -4,6 +4,7 @@ import { fontSizes, marginSizes, paddingSizes } from "../utils/sizes";
 import accounting from "accounting";
 import { colors } from "../utils/colors";
 import { borderSizes } from "../utils/sizes";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 interface CollectedMoneyProps {
     amount: number;
 }
@@ -20,10 +21,18 @@ const CollectedMoney: React.FC<CollectedMoneyProps> = React.memo(
                             styles.overflowHidden,
                         ]}
                     >
-                        <Image
+                        {/* <Image
                             source={require("../assets/coin.jpg")}
                             style={styles.img}
+                        /> */}
+
+                        <FontAwesome5
+                            name="copyright"
+                            size={24}
+                            color="black"
                         />
+
+                        {/* <Entypo name="credit" size={24} color="black" /> */}
 
                         <Text style={styles.collectedMoney} numberOfLines={1}>
                             {formattedNumber} P

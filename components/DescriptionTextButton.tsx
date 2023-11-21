@@ -27,7 +27,7 @@ const DescriptionTextButton: React.FC<DescriptionTextButtonProps> = ({
 }) => {
     return (
         <TouchableOpacity
-            style={[styles.container, backgroundStyle]}
+            style={[styles.container, styles.shadow, backgroundStyle]}
             onPress={onPress}
         >
             <Text style={titleStyle}>{title}</Text>
@@ -41,6 +41,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     text: {},
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 4,
+            height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 2,
+    },
 });
 
 export default DescriptionTextButton;

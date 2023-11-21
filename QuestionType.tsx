@@ -1,11 +1,8 @@
 export enum QuestionTypeKorean {
     SingleSelection = "단일 선택",
     MultiSelection = "다중 선택",
-    // Short = "단답형",
     Essay = "서술형",
 }
-
-export type QuestionTypeIds = 100 | 200 | 300;
 
 export enum QuestionTypeId {
     SingleSelection = 100,
@@ -13,16 +10,21 @@ export enum QuestionTypeId {
     Essay = 300,
 }
 
+export enum QuestionTypeEnum {
+    SingleSelection = "SINGLE_SELECTION",
+    MultipleSelection = "MULTIPLE_SELECTION",
+    Essay = "ESSAY",
+}
+
+export type QuestionTypeIdStrings = "100" | "200" | "300";
+
 export function getQuestionType(index: number): string {
     switch (index) {
-        // case 100:
-        case QuestionTypeId.SingleSelection:
+        case QuestionTypeId.SingleSelection: // 100
             return QuestionTypeKorean.SingleSelection;
-        // case 200:
-        case QuestionTypeId.MultipleSelection:
+        case QuestionTypeId.MultipleSelection: // case 200:
             return QuestionTypeKorean.MultiSelection;
-        // case 300:
-        case QuestionTypeId.Essay:
+        case QuestionTypeId.Essay: // case 300:
             return QuestionTypeKorean.Essay;
         default:
             throw new Error("Invalid Input");

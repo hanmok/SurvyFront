@@ -111,25 +111,7 @@ function HomeScreen({
         // log(`collected money ${userDetail.collectedReward}`);
     }, [navigation, userDetail]);
 
-    const { accessToken } = useCustomContext();
-
-    // const fetchSurveys = async () => {
-    //     const ret = await getSurveys(accessToken).catch(error => {
-    //         throw new Error("error fetching surveys");
-    //     });
-    //     return ret;
-    // };
-
-    const updateSurveys = async () => {
-        await getSurveys(accessToken)
-            .then(surveys => {
-                setIsLoading(false);
-                setSurveys(surveys);
-            })
-            .catch(error => {
-                console.error("error updating surveys");
-            });
-    };
+    const { accessToken, updateParticipatingSurveyId } = useCustomContext();
 
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {
@@ -137,6 +119,17 @@ function HomeScreen({
             const allGeos = await fetchAllGeoInfos();
             // saveWholeGeos(allGeos);
             geoDataManager.saveWholeGeos(allGeos);
+        };
+
+        const updateSurveys = async () => {
+            await getSurveys(accessToken)
+                .then(surveys => {
+                    setIsLoading(false);
+                    setSurveys(surveys);
+                })
+                .catch(error => {
+                    console.error("error updating surveys");
+                });
         };
 
         fetchGeos();
@@ -168,12 +161,13 @@ function HomeScreen({
             currentParticipation={item.currentParticipation}
             participationGoal={item.participationGoal}
             genres={item.genres}
-            onPress={() =>
+            onPress={() => {
+                updateParticipatingSurveyId(item.id);
                 navigation.navigate(NavigationTitle.participate, {
                     sectionId: item.initialSectionId,
                     surveyId: item.id,
-                })
-            }
+                });
+            }}
         />
     );
 

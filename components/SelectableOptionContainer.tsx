@@ -1,5 +1,7 @@
 import { View } from "react-native";
-import SelectableOptionBox from "./SelectableOptionBox";
+import SelectableOptionBox from // QuestionTypeIdStrings,
+"./SelectableOptionBox";
+import { QuestionTypeIdStrings } from "../QuestionType";
 import { useCallback, useEffect, useState } from "react";
 import {
     selectSingleSelection,
@@ -8,12 +10,13 @@ import {
 } from "../features/selector/selectorSlice";
 import { CustomAnswer, makeCustomAnswer } from "../interfaces/CustomAnswer";
 import { useDispatch } from "react-redux";
-import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
+// import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
 import { logArray, logObject } from "../utils/Log";
 import {
     GQLQuestionType,
     GQLSelectableOption,
 } from "../interfaces/GQLInterface";
+import { QuestionTypeId } from "../QuestionType";
 
 interface SelectablContainerProps {
     selectableOptions: GQLSelectableOption[];
@@ -65,7 +68,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                 questionType
             );
             switch (questionType.id) {
-                case `${QuestionTypeIdEnum.SingleSelection}`:
+                case `${QuestionTypeId.SingleSelection}`:
                     dispatch(
                         selectSingleSelection({
                             questionId,
@@ -76,7 +79,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     );
                     break;
 
-                case `${QuestionTypeIdEnum.MultipleSelection}`:
+                case `${QuestionTypeId.MultipleSelection}`:
                     dispatch(
                         selectMultipleSelection({
                             questionId,
@@ -108,7 +111,9 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     <SelectableOptionBox
                         questionId={questionId}
                         {...selectableOption}
-                        questionTypeId={questionType.id}
+                        questionTypeId={
+                            questionType.id as QuestionTypeIdStrings
+                        }
                         onPress={() =>
                             handlePress(
                                 soIndex,

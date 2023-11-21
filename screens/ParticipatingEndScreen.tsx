@@ -5,6 +5,12 @@ import DescriptionTextButton from "../components/DescriptionTextButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { fontSizes } from "../utils/sizes";
 import Spacer from "../components/common/Spacer";
+import TextButton from "../components/TextButton";
+import { patchParticipating } from "../API/ParticipatingAPI";
+import { useCustomContext } from "../features/context/CustomContext";
+import { useEffect, useState } from "react";
+
+// Update participating-honest
 
 function ParticipatingEndScreen({
     route,
@@ -16,6 +22,37 @@ function ParticipatingEndScreen({
         NavigationTitle.endParticipation
     >;
 }) {
+    // type HonestType = true | false
+    const [selectedReponse, setSelectedResponse] = useState<boolean | null>(
+        null
+    );
+
+    useEffect(() => {
+        const patch = async (selectedResponse: boolean) => {
+            await patchParticipating(
+                accessToken,
+                userId,
+                participatingSurveyId,
+                selectedReponse
+            );
+            updateLoadingStatus(false);
+            navigation.pop(2);
+        };
+
+        if (selectedReponse !== null) {
+            updateLoadingStatus(true);
+            patch(selectedReponse);
+        }
+    }, [selectedReponse]);
+
+    const {
+        accessToken,
+        userId,
+        participatingSurveyId,
+        updateParticipatingSurveyId,
+        updateLoadingStatus,
+    } = useCustomContext();
+
     return (
         <View style={styles.container}>
             <Text
@@ -33,13 +70,12 @@ function ParticipatingEndScreen({
                     title="불성실 응답을 했어요"
                     description="어떠한 패널티도 주어지지 않습니다. (포인트 지급X)"
                     onPress={() => {
-                        navigation.pop(2);
+                        setSelectedResponse(false);
                     }}
                     titleStyle={{ fontSize: fontSizes.m20 }}
                     descriptionStyle={{ fontSize: 12, marginTop: 10 }}
                     backgroundStyle={{
                         borderRadius: 12,
-                        overflow: "hidden",
                         padding: 10,
                         backgroundColor: "white",
                     }}
@@ -48,19 +84,34 @@ function ParticipatingEndScreen({
 
                 <DescriptionTextButton
                     title="모든 문항에 성실하게 응답했어요"
-                    description="불성실 응답으로 판독될 경우 포인트가 지급되지 않으며, 추후 설문 참여에 제한이 있을 수 있습니다."
+                    description="불성실 응답으로 판독될 경우 포인트가 지급되지 않으며, 설문 참여에 제한이 있을 수 있습니다."
                     onPress={() => {
-                        navigation.pop(2);
+                        // navigation.pop(2);
+                        setSelectedResponse(true);
                     }}
                     titleStyle={{ fontSize: fontSizes.m20 }}
                     descriptionStyle={{ fontSize: 12, marginTop: 10 }}
                     backgroundStyle={{
                         borderRadius: 12,
-                        overflow: "hidden",
                         padding: 10,
                         backgroundColor: "white",
                     }}
                 />
+
+                {/* <TextButton
+                    title="메인 화면으로 돌아가기"
+                    onPress={() => {
+                        navigation.pop(2);
+                    }}
+                    textStyle={{ fontSize: fontSizes.m20 }}
+                    backgroundStyle={{
+                        borderRadius: 12,
+                        // overflow: "hidden",
+                        padding: 10,
+                        backgroundColor: "white",
+                        height: 50,
+                    }}
+                /> */}
             </View>
         </View>
     );

@@ -35,6 +35,8 @@ interface CustomContextProps {
     updateHomeAddress: (newHomeAddress: GeoInfo) => void;
     officeAddress: GeoInfo;
     updateOfficeAddress: (newOfficeAddress: GeoInfo) => void;
+    participatingSurveyId: number;
+    updateParticipatingSurveyId: (newSurveyId: number) => void;
 }
 
 const CustomContext = createContext<CustomContextProps | undefined>(undefined);
@@ -51,6 +53,13 @@ export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
     const [userId, setUserId] = useState<UserId>(null);
     const [homeAddress, setHomeAddress] = useState<GeoInfo | null>(null);
     const [officeAddress, setOfficeAddress] = useState<GeoInfo | null>(null);
+    const [participatingSurveyId, setParticipatingSurveyId] = useState<
+        number | null
+    >(null);
+
+    const updateParticipatingSurveyId = (newId: number) => [
+        setParticipatingSurveyId(newId),
+    ];
 
     const updatePostingSurveyId = (newId: number) => {
         setPostingSurveyId(newId);
@@ -97,6 +106,8 @@ export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
                 updateHomeAddress,
                 officeAddress,
                 updateOfficeAddress,
+                participatingSurveyId,
+                updateParticipatingSurveyId,
             }}
         >
             {children}

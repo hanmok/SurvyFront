@@ -55,6 +55,7 @@ import {
 } from "../utils/Dictionary";
 import { SheetData, getResultSheet } from "../API/AnswerAPI";
 import { useCustomContext } from "../features/context/CustomContext";
+import { QuestionTypeId } from "../QuestionType";
 
 interface EachRow {
     userId: number;
@@ -340,7 +341,7 @@ export default function ResponseScreen({
     const overallQuestionResponseBoxItem: ListRenderItem<
         QuestionResponseContainerProps
     > = ({ item }) => {
-        return item.questionTypeId !== "300" ? (
+        return item.questionTypeId !== `${QuestionTypeId.Essay}` ? (
             <OverallSelectionResponseContainer
                 sectionSequence={item.sectionSequence}
                 questionTitle={item.questionTitle}

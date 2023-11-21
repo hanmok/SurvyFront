@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import QuestionTypeSelectionBox from "./QuestionTypeSelectionBox";
 import { QuestionTypeId, getQuestionType } from "../QuestionType";
+// import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
+// import { QuestionTypeId } from "../QuestionType";
 
 interface QuestionTypeSelectionContainerProps {
     preselectedIndex?: number;
@@ -15,6 +17,10 @@ const QuestionTypeSelectionBoxContainer: React.FC<
         preselectedIndex !== undefined ? preselectedIndex : undefined
     );
 
+    const singleSelectionId = QuestionTypeId.SingleSelection;
+    const multipleSelectionId = QuestionTypeId.MultipleSelection;
+    const essayId = QuestionTypeId.Essay;
+
     useEffect(() => {
         console.log(`selectedIndex: ${preselectedIndex}`);
         setSelectedIndex(preselectedIndex);
@@ -23,26 +29,26 @@ const QuestionTypeSelectionBoxContainer: React.FC<
     return (
         <View style={styles.container}>
             <QuestionTypeSelectionBox
-                index={100}
-                isSelected={selectedIndex === 100}
+                index={singleSelectionId}
+                isSelected={selectedIndex === singleSelectionId}
                 onPress={() => {
-                    setSelectedIndex(100);
+                    setSelectedIndex(singleSelectionId);
                     handleSelect(QuestionTypeId.SingleSelection);
                 }}
             />
             <QuestionTypeSelectionBox
-                index={200}
-                isSelected={selectedIndex === 200}
+                index={multipleSelectionId}
+                isSelected={selectedIndex === multipleSelectionId}
                 onPress={() => {
-                    setSelectedIndex(200);
+                    setSelectedIndex(multipleSelectionId);
                     handleSelect(QuestionTypeId.MultipleSelection);
                 }}
             />
             <QuestionTypeSelectionBox
-                index={300}
-                isSelected={selectedIndex === 300}
+                index={essayId}
+                isSelected={selectedIndex === essayId}
                 onPress={() => {
-                    setSelectedIndex(300);
+                    setSelectedIndex(essayId);
                     handleSelect(QuestionTypeId.Essay);
                 }}
             />

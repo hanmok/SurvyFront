@@ -44,13 +44,12 @@ const DynamicTextInputsForCreation = ({
         setInputValues(newInputValues);
     };
 
-    const handleDismissKeyboard = () => {
-        console.log("dismiss keyboard called");
+    const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
 
     return (
-        <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
             <View style={styles.container}>
                 {inputValues.map((value, index) => (
                     <View key={index} style={styles.inputContainer}>

@@ -20,6 +20,7 @@ import TextButton from "./TextButton";
 import SelectionButton from "./SelectionButton";
 import { QuestionTypeIdStrings } from "../QuestionType";
 import CompleteAccessoryView from "./CompleteAccessoryView";
+import { Feather } from "@expo/vector-icons";
 
 interface SelectableOptionProps {
     id: number;
@@ -124,8 +125,14 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 ) : (
                     // 선택 되어있지 않은 상태
                     <View style={styles.container}>
-                        <ImageButton
+                        {/* <ImageButton
                             img={require("../assets/unselectedSingleSelection.png")}
+                            onPress={onPress}
+                        /> */}
+                        <Feather
+                            name="circle"
+                            size={20}
+                            color="black"
                             onPress={onPress}
                         />
                         {isExtra === 1 ? (
@@ -221,9 +228,15 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                     // 선택 되어있지 않은 상태
                     <View style={styles.container}>
                         {/* 이거... 하나로 할 수 있을 것 같은데? */}
-                        <ImageButton
+                        {/* <ImageButton
                             img={require("../assets/unselectedMultipleSelection.png")}
                             // backgroundStyle={{ justifyContent: "center" }}
+                            onPress={onPress}
+                        /> */}
+                        <Feather
+                            name="square"
+                            size={20}
+                            color="black"
                             onPress={onPress}
                         />
                         {isExtra === 1 ? (

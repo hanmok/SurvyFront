@@ -10,6 +10,7 @@ import {
     // getQuestionTypeIndex,
 } from "../../QuestionType";
 import { fontSizes } from "../../utils/sizes";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Question 을 받도록, 전체가 버튼.
 
@@ -38,8 +39,13 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                             case QuestionTypeId.SingleSelection:
                                 return (
                                     <View style={styles.rowContainer}>
-                                        <ImageButton
+                                        {/* <ImageButton
                                             img={require("../../assets/unselectedSingleSelection.png")}
+                                        /> */}
+                                        <Feather
+                                            name="circle"
+                                            size={20}
+                                            color="black"
                                         />
                                         <View style={{ width: 10 }}></View>
                                         <Text>{option.value}</Text>
@@ -48,8 +54,18 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                             case QuestionTypeId.MultipleSelection:
                                 return (
                                     <View style={styles.rowContainer}>
-                                        <ImageButton
+                                        {/* <ImageButton
                                             img={require("../../assets/unselectedMultipleSelection.png")}
+                                        /> */}
+                                        {/* <MaterialCommunityIcons
+                                            name="square-rounded-outline"
+                                            size={24}
+                                            color="black"
+                                        /> */}
+                                        <Feather
+                                            name="square"
+                                            size={20}
+                                            color="black"
                                         />
                                         <View style={{ width: 10 }}></View>
                                         <Text>{option.value}</Text>

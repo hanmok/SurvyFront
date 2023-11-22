@@ -228,8 +228,6 @@ export default function PostingScreen({
                                 sections,
                                 questions,
                             });
-                        // await savePostingSurvey(newSurvey);
-                        // await savePostingSurvey(newSurvey);
                         await postingSurveyDataManager.save(newSurvey);
                     } else {
                         // 기존에 있었음. id 는 그대로 사용. 나머지는 지금까지 데이터.
@@ -240,7 +238,6 @@ export default function PostingScreen({
                                 sections,
                                 questions,
                             });
-                        // await savePostingSurvey(updatedSurvey);
                         await postingSurveyDataManager.save(updatedSurvey);
                     }
                 } catch (error) {
@@ -671,7 +668,6 @@ const styles = StyleSheet.create({
     sectionHeader: {
         marginLeft: marginSizes.xs8,
         fontWeight: "500",
-        // marginTop: marginSizes.l20,
         marginBottom: marginSizes.xs8,
         backgroundColor: colors.selectedQuestionBoxBG,
         borderRadius: 5,
@@ -682,15 +678,12 @@ const styles = StyleSheet.create({
     },
 
     plusButtonBG: {
-        // backgroundColor: colors.deepMainColor,
         backgroundColor: colors.white,
         borderRadius: 10,
-        // overflow: "hidden",
         justifyContent: "center",
         height: 46,
     },
     plusButtonText: {
-        // color: colors.white,
         color: colors.black,
         textAlign: "center",
         fontSize: fontSizes.m20,
@@ -712,7 +705,6 @@ const styles = StyleSheet.create({
         height: 60,
         marginBottom: marginSizes.l20,
         paddingVertical: 5,
-        // paddingHorizontal: paddingSizes.l20,
         paddingHorizontal: paddingSizes.m16,
         justifyContent: "space-between",
         marginHorizontal: 15,
@@ -771,22 +763,14 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         gap: 10,
     },
-    sectionMenu: {
-        // alignSelf: "flex-end",
-        // margin: 20,
-    },
     listHeaderStyle: {
-        // marginTop: 20,
         marginTop: 30,
         marginBottom: 20,
         marginHorizontal: marginSizes.s12,
     },
     listFooterStyle: {
-        // marginTop: 30,
         marginBottom: 20,
-        // marginHorizontal: marginSizes.l20,
         marginHorizontal: marginSizes.s12,
-        // marginTop: 20,
         justifyContent: "center",
     },
     shadow: {

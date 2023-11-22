@@ -53,7 +53,9 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                             onPress={() => setTitleModalVisible(false)}
                             textStyle={styles.bottomTextStyle}
                             backgroundStyle={[styles.bottomButtonBackground]}
+                            hasShadow={false}
                         />
+
                         <TextButton
                             title="확인"
                             onPress={() => {
@@ -65,6 +67,7 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                                 styles.bottomTextStyle,
                                 { fontWeight: "bold" },
                             ]}
+                            hasShadow={false}
                             backgroundStyle={[
                                 styles.bottomButtonBackground,
                                 { borderLeftWidth: 1 },

@@ -10,6 +10,8 @@ import TextButton from "../../components/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
 import { checkUsernameDuplicate } from "../../API/UserAPI";
 import { log } from "../../utils/Log";
+import isValidEmail from "../../utils/EmailValidation";
+import { useCustomContext } from "../../features/context/CustomContext";
 
 export default function SignUpScreen({
     navigation,
@@ -31,24 +33,24 @@ export default function SignUpScreen({
     const [genderIndex, setGenderIndex] = useState<number>(null);
     const [satisfied, setSatisfied] = useState(false);
 
-    const handleUserDuplicate = async () => {
-        await checkUsernameDuplicate(usernameInput)
-            .then(ret => {
-                setUsernameConfirmed(true);
-                alert("사용할 수 있는 이메일입니다.");
-            })
-            .catch(error => {
-                alert(error.message);
-            });
+    const { updateLoadingStatus } = useCustomContext();
 
-        // try {
-        //     const ret = await checkUsernameDuplicate(usernameInput);
-        //     console.log("API call success");
-        //     console.log("ret flag", ret);
-        // } catch (error) {
-        //     // console.error("API call failed, du", error);
-        //     alert(error.message);
-        // }
+    const handleUserDuplicate = async () => {
+        if (isValidEmail(usernameInput)) {
+            updateLoadingStatus(true);
+            await checkUsernameDuplicate(usernameInput)
+                .then(ret => {
+                    updateLoadingStatus(false);
+                    setUsernameConfirmed(true);
+
+                    alert("사용할 수 있는 이메일입니다.");
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        } else {
+            alert("이메일 형식에 맞지 않습니다.");
+        }
     };
 
     useEffect(() => {

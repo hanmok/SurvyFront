@@ -168,12 +168,14 @@ export async function checkUsernameDuplicate(username: string) {
 
     const queryParams = new URLSearchParams({ username });
     url = `${url}?${queryParams.toString()}`;
+
     const checkUsernameResponse = fetchData(url, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
         },
     });
+
     logObject("checkUsernameResponse", checkUsernameResponse);
     return checkUsernameResponse;
 }

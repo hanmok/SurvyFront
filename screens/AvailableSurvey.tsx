@@ -45,7 +45,7 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                 {genres && genres.length !== 0 ? (
                     <View style={{ marginLeft: 8, flexDirection: "row" }}>
                         {genres.map(genre => (
-                            <GenreBox name={genre.name} />
+                            <GenreBox name={genre.name} key={genre.name} />
                         ))}
                     </View>
                 ) : (

@@ -162,3 +162,18 @@ export async function updateUserGenres(
         "updateUserGenres"
     );
 }
+
+export async function checkUsernameDuplicate(username: string) {
+    let url = `${API_BASE_URL}/user/check-username`;
+
+    const queryParams = new URLSearchParams({ username });
+    url = `${url}?${queryParams.toString()}`;
+    const checkUsernameResponse = fetchData(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    logObject("checkUsernameResponse", checkUsernameResponse);
+    return checkUsernameResponse;
+}

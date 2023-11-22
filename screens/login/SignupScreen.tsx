@@ -8,6 +8,8 @@ import { colors } from "../../utils/colors";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import TextButton from "../../components/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
+import { checkUsernameDuplicate } from "../../API/UserAPI";
+import { log } from "../../utils/Log";
 
 export default function SignUpScreen({
     navigation,
@@ -20,8 +22,6 @@ export default function SignUpScreen({
     const [passwordInput1, setPasswordInput1] = useState("");
     const [passwordInput2, setPasswordInput2] = useState("");
 
-    const [mailInput, setMailInput] = useState("");
-    const [mailConfirmed, setMailConfirmed] = useState(false);
     // 휴대폰번호 확인해야함..
     const [phoneInput, setPhoneInput] = useState("");
     const [phoneConfirmed, setPhoneConfirmed] = useState(false);
@@ -31,17 +31,36 @@ export default function SignUpScreen({
     const [genderIndex, setGenderIndex] = useState<number>(null);
     const [satisfied, setSatisfied] = useState(false);
 
+    const handleUserDuplicate = async () => {
+        await checkUsernameDuplicate(usernameInput)
+            .then(ret => {
+                setUsernameConfirmed(true);
+                alert("사용할 수 있는 이메일입니다.");
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+
+        // try {
+        //     const ret = await checkUsernameDuplicate(usernameInput);
+        //     console.log("API call success");
+        //     console.log("ret flag", ret);
+        // } catch (error) {
+        //     // console.error("API call failed, du", error);
+        //     alert(error.message);
+        // }
+    };
+
+    useEffect(() => {
+        log(`usernameConfirmed changed to ${usernameConfirmed}`);
+    }, [usernameConfirmed]);
+
     const validateUsername = () => {
         const ret = true;
         setUsernameConfirmed(ret);
         return ret;
     };
 
-    const validateMail = () => {
-        const ret = true;
-        setMailConfirmed(ret);
-        return ret;
-    };
     const validatePhoneNumber = () => {
         const ret = true;
         setPhoneConfirmed(ret);
@@ -56,9 +75,9 @@ export default function SignUpScreen({
     useEffect(() => {
         const ret =
             usernameConfirmed &&
-            usernameConfirmed &&
+            // usernameConfirmed &&
             passwordInput1 === passwordInput2 &&
-            mailConfirmed &&
+            // mailConfirmed &&
             phoneConfirmed &&
             birthDateValidated &&
             genderIndex !== null;
@@ -68,11 +87,26 @@ export default function SignUpScreen({
         usernameConfirmed,
         passwordInput1,
         passwordInput2,
-        mailConfirmed,
+        // mailConfirmed,
         phoneConfirmed,
         birthDateValidated,
         genderIndex,
     ]);
+
+    // const [usernameCheckTapped, setUsernameCheckTapped] = useState(false);
+
+    // useEffect(() => {
+    //     const checkUsernameDup = async () => {
+    //         const ret = await checkUsernameDuplicate(usernameInput);
+    //         if (ret.statusCode === 200) {
+    //             setUsernameConfirmed(true);
+    //         }
+    //     };
+    //     if (usernameCheckTapped) {
+    //         console.log("username check tapped");
+    //         checkUsernameDup();
+    //     }
+    // }, [usernameCheckTapped]);
 
     useEffect(() => {
         if (phoneInput.length === 4 && phoneInput.includes("-") === false) {
@@ -116,15 +150,15 @@ export default function SignUpScreen({
             contentContainerStyle={{ justifyContent: "space-between" }}
         >
             <View>
-                {/* 아이디 */}
+                {/* 아이디(이메일, username) */}
                 <View>
                     <Text style={[styles.guideText, { marginBottom: 8 }]}>
-                        아이디
+                        이메일
                     </Text>
                     <View style={styles.horizontalContainer}>
                         <View style={[styles.textInputBox, { flex: 0.75 }]}>
                             <TextInput
-                                placeholder="아이디를 입력해주세요"
+                                placeholder="이메일을 입력해주세요"
                                 style={styles.textInput}
                                 value={usernameInput}
                                 onChangeText={setUsernameInput}
@@ -136,7 +170,8 @@ export default function SignUpScreen({
                         <TextButton
                             title="중복확인"
                             onPress={() => {
-                                validateUsername();
+                                // setUsernameCheckTapped(true);
+                                handleUserDuplicate();
                             }}
                             backgroundStyle={styles.duplicateCheckBoxBackground}
                             textStyle={{ color: colors.deeperMainColor }}
@@ -181,35 +216,6 @@ export default function SignUpScreen({
                         />
                     </View>
                 </View>
-
-                <View style={{ marginTop: 20 }}>
-                    <Text style={[styles.guideText, { marginBottom: 8 }]}>
-                        이메일
-                    </Text>
-
-                    <View style={styles.horizontalContainer}>
-                        <View style={[styles.textInputBox, { flex: 0.75 }]}>
-                            <TextInput
-                                placeholder="이메일을 입력해주세요"
-                                style={styles.textInput}
-                                value={mailInput}
-                                onChangeText={setMailInput}
-                                keyboardType="email-address"
-                                autoComplete="off"
-                                autoCorrect={false}
-                            />
-                        </View>
-                        <TextButton
-                            title="중복확인"
-                            onPress={() => {
-                                validateMail();
-                            }}
-                            backgroundStyle={styles.duplicateCheckBoxBackground}
-                            textStyle={{ color: colors.deeperMainColor }}
-                        />
-                    </View>
-                </View>
-
                 <View style={{ marginTop: 20 }}>
                     <Text style={[styles.guideText, { marginBottom: 14 }]}>
                         휴대폰 번호

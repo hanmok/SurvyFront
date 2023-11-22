@@ -8,7 +8,7 @@ import { colors } from "../../utils/colors";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import TextButton from "../../components/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
-import { checkUsernameDuplicate } from "../../API/UserAPI";
+import { checkUsernameDuplicate, signup } from "../../API/UserAPI";
 import { log } from "../../utils/Log";
 import isValidEmail from "../../utils/EmailValidation";
 import { useCustomContext } from "../../features/context/CustomContext";
@@ -42,7 +42,6 @@ export default function SignUpScreen({
                 .then(ret => {
                     updateLoadingStatus(false);
                     setUsernameConfirmed(true);
-
                     alert("사용할 수 있는 이메일입니다.");
                 })
                 .catch(error => {
@@ -53,19 +52,23 @@ export default function SignUpScreen({
         }
     };
 
-    useEffect(() => {
-        log(`usernameConfirmed changed to ${usernameConfirmed}`);
-    }, [usernameConfirmed]);
-
-    const validateUsername = () => {
-        const ret = true;
-        setUsernameConfirmed(ret);
-        return ret;
+    const handleSignup = async () => {
+        console.log("handleSignup tapped");
+        updateLoadingStatus(true);
+        await signup(usernameInput, passwordInput1)
+            .then(() => {
+                updateLoadingStatus(false);
+                navigation.pop();
+            })
+            .catch(error => {
+                alert(error.message);
+            });
     };
 
     const validatePhoneNumber = () => {
         const ret = true;
         setPhoneConfirmed(ret);
+        alert("인증되었습니다.");
         return ret;
     };
 
@@ -266,7 +269,6 @@ export default function SignUpScreen({
                             keyboardType="number-pad"
                             autoComplete="off"
                             autoCorrect={false}
-                            secureTextEntry={true}
                         />
                     </View>
                 </View>
@@ -308,7 +310,11 @@ export default function SignUpScreen({
                 title="가입하기"
                 onPress={() => {
                     // TODO: 여기가 맞아?
-                    navigation.navigate(NavigationTitle.mainTabs);
+                    // navigation.navigate(NavigationTitle.mainTabs);
+                    handleSignup();
+                    // navigation.pop();
+
+                    // signup api
                 }}
                 backgroundStyle={[
                     styles.buttonBackground,
@@ -323,7 +329,7 @@ export default function SignUpScreen({
                 textStyle={[
                     {
                         fontSize: 16,
-                        color: satisfied ? colors.black : colors.gray4,
+                        color: satisfied ? colors.white : colors.gray4,
                     },
                 ]}
                 isEnabled={!satisfied}

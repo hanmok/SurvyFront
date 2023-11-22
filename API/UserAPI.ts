@@ -54,6 +54,19 @@ export async function signin(
     });
 }
 
+export async function signup(username: string, password: string) {
+    const url = `${API_BASE_URL}/user/signup`;
+    const data = { username, password };
+
+    return fetchData(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+}
+
 export async function signOut(accessToken: string) {
     const url = `${API_BASE_URL}/user/signout`;
     return fetchData(url, {

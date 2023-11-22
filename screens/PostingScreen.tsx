@@ -475,7 +475,7 @@ export default function PostingScreen({
                     title="질문 추가"
                     onPress={toggleCreateModal}
                     textStyle={[
-                        styles.plusButtonText,
+                        styles.addQuestionText,
                         { textAlignVertical: "center" },
                     ]}
                     backgroundStyle={[
@@ -600,12 +600,13 @@ export default function PostingScreen({
                         borderRadius: 10,
                     }}
                     title="다음"
-                    textStyle={{
-                        color: isSatisfied ? colors.black : "#cbcbcb",
-                        fontSize: 18,
-                        letterSpacing: 2,
-                    }}
-                    hasShadow={false}
+                    textStyle={[
+                        styles.nextButtonText,
+                        {
+                            color: isSatisfied ? colors.black : "#cbcbcb",
+                        },
+                    ]}
+                    // hasShadow={false}
                     onPress={() => {
                         setIsNextButtonTapped(true);
                     }}
@@ -620,10 +621,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-start",
         backgroundColor: colors.background,
-        // backgroundColor: "cyan",
     },
     subContainer: {
-        // justifyContent: "space-between",
         flex: 1,
         justifyContent: "space-between",
     },
@@ -683,12 +682,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         height: 46,
     },
-    plusButtonText: {
+    addQuestionText: {
         color: colors.black,
         textAlign: "center",
         fontSize: fontSizes.m20,
-        fontWeight: "600",
-        borderRadius: 40,
+        letterSpacing: 1,
+    },
+    nextButtonText: {
+        color: colors.black,
+        textAlign: "center",
+        fontSize: fontSizes.m20,
+        fontWeight: "bold",
+        letterSpacing: 1,
     },
     expectedTime: {
         flexBasis: 24,

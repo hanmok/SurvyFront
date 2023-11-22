@@ -17,10 +17,11 @@ import { logObject } from "../utils/Log";
 import { QuestionTypeId } from "../QuestionType";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import TextButton from "./TextButton";
-import SelectionButton from "./SelectionButton";
+// import SelectionButton from "./SelectionButton";
 import { QuestionTypeIdStrings } from "../QuestionType";
 import CompleteAccessoryView from "./CompleteAccessoryView";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
+import { SelectionImage } from "./common/ImageNameType";
 
 interface SelectableOptionProps {
     id: number;
@@ -86,8 +87,10 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 ].includes(id) ? (
                     // 선택된 상태
                     <View style={styles.container}>
-                        <ImageButton
-                            img={require("../assets/selectedSingleSelection.png")}
+                        <Feather
+                            name={SelectionImage.selectedSingleSelection}
+                            size={24}
+                            color="black"
                             onPress={onPress}
                         />
                         {isExtra === 1 ? (
@@ -125,13 +128,9 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 ) : (
                     // 선택 되어있지 않은 상태
                     <View style={styles.container}>
-                        {/* <ImageButton
-                            img={require("../assets/unselectedSingleSelection.png")}
-                            onPress={onPress}
-                        /> */}
                         <Feather
-                            name="circle"
-                            size={20}
+                            name={SelectionImage.unselectedSingleSelection}
+                            size={24}
                             color="black"
                             onPress={onPress}
                         />
@@ -183,11 +182,13 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 ].includes(id) ? (
                     // 선택 되어있는 상태
                     <View style={styles.container}>
-                        <ImageButton
-                            img={require("../assets/selectedMultipleSelection.png")}
-                            // backgroundStyle={{ justifyContent: "center" }}
+                        <Feather
+                            name={SelectionImage.selectedMultipleSelection}
+                            size={24}
+                            color="black"
                             onPress={onPress}
                         />
+
                         {isExtra === 1 ? (
                             <View style={styles.textContainer}>
                                 <TextInput
@@ -227,15 +228,9 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                 ) : (
                     // 선택 되어있지 않은 상태
                     <View style={styles.container}>
-                        {/* 이거... 하나로 할 수 있을 것 같은데? */}
-                        {/* <ImageButton
-                            img={require("../assets/unselectedMultipleSelection.png")}
-                            // backgroundStyle={{ justifyContent: "center" }}
-                            onPress={onPress}
-                        /> */}
                         <Feather
-                            name="square"
-                            size={20}
+                            name={SelectionImage.unselectedMultipleSelection}
+                            size={24}
                             color="black"
                             onPress={onPress}
                         />

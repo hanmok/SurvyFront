@@ -10,7 +10,8 @@ import {
     // getQuestionTypeIndex,
 } from "../../QuestionType";
 import { fontSizes } from "../../utils/sizes";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { SelectionImage } from "../common/ImageNameType";
 
 // Question 을 받도록, 전체가 버튼.
 
@@ -27,7 +28,8 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
 
     return (
         <TouchableOpacity style={styles.questionContainer} onPress={onPress}>
-            <Text style={{ fontSize: fontSizes.m20, paddingLeft: 10 }}>
+            {/* <Text style={{ fontSize: fontSizes.m20, paddingLeft: 10 }}> */}
+            <Text style={{ fontSize: fontSizes.m20, paddingLeft: 4 }}>
                 {question.position + 1}. {question.text}
             </Text>
             <View style={{ height: 10 }} />
@@ -39,11 +41,10 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                             case QuestionTypeId.SingleSelection:
                                 return (
                                     <View style={styles.rowContainer}>
-                                        {/* <ImageButton
-                                            img={require("../../assets/unselectedSingleSelection.png")}
-                                        /> */}
                                         <Feather
-                                            name="circle"
+                                            name={
+                                                SelectionImage.unselectedSingleSelection
+                                            }
                                             size={20}
                                             color="black"
                                         />
@@ -54,17 +55,11 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                             case QuestionTypeId.MultipleSelection:
                                 return (
                                     <View style={styles.rowContainer}>
-                                        {/* <ImageButton
-                                            img={require("../../assets/unselectedMultipleSelection.png")}
-                                        /> */}
-                                        {/* <MaterialCommunityIcons
-                                            name="square-rounded-outline"
-                                            size={24}
-                                            color="black"
-                                        /> */}
                                         <Feather
-                                            name="square"
-                                            size={20}
+                                            name={
+                                                SelectionImage.unselectedMultipleSelection
+                                            }
+                                            size={24}
                                             color="black"
                                         />
                                         <View style={{ width: 10 }}></View>
@@ -76,7 +71,8 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                     <View>
                                         <Text
                                             style={{
-                                                marginHorizontal: 20,
+                                                marginHorizontal: 8,
+                                                color: colors.gray3,
                                             }}
                                         >
                                             {option.value}

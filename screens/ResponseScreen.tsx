@@ -39,7 +39,7 @@ import { Answer } from "../interfaces/Answer";
 import IndivisualSelectionResponseContainer from "../components/response/IndivisualSelectionResponseContainer";
 import IndivisualEssayResponseContainer from "../components/response/IndivisualEssayResponseContainer";
 import ImageButton from "../components/ImageButton";
-import { Entypo, Feather, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import TextButton from "../components/TextButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 

@@ -44,7 +44,64 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
     const [questionTypeId, SetQuestionTypeId] =
         useState<QuestionTypeId>(undefined);
     const [satisfied, setSatisfied] = useState<boolean>(false);
-    const [placeHolder, setPlaceHolder] = useState<string>("placeholder");
+    const [placeHolder, setPlaceHolder] = useState<string>("");
+
+    const [confirmTapped, setConfirmTapped] = useState(false);
+
+    // useEffect(() => {
+    //     const handleConfirm = () => {
+    //         let selectableOptions: SelectableOption[] = [];
+    //         let question = makeQuestion(
+    //             position,
+    //             questionTitle,
+    //             questionTypeId,
+    //             [] // selectableOptions
+    //         );
+    //         log(`question made: ${JSON.stringify(question)}`);
+
+    //         if (questionTypeId === QuestionTypeId.Essay) {
+    //             const selectableOption = makeSelectableOption(
+    //                 question.id,
+    //                 0,
+    //                 placeHolder,
+    //                 0
+    //             );
+    //             console.log("essay case, placeHolder:", placeHolder);
+    //             selectableOptions.push(selectableOption);
+    //         } else {
+    //             dynamicInputValues.map((optionText, index) => {
+    //                 if (optionText !== "") {
+    //                     const selectableOption = makeSelectableOption(
+    //                         question.id,
+    //                         index,
+    //                         optionText,
+    //                         0
+    //                     );
+    //                     selectableOptions.push(selectableOption);
+    //                 }
+    //             });
+
+    //             if (isExtraOptionEnabled) {
+    //                 const selectableOption = makeSelectableOption(
+    //                     question.id,
+    //                     dynamicInputValues.length,
+    //                     "기타",
+    //                     1
+    //                 );
+    //                 selectableOptions.push(selectableOption);
+    //             }
+    //         }
+
+    //         question.selectableOptions = selectableOptions;
+    //         logObject("question added", question);
+    //         onAdd(question);
+
+    //         setIsExtraOptionEnabled(false);
+    //     };
+    //     if (confirmTapped) {
+    //         handleConfirm();
+    //     }
+    // }, [confirmTapped]);
 
     const handleConfirm = () => {
         let selectableOptions: SelectableOption[] = [];
@@ -63,6 +120,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                 placeHolder,
                 0
             );
+            console.log("essay case, placeHolder", placeHolder);
             selectableOptions.push(selectableOption);
         } else {
             dynamicInputValues.map((optionText, index) => {
@@ -94,6 +152,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
 
         setIsExtraOptionEnabled(false);
     };
+
     const toggleExtraOptionSwitch = () => {
         setIsExtraOptionEnabled(prev => !prev);
     };
@@ -129,7 +188,8 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
     useEffect(() => {
         setDynamicInputValues([""]);
         setQuestionTitle("");
-        setPlaceHolder("");
+        // setPlaceHolder("");
+        setPlaceHolder("답변을 입력해주세요");
         SetQuestionTypeId(undefined);
     }, [isCreatingQuestionModalVisible]);
 
@@ -164,6 +224,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                         <View
                             style={{ justifyContent: "space-between", flex: 1 }}
                         >
+                            {/* 서술형 질문 */}
                             {questionTypeId === QuestionTypeId.Essay ? (
                                 <View
                                     style={{
@@ -173,7 +234,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                     }}
                                 >
                                     <TextInput
-                                        placeholder="placeHolder"
                                         style={{
                                             fontSize: fontSizes.m20,
                                             color: colors.gray3,
@@ -191,6 +251,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                     />
                                 </View>
                             ) : (
+                                // 단일 선택, 다중 선택 질문
                                 <DynamicTextInputsForCreation
                                     dynamicInputValues={dynamicInputValues}
                                     setDynamicInputValues={
@@ -202,8 +263,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                     isExtraOptionEnabled={isExtraOptionEnabled}
                                 />
                             )}
-
-                            <View></View>
 
                             {/*  Two Switches */}
                             <View
@@ -257,6 +316,9 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
 
                             <TextButton
                                 onPress={handleConfirm}
+                                // onPress={() => {
+                                // setConfirmTapped(true);
+                                // }}
                                 title="확인"
                                 backgroundStyle={
                                     satisfied

@@ -20,6 +20,7 @@ export interface Survey {
     numOfSections: number;
     sections: Section[];
     genres: Genre[];
+    createdAt: string;
 }
 
 export const makeSurvey = (
@@ -55,6 +56,7 @@ export const makeSurvey = (
         numOfSections,
         sections: [],
         genres: [],
+        createdAt: "",
     };
     return survey;
 };

@@ -21,7 +21,6 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from "react-native";
-import Geo from "../utils/Geo";
 
 import SelectableTextButton from "../components/SelectableTextButton";
 
@@ -84,20 +83,23 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     const [selectedLocations, setSelectedLocations] = useState<GeoInfo[]>([]);
 
     const [isFree, setIsFree] = useState(true);
-    const [selectedGenderIndex, setSelectedGender] = useState<null>(null);
+    const [selectedGenderIndex, setSelectedGender] = useState<number>(2);
     const [isSatisfied, setIsSatisfied] = useState(false);
     const [isNextButtonTapped, setIsNextButtonTapped] = useState(false);
 
-    const { updateLoadingStatus, postingSurveyId, updatePostingSurveyId } =
-        useCustomContext();
+    const {
+        updateLoadingStatus,
+        postingSurveyId,
+        updatePostingSurveyId,
+        userId,
+        accessToken,
+    } = useCustomContext();
 
     useEffect(() => {
-        if (selectedGeos.length !== 0 && selectedGenres.length !== 0) {
-            setIsSatisfied(true);
-        } else {
-            setIsSatisfied(false);
-        }
-    }, [ageRange, selectedGenderIndex, selectedGeos, selectedGenres]);
+        const isSatisfied =
+            selectedGeos.length !== 0 && selectedGenres.length !== 0;
+        setIsSatisfied(isSatisfied);
+    }, [selectedGeos, selectedGenres]);
 
     useEffect(() => {
         if (isSendPressed) {
@@ -178,7 +180,9 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             questions,
             isTargetMale,
             reward,
-            cost
+            cost,
+            userId,
+            accessToken
         );
 
         // if (ctxData) {
@@ -190,11 +194,8 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             // initializePostingSurvey();
             postingSurveyDataManager.initialize();
         }
-
-        // 여기.. 그게 정말 없어야 하나.. ??
-        navigation.popToTop();
-
-        // navigation.navigate(NavigationTitle.postedSurveys);
+        // navigate to home
+        navigation.pop(2);
     };
 
     const toggleGenreModal = () => {
@@ -244,7 +245,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         {/* Age */}
-                        <View style={{ width: 300 }}>
+                        <View style={styles.sectionUpperContainer}>
                             <AgeSlider setAgeRange={setAgeRange} />
                             <View
                                 style={{
@@ -257,7 +258,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                         </View>
                         {/* 성별 */}
                         <View>
-                            <View style={{ width: 300 }}>
+                            <View style={styles.sectionUpperContainer}>
                                 <Text
                                     style={{
                                         marginBottom: 20,
@@ -281,40 +282,28 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                 marginVertical: 20,
                             }}
                         ></View>
+                        {/*  */}
                         {/* 지역 */}
                         <View
                             style={{
                                 flex: 1,
                                 marginBottom: 30,
+                                // backgroundColor: "cyan",
                             }}
                         >
-                            <View style={{ width: 300, alignSelf: "center" }}>
-                                <Text
-                                    style={{
-                                        fontSize: fontSizes.m20,
-                                        marginBottom: 10,
-                                    }}
-                                >
-                                    지역
-                                </Text>
+                            <View style={styles.sectionUpperContainer}>
+                                <Text style={styles.geoGuideText}>지역</Text>
                                 {/* Search Box */}
                                 <View>
-                                    <View style={{ flexDirection: "row" }}>
+                                    <View style={styles.geoSearchBarContainer}>
                                         <TouchableOpacity
                                             onPress={toggleGeoModal}
-                                            style={{
-                                                borderRadius: 10,
-                                                backgroundColor: "white",
-                                                overflow: "hidden",
-                                                borderColor: "black",
-                                                borderWidth: 1,
-                                                width: 200,
-                                            }}
+                                            style={styles.searchBar}
                                         />
                                         <Spacer size={10} />
                                         <Entypo
                                             name="magnifying-glass"
-                                            size={24}
+                                            size={32}
                                             color="black"
                                         />
                                     </View>
@@ -323,14 +312,13 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                             {/* 선택된 지역들 */}
                             <View
                                 style={{
-                                    // flex: 0.9,
-                                    flex: 1,
+                                    width: screenWidth - 80,
+                                    alignItems: "flex-start",
                                     flexDirection: "row",
                                     justifyContent: "flex-start",
                                     flexWrap: "wrap",
                                     marginTop: 10,
-                                    marginHorizontal: 30,
-                                    // backgroundColor: "cyan",
+                                    alignSelf: "flex-start",
                                 }}
                             >
                                 {selectedGeos.map(geo => (
@@ -341,7 +329,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                             backgroundColor: colors.gray1,
                                             padding: 4,
                                             paddingHorizontal: 6,
-                                            marginHorizontal: 6,
+                                            marginRight: 12,
                                             borderRadius: 6,
                                             height: 30,
                                             marginVertical: 4,
@@ -354,69 +342,56 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                 ))}
                             </View>
                         </View>
+                        {/*  */}
                         {/* Separator */}
                         <View
                             style={{
                                 backgroundColor: colors.gray4,
                                 height: 1,
                                 width: screenWidth,
-                                marginBottom: 20,
+                                // marginBottom: 20,
+                                marginVertical: 20,
                             }}
-                        ></View>
+                        />
 
-                        {/* Genre */}
+                        {/*  */}
+                        {/* 카테고리 */}
+
                         <View
                             style={{
                                 flex: 1,
-                                marginBottom: 60,
+                                // backgroundColor: "cyan",
+                                // marginHorizontal: 60,
                             }}
                         >
-                            <View style={{ width: 300, alignSelf: "center" }}>
-                                <Text
-                                    style={{
-                                        fontSize: fontSizes.m20,
-                                        marginBottom: 10,
-                                    }}
-                                >
+                            <View style={styles.sectionUpperContainer}>
+                                <Text style={styles.geoGuideText}>
                                     카테고리
                                 </Text>
-                                {/* Search Modal */}
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        // justifyContent: "center",
-                                    }}
-                                >
-                                    <TouchableOpacity
-                                        onPress={toggleGenreModal}
-                                        style={{
-                                            borderRadius: 10,
-                                            backgroundColor: "white",
-                                            overflow: "hidden",
-                                            borderColor: "black",
-                                            borderWidth: 1,
-                                            width: 200,
-                                        }}
-                                    />
-                                    <Spacer size={10} />
-                                    <Entypo
-                                        name="magnifying-glass"
-                                        size={24}
-                                        color="black"
-                                    />
+                                {/* Search Box */}
+                                <View>
+                                    <View style={styles.geoSearchBarContainer}>
+                                        <TouchableOpacity
+                                            onPress={toggleGenreModal}
+                                            style={styles.searchBar}
+                                        />
+                                        <Spacer size={10} />
+                                        <Entypo
+                                            name="magnifying-glass"
+                                            size={32}
+                                            color="black"
+                                        />
+                                    </View>
                                 </View>
                             </View>
-
                             <View
                                 style={{
-                                    // flex: 0.9,
-                                    flex: 1,
+                                    width: screenWidth - 80,
+                                    alignItems: "flex-start",
                                     flexDirection: "row",
                                     justifyContent: "flex-start",
                                     flexWrap: "wrap",
                                     marginTop: 10,
-                                    marginHorizontal: 30,
-                                    // backgroundColor: "magenta",
                                 }}
                             >
                                 {selectedGenres.map(genre => (
@@ -427,7 +402,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                             backgroundColor: colors.gray1,
                                             padding: 4,
                                             paddingHorizontal: 6,
-                                            marginHorizontal: 6,
+                                            marginRight: 12,
                                             borderRadius: 6,
                                             height: 30,
                                             marginVertical: 4,
@@ -454,11 +429,10 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                             marginTop: 30,
                         }}
                         title="다음"
-                        textStyle={{
-                            color: isSatisfied ? colors.black : "#cbcbcb",
-                            fontSize: 18,
-                            letterSpacing: 2,
-                        }}
+                        textStyle={[
+                            styles.nextButtonText,
+                            { color: isSatisfied ? colors.black : "#cbcbcb" },
+                        ]}
                         onPress={() => {
                             // setIsNextButtonTapped(true);
                             handleSendButtonTapped();
@@ -487,6 +461,28 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingTop: 20,
         // gap: 10,
+    },
+    sectionUpperContainer: {
+        width: screenWidth - 80,
+        // backgroundColor: "magenta"
+    },
+    geoGuideText: {
+        fontSize: fontSizes.m20,
+        marginBottom: 10,
+    },
+    geoSearchBarContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
+        height: 36,
+        marginTop: 10,
+    },
+    searchBar: {
+        borderRadius: 10,
+        backgroundColor: "white",
+        overflow: "hidden",
+        borderColor: "black",
+        borderWidth: 1,
+        flex: 1,
     },
     bottomContainer: {
         flexDirection: "row",
@@ -531,5 +527,12 @@ const styles = StyleSheet.create({
     locationTitle: {
         fontSize: fontSizes.m20,
         // marginLeft: 50,
+    },
+    nextButtonText: {
+        color: colors.black,
+        textAlign: "center",
+        fontSize: fontSizes.m20,
+        fontWeight: "bold",
+        letterSpacing: 1,
     },
 });

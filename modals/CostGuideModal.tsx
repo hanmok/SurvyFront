@@ -73,6 +73,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                 backgroundColor: colors.gray4,
                                 width: screenWidth - 40 * 2,
                                 textAlign: "center",
+                                paddingVertical: 10,
                             }}
                         >
                             설문 제출
@@ -91,7 +92,16 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         placeholder="10"
                                         style={[
                                             commonStyles.font20,
-                                            { color: colors.gray2 },
+                                            {
+                                                color: colors.gray2,
+                                                borderColor: "black",
+                                                borderWidth: 1,
+                                                borderRadius: 6,
+                                                minWidth: 50,
+                                                textAlign: "right",
+                                                paddingRight: 6,
+                                                backgroundColor: "#fff",
+                                            },
                                         ]}
                                     />
                                 </View>

@@ -13,7 +13,6 @@ import { Survey } from "../interfaces/Survey";
 
 import { UserState } from "../interfaces/UserState";
 import { API_BASE_URL, GQL_URL } from "../API/API";
-// import { loadWholeGeo, saveUserState, saveWholeGeos } from "../utils/Storage";
 import { NavigationTitle } from "../utils/NavHelper";
 import { log, logObject } from "../utils/Log";
 import {
@@ -33,7 +32,7 @@ import { getUserDetail } from "../API/UserAPI";
 import { DefaultModal } from "../modals/DefaultModal";
 // import { loadPostingSurvey } from "../utils/PostingSurveyStorage";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
-import { geoDataManager } from "../utils/Storage";
+// import { geoDataManager } from "../utils/Storage";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 
 // TODO:
@@ -115,11 +114,10 @@ function HomeScreen({
 
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {
-        const fetchGeos = async () => {
-            const allGeos = await fetchAllGeoInfos();
-            // saveWholeGeos(allGeos);
-            geoDataManager.saveWholeGeos(allGeos);
-        };
+        // const fetchGeos = async () => {
+        //     const allGeos = await fetchAllGeoInfos();
+        //     geoDataManager.saveWholeGeos(allGeos);
+        // };
 
         const updateSurveys = async () => {
             await getSurveys(accessToken)
@@ -132,7 +130,7 @@ function HomeScreen({
                 });
         };
 
-        fetchGeos();
+        // fetchGeos();
         updateSurveys();
 
         console.log("HomeScreen Testing");

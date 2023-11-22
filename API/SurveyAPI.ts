@@ -26,11 +26,12 @@ export async function createSurvey(
     questions: Question[],
     isTargetMale: number | undefined,
     reward: number,
-    cost: number
+    cost: number,
+    userId: number,
+    accessToken: string
 ) {
     console.log(`createSurvey called`);
     let dummySelectableOptions: SelectableOption[] = [];
-    let dummySections: Section[] = [];
 
     questions.forEach(q => {
         q.selectableOptions.forEach(so => {
@@ -38,7 +39,7 @@ export async function createSurvey(
         });
     });
 
-    const { userId, accessToken } = useCustomContext();
+    // const { userId, accessToken } = useCustomContext();
 
     const numOfSections = sections.length;
     const survey = makeSurvey(

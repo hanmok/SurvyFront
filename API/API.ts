@@ -1,5 +1,6 @@
-let restServer = "https://dearsurvy.herokuapp.com";
 let localRestServer = "http://localhost:3000";
+
+let restServer = "https://dearsurvy.herokuapp.com";
 
 let graphServer = "https://dearsurvy.herokuapp.com/graphql";
 

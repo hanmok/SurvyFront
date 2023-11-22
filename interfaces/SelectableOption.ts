@@ -1,4 +1,5 @@
 import { makeRandomNumber, randomNumber } from "../utils/GetRandomNumber";
+import { logObject } from "../utils/Log";
 
 export interface SelectableOption {
     id: number | undefined;
@@ -21,5 +22,6 @@ export const makeSelectableOption = (
         value: value,
         isExtra: isExtra,
     };
+    logObject("make selectableOption called, ", selectableOption);
     return selectableOption;
 };

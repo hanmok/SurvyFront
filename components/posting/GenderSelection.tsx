@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { colors } from "../../utils/colors";
 
 interface GenderSelectionProps {
     onGenderIndexSelection: (number) => void;
@@ -36,7 +37,7 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
                             style={{
                                 fontSize: 14,
                                 fontWeight: "bold",
-                                letterSpacing: 0.5,
+                                letterSpacing: 2,
                             }}
                         >
                             {option}
@@ -58,8 +59,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         borderWidth: 1,
         borderRadius: 5,
-        borderColor: "#ccc",
-        backgroundColor: "#dbdbdc",
+        // borderColor: "#ccc",
+        borderColor: "#fff",
+        backgroundColor: "#e4e4e4",
     },
     selectedOptionButton: {
         backgroundColor: "white",

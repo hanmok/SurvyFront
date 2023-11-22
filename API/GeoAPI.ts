@@ -11,6 +11,7 @@
 import { GeoInfo } from "../interfaces/GeoInfo";
 import { logObject } from "../utils/Log";
 import { API_BASE_URL } from "./API";
+import { fetchData } from "./BaseAPI";
 
 // // Content-type: application/json;charset=UTF-8
 const restKEY = "5973832cf035c04ef3cd75c15c90c7cc";
@@ -79,22 +80,5 @@ interface GeoResponse {
 
 export async function fetchAllGeoInfos(): Promise<GeoInfo[]> {
     const url = `${API_BASE_URL}/geo`;
-
-    try {
-        const response = await fetch(url, {
-            method: "GET",
-        });
-
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-
-        const responseData: GeoInfo[] = await response.json();
-
-        // logObject("geo response jsona", responseData);
-        return responseData;
-    } catch (error) {
-        console.error("geo fetching error", error);
-        throw error;
-    }
+    return fetchData<GeoInfo[]>(url, {});
 }

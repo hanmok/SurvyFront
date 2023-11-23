@@ -18,13 +18,16 @@ export async function fetchData<T>(
             throw new Error("Network response was not ok");
         }
         // return response.json().data;
+        const apiResponse: ApiResponse<T> = await response.json();
+        logObject(`API ${message} Result`, apiResponse);
 
-        const apiResponse = await response.json();
-        const result: T = apiResponse.data;
-        logObject(`API ${message} Result`, result);
+        const statusCode = apiResponse.statusCode;
 
-        return result;
-        // return apiResponse.data;
+        if (statusCode >= 200 && statusCode < 300) {
+            return apiResponse.data;
+        } else {
+            throw new Error(apiResponse.message);
+        }
     } catch (error) {
         console.log(`${url} API call failed: ${error.message}`);
         throw error;

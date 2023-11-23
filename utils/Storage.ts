@@ -3,6 +3,8 @@ import Storage from "react-native-storage";
 import { UserState } from "../interfaces/UserState";
 import { GeoInfo } from "../interfaces/GeoInfo";
 import { logObject } from "./Log";
+import showAdminToast from "../components/common/toast/showAdminToast";
+import showToast from "../components/common/toast/Toast";
 
 class UserDataManager {
     private storage: Storage;
@@ -15,58 +17,31 @@ class UserDataManager {
 
     public async saveUserState(data: UserState) {
         logObject("savedUserState", data);
-        await this.storage.save({ key: "userInfo", data, expires: null });
+        await this.storage
+            .save({ key: "userInfo", data, expires: null })
+            .catch(error => showToast("error", `${error}`));
     }
 
     public async loadUserState(): Promise<UserState> {
         try {
-            const userState: UserState = await this.storage.load({
-                key: "userInfo",
-                autoSync: true,
-                syncInBackground: true,
-            });
+            const userState: UserState = await this.storage
+                .load({
+                    key: "userInfo",
+                    autoSync: true,
+                    syncInBackground: true,
+                })
+                .catch(error => {
+                    // alert("no userState saved");
+                    showAdminToast("error", "no userstate saved");
+                });
             logObject("loadedUserState", userState);
 
             return userState;
         } catch (error) {
-            console.error(error);
+            showAdminToast("error", "userState fetching error");
             return null;
         }
     }
 }
 
-// class GeoDataManager {
-//     private storage: Storage;
-
-//     constructor() {
-//         this.storage = new Storage({
-//             storageBackend: AsyncStorage,
-//         });
-//     }
-
-//     public async saveWholeGeos(data: GeoInfo[]) {
-//         // logObject("saving geo data", data);
-//         await this.storage.save({ key: "wholeGeoInfo", data, expires: null });
-//     }
-
-//     public async loadWholeGeo(): Promise<GeoInfo[]> {
-//         console.log("loadWholeGeo called");
-//         try {
-//             const geoInfo: GeoInfo[] = await this.storage.load({
-//                 key: "wholeGeoInfo",
-//                 autoSync: true,
-//                 syncInBackground: true,
-//             });
-
-//             return geoInfo;
-//         } catch (error) {
-//             console.error("Error loading geo info:", error);
-//             return null;
-//         }
-//     }
-// }
-
 export const userDataManager = new UserDataManager();
-// export const geoDataManager = new GeoDataManager();
-
-// 얘가.. 지역을 왜 갖고있어야해?

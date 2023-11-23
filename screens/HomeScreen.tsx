@@ -34,6 +34,8 @@ import { DefaultModal } from "../modals/DefaultModal";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 // import { geoDataManager } from "../utils/Storage";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
+import showToast from "../components/common/toast/Toast";
+import showAdminToast from "../components/common/toast/showAdminToast";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -64,7 +66,8 @@ function HomeScreen({
                 logObject("userDetail", detailInfo);
                 updateUserDetail(detailInfo);
             } catch (error) {
-                throw new Error(error.message);
+                // throw new Error(error.message);
+                alert(error.message);
             }
         };
 
@@ -114,11 +117,6 @@ function HomeScreen({
 
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {
-        // const fetchGeos = async () => {
-        //     const allGeos = await fetchAllGeoInfos();
-        //     geoDataManager.saveWholeGeos(allGeos);
-        // };
-
         const updateSurveys = async () => {
             await getSurveys(accessToken)
                 .then(surveys => {
@@ -126,7 +124,7 @@ function HomeScreen({
                     setSurveys(surveys);
                 })
                 .catch(error => {
-                    console.error("error updating surveys");
+                    showAdminToast("error", error.message);
                 });
         };
 

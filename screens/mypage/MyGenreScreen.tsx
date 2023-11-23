@@ -37,18 +37,21 @@ function MyGenreScreen({
 
     useEffect(() => {
         const updateGenres = async () => {
-            updateLoadingStatus(true);
             const updatedGenres = new Set(selectedGenres);
             const prevGenres = new Set(initialGenres);
 
             if (areSetsEqual(updatedGenres, prevGenres) === false) {
                 // deleteAll -> add All
                 const updatedGenresArr = selectedGenres.map(genre => genre.id);
-                await updateUserGenres(userId, accessToken, updatedGenresArr);
-                updateLoadingStatus(false);
+                updateLoadingStatus(true);
+                await updateUserGenres(
+                    userId,
+                    accessToken,
+                    updatedGenresArr
+                ).finally(() => {
+                    updateLoadingStatus(false);
+                });
                 navigation.pop();
-            } else {
-                updateLoadingStatus(false);
             }
         };
 

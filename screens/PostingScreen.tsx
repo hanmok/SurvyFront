@@ -48,6 +48,7 @@ import SectionModal from "../modals/SectionModal";
 import { RouteProp } from "@react-navigation/native";
 import PopupMenu from "../components/PopupMenu";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
+import showAdminToast from "../components/common/toast/showAdminToast";
 // import {
 //     initializePostingSurvey,
 //     loadPostingSurvey,
@@ -241,6 +242,8 @@ export default function PostingScreen({
                         await postingSurveyDataManager.save(updatedSurvey);
                     }
                 } catch (error) {
+                    // alert(error);
+                    showAdminToast("error", error);
                     console.error(error);
                 }
             };

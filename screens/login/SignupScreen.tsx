@@ -12,6 +12,9 @@ import { checkUsernameDuplicate, signup } from "../../API/UserAPI";
 import { log } from "../../utils/Log";
 import isValidEmail from "../../utils/EmailValidation";
 import { useCustomContext } from "../../features/context/CustomContext";
+import showToast from "../../components/common/toast/Toast";
+import showAdminToast from "../../components/common/toast/showAdminToast";
+import showMessageAlert from "../../components/CustomAlert";
 
 export default function SignUpScreen({
     navigation,
@@ -40,15 +43,17 @@ export default function SignUpScreen({
             updateLoadingStatus(true);
             await checkUsernameDuplicate(usernameInput)
                 .then(ret => {
-                    updateLoadingStatus(false);
                     setUsernameConfirmed(true);
-                    alert("사용할 수 있는 이메일입니다.");
+                    showToast("success", "사용하실 수 있는 메일입니다.");
                 })
                 .catch(error => {
-                    alert(error.message);
+                    showAdminToast("error", error.message);
+                })
+                .finally(() => {
+                    updateLoadingStatus(false);
                 });
         } else {
-            alert("이메일 형식에 맞지 않습니다.");
+            showToast("error", "이메일 형식에 맞지 않습니다.");
         }
     };
 
@@ -57,11 +62,14 @@ export default function SignUpScreen({
         updateLoadingStatus(true);
         await signup(usernameInput, passwordInput1)
             .then(() => {
-                updateLoadingStatus(false);
                 navigation.pop();
             })
             .catch(error => {
-                alert(error.message);
+                // alert(error.message);
+                showToast("error", `${error.message}`);
+            })
+            .finally(() => {
+                updateLoadingStatus(false);
             });
     };
 
@@ -243,6 +251,10 @@ export default function SignUpScreen({
                         <TextButton
                             title="인증번호 받기"
                             onPress={() => {
+                                showToast(
+                                    "success",
+                                    "인증번호가 전송되었습니다."
+                                );
                                 validatePhoneNumber();
                             }}
                             backgroundStyle={[

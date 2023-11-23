@@ -161,19 +161,22 @@ export async function updateUserGenres(
     };
 
     logObject("sending Data from updateUserGenres", snakeData);
-
-    return fetchData(
-        url,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
+    try {
+        return fetchData(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify(snakeData),
             },
-            body: JSON.stringify(snakeData),
-        },
-        "updateUserGenres"
-    );
+            "updateUserGenres"
+        );
+    } catch (error) {
+        alert(error.message);
+    }
 }
 
 export async function checkUsernameDuplicate(username: string) {

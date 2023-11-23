@@ -30,7 +30,8 @@ import PasswordSettingScreen from "./screens/login/PasswordSettingScreen";
 import FoundIDScreen from "./screens/login/FoundIDScreen";
 import SignUpScreen from "./screens/login/SignupScreen";
 import MyGenreScreen from "./screens/mypage/MyGenreScreen";
-
+import Toast from "react-native-toast-message";
+import toastConfig from "./components/common/toast/ToastConfig";
 // export default function App() {
 const App: React.FC = () => {
     return (
@@ -242,6 +243,7 @@ const App: React.FC = () => {
                                 />
                             </Stack.Navigator>
                         </NavigationContainer>
+                        <Toast config={toastConfig} />
                         <LoadingIndicator />
                     </MenuProvider>
                 </Provider>

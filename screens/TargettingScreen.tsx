@@ -40,6 +40,7 @@ import { GeoInfo } from "../interfaces/GeoInfo";
 // import { useCustomContext } from "./MyContext";
 import { useCustomContext } from "../features/context/CustomContext";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
+import showToast from "../components/common/toast/Toast";
 // import { initializePostingSurvey } from "../utils/PostingSurveyStorage";
 // import { deletePostingSurvey } from "../utils/Storage";
 
@@ -185,16 +186,15 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             accessToken
         );
 
-        // if (ctxData) {
-        //     await deletePostingSurvey(ctxData);
-        // }
-
         if (postingSurveyId) {
-            // await deletePostingSurvey(postingSurveyId);
-            // initializePostingSurvey();
             postingSurveyDataManager.initialize();
         }
         // navigate to home
+        showToast(
+            "success",
+            "설문이 요청되었습니다. ",
+            "마이페이지-요청한 설문 에서 확인하실 수 있습니다."
+        );
         navigation.pop(2);
     };
 

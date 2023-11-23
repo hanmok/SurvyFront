@@ -46,6 +46,7 @@ import {
 import { GQLQuestion, GQLSurvey } from "../interfaces/GQLInterface";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useCustomContext } from "../features/context/CustomContext";
+import showToast from "../components/common/toast/Toast";
 
 function ParticipatingScreen({
     route,
@@ -122,41 +123,6 @@ function ParticipatingScreen({
         }
     }, [currentSectionIndex, data]);
 
-    // useEffect(() => {
-    //     const showAlertAndGoBack = () => {
-    //         Alert.alert(
-    //             "경고",
-    //             "정말 뒤로가시겠습니까?",
-    //             [
-    //                 {
-    //                     text: "취소",
-    //                     style: "cancel",
-    //                 },
-    //                 {
-    //                     text: "확인",
-    //                     onPress: () => {
-    //                         shouldGoBack.current = true;
-    //                         navigation.goBack();
-    //                     },
-    //                 },
-    //             ],
-    //             { cancelable: false }
-    //         );
-    //     };
-    //         // navigation.addListener("")
-    //     // 뒤로가기 버튼 누를 때 호출될 함수
-    //     const unsubscribe = navigation.addListener("beforeRemove", e => {
-    //         if (!shouldGoBack.current) {
-    //             e.preventDefault(); // 뒤로가기 막기
-    //             showAlertAndGoBack();
-    //         }
-    //     });
-    //     return () => {
-    //         unsubscribe();
-    //     };
-
-    // }, [navigation]);
-
     const postSelectionAnswer = async (
         surveyId: number,
         userId: number,
@@ -176,7 +142,6 @@ function ParticipatingScreen({
             accessToken
         );
     };
-
     const postTextAnswer = async (
         customAnswer: CustomAnswer,
         userId: number,
@@ -257,7 +222,7 @@ function ParticipatingScreen({
                         );
                     })
                     .catch(error => {
-                        console.log(error);
+                        showToast("error", `${error.message}`);
                     });
             } else {
                 dispatch(

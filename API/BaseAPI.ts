@@ -14,6 +14,7 @@ export async function fetchData<T>(
     try {
         const response = await fetch(url, options);
         logObject(`api called, url:${url}, options`, options);
+
         if (!response.ok) {
             throw new Error("Network response was not ok");
         }

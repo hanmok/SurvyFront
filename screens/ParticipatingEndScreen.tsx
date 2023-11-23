@@ -9,6 +9,7 @@ import TextButton from "../components/TextButton";
 import { patchParticipating } from "../API/ParticipatingAPI";
 import { useCustomContext } from "../features/context/CustomContext";
 import { useEffect, useState } from "react";
+import showToast from "../components/common/toast/Toast";
 
 // Update participating-honest
 
@@ -34,8 +35,18 @@ function ParticipatingEndScreen({
                 userId,
                 participatingSurveyId,
                 selectedReponse
-            );
-            updateLoadingStatus(false);
+            ).finally(() => {
+                updateLoadingStatus(false);
+            });
+            if (selectedResponse === true) {
+                showToast(
+                    "success",
+                    "설문에 참여해주셔서 감사합니다",
+                    "포인트는 검수 후 지급됩니다"
+                );
+            } else {
+                showToast("success", "응답해주셔서 감사합니다");
+            }
             navigation.pop(2);
         };
 
@@ -86,7 +97,6 @@ function ParticipatingEndScreen({
                     title="모든 문항에 성실하게 응답했어요"
                     description="불성실 응답으로 판독될 경우 포인트가 지급되지 않으며, 설문 참여에 제한이 있을 수 있습니다."
                     onPress={() => {
-                        // navigation.pop(2);
                         setSelectedResponse(true);
                     }}
                     titleStyle={{ fontSize: fontSizes.m20 }}
@@ -97,21 +107,6 @@ function ParticipatingEndScreen({
                         backgroundColor: "white",
                     }}
                 />
-
-                {/* <TextButton
-                    title="메인 화면으로 돌아가기"
-                    onPress={() => {
-                        navigation.pop(2);
-                    }}
-                    textStyle={{ fontSize: fontSizes.m20 }}
-                    backgroundStyle={{
-                        borderRadius: 12,
-                        // overflow: "hidden",
-                        padding: 10,
-                        backgroundColor: "white",
-                        height: 50,
-                    }}
-                /> */}
             </View>
         </View>
     );

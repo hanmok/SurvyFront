@@ -1,6 +1,7 @@
 import Storage from "react-native-storage";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import showToast from "../components/common/toast/Toast";
 
 class PostingSurveyDataManager {
     private storage: Storage;
@@ -29,18 +30,23 @@ class PostingSurveyDataManager {
 
     load = async (): Promise<PostingSurveyState | null> => {
         try {
-            const postingSurvey: PostingSurveyState = await this.storage.load({
-                key: "postingSurvey",
-                autoSync: true,
-                syncInBackground: true,
-            });
+            const postingSurvey: PostingSurveyState | null = await this.storage
+                .load({
+                    key: "postingSurvey",
+                    autoSync: true,
+                    syncInBackground: true,
+                })
+                .catch(() => {
+                    return null;
+                });
+            console.log("postingSurvey load called");
             if (postingSurvey) {
                 return postingSurvey;
             } else {
                 return null;
             }
         } catch (error) {
-            // console.error("PostingSurvey Not Found");
+            showToast("error", `${error.message}`);
             return null;
         }
     };

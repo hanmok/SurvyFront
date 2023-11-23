@@ -8,6 +8,7 @@
 // // GET
 // // Header Authorization: KakaoAK restKey
 
+import showAdminToast from "../components/common/toast/showAdminToast";
 import { GeoInfo } from "../interfaces/GeoInfo";
 import { logObject } from "../utils/Log";
 import { API_BASE_URL } from "./API";
@@ -51,7 +52,7 @@ export async function getAddress(
         logObject(`geo response:`, apiResponse);
         return apiResponse;
     } catch (error) {
-        console.error(`Getting GEO error`, error);
+        showAdminToast("error", error.message);
         throw error;
     }
 }

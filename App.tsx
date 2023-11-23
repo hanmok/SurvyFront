@@ -32,6 +32,7 @@ import SignUpScreen from "./screens/login/SignupScreen";
 import MyGenreScreen from "./screens/mypage/MyGenreScreen";
 import Toast from "react-native-toast-message";
 import toastConfig from "./components/common/toast/ToastConfig";
+import PointHistoryScreen from "./screens/PointHistoryScreen";
 // export default function App() {
 const App: React.FC = () => {
     return (
@@ -208,6 +209,18 @@ const App: React.FC = () => {
                                     component={MyGenreScreen}
                                     options={({ route }) => ({
                                         headerTitle: "내 관심사",
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                    })}
+                                />
+
+                                <Stack.Screen
+                                    name={NavigationTitle.pointHistory}
+                                    component={PointHistoryScreen}
+                                    options={({ route }) => ({
+                                        headerTitle: "포인트 내역",
                                         headerBackTitleVisible: false,
                                         headerStyle: {
                                             backgroundColor: colors.background,

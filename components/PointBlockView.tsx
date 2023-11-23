@@ -56,17 +56,13 @@ const PointBlockView: React.FC<PointBlockProps> = ({
                 >
                     <TextButton
                         title="내역"
-                        onPress={() => {
-                            onPressHistory;
-                        }}
+                        onPress={onPressHistory}
                         backgroundStyle={styles.buttonBackground}
                         textStyle={styles.buttonText}
                     />
                     <TextButton
                         title="출금"
-                        onPress={() => {
-                            onPressWithdrawal;
-                        }}
+                        onPress={onPressWithdrawal}
                         backgroundStyle={styles.buttonBackground}
                         textStyle={styles.buttonText}
                     />

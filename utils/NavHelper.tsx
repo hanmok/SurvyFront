@@ -23,6 +23,7 @@ export type RootStackParamList = {
     SettingPassword: undefined;
     SignUp: undefined;
     MyGenre: undefined;
+    PointHistory: undefined;
 };
 
 export enum NavigationTitle {
@@ -46,4 +47,5 @@ export enum NavigationTitle {
     settingPassword = "SettingPassword",
     signup = "SignUp",
     myGenre = "MyGenre",
+    pointHistory = "PointHistory",
 }

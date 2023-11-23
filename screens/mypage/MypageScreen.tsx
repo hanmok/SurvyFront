@@ -20,6 +20,7 @@ import { useCustomContext } from "../../features/context/CustomContext";
 import TextButton from "../../components/TextButton";
 import PointBlockView from "../../components/PointBlockView";
 import ReputationBlockView from "../../components/ReputationBlockView";
+import showToast from "../../components/common/toast/Toast";
 // import { getParticipatedSurveyIds, getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 
 function MypageScreen({
@@ -118,7 +119,10 @@ function MypageScreen({
                 </BlockView>
 
                 <PointBlockView
-                    onPressHistory={() => {}}
+                    onPressHistory={() => {
+                        // showToast("success", "navToParticipatedSurveys");
+                        navigation.navigate(NavigationTitle.pointHistory);
+                    }}
                     onPressWithdrawal={() => {}}
                     collectedReward={userDetail?.collectedReward}
                 />

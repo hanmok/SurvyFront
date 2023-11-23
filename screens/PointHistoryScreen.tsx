@@ -21,7 +21,7 @@ interface ParticipatedSurveyResponse {
 }
 
 // 참여한 설문
-function ParticipatedSurveysScreen() {
+function PointHistoryScreen() {
     const { userId } = useCustomContext();
     const { updateLoadingStatus } = useCustomContext();
 
@@ -60,4 +60,4 @@ function ParticipatedSurveysScreen() {
     );
 }
 
-export default ParticipatedSurveysScreen;
+export default PointHistoryScreen;

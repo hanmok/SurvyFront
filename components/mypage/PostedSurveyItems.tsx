@@ -5,6 +5,13 @@ import { fontSizes, marginSizes } from "../../utils/sizes";
 import TextButton from "../TextButton";
 import showToast from "../common/toast/Toast";
 import { colors } from "../../utils/colors";
+// import Clipboard from "@react-native-community/clipboard";
+// import { Clipboard } from "react-native";
+// import Clipboard from ''
+// import Clipboard from "@react-native-clipboard/clipboard";
+// import Clipboard from "@react-native-clipboard/clipboard";
+
+import * as Clipboard from "expo-clipboard";
 
 interface PostedSurveyItem {
     title: string;
@@ -22,8 +29,14 @@ const PostedSurveyItems = ({
     handleTapAction: (number) => void;
     postedSurveys: PostedSurveyItem[];
 }) => {
-    const copyCode = (code: string) => {
-        showToast("success", `${code} 가 복사되었습니다.`);
+    const copyCode = async (code: string) => {
+        await Clipboard.setStringAsync(code)
+            .then(() => {
+                showToast("success", `${code} 가 복사되었습니다.`);
+            })
+            .catch(error => {
+                showToast("error", `${error}`);
+            });
     };
 
     return (

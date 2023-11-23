@@ -14,6 +14,7 @@ import { logObject } from "../utils/Log";
 import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { fontSizes } from "../utils/sizes";
 
+// 요청한 설문
 function PostedSurveysScreen({
     navigation,
 }: {

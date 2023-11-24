@@ -34,10 +34,14 @@ export default function LoginScreen({
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.login>;
 }) {
-    const { updateLoadingStatus } = useCustomContext();
-
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const {
+        updateUserDetail,
+        updateAccessToken,
+        updateUserId,
+        updateLoadingStatus,
+    } = useCustomContext();
 
     const passwordRef = useRef(null);
 
@@ -45,49 +49,33 @@ export default function LoginScreen({
         ref.current.focus();
     };
 
+    const handleDismissKeyboard = () => {
+        console.log("dismiss keyboard called");
+        Keyboard.dismiss();
+    };
+
+    const moveToSignup = () => {
+        navigation.navigate(NavigationTitle.signup);
+    };
+
+    const moveToFindId = () => {
+        navigation.navigate(NavigationTitle.findID);
+    };
+
+    const moveToFindPassword = () => {
+        navigation.navigate(NavigationTitle.findPassword);
+    };
+
     const moveToMainTab = () => {
         navigation.navigate(NavigationTitle.mainTabs);
     };
 
-    const { updateUserDetail, updateAccessToken, updateUserId } =
-        useCustomContext();
-
     useEffect(() => {
-        const fetchPrevInfo = async () => {
-            await userDataManager
-                .loadUserState()
-                .then(userState => {
-                    if (userState !== null && userState.refreshToken) {
-                        return autoSignin(userState.refreshToken).then(
-                            responseUserState => {
-                                const userState: UserState = {
-                                    ...responseUserState,
-                                };
-                                return userDataManager
-                                    .saveUserState({ ...userState })
-                                    .then((userState: UserState) => {
-                                        updateAccessToken(
-                                            userState.accessToken
-                                        );
-                                        updateUserId(userState.userId);
-                                        return getUserDetail(
-                                            userState.accessToken
-                                        ).then(userDetail => {
-                                            updateUserDetail(userDetail);
-                                            moveToMainTab();
-                                        });
-                                    });
-                            }
-                        );
-                    }
-                })
-                .catch(error => {
-                    logObject("userState error", error);
-                    showAdminToast("error", error.message);
-                });
-        };
-        fetchPrevInfo();
-    }, []);
+        const unsubscribeFocus = navigation.addListener("focus", () => {
+            setPassword("");
+        });
+        return unsubscribeFocus;
+    }, [navigation]);
 
     useEffect(() => {
         const fetchPrevInfo = async () => {
@@ -118,30 +106,6 @@ export default function LoginScreen({
         };
         fetchPrevInfo();
     }, []);
-
-    const moveToSignup = () => {
-        navigation.navigate(NavigationTitle.signup);
-    };
-
-    const moveToFindId = () => {
-        navigation.navigate(NavigationTitle.findID);
-    };
-
-    const moveToFindPassword = () => {
-        navigation.navigate(NavigationTitle.findPassword);
-    };
-
-    useEffect(() => {
-        const unsubscribeFocus = navigation.addListener("focus", () => {
-            setPassword("");
-        });
-        return unsubscribeFocus;
-    }, [navigation]);
-
-    const handleDismissKeyboard = () => {
-        console.log("dismiss keyboard called");
-        Keyboard.dismiss();
-    };
 
     const loginAction = async (username: string, password: string) => {
         console.log(

@@ -38,21 +38,13 @@ import CustomSegmentedControl from "../components/CustomSegmentedControl";
 import { Answer } from "../interfaces/Answer";
 import IndivisualSelectionResponseContainer from "../components/response/IndivisualSelectionResponseContainer";
 import IndivisualEssayResponseContainer from "../components/response/IndivisualEssayResponseContainer";
-import ImageButton from "../components/ImageButton";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import TextButton from "../components/TextButton";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 import * as XLSX from "xlsx";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
-import {
-    ArrayDictionary,
-    QuestionOrder,
-    SetDictionary,
-    StringDictionary,
-    Temp,
-} from "../utils/Dictionary";
+
 import { SheetData, getResultSheet } from "../API/AnswerAPI";
 import { useCustomContext } from "../features/context/CustomContext";
 import { QuestionTypeId } from "../QuestionType";
@@ -72,8 +64,9 @@ export default function ResponseScreen({
     >;
     route: RouteProp<RootStackParamList, NavigationTitle.response>;
 }) {
-    const { accessToken } = useCustomContext();
+    const { accessToken, updateLoadingStatus } = useCustomContext();
     const { surveyId } = route.params;
+
     const client = useApollo();
     const options = ["전체", "개별"];
 
@@ -82,55 +75,33 @@ export default function ResponseScreen({
     const [currentSequence, setCurrentSequence] = useState<number>(1);
     const [currentUserId, setCurrentUserId] = useState<number>(undefined);
 
-    const generateExcel = (sheetData: SheetData, title: string) => {
-        const firstRow = sheetData.questionInOrder.map(q => q.text);
-        firstRow.unshift("");
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-        const sum: string[][] = [firstRow];
-        const otherRows: string[][] = [];
-        sheetData.userResponses.forEach(str => {
-            otherRows.push(str);
-            sum.push(str);
-        });
+    const [isShowingOverall, setIsShowingOverall] = useState<boolean>(true);
 
-        let wb = XLSX.utils.book_new();
-        let ws = XLSX.utils.aoa_to_sheet(sum);
+    const [responseProps, setResponseProps] = useState<
+        QuestionResponseContainerProps[]
+    >([]);
 
-        XLSX.utils.book_append_sheet(wb, ws, title, true);
+    const [survey, setSurvey] = useState<GQLSurvey>(null);
+    const [answers, setAnswers] = useState<GQLAnswer[]>(null);
+    const [participatings, setParticipatings] =
+        useState<GQLParticipating[]>(null);
 
-        console.log("title: " + title);
-
-        const sanitizedName = title.replace(/[\\/:*?"<>|]/g, "");
-        let testFileName = "survey Result";
-
-        const base64 = XLSX.write(wb, { type: "base64" });
-        const filename = FileSystem.documentDirectory + `survey_responses.xlsx`;
-        FileSystem.writeAsStringAsync(filename, base64, {
-            encoding: FileSystem.EncodingType.Base64,
-        }).then(() => {
-            Sharing.shareAsync(filename);
-        });
+    const countUp = () => {
+        const updatedSequence = currentSequence + 1;
+        if (participatings && participatings.length >= updatedSequence) {
+            setCurrentSequence(updatedSequence);
+        }
     };
 
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <View style={{ marginRight: 10 }}>
-                    <View>
-                        <Ionicons
-                            name="ios-share-outline"
-                            size={30}
-                            color="black"
-                            onPress={() => {
-                                console.log("hi");
-                                setGenerateTapped(true);
-                            }}
-                        />
-                    </View>
-                </View>
-            ),
-        });
-    }, [navigation]);
+    const countDown = () => {
+        const updatedSequence = currentSequence - 1;
+
+        if (updatedSequence > 0) {
+            setCurrentSequence(updatedSequence);
+        }
+    };
 
     const {
         loading: answersLoading,
@@ -162,18 +133,61 @@ export default function ResponseScreen({
         fetchPolicy: "no-cache",
     });
 
-    const [survey, setSurvey] = useState<GQLSurvey>(null);
-    const [answers, setAnswers] = useState<GQLAnswer[]>(null);
-    const [participatings, setParticipatings] =
-        useState<GQLParticipating[]>(null);
+    const generateExcel = (sheetData: SheetData, title: string) => {
+        const firstRow = sheetData.questionInOrder.map(q => q.text);
+        firstRow.unshift("");
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+        const sum: string[][] = [firstRow];
+        const otherRows: string[][] = [];
+        sheetData.userResponses.forEach(str => {
+            otherRows.push(str);
+            sum.push(str);
+        });
 
-    const [isShowingOverall, setIsShowingOverall] = useState<boolean>(true);
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.aoa_to_sheet(sum);
 
-    const [responseProps, setResponseProps] = useState<
-        QuestionResponseContainerProps[]
-    >([]);
+        XLSX.utils.book_append_sheet(wb, ws, title, true);
+
+        console.log("title: " + title);
+
+        const sanitizedName = title.replace(/[\\/:*?"<>|]/g, "");
+        let testFileName = "survey Result";
+
+        const base64 = XLSX.write(wb, { type: "base64" });
+        const filename = FileSystem.documentDirectory + `survey_responses.xlsx`;
+        FileSystem.writeAsStringAsync(filename, base64, {
+            encoding: FileSystem.EncodingType.Base64,
+        }).then(() => {
+            Sharing.shareAsync(filename);
+        });
+    };
+
+    useEffect(() => {
+        updateLoadingStatus(
+            surveyLoading || answersLoading || participatingLoading
+        );
+    }, [surveyLoading, answersLoading, participatingLoading]);
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ marginRight: 10 }}>
+                    <View>
+                        <Ionicons
+                            name="ios-share-outline"
+                            size={30}
+                            color="black"
+                            onPress={() => {
+                                console.log("hi");
+                                setGenerateTapped(true);
+                            }}
+                        />
+                    </View>
+                </View>
+            ),
+        });
+    }, [navigation]);
 
     useEffect(() => {
         const getExcelSheet = async () => {
@@ -185,7 +199,7 @@ export default function ResponseScreen({
                 }
             });
         };
-        if (setGenerateTapped && survey) {
+        if (generateTapped && survey) {
             getExcelSheet();
             setGenerateTapped(false);
         }
@@ -197,6 +211,7 @@ export default function ResponseScreen({
                 "[ResponseScreen] currentSequence changed, participatings ",
                 participatings
             );
+            // candidate 1
             log("currentSequence: " + currentSequence);
             const correspondingUserId = participatings.find(
                 participating => participating.sequence === currentSequence
@@ -263,10 +278,13 @@ export default function ResponseScreen({
                     const selectableOptions = question.selectableOptions;
                     // question.section.sequence
                     // q id 가 같은 질문들
+                    logObject("all answers: ", answers);
+                    logObject("question: ", question);
                     const correspondingAnswers = answers.filter(
                         ans => ans.question.id === question.id
                     );
-                    const userId = correspondingAnswers[0].user.id;
+                    // candidate 2
+                    const userId = correspondingAnswers[0].user.id; // 여기네..
                     // section 에 대한 정보가 없음.
                     const questionTitle = ` ${question.position + 1}. ${
                         question.text
@@ -287,56 +305,6 @@ export default function ResponseScreen({
             setResponseProps(tempQuestionResponseContainerProps);
         }
     }, [answers, survey]);
-
-    useEffect(() => {
-        if (responseProps.length !== 0) {
-            let workbook = XLSX.utils.book_new();
-            const questionTitles = responseProps.map(rp => rp.questionTitle);
-
-            // selectedUserId 를 기준으로, 데이터 정렬시키기.
-            const eachRows: EachRow[] = [];
-
-            // userId 와 participating 의 created_at 이용해서 sort
-
-            let workspace = XLSX.utils.aoa_to_sheet([questionTitles]);
-            // make excel sheet !
-        }
-    }, [responseProps]);
-
-    // Participating 은 ?
-    if (surveyError) {
-        return <Text>survey Error</Text>;
-    }
-
-    if (answersError) {
-        return <Text>Answer Error</Text>;
-    }
-
-    if (participatingError) {
-        return <Text>Participating Error</Text>;
-    }
-
-    const { updateLoadingStatus } = useCustomContext();
-    useEffect(() => {
-        updateLoadingStatus(
-            surveyLoading || answersLoading || participatingLoading
-        );
-    }, [surveyLoading, answersLoading, participatingLoading]);
-
-    const countUp = () => {
-        const updatedSequence = currentSequence + 1;
-        if (participatings && participatings.length >= updatedSequence) {
-            setCurrentSequence(updatedSequence);
-        }
-    };
-
-    const countDown = () => {
-        const updatedSequence = currentSequence - 1;
-
-        if (updatedSequence > 0) {
-            setCurrentSequence(updatedSequence);
-        }
-    };
 
     const overallQuestionResponseBoxItem: ListRenderItem<
         QuestionResponseContainerProps
@@ -364,15 +332,8 @@ export default function ResponseScreen({
 
     const bottomOverallView = () => {
         return (
-            <Text
-                style={{
-                    alignSelf: "flex-end",
-                    marginRight: 30,
-                    fontSize: fontSizes.s16,
-                    marginTop: 10,
-                }}
-            >
-                총 설문 인원 {survey ? survey.currentParticipation : 0}
+            <Text style={styles.bottom}>
+                총 설문 인원 {survey?.currentParticipation ?? 0}
             </Text>
         );
     };
@@ -402,18 +363,20 @@ export default function ResponseScreen({
     };
 
     const listHeader = () => {
-        return (
-            <Text
-                style={{
-                    fontSize: 22,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                }}
-            >
-                {survey ? survey.title : ""}
-            </Text>
-        );
+        return <Text style={styles.listHeader}>{survey?.title}</Text>;
     };
+
+    if (surveyError) {
+        return <Text>survey Error</Text>;
+    }
+
+    if (answersError) {
+        return <Text>Answer Error</Text>;
+    }
+
+    if (participatingError) {
+        return <Text>Participating Error</Text>;
+    }
 
     return (
         <View style={styles.container}>
@@ -451,7 +414,6 @@ export default function ResponseScreen({
                 </>
                 <View
                     style={{
-                        // backgroundColor: "magenta",
                         width: screenWidth - 24,
                         height: 100,
                     }}
@@ -459,32 +421,18 @@ export default function ResponseScreen({
                     {isShowingOverall ? (
                         bottomOverallView()
                     ) : (
-                        <View
-                            style={{
-                                // backgroundColor: "cyan",
-                                alignSelf: "flex-end",
-                                marginRight: 30,
-                                marginTop: 10,
-                                flexDirection: "row",
-                                // paddingBottom: 10,
-                            }}
-                        >
+                        <View style={styles.userIndexContainer}>
                             <Entypo
                                 name="chevron-left"
                                 onPress={countDown}
                                 size={24}
                             />
-
                             <TextButton
                                 title={`${currentSequence}`}
                                 textStyle={{ textAlign: "center" }}
-                                backgroundStyle={{
-                                    marginHorizontal: 6,
-                                    width: 40,
-                                    borderRadius: 6,
-                                    backgroundColor: colors.blurredGray,
-                                    overflow: "hidden",
-                                }}
+                                backgroundStyle={
+                                    styles.currentUserIndexContainerBG
+                                }
                                 onPress={countDown}
                             />
                             <Entypo
@@ -511,5 +459,29 @@ const styles = StyleSheet.create({
     container: {
         marginHorizontal: marginSizes.s12,
         flex: 1,
+    },
+    listHeader: {
+        fontWeight: "bold",
+        fontSize: 22,
+        textAlign: "center",
+    },
+    bottom: {
+        alignSelf: "flex-end",
+        marginRight: 30,
+        fontSize: fontSizes.s16,
+        marginTop: 10,
+    },
+    userIndexContainer: {
+        alignSelf: "flex-end",
+        marginRight: 30,
+        marginTop: 10,
+        flexDirection: "row",
+    },
+    currentUserIndexContainerBG: {
+        marginHorizontal: 6,
+        width: 40,
+        borderRadius: 6,
+        backgroundColor: colors.blurredGray,
+        overflow: "hidden",
     },
 });

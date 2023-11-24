@@ -46,7 +46,9 @@ export default function LoginScreen({
     const passwordRef = useRef(null);
 
     const handleKeyPress = ref => {
-        ref.current.focus();
+        if (ref && ref.current) {
+            ref.current.focus();
+        }
     };
 
     const handleDismissKeyboard = () => {

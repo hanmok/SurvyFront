@@ -1,3 +1,4 @@
+import { PostAnswerIngre } from "./../../screens/ParticipatingScreen";
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { numberOfQuestions } from "../../types/types";
@@ -7,18 +8,23 @@ import { log, logObject } from "../../utils/Log";
 interface SelectorState {
     selectedOptionIds: number[][];
     textAnswers: CustomAnswer[];
+    answerIngredients: PostAnswerIngre[];
 }
 
 const initialState: SelectorState = {
     selectedOptionIds: [],
     textAnswers: [],
+    answerIngredients: [],
 };
 
 export const selectorSlice = createSlice({
     name: "selector",
     initialState,
     reducers: {
-        initialize: (state, action: PayloadAction<numberOfQuestions>) => {
+        initializeSelections: (
+            state,
+            action: PayloadAction<numberOfQuestions>
+        ) => {
             const numberOfQuestions = action.payload;
 
             let outer: number[][] = [];
@@ -29,7 +35,17 @@ export const selectorSlice = createSlice({
             state.textAnswers = [];
             console.log("[selectorSlice], initialize called");
         },
+        initializeAnswer: state => {
+            state.answerIngredients = [];
+        },
 
+        addToAnswerIngredients: (
+            state,
+            action: PayloadAction<{ ingre: PostAnswerIngre }>
+        ) => {
+            const { ingre } = action.payload;
+            state.answerIngredients.push(ingre);
+        },
         selectSingleSelection: (
             state,
             action: PayloadAction<{
@@ -175,10 +191,11 @@ export const selectorSlice = createSlice({
 });
 
 export const {
-    initialize,
+    initializeSelections,
     selectSingleSelection,
     selectMultipleSelection,
     textInputAction,
+    addToAnswerIngredients,
 } = selectorSlice.actions;
 
 export default selectorSlice.reducer;

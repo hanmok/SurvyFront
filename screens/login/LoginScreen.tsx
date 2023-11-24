@@ -45,49 +45,91 @@ export default function LoginScreen({
         ref.current.focus();
     };
 
+    const moveToMainTab = () => {
+        navigation.navigate(NavigationTitle.mainTabs);
+    };
+
     const { updateUserDetail, updateAccessToken, updateUserId } =
         useCustomContext();
 
-    const toastMessage = () => {
-        Toast.show({
-            type: "success",
-            text1: "hello",
-        });
-    };
+    useEffect(() => {
+        const fetchPrevInfo = async () => {
+            await userDataManager
+                .loadUserState()
+                .then(userState => {
+                    if (userState !== null && userState.refreshToken) {
+                        return autoSignin(userState.refreshToken).then(
+                            responseUserState => {
+                                const userState: UserState = {
+                                    ...responseUserState,
+                                };
+                                return userDataManager
+                                    .saveUserState({ ...userState })
+                                    .then((userState: UserState) => {
+                                        updateAccessToken(
+                                            userState.accessToken
+                                        );
+                                        updateUserId(userState.userId);
+                                        return getUserDetail(
+                                            userState.accessToken
+                                        ).then(userDetail => {
+                                            updateUserDetail(userDetail);
+                                            moveToMainTab();
+                                        });
+                                    });
+                            }
+                        );
+                    }
+                })
+                .catch(error => {
+                    logObject("userState error", error);
+                    showAdminToast("error", error.message);
+                });
+        };
+        fetchPrevInfo();
+    }, []);
 
     useEffect(() => {
         const fetchPrevInfo = async () => {
-            // const prevUserState = await loadUserState();
-            const prevUserState = await userDataManager.loadUserState();
-            if (prevUserState.refreshToken) {
-                // 만약, 만료되었으면?
-                try {
-                    const userResponse = await autoSignin(
-                        prevUserState.refreshToken
+            try {
+                const userState = await userDataManager.loadUserState();
+                if (userState !== null && userState.refreshToken) {
+                    const responseUserState = await autoSignin(
+                        userState.refreshToken
                     );
-                    const userState: UserState = { ...userResponse };
-                    logObject("userState", userState);
 
-                    // await saveUserState({ ...userState });
-                    userDataManager.saveUserState({ ...userState });
-                    updateAccessToken(userState.accessToken);
-                    updateUserId(userState.userId);
+                    const updatedUserState =
+                        await userDataManager.saveUserState({
+                            ...responseUserState,
+                        });
 
-                    console.log("getUserDetail called");
+                    updateAccessToken(updatedUserState.accessToken);
+                    updateUserId(updatedUserState.userId);
+
                     const userDetail = await getUserDetail(
-                        userState.accessToken
+                        updatedUserState.accessToken
                     );
-                    logObject("userDetail", userDetail);
                     updateUserDetail(userDetail);
-
-                    navigation.navigate(NavigationTitle.mainTabs);
-                } catch (error) {
-                    alert(error.message);
+                    moveToMainTab();
                 }
+            } catch (error) {
+                showAdminToast("error", `${error.message}`);
             }
         };
         fetchPrevInfo();
     }, []);
+
+    const moveToSignup = () => {
+        navigation.navigate(NavigationTitle.signup);
+    };
+
+    const moveToFindId = () => {
+        navigation.navigate(NavigationTitle.findID);
+    };
+
+    const moveToFindPassword = () => {
+        navigation.navigate(NavigationTitle.findPassword);
+    };
 
     useEffect(() => {
         const unsubscribeFocus = navigation.addListener("focus", () => {
@@ -121,7 +163,6 @@ export default function LoginScreen({
             .then(userResponse => {
                 const { userId, accessToken, refreshToken } = userResponse;
                 userState = { userId, accessToken, refreshToken };
-
                 return getUserDetail(userState.accessToken);
             })
             .then(userDetail => {
@@ -135,6 +176,7 @@ export default function LoginScreen({
                 showToast("success", "로그인되었습니다.");
             })
             .catch(error => {
+                // handled from API Call
                 // showToast("error", error.message);
             })
             .finally(() => {
@@ -157,7 +199,6 @@ export default function LoginScreen({
                                 keyboardType="email-address"
                                 autoCapitalize="none"
                                 onSubmitEditing={() => {
-                                    console.log("[LoginScreen] return tapped");
                                     handleKeyPress(passwordRef);
                                 }}
                             />
@@ -173,9 +214,6 @@ export default function LoginScreen({
                                 secureTextEntry={true}
                                 autoCapitalize="none"
                                 onSubmitEditing={() => {
-                                    console.log(
-                                        "[LoginScreen] return tapped from password textinput"
-                                    );
                                     loginAction(username, password);
                                 }}
                             />
@@ -186,8 +224,6 @@ export default function LoginScreen({
                         <TextButton
                             title="로그인"
                             onPress={() => {
-                                console.log("login tapped");
-                                // 성공시 여기 화면으로 넘어가기!
                                 loginAction(username, password);
                             }}
                             textStyle={styles.loginTextStyle}
@@ -201,12 +237,7 @@ export default function LoginScreen({
                         <Spacer size={10} />
                         <TextButton
                             title="회원가입"
-                            onPress={() => {
-                                console.log("login tapped");
-                                // 성공시 여기 화면으로 넘어가기!
-
-                                navigation.navigate(NavigationTitle.signup);
-                            }}
+                            onPress={moveToSignup}
                             textStyle={styles.loginTextStyle}
                             backgroundStyle={[
                                 styles.loginInfoContainer,
@@ -224,35 +255,22 @@ export default function LoginScreen({
                         >
                             <TextButton
                                 title="아이디 찾기"
-                                onPress={() => {
-                                    log("forgot ID tapped");
-                                    navigation.navigate(NavigationTitle.findID);
-                                }}
-                                textStyle={{
-                                    color: colors.deepMainColor,
-                                    fontWeight: "bold",
-                                }}
-                                backgroundStyle={{ alignItems: "center" }}
+                                onPress={moveToFindId}
+                                textStyle={styles.findButtonText}
+                                backgroundStyle={styles.findButtonBG}
                                 hasShadow={false}
                             />
 
                             <TextButton
                                 title="비밀번호 찾기"
-                                onPress={() => {
-                                    log("forgot Password tapped");
-                                    navigation.navigate(
-                                        NavigationTitle.findPassword
-                                    );
-                                }}
-                                textStyle={{
-                                    color: colors.deepMainColor,
-                                    fontWeight: "bold",
-                                }}
+                                onPress={moveToFindPassword}
+                                textStyle={styles.findButtonText}
                                 hasShadow={false}
-                                backgroundStyle={{ alignItems: "center" }}
+                                backgroundStyle={styles.findButtonBG}
                             />
                         </View>
                     </View>
+                    {/* make view upward */}
                     <View></View>
                 </View>
             </TouchableWithoutFeedback>
@@ -283,7 +301,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.deepMainColor,
         borderWidth: 0,
     },
-    loginTextStyle: { fontSize: 20, justifyContent: "center", color: "white" },
+    loginTextStyle: {
+        fontSize: 20,
+        justifyContent: "center",
+        color: "white",
+    },
     loginBackgroundStyle: {
         flexDirection: "column",
         justifyContent: "center",
@@ -293,5 +315,12 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         paddingHorizontal: 20,
         fontSize: fontSizes.s16,
+    },
+    findButtonText: {
+        color: colors.deepMainColor,
+        fontWeight: "bold",
+    },
+    findButtonBG: {
+        alignItems: "center",
     },
 });

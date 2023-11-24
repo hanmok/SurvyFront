@@ -2,6 +2,7 @@ import Storage from "react-native-storage";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import showToast from "../components/common/toast/Toast";
+import showAdminToast from "../components/common/toast/showAdminToast";
 
 class PostingSurveyDataManager {
     private storage: Storage;
@@ -20,12 +21,17 @@ class PostingSurveyDataManager {
         });
     };
 
-    save = async (data: PostingSurveyState) => {
-        await this.storage.save({
-            key: "postingSurvey",
-            data: data,
-            expires: null,
-        });
+    save = async (data: PostingSurveyState): Promise<PostingSurveyState> => {
+        try {
+            await this.storage.save({
+                key: "postingSurvey",
+                data: data,
+                expires: null,
+            });
+            return data;
+        } catch (error) {
+            showAdminToast("error", "failed to save postingSurvey");
+        }
     };
 
     load = async (): Promise<PostingSurveyState | null> => {

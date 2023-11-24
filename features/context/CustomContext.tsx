@@ -2,6 +2,7 @@ import { ReactNode, createContext, useContext, useState } from "react";
 import { UserState } from "../../interfaces/UserState";
 import { AccessToken, UserId } from "../../types/types";
 import { GeoInfo } from "../../interfaces/GeoInfo";
+import showAdminToast from "../../components/common/toast/showAdminToast";
 
 export interface UserDetail {
     collectedReward: number;
@@ -118,7 +119,11 @@ export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
 export const useCustomContext = (): CustomContextProps => {
     const context = useContext(CustomContext);
     if (!context) {
-        throw new Error("useCustomContext must be used within a MyProvider");
+        console.error("useCustomContext must be used within a MyProvider");
+        showAdminToast(
+            "error",
+            "useCustomContext must be used within a MyProvider"
+        );
     }
     return context;
 };

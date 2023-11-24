@@ -1,3 +1,5 @@
+import showAdminToast from "./components/common/toast/showAdminToast";
+
 export enum QuestionTypeKorean {
     SingleSelection = "단일 선택",
     MultiSelection = "다중 선택",
@@ -27,6 +29,7 @@ export function getQuestionType(index: number): string {
         case QuestionTypeId.Essay: // case 300:
             return QuestionTypeKorean.Essay;
         default:
-            throw new Error("Invalid Input");
+            console.error("INVALID Question Type");
+            showAdminToast("error", "INVALID Question Type");
     }
 }

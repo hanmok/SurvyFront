@@ -22,11 +22,12 @@ import showMessageAlert from "../../components/CustomAlert";
 import { log, logObject } from "../../utils/Log";
 import { API_BASE_URL } from "../../API/API";
 import { useCustomContext } from "../../features/context/CustomContext";
-import { userDataManager } from "../../utils/Storage";
+import { userDataManager } from "../../utils/UserDataManager";
 import Toast from "react-native-toast-message";
 import ShowToast from "../../components/common/toast/Toast";
 import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
+import isValidEmail from "../../utils/EmailValidation";
 
 export default function LoginScreen({
     navigation,
@@ -105,40 +106,40 @@ export default function LoginScreen({
             `[LoginScreen] username: ${username}, password: ${password}`
         );
 
-        if (username === "") {
-            // showMessageAlert("아이디 미입력", "아이디를 입력해주세요.");
-            showToast("error", "아이디를 입력해주세요.");
+        if (isValidEmail(username) === false) {
+            showToast("error", "아이디는 이메일 형식입니다");
             return;
         }
         if (password === "") {
-            // showMessageAlert("비밀번호 미입력", "비밀번호를 입력해주세요");
             showToast("error", "비밀번호를 입력해주세요");
             return;
         }
 
-        try {
-            updateLoadingStatus(true);
-            const userResponse = await signin(username, password);
+        updateLoadingStatus(true);
+        let userState: UserState | null;
+        await signin(username, password)
+            .then(userResponse => {
+                const { userId, accessToken, refreshToken } = userResponse;
+                userState = { userId, accessToken, refreshToken };
 
-            const { userId, accessToken, refreshToken } = userResponse;
-            const userState: UserState = { userId, accessToken, refreshToken };
+                return getUserDetail(userState.accessToken);
+            })
+            .then(userDetail => {
+                updateAccessToken(userState.accessToken);
+                updateUserId(userState.userId);
 
-            logObject("userState", userState);
-
-            const userDetail = await getUserDetail(userState.accessToken);
-            logObject("userDetail", userDetail);
-            // await saveUserState(userState);
-            await userDataManager.saveUserState(userState);
-            updateAccessToken(userState.accessToken);
-            updateUserId(userState.userId);
-            showToast("success", "로그인되었습니다.");
-            navigation.navigate(NavigationTitle.mainTabs, undefined);
-        } catch (error) {
-            // showToast("error", "아이디 또는 비밀번호를 다시 확인해주세요.");
-            showToast("error", `${error.message}`);
-        } finally {
-            updateLoadingStatus(false);
-        }
+                return userDataManager.saveUserState(userState);
+            })
+            .then(() => {
+                navigation.navigate(NavigationTitle.mainTabs, undefined);
+                showToast("success", "로그인되었습니다.");
+            })
+            .catch(error => {
+                // showToast("error", error.message);
+            })
+            .finally(() => {
+                updateLoadingStatus(false);
+            });
     };
 
     return (

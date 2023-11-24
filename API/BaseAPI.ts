@@ -1,3 +1,5 @@
+import showToast from "../components/common/toast/Toast";
+import showAdminToast from "../components/common/toast/showAdminToast";
 import { logObject } from "../utils/Log";
 
 export interface ApiOptions {
@@ -15,10 +17,12 @@ export async function fetchData<T>(
         const response = await fetch(url, options);
         logObject(`api called, url:${url}, options`, options);
 
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
+        if (response.ok === false) {
+            logObject("response is not ok", response);
+            // throw new Error("Network response was not ok");
+            showAdminToast("error", `response is not ok`);
         }
-        // return response.json().data;
+        // ok 가 false 이면, response 도 없나?
         const apiResponse: ApiResponse<T> = await response.json();
         logObject(`API ${message} Result`, apiResponse);
 
@@ -27,10 +31,11 @@ export async function fetchData<T>(
         if (statusCode >= 200 && statusCode < 300) {
             return apiResponse.data;
         } else {
-            throw new Error(apiResponse.message);
+            console.error(apiResponse.message);
+            showToast("error", apiResponse.message);
         }
     } catch (error) {
-        console.log(`${url} API call failed: ${error.message}`);
-        throw error;
+        console.error(`${url} API call failed: ${error.message}`);
+        showAdminToast("error", `${url} API failed`);
     }
 }

@@ -14,7 +14,7 @@ export function ApolloProvider({ children }) {
 export function useApollo() {
     const context = useContext(ApolloContext);
     if (!context) {
-        throw new Error("useApollo must be used within an ApolloProvider");
+        console.error("useApollo must be used within an ApolloProvider");
     }
     return context;
 }

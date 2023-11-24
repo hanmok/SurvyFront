@@ -66,8 +66,8 @@ function HomeScreen({
                 logObject("userDetail", detailInfo);
                 updateUserDetail(detailInfo);
             } catch (error) {
-                // throw new Error(error.message);
-                alert(error.message);
+                showAdminToast("error", error.message);
+                console.error(error);
             }
         };
 

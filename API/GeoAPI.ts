@@ -30,8 +30,8 @@ export async function getAddress(
             },
         });
         if (!response.ok) {
-            console.log(`GEOAPI error!`);
-            throw new Error("GEO API error");
+            console.error(`GEOAPI error!`);
+            showAdminToast("error", "GEO API error!");
         }
 
         // const responseData: ApiResponse = await response.json();
@@ -53,7 +53,7 @@ export async function getAddress(
         return apiResponse;
     } catch (error) {
         showAdminToast("error", error.message);
-        throw error;
+        console.error(error);
     }
 }
 

@@ -169,6 +169,12 @@ function HomeScreen({
 
     const { updateLoadingStatus } = useCustomContext();
 
+    const moveToPostingScreen = () => {
+        navigation.navigate(NavigationTitle.posting, {
+            postingSurveyState: null,
+        });
+    };
+
     useEffect(() => {
         updateLoadingStatus(isLoading);
     }, [isLoading]);
@@ -250,14 +256,11 @@ function HomeScreen({
                         if (postingSurvey) {
                             toggleModalVisibility();
                         } else {
-                            navigation.navigate(NavigationTitle.posting, {
-                                postingSurveyState: null,
-                            });
-                            // moveToPostingScreen();
+                            moveToPostingScreen();
                         }
                     }}
                 >
-                    <Octicons name="plus-circle" size={60} color="black" />
+                    <Feather name="plus" size={36} color="white" />
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -276,13 +279,15 @@ const styles = StyleSheet.create({
         alignItems: "stretch",
     },
     floatingButton: {
-        backgroundColor: colors.gray4,
         bottom: 20,
         right: 20,
-        position: "absolute",
         width: 60,
         height: 60,
         borderRadius: 30,
+        position: "absolute",
+        backgroundColor: colors.deeperMainColor,
+        alignItems: "center",
+        justifyContent: "center",
     },
     floatingButtonContainer: {
         alignItems: "center",

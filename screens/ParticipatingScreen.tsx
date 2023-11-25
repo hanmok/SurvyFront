@@ -49,6 +49,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useCustomContext } from "../features/context/CustomContext";
 import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
+import { screenWidth } from "../utils/ScreenSize";
 
 export interface TextAnswerForm {
     customAnswer: CustomAnswer;
@@ -100,7 +101,6 @@ export const ConvertSelectionToNormalForm = (
     };
 };
 
-// 화면 깨짐 발생함
 function ParticipatingScreen({
     route,
     navigation,
@@ -367,22 +367,19 @@ function ParticipatingScreen({
     };
 
     return (
-        <KeyboardAvoidingView
-            style={styles.container}
-            // behavior={Platform.OS === "ios" ? "position" : "position"}
-            behavior="position"
-        >
-            <TouchableNativeFeedback
-                onPress={dismissKeyboard}
-                // style={styles.container}
-            >
-                <View style={{ flex: 1 }}>
+        <KeyboardAvoidingView style={styles.container} behavior="position">
+            <TouchableNativeFeedback onPress={dismissKeyboard}>
+                <View
+                    style={{
+                        flex: 1,
+                        width: screenWidth - 40,
+                    }}
+                >
                     <FlatList
-                        style={styles.flatListStyle}
+                        style={styles.flatListStyle} // alignSelf: stretch
                         data={questions}
                         renderItem={renderItem}
                         keyExtractor={item => `${item.id}${item.text} `}
-                        // ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
                         ItemSeparatorComponent={() => (
                             <View style={{ height: 10 }} />
                         )}
@@ -399,7 +396,6 @@ export default ParticipatingScreen;
 const styles = StyleSheet.create({
     container: {
         alignItems: "center",
-        marginHorizontal: 20,
         marginBottom: 30,
         flex: 1,
     },

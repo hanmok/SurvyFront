@@ -1,6 +1,5 @@
 import { View, StyleSheet, FlatList, Text } from "react-native";
 import { fontSizes } from "../../utils/sizes";
-import { SelectableOption } from "../../interfaces/SelectableOption";
 import { GQLAnswer, GQLSelectableOption } from "../../interfaces/GQLInterface";
 import { screenWidth } from "../../utils/ScreenSize";
 import { colors } from "../../utils/colors";
@@ -69,7 +68,9 @@ const OverallSelectionResponseContainer: React.FC<
                                             ) > 0
                                                 ? colors.gray3
                                                 : colors.transparent,
+                                        borderRadius: 6,
                                     },
+
                                     styles.bar,
                                 ]}
                             >

@@ -15,6 +15,7 @@ import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { fontSizes } from "../utils/sizes";
 
 // 요청한 설문
+// TODO: 날짜 넣기.
 function PostedSurveysScreen({
     navigation,
 }: {

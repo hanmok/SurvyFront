@@ -35,7 +35,9 @@ export const selectorSlice = createSlice({
             state.textAnswers = [];
             console.log("[selectorSlice], initialize called");
         },
+
         initializeAnswer: state => {
+            console.log("answerIngredients initialized");
             state.answerIngredients = [];
         },
 
@@ -196,6 +198,7 @@ export const {
     selectMultipleSelection,
     textInputAction,
     addToAnswerIngredients,
+    initializeAnswer,
 } = selectorSlice.actions;
 
 export default selectorSlice.reducer;

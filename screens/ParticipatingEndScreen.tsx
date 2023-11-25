@@ -78,7 +78,8 @@ function ParticipatingEndScreen({
 
             <View>
                 <DescriptionTextButton
-                    title="불성실 응답을 했어요"
+                    // title="불성실 응답을 했어요"
+                    title="대충 응답한 문항이 있어요"
                     description="어떠한 패널티도 주어지지 않습니다. (포인트 지급X)"
                     onPress={() => {
                         setSelectedResponse(false);

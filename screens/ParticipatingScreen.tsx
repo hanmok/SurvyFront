@@ -22,6 +22,7 @@ import TextButton from "../components/TextButton";
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
 import {
     addToAnswerIngredients,
+    initializeAnswer,
     initializeSelections,
 } from "../features/selector/selectorSlice";
 import { CustomAnswer } from "../interfaces/CustomAnswer";
@@ -102,6 +103,7 @@ export const makePostSelectionAnswer = (
     };
 };
 
+// 화면 깨짐 발생함
 function ParticipatingScreen({
     route,
     navigation,
@@ -112,7 +114,6 @@ function ParticipatingScreen({
         NavigationTitle.participate
     >;
 }) {
-    const [isLoading, setIsLoading] = useState(false);
     const client = useApollo();
     const { loading, error, data } = useQuery<GQLSurveyResponse>(
         getSurveyQuery,
@@ -131,25 +132,33 @@ function ParticipatingScreen({
         PostAnswerIngre[]
     >([]);
 
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        console.log("participatingScreen loaded");
+
+        dispatch(initializeAnswer);
+    }, []);
     const answerPromises: Promise<void>[] = [];
 
-    const [shouldCall, setShouldCall] = useState(false);
+    const [shouldPost, setShouldPost] = useState(false);
 
     useEffect(() => {
         logObject("answerIngredients changed to", answerIngredients);
     }, [answerIngredients]);
 
+    // 왜 마지막에만 해야해? 계속 하면 안돼? Answer 에서 똥이 나와서그래. 필요 없는 데이터들.
+
     useEffect(() => {
         const callAPI = async () => {
-            setIsLoading(true);
+            updateLoadingStatus(true);
 
             showAdminToast("success", "posting apis called");
             logObject("current answerIngre flag 3", answerIngredients);
 
-            // const ps = Array.from(answerIngredients).map(async body => {
-            //     logObject("posting api", body);
-            //     await myPostAnswer(body);
-            // });
+            // setTimeout(() => {
+            //     console.log("taking rest");
+            // }, 3000);
 
             const ps = Array.from(myAnswerIngres).map(async body => {
                 logObject("posting api", body);
@@ -160,7 +169,7 @@ function ParticipatingScreen({
                 .then(() => {
                     createParticipate(surveyId, userId, accessToken).then(
                         () => {
-                            setIsLoading(false);
+                            updateLoadingStatus(false);
                             moveToNextScreen();
                         }
                     );
@@ -169,10 +178,10 @@ function ParticipatingScreen({
                     showToast("error", `${error.message}`);
                 });
         };
-        if (shouldCall) {
+        if (shouldPost) {
             callAPI();
         }
-    }, [shouldCall, answerIngredients]);
+    }, [shouldPost, answerIngredients]);
 
     const [isNextTapped, setIsNextTapped] = useState(false);
     const shouldGoBack = useRef(false);
@@ -187,6 +196,7 @@ function ParticipatingScreen({
 
     const myAnswerIngres = useSelector((state: RootState) => {
         const ret = state.selector.answerIngredients;
+        logObject("myAnswerIngres", myAnswerIngres);
         return ret;
     });
 
@@ -391,7 +401,7 @@ function ParticipatingScreen({
                         // answerIngredients.push(sth);
                         // const updated = [...answerIngredients, sth];
                         // setAnswerIngredients(updated);
-                        setAnswerIngredients(prev => [...prev, sth]);
+                        // setAnswerIngredients(prev => [...prev, sth]);
                         dispatch(addToAnswerIngredients({ ingre: sth }));
                         logObject("[ParticipatingScreen] postSelection", {
                             questionId,
@@ -400,6 +410,7 @@ function ParticipatingScreen({
                     }
                 }
             }
+
             console.log("current section: ", currentSectionIndex);
             console.log(
                 "currentSurvey.sections.length: ",
@@ -409,29 +420,7 @@ function ParticipatingScreen({
             logObject("current answerIngre flag 2", answerIngredients);
 
             if (currentSectionIndex === currentSurvey.sections.length - 1) {
-                // console.log("what is the matter?");
-                // setIsLoading(true);
-                setShouldCall(true);
-                // showAdminToast("success", "posting apis called");
-                // logObject("current answerIngre flag 3", answerIngredients);
-
-                // const ps = Array.from(answerIngredients).map(async body => {
-                //     logObject("posting api", body);
-                //     await myPostAnswer(body);
-                // });
-
-                // await Promise.all(ps)
-                //     .then(() => {
-                //         createParticipate(surveyId, userId, accessToken).then(
-                //             () => {
-                //                 setIsLoading(false);
-                //                 moveToNextScreen();
-                //             }
-                //         );
-                //     })
-                //     .catch(error => {
-                //         showToast("error", `${error.message}`);
-                //     });
+                setShouldPost(true);
             } else {
                 dispatch(
                     initializeSelections(
@@ -456,8 +445,8 @@ function ParticipatingScreen({
     };
 
     useEffect(() => {
-        updateLoadingStatus(loading || isLoading);
-    }, [loading, isLoading]);
+        updateLoadingStatus(loading);
+    }, [loading]);
 
     const renderItem = ({ item }: { item: GQLQuestion }) => (
         <View style={styles.questionContainerBox}>

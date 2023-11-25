@@ -13,6 +13,9 @@ const toastConfig = {
                 fontSize: 18,
                 fontWeight: "700",
             }}
+            text2Style={{
+                fontSize: 14,
+            }}
         />
     ),
     error: props => (

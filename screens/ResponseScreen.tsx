@@ -309,20 +309,20 @@ export default function ResponseScreen({
     const overallQuestionResponseBoxItem: ListRenderItem<
         QuestionResponseContainerProps
     > = ({ item }) => {
-        return item.questionTypeId !== `${QuestionTypeId.Essay}` ? (
-            <OverallSelectionResponseContainer
+        return item.questionTypeId === `${QuestionTypeId.Essay}` ? (
+            <OverallEssayResponseContainer
                 sectionSequence={item.sectionSequence}
                 questionTitle={item.questionTitle}
-                selectableOptions={item.selectableOptions}
+                selectableOptions={[]} // 필요 없음.
                 answers={item.answers}
                 questionTypeId={item.questionTypeId}
                 selectedUserId={undefined}
             />
         ) : (
-            <OverallEssayResponseContainer
+            <OverallSelectionResponseContainer
                 sectionSequence={item.sectionSequence}
                 questionTitle={item.questionTitle}
-                selectableOptions={[]} // 필요 없음.
+                selectableOptions={item.selectableOptions}
                 answers={item.answers}
                 questionTypeId={item.questionTypeId}
                 selectedUserId={undefined}
@@ -341,20 +341,20 @@ export default function ResponseScreen({
     const indivisualQuestionResponseBoxItem: ListRenderItem<
         QuestionResponseContainerProps
     > = ({ item }) => {
-        return item.questionTypeId !== "300" ? (
-            <IndivisualSelectionResponseContainer
+        return item.questionTypeId === `${QuestionTypeId.Essay}` ? (
+            <IndivisualEssayResponseContainer
                 sectionSequence={item.sectionSequence}
                 questionTitle={item.questionTitle}
-                selectableOptions={item.selectableOptions}
+                selectableOptions={[]} // 필요 없음.
                 answers={item.answers}
                 questionTypeId={item.questionTypeId}
                 selectedUserId={currentUserId}
             />
         ) : (
-            <IndivisualEssayResponseContainer
+            <IndivisualSelectionResponseContainer
                 sectionSequence={item.sectionSequence}
                 questionTitle={item.questionTitle}
-                selectableOptions={[]} // 필요 없음.
+                selectableOptions={item.selectableOptions}
                 answers={item.answers}
                 questionTypeId={item.questionTypeId}
                 selectedUserId={currentUserId}

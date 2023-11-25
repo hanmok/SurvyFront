@@ -1,4 +1,4 @@
-import { PostAnswerIngre } from "./../../screens/ParticipatingScreen";
+import { NormalAnswerForm } from "./../../screens/ParticipatingScreen";
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { numberOfQuestions } from "../../types/types";
@@ -8,7 +8,7 @@ import { log, logObject } from "../../utils/Log";
 interface SelectorState {
     selectedOptionIds: number[][];
     textAnswers: CustomAnswer[];
-    answerIngredients: PostAnswerIngre[];
+    answerIngredients: NormalAnswerForm[];
 }
 
 const initialState: SelectorState = {
@@ -43,7 +43,7 @@ export const selectorSlice = createSlice({
 
         addToAnswerIngredients: (
             state,
-            action: PayloadAction<{ ingre: PostAnswerIngre }>
+            action: PayloadAction<{ ingre: NormalAnswerForm }>
         ) => {
             const { ingre } = action.payload;
             state.answerIngredients.push(ingre);

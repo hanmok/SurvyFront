@@ -30,9 +30,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "../store";
 import { createParticipate, postAnswer } from "../API/AnswerAPI";
-
-// import { loadUserState } from "../utils/Storage";
-// import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
 import {
     convertKeysToCamelCaseRecursive,
@@ -53,14 +50,14 @@ import { useCustomContext } from "../features/context/CustomContext";
 import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
 
-export interface PostTextAnswerIngre {
+export interface TextAnswerForm {
     customAnswer: CustomAnswer;
     surveyId: number;
     userId: number;
     accessToken: string;
 }
 
-export interface PostSelectionAnswerIngre {
+export interface SelectionAnswerForm {
     questionId: number;
     selectableOptionId: number;
     surveyId: number;
@@ -68,7 +65,7 @@ export interface PostSelectionAnswerIngre {
     accessToken: string;
 }
 
-export interface PostAnswerIngre {
+export interface NormalAnswerForm {
     surveyId: number;
     questionId: number;
     selectableOptionId: number;
@@ -77,9 +74,9 @@ export interface PostAnswerIngre {
     accessToken: string;
 }
 
-export const makePostTextAnswer = (
-    ingre: PostTextAnswerIngre
-): PostAnswerIngre => {
+export const convertTextToNormalForm = (
+    ingre: TextAnswerForm
+): NormalAnswerForm => {
     return {
         surveyId: ingre.surveyId,
         questionId: ingre.customAnswer.questionId,
@@ -90,9 +87,9 @@ export const makePostTextAnswer = (
     };
 };
 
-export const makePostSelectionAnswer = (
-    ingre: PostSelectionAnswerIngre
-): PostAnswerIngre => {
+export const ConvertSelectionToNormalForm = (
+    ingre: SelectionAnswerForm
+): NormalAnswerForm => {
     return {
         surveyId: ingre.surveyId,
         questionId: ingre.questionId,
@@ -115,6 +112,52 @@ function ParticipatingScreen({
     >;
 }) {
     const client = useApollo();
+
+    const { sectionId, surveyId } = route.params;
+
+    // Reducers
+    const dispatch = useDispatch();
+
+    const selectedSOIndexIds = useSelector((state: RootState) => {
+        const ret = state.selector.selectedOptionIds;
+        logObject("selectedSOIndexIds changed to", ret);
+        return ret;
+    });
+
+    const myAnswerIngres = useSelector((state: RootState) => {
+        const ret = state.selector.answerIngredients;
+        logObject("myAnswerIngres", myAnswerIngres);
+        return ret;
+    });
+
+    const textAnswers = useSelector((state: RootState) => {
+        return state.selector.textAnswers;
+    });
+
+    const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+
+    const [shouldPost, setShouldPost] = useState(false);
+    const [isSatisfied, setIsSatisfied] = useState(false);
+    const [isNextTapped, setIsNextTapped] = useState(false);
+
+    const [currentSurvey, setCurrentSurvey] = useState<GQLSurvey | null>(null);
+    const [questions, setQuestions] = useState<GQLQuestion[]>([]);
+    const { userId, accessToken, updateLoadingStatus } = useCustomContext();
+
+    const moveToNextScreen = () => {
+        console.log("handleNextScreen called");
+        navigation.navigate(NavigationTitle.endParticipation);
+    };
+
+    const dismissKeyboard = () => {
+        console.log("keyboard dismissed");
+        Keyboard.dismiss();
+    };
+
+    const toggleNextTapped = () => {
+        setIsNextTapped(true);
+    };
+
     const { loading, error, data } = useQuery<GQLSurveyResponse>(
         getSurveyQuery,
         {
@@ -123,46 +166,36 @@ function ParticipatingScreen({
             fetchPolicy: "no-cache",
         }
     );
-    const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-    const [questions, setQuestions] = useState<GQLQuestion[]>([]);
 
-    // const answerIngredients: PostAnswerIngre[] = [];
-
-    const [answerIngredients, setAnswerIngredients] = useState<
-        PostAnswerIngre[]
-    >([]);
-
-    const [isLoaded, setIsLoaded] = useState(false);
+    const postAnswerPromise = async (ingre: NormalAnswerForm) => {
+        return await postAnswer(
+            ingre.surveyId,
+            ingre.questionId,
+            ingre.selectableOptionId,
+            ingre.answerText,
+            ingre.userId,
+            ingre.accessToken
+        );
+    };
 
     useEffect(() => {
-        console.log("participatingScreen loaded");
+        updateLoadingStatus(loading);
+    }, [loading]);
 
+    useEffect(() => {
+        console.log("participatingScreen loaded, initializeAnswer called");
         dispatch(initializeAnswer);
     }, []);
-    const answerPromises: Promise<void>[] = [];
-
-    const [shouldPost, setShouldPost] = useState(false);
-
-    useEffect(() => {
-        logObject("answerIngredients changed to", answerIngredients);
-    }, [answerIngredients]);
-
-    // 왜 마지막에만 해야해? 계속 하면 안돼? Answer 에서 똥이 나와서그래. 필요 없는 데이터들.
 
     useEffect(() => {
         const callAPI = async () => {
             updateLoadingStatus(true);
 
             showAdminToast("success", "posting apis called");
-            logObject("current answerIngre flag 3", answerIngredients);
-
-            // setTimeout(() => {
-            //     console.log("taking rest");
-            // }, 3000);
 
             const ps = Array.from(myAnswerIngres).map(async body => {
                 logObject("posting api", body);
-                await myPostAnswer(body);
+                await postAnswerPromise(body);
             });
 
             await Promise.all(ps)
@@ -181,32 +214,7 @@ function ParticipatingScreen({
         if (shouldPost) {
             callAPI();
         }
-    }, [shouldPost, answerIngredients]);
-
-    const [isNextTapped, setIsNextTapped] = useState(false);
-    const shouldGoBack = useRef(false);
-    const { sectionId, surveyId } = route.params;
-    const dispatch = useDispatch();
-
-    const selectedSOIndexIds = useSelector((state: RootState) => {
-        const ret = state.selector.selectedOptionIds;
-        logObject("selectedSOIndexIds changed to", ret);
-        return ret;
-    });
-
-    const myAnswerIngres = useSelector((state: RootState) => {
-        const ret = state.selector.answerIngredients;
-        logObject("myAnswerIngres", myAnswerIngres);
-        return ret;
-    });
-
-    const [isSatisfied, setIsSatisfied] = useState(false);
-
-    const textAnswers = useSelector((state: RootState) => {
-        return state.selector.textAnswers;
-    });
-
-    const [currentSurvey, setCurrentSurvey] = useState<GQLSurvey | null>(null);
+    }, [shouldPost]);
 
     useEffect(() => {
         logObject("selectedSoIndexIds", selectedSOIndexIds);
@@ -216,21 +224,15 @@ function ParticipatingScreen({
         setIsSatisfied(satisfied);
     }, [selectedSOIndexIds]);
 
-    const dismissKeyboard = () => {
-        console.log("keyboard dismissed");
-        Keyboard.dismiss();
-    };
-
     useEffect(() => {
         console.log("passed survey id:", surveyId);
         logObject("currentSurvey", currentSurvey);
 
-        // if (currentSurvey) {
         if (data?.survey) {
             const updatedSurvey: GQLSurvey =
                 removeTypenameAndConvertToCamelCase(data.survey);
             logObject("fetched survey", updatedSurvey);
-            setCurrentSurvey(updatedSurvey); // currentSurvey 상태를 업데이트
+            setCurrentSurvey(updatedSurvey);
             const currentSection = updatedSurvey.sections.find(
                 s => s.sequence === currentSectionIndex
             );
@@ -240,146 +242,28 @@ function ParticipatingScreen({
         }
     }, [currentSectionIndex, data]);
 
-    // const postSelectionAnswer = async (
-    //     surveyId: number,
-    //     userId: number,
-    //     questionId: number,
-    //     selectableOptionId: number
-    // ) => {
-    //     logObject("[ParticipatingScreen] postSelectionAnswer", {
-    //         questionId,
-    //         selectableOptionId,
-    //     });
-    //     await postAnswer(
-    //         surveyId,
-    //         questionId,
-    //         selectableOptionId,
-    //         "",
-    //         userId,
-    //         accessToken
-    //     );
-    // };
-
-    const myPostAnswer = async (ingre: PostAnswerIngre) => {
-        return await postAnswer(
-            ingre.surveyId,
-            ingre.questionId,
-            ingre.selectableOptionId,
-            ingre.answerText,
-            ingre.userId,
-            ingre.accessToken
-        );
-    };
-
-    //     surveyId: number, questionId: number, selectableOptionId: number, answerText: string, userId: number, accessToken: string): Promise<unknown>
-    // import postAnswer
-
-    // const postSelectionAnswer = (
-    //     surveyId: number,
-    //     userId: number,
-    //     questionId: number,
-    //     selectableOptionId: number
-    // ): Promise<void> => {
-    //     return new Promise(async (resolve, reject) => {
-    //         try {
-    //             await postAnswer(
-    //                 surveyId,
-    //                 questionId,
-    //                 selectableOptionId,
-    //                 "",
-    //                 userId,
-    //                 accessToken
-    //             );
-
-    //             resolve();
-    //         } catch (error) {
-    //             reject(error);
-    //         }
-    //     });
-    // };
-
-    // const postTextAnswer = async (
-    //     customAnswer: CustomAnswer,
-    //     userId: number,
-    //     surveyId: number
-    // ) => {
-    //     const { selectableOptionId, answerText, questionId } = customAnswer;
-    //     logObject("[ParticipatingScreen] postTextAnswer", { customAnswer });
-
-    //     await postAnswer(
-    //         surveyId,
-    //         questionId,
-    //         selectableOptionId,
-    //         answerText,
-    //         userId,
-    //         accessToken
-    //     );
-    // };
-
-    // const postTextAnswer = (
-    //     customAnswer: CustomAnswer,
-    //     userId: number,
-    //     surveyId: number
-    // ): Promise<void> => {
-    //     return new Promise(async (resolve, reject) => {
-    //         try {
-    //             const { selectableOptionId, answerText, questionId } =
-    //                 customAnswer;
-    //             logObject("[ParticipatingScreen] postTextAnswer", {
-    //                 customAnswer,
-    //             });
-
-    //             await postAnswer(
-    //                 surveyId,
-    //                 questionId,
-    //                 selectableOptionId,
-    //                 answerText,
-    //                 userId,
-    //                 accessToken
-    //             );
-    //             resolve();
-    //         } catch (error) {
-    //             reject(error);
-    //         }
-    //     });
-    // };
-
-    const moveToNextScreen = () => {
-        console.log("handleNextScreen called");
-        navigation.navigate(NavigationTitle.endParticipation);
-    };
-
-    // TODO: 이거.. 여기가 맞니? 버튼 눌린 변수와 연동시켜야함.
-    const { userId, accessToken, updateLoadingStatus } = useCustomContext();
-
     useEffect(() => {
         const handleCompleteSection = async () => {
             console.log(`buttonTapAction called, userId: ${userId}`);
-            // const promises: Promise<void>[] = [];
 
             let selectableOptionIds: number[] = [];
             for (let j = 0; j < textAnswers.length; j++) {
                 selectableOptionIds.push(textAnswers[j].selectableOptionId);
                 const customAnswer = textAnswers[j];
-                // const postCall = postTextAnswer(customAnswer, userId, surveyId);
 
-                const postTextIngre: PostTextAnswerIngre = {
+                const postTextIngre: TextAnswerForm = {
                     customAnswer,
                     surveyId,
                     userId,
                     accessToken,
                 };
-                const sth = makePostTextAnswer(postTextIngre);
-                // answerIngredients.push(sth);
-                // const updated = [...answerIngredients, sth];
-                // setAnswerIngredients(updated);
-                setAnswerIngredients(prev => [...prev, sth]);
+
+                const sth = convertTextToNormalForm(postTextIngre);
+
                 dispatch(addToAnswerIngredients({ ingre: sth }));
                 logObject("[ParticipatingScreen] postTextAnswer", {
                     customAnswer,
                 });
-                // promises.push(postCall);
-                // answerPromises.push(postCall);
             }
 
             for (let q = 0; q < questions.length; q++) {
@@ -388,7 +272,7 @@ function ParticipatingScreen({
                     const selectableOptionId = selectedSOIndexIds[q][i];
 
                     if (!selectableOptionIds.includes(selectableOptionId)) {
-                        const postSelectionIngre: PostSelectionAnswerIngre = {
+                        const postSelectionIngre: SelectionAnswerForm = {
                             questionId,
                             selectableOptionId,
                             surveyId,
@@ -396,13 +280,11 @@ function ParticipatingScreen({
                             accessToken,
                         };
 
-                        const sth = makePostSelectionAnswer(postSelectionIngre);
+                        const sth =
+                            ConvertSelectionToNormalForm(postSelectionIngre);
 
-                        // answerIngredients.push(sth);
-                        // const updated = [...answerIngredients, sth];
-                        // setAnswerIngredients(updated);
-                        // setAnswerIngredients(prev => [...prev, sth]);
                         dispatch(addToAnswerIngredients({ ingre: sth }));
+
                         logObject("[ParticipatingScreen] postSelection", {
                             questionId,
                             selectableOptionId,
@@ -417,8 +299,6 @@ function ParticipatingScreen({
                 currentSurvey.sections.length
             );
 
-            logObject("current answerIngre flag 2", answerIngredients);
-
             if (currentSectionIndex === currentSurvey.sections.length - 1) {
                 setShouldPost(true);
             } else {
@@ -430,8 +310,6 @@ function ParticipatingScreen({
                 );
                 setCurrentSectionIndex(currentSectionIndex + 1);
             }
-
-            logObject("current answerIngre flag 1", answerIngredients);
         };
 
         if (isNextTapped) {
@@ -439,14 +317,6 @@ function ParticipatingScreen({
             setIsNextTapped(false);
         }
     }, [isNextTapped]);
-
-    const toggleNextTapped = () => {
-        setIsNextTapped(true);
-    };
-
-    useEffect(() => {
-        updateLoadingStatus(loading);
-    }, [loading]);
 
     const renderItem = ({ item }: { item: GQLQuestion }) => (
         <View style={styles.questionContainerBox}>
@@ -491,7 +361,6 @@ function ParticipatingScreen({
                         hasShadow={false}
                         isEnabled={isSatisfied}
                     />
-                    {/* <View style={{ height: 500 }}></View> */}
                 </View>
             )
         );

@@ -31,6 +31,7 @@ export const selectorSlice = createSlice({
             for (let i = 0; i < numberOfQuestions; i++) {
                 outer.push([]);
             }
+            console.log("initialize selection called");
             state.selectedOptionIds = outer;
             state.textAnswers = [];
             console.log("[selectorSlice], initialize called");
@@ -46,7 +47,10 @@ export const selectorSlice = createSlice({
             action: PayloadAction<{ ingre: NormalAnswerForm }>
         ) => {
             const { ingre } = action.payload;
-            state.answerIngredients.push(ingre);
+            logObject("current answerIngredients", state.answerIngredients);
+            if (state.answerIngredients.includes(ingre) === false) {
+                state.answerIngredients.push(ingre);
+            }
         },
         selectSingleSelection: (
             state,

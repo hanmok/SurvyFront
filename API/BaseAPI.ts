@@ -15,7 +15,10 @@ export async function fetchData<T>(
 ): Promise<T> {
     try {
         const response = await fetch(url, options);
-        logObject(`api called, url:${url}, options`, options);
+        logObject(
+            `api called, url:${url}, method: ${options.method}, options`,
+            options.body
+        );
 
         if (response.ok === false) {
             logObject("response is not ok", response);

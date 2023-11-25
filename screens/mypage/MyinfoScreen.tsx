@@ -12,6 +12,7 @@ import { useCustomContext } from "../../features/context/CustomContext";
 import { Genre } from "../../interfaces/Genre";
 import { colors } from "../../utils/colors";
 import { GeoInfo } from "../../interfaces/GeoInfo";
+import Spacer from "../../components/common/Spacer";
 
 // 내 정보
 function MyInfoScreen({
@@ -79,62 +80,46 @@ function MyInfoScreen({
 
             {/* 추가 정보 */}
             {/* Divider */}
-            <View
+            {/* <View
                 style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-around",
                 }}
-            >
+            > */}
+            <View style={{ marginTop: 20 }}>
                 <View
                     style={{
                         height: 2,
-                        // width: screenWidth / 3,
-                        flex: 1,
-                        backgroundColor: colors.gray3,
+                        backgroundColor: colors.gray4,
+                        width: screenWidth - 40,
+                        alignSelf: "center",
                     }}
                 />
-                <Text
-                    style={{
-                        fontSize: fontSizes.m20,
-                        color: colors.gray3,
-                        marginHorizontal: 20,
-                    }}
-                >
-                    추가 정보
-                </Text>
+                <Spacer size={5} />
                 <View
                     style={{
-                        height: 2,
-                        // width: screenWidth / 3,
-                        flex: 1,
-                        backgroundColor: colors.gray3,
-                    }}
-                />
-            </View>
-            <View
-                style={{
-                    flexDirection: "row",
-                    // alignItems: '',
-                    justifyContent: "flex-end",
-                    marginTop: -14,
-                }}
-            >
-                <Text
-                    style={{
-                        fontSize: 16,
-                        color: "red",
-                        marginLeft: 10,
-                        marginRight: 4,
-                        // marginTop: -3
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
                     }}
                 >
-                    *
-                </Text>
-                <Text style={{ fontSize: 10 }}>
-                    추가정보 입력시 유료설문의 기회가 많아집니다.
-                </Text>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            color: "red",
+                            marginLeft: 10,
+                            marginRight: 4,
+                            // marginTop: -3
+                        }}
+                    >
+                        *
+                    </Text>
+                    <Text style={{ fontSize: 12 }}>
+                        추가정보 입력시 유료설문의 기회가 많아집니다.
+                    </Text>
+                </View>
             </View>
+
             {/* 거주지 */}
             <BlockView
                 size={50}

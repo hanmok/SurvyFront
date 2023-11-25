@@ -32,6 +32,7 @@ export async function fetchData<T>(
         const statusCode = apiResponse.statusCode;
 
         if (statusCode >= 200 && statusCode < 300) {
+            logObject("response data:", apiResponse.data);
             return apiResponse.data;
         } else {
             console.error(apiResponse.message);

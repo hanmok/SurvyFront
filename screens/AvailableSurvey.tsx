@@ -11,6 +11,7 @@ interface MyCustomComponentProps {
     participationGoal: number;
     genres: Genre[];
     onPress: () => void;
+    createdAt: string;
 }
 
 const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
@@ -19,6 +20,7 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
     participationGoal,
     genres,
     onPress,
+    createdAt,
 }) => {
     const GenreBox: React.FC<{ name: string }> = ({ name }) => {
         return (
@@ -57,12 +59,23 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                 {/* <Text style={styles.participationText}>
                     {currentParticipation}/{participationGoal}
                 </Text> */}
+
                 <View
                     style={{
                         flexDirection: "row-reverse",
                         alignItems: "flex-end",
                     }}
                 ></View>
+                <View
+                    style={{
+                        alignItems: "flex-end",
+                        paddingRight: 12,
+                        paddingTop: 8,
+                        paddingBottom: 8,
+                    }}
+                >
+                    <Text>{createdAt}</Text>
+                </View>
             </View>
         </TouchableNativeFeedback>
     );
@@ -74,7 +87,8 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: 6,
         // paddingBottom: 30,
-        paddingBottom: 80,
+        // paddingBottom: 80,
+        paddingBottom: 6,
         paddingLeft: 20,
         backgroundColor: colors.surveyBoxBackground,
     },

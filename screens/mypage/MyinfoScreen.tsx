@@ -126,7 +126,6 @@ function MyInfoScreen({
                 onPress={() => {
                     console.log("hi");
                     // navigation.navigate(NavigationTitle.myGenre);
-                    // moveToCategory();
                 }}
             >
                 <View

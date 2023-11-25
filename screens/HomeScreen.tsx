@@ -47,6 +47,32 @@ function HomeScreen({
 }) {
     const [refreshing, setRefreshing] = useState(false);
 
+    const [surveys, setSurveys] = useState<Survey[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const {
+        userDetail,
+        updateUserDetail,
+        updateLoadingStatus,
+        accessToken,
+        updateParticipatingSurveyId,
+    } = useCustomContext();
+
+    const [postingSurvey, setPostingSurvey] =
+        useState<PostingSurveyState>(undefined);
+
+    const toggleModalVisibility = () => {
+        setIsModalVisible(!isModalVisible);
+    };
+
+    const moveToPostingScreen = () => {
+        navigation.navigate(NavigationTitle.posting, {
+            postingSurveyState: null,
+        });
+    };
+
     const onRefresh = () => {
         setRefreshing(true);
         getSurveys(accessToken).then(newSurveys => {
@@ -54,10 +80,10 @@ function HomeScreen({
             setRefreshing(false);
         });
     };
-
-    const [surveys, setSurveys] = useState<Survey[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const { userDetail, updateUserDetail } = useCustomContext();
+    // for printing.
+    useEffect(() => {
+        logObject("fetched surveys", surveys);
+    }, [surveys]);
 
     useEffect(() => {
         const fetchUserDetail = async () => {
@@ -113,8 +139,6 @@ function HomeScreen({
         // log(`collected money ${userDetail.collectedReward}`);
     }, [navigation, userDetail]);
 
-    const { accessToken, updateParticipatingSurveyId } = useCustomContext();
-
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {
         const updateSurveys = async () => {
@@ -128,14 +152,10 @@ function HomeScreen({
                 });
         };
 
-        // fetchGeos();
         updateSurveys();
 
         console.log("HomeScreen Testing");
     }, []);
-
-    const [postingSurvey, setPostingSurvey] =
-        useState<PostingSurveyState>(undefined);
 
     useEffect(() => {
         const postingSurvey = async () => {
@@ -149,14 +169,13 @@ function HomeScreen({
         postingSurvey();
     }, [postingSurvey]);
 
-    const [postBtnTapped, setPostBtnTapped] = useState(false);
-
     const renderItem = ({ item }: { item: Survey }) => (
         <AvailableSurvey
             title={item.title}
             currentParticipation={item.currentParticipation}
             participationGoal={item.participationGoal}
             genres={item.genres}
+            createdAt={item?.createdAt}
             onPress={() => {
                 updateParticipatingSurveyId(item.id);
                 navigation.navigate(NavigationTitle.participate, {
@@ -167,30 +186,9 @@ function HomeScreen({
         />
     );
 
-    const { updateLoadingStatus } = useCustomContext();
-
-    const moveToPostingScreen = () => {
-        navigation.navigate(NavigationTitle.posting, {
-            postingSurveyState: null,
-        });
-    };
-
     useEffect(() => {
         updateLoadingStatus(isLoading);
     }, [isLoading]);
-
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const navigateWith = (postingSurvey: PostingSurveyState | null) => {
-        navigation.navigate(NavigationTitle.posting, {
-            postingSurveyState: postingSurvey,
-        });
-        console.log("navigate to posting!");
-    };
-
-    const toggleModalVisibility = () => {
-        setIsModalVisible(!isModalVisible);
-    };
 
     useEffect(() => {
         const fetchPostingSurvey = async () => {

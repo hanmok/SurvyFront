@@ -55,7 +55,7 @@ function PointHistoryScreen() {
         <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-            <Text>참여한 설문이 없습니다</Text>
+            <Text>조회할 포인트 내역이 없습니다.</Text>
         </View>
     );
 }

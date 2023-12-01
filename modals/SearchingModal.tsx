@@ -13,9 +13,10 @@ import { fontSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import TextButton from "../components/TextButton";
 import { useEffect, useRef, useState } from "react";
+import { modalStyles } from "../utils/CommonStyles";
+import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface SearhchingModalProps {
-    cancelText: string;
     onSearchAction: () => void;
     searchText: string;
     onClose: () => void;
@@ -30,7 +31,6 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
     title,
     isModalVisible,
     searchText: secondSelectionText,
-    cancelText,
     onClose,
     searchingCode,
     setSearchingCode,
@@ -78,31 +78,21 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                     activeOpacity={1}
                 >
                     <View style={styles.modalContent}>
+                        {/* Title */}
                         <View style={{ marginTop: 30, alignItems: "center" }}>
                             <Text style={{ fontSize: 22, fontWeight: "800" }}>
                                 {title}
                             </Text>
                         </View>
+                        {/* Search */}
                         <View
                             style={{
                                 alignItems: "center",
                             }}
                         >
-                            <View
-                                style={{
-                                    borderWidth: 1,
-                                    borderRadius: 6,
-                                    width: 200,
-                                    height: 40,
-                                    justifyContent: "center",
-                                }}
-                            >
+                            <View style={styles.searchContainer}>
                                 <TextInput
-                                    style={{
-                                        fontSize: 20,
-                                        textAlignVertical: "center",
-                                        paddingLeft: 10,
-                                    }}
+                                    style={styles.searchInput}
                                     autoCapitalize="characters"
                                     keyboardType="default"
                                     value={searchingCode}
@@ -110,42 +100,16 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                                 />
                             </View>
                         </View>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                height: 60,
-                                alignSelf: "stretch",
-                                marginBottom: 10,
-                                marginHorizontal: 10,
+                        <BottomButtonContainer
+                            rightTitle={secondSelectionText}
+                            leftAction={() => {
+                                onClose();
                             }}
-                        >
-                            <TextButton
-                                title={cancelText}
-                                onPress={() => {
-                                    onClose();
-                                }}
-                                backgroundStyle={{
-                                    flex: 0.5,
-                                    backgroundColor: "white",
-                                    margin: 6,
-                                    borderRadius: 6,
-                                }}
-                            />
-                            <TextButton
-                                title={secondSelectionText}
-                                onPress={() => {
-                                    onSecondSelection();
-                                    onClose();
-                                }}
-                                backgroundStyle={{
-                                    backgroundColor: colors.deeperMainColor,
-                                    flex: 0.5,
-                                    margin: 6,
-                                    borderRadius: 6,
-                                }}
-                                textStyle={{ color: "white" }}
-                            />
-                        </View>
+                            rightAction={() => {
+                                onSecondSelection();
+                                onClose();
+                            }}
+                        />
                     </View>
                 </TouchableOpacity>
             </Animated.View>
@@ -218,5 +182,17 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 30,
         marginHorizontal: 20,
+    },
+    searchInput: {
+        fontSize: 20,
+        textAlignVertical: "center",
+        paddingLeft: 10,
+    },
+    searchContainer: {
+        borderWidth: 1,
+        borderRadius: 6,
+        width: 200,
+        height: 40,
+        justifyContent: "center",
     },
 });

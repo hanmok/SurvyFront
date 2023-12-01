@@ -255,7 +255,6 @@ function HomeScreen({
                     }}
                     searchingCode={searchingCode}
                     setSearchingCode={setSearchingCode}
-                    cancelText="취소"
                     searchText="검색"
                     isModalVisible={isSearchingModalVisible}
                     onClose={() => {

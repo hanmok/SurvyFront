@@ -19,6 +19,7 @@ import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { Genre } from "../interfaces/Genre";
 import Spacer from "../components/common/Spacer";
 import { useCustomContext } from "../features/context/CustomContext";
+import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface GenreSelectionModalProps {
     onClose: () => void;
@@ -190,35 +191,14 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                                 ))}
                             </View>
                         </View>
-                        <View style={styles.bottomContainer}>
-                            <TextButton
-                                title="취소"
-                                textStyle={styles.bottomTextStyle}
-                                onPress={onClose}
-                                backgroundStyle={
-                                    styles.bottomLeftButtonTextContainer
-                                }
-                            />
-                            <TextButton
-                                onPress={() => {
-                                    onGenreSelection(selectedGenres);
-                                    onClose();
-                                }}
-                                title="확인"
-                                backgroundStyle={
-                                    satisfied
-                                        ? [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.activatedStyle,
-                                          ]
-                                        : [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.inactivatedStyle,
-                                          ]
-                                }
-                                textStyle={styles.bottomTextStyle}
-                            />
-                        </View>
+                        <BottomButtonContainer
+                            leftAction={onClose}
+                            rightAction={() => {
+                                onGenreSelection(selectedGenres);
+                                onClose();
+                            }}
+                            satisfied={satisfied}
+                        />
                     </View>
                 </View>
             </TouchableWithoutFeedback>

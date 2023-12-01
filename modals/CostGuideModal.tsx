@@ -16,6 +16,7 @@ import { screenWidth } from "../utils/ScreenSize";
 import { commonStyles } from "../utils/CommonStyles";
 import CostSelectionContainer from "../CostSelectionContainer";
 import * as accounting from "accounting";
+import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface CostGuideModalProps {
     onClose: () => void;
@@ -137,26 +138,10 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                 </View>
                             </View>
                         </View>
-
-                        <View style={styles.bottomContainer}>
-                            <TextButton
-                                title="취소"
-                                textStyle={styles.bottomTextStyle}
-                                onPress={onClose}
-                                backgroundStyle={
-                                    styles.bottomLeftButtonTextContainer
-                                }
-                            />
-                            <TextButton
-                                onPress={onConfirm}
-                                title="확인"
-                                backgroundStyle={[
-                                    styles.bottomRightButtonTextContainer,
-                                    styles.activatedStyle,
-                                ]}
-                                textStyle={styles.bottomTextStyle}
-                            />
-                        </View>
+                        <BottomButtonContainer
+                            leftAction={onClose}
+                            rightAction={onConfirm}
+                        />
                     </View>
                 </View>
             </TouchableWithoutFeedback>

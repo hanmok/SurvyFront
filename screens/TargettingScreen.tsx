@@ -410,6 +410,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                         textStyle={{
                                             color: colors.white,
                                         }}
+                                        key={`${genre.id}`}
                                     />
                                 ))}
                             </View>

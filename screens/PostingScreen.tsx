@@ -126,7 +126,7 @@ export default function PostingScreen({
 
     useEffect(() => {
         setIsSatisfied(questions.length !== 0 && surveyTitle !== ""); // 0 이 아니면 satisfied 는 true
-    }, [questions]);
+    }, [questions, surveyTitle]);
 
     useEffect(() => {
         setIsNextButtonTapped(false);
@@ -412,13 +412,6 @@ export default function PostingScreen({
     const listHeader = () => {
         return (
             <View style={styles.listHeaderStyle}>
-                {/* <SurveyTitleModal
-                    setSurveyTitle={setSurveyTitle}
-                    surveyTitle={surveyTitle}
-                    titleModalVisible={titleModalVisible}
-                    setTitleModalVisible={setTitleModalVisible}
-                    setConfirmTapped={setConfirmTapped}
-                /> */}
                 <TextButton
                     title={surveyTitle !== "" ? surveyTitle : "설문 제목"}
                     onPress={() => {
@@ -588,7 +581,6 @@ export default function PostingScreen({
                             )}
                             ListFooterComponent={listFooter}
                             ListHeaderComponent={listHeader}
-                            // ListHeaderComponentStyle={{ marginTop: 20 }}
                             ListFooterComponentStyle={{ marginTop: 20 }}
                         />
                     )}
@@ -596,7 +588,9 @@ export default function PostingScreen({
 
                 <TextButton
                     backgroundStyle={{
-                        backgroundColor: isSatisfied ? "#ffffff" : "#b3b3b3", // inactive
+                        backgroundColor: isSatisfied
+                            ? colors.deeperMainColor
+                            : "#b3b3b3", // inactive
                         height: 46,
                         marginBottom: 30,
                         marginHorizontal: 20,
@@ -606,7 +600,7 @@ export default function PostingScreen({
                     textStyle={[
                         styles.nextButtonText,
                         {
-                            color: isSatisfied ? colors.black : "#cbcbcb",
+                            color: isSatisfied ? colors.white : "#cbcbcb",
                         },
                     ]}
                     // hasShadow={false}
@@ -694,9 +688,11 @@ const styles = StyleSheet.create({
     nextButtonText: {
         color: colors.black,
         textAlign: "center",
-        fontSize: fontSizes.m20,
-        fontWeight: "bold",
-        letterSpacing: 1,
+        // fontSize: fontSizes.m20,
+        fontSize: 18,
+        // fontWeight: "bold",
+        fontWeight: "900",
+        letterSpacing: 2,
     },
     expectedTime: {
         flexBasis: 24,

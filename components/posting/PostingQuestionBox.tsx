@@ -40,7 +40,10 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                         switch (question.questionTypeId) {
                             case QuestionTypeId.SingleSelection:
                                 return (
-                                    <View style={styles.rowContainer}>
+                                    <View
+                                        style={styles.rowContainer}
+                                        key={option.id}
+                                    >
                                         <Feather
                                             name={
                                                 SelectionImage.unselectedSingleSelection
@@ -54,12 +57,15 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                 );
                             case QuestionTypeId.MultipleSelection:
                                 return (
-                                    <View style={styles.rowContainer}>
+                                    <View
+                                        style={styles.rowContainer}
+                                        key={option.id}
+                                    >
                                         <Feather
                                             name={
                                                 SelectionImage.unselectedMultipleSelection
                                             }
-                                            size={24}
+                                            size={20}
                                             color="black"
                                         />
                                         <View style={{ width: 10 }}></View>
@@ -68,7 +74,7 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                 );
                             case QuestionTypeId.Essay:
                                 return (
-                                    <View>
+                                    <View key={option.id}>
                                         <Text
                                             style={{
                                                 marginHorizontal: 8,

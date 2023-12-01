@@ -412,13 +412,6 @@ export default function PostingScreen({
     const listHeader = () => {
         return (
             <View style={styles.listHeaderStyle}>
-                {/* <SurveyTitleModal
-                    setSurveyTitle={setSurveyTitle}
-                    surveyTitle={surveyTitle}
-                    titleModalVisible={titleModalVisible}
-                    setTitleModalVisible={setTitleModalVisible}
-                    setConfirmTapped={setConfirmTapped}
-                /> */}
                 <TextButton
                     title={surveyTitle !== "" ? surveyTitle : "설문 제목"}
                     onPress={() => {

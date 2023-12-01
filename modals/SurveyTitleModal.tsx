@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { View, TextInput, Modal, StyleSheet, Text } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+    View,
+    TextInput,
+    Modal,
+    StyleSheet,
+    Text,
+    Animated,
+    Keyboard,
+} from "react-native";
 import { colors } from "../utils/colors";
 import TextButton from "../components/TextButton";
 import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
-import { screenWidth } from "../utils/ScreenSize";
+import { screenHeight, screenWidth } from "../utils/ScreenSize";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { log, logObject } from "../utils/Log";
 
 interface SurveyTitleModalProps {
     setSurveyTitle: (string) => void;
@@ -20,10 +30,41 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
     setConfirmTapped,
 }) => {
     const [title, setTitle] = useState("");
+    const translateY = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         console.log("modalVisible changed");
     }, [titleModalVisible]);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            "keyboardWillShow",
+            () => {
+                Animated.timing(translateY, {
+                    toValue: -100,
+                    duration: 200,
+                    useNativeDriver: true,
+                }).start();
+            }
+        );
+
+        const keyboardDidHideListener = Keyboard.addListener(
+            "keyboardWillHide",
+            () => {
+                // Animate modal content when the keyboard hides
+                Animated.timing(translateY, {
+                    toValue: 0,
+                    duration: 200,
+                    useNativeDriver: true,
+                }).start();
+            }
+        );
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, [translateY]);
 
     return (
         <Modal
@@ -34,48 +75,98 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                 setTitleModalVisible(false);
             }}
         >
-            <View style={styles.totalContainer}>
-                <View style={styles.coreContainer}>
-                    <Text style={styles.infoTextContainer}>
-                        설문조사 제목을 입력해주세요.
-                    </Text>
-                    <TextInput
-                        style={styles.textInput}
-                        onChangeText={setTitle}
-                        value={title}
-                        placeholder="텍스트를 입력하세요"
-                        autoCorrect={false}
-                        autoComplete="off"
-                    />
-                    <View style={styles.bottomContainer}>
-                        <TextButton
-                            title="닫기"
-                            onPress={() => setTitleModalVisible(false)}
-                            textStyle={styles.bottomTextStyle}
-                            backgroundStyle={[styles.bottomButtonBackground]}
-                            hasShadow={false}
-                        />
-
-                        <TextButton
-                            title="확인"
-                            onPress={() => {
-                                setSurveyTitle(title);
-                                setTitleModalVisible(false);
-                                setConfirmTapped(true);
+            <Animated.View style={{ transform: [{ translateY: translateY }] }}>
+                {/* <TouchableOpacity
+                    style={styles.modalContainer}
+                    // onPress={() => {
+                    //     Keyboard.dismiss();
+                    //     console.log("keyboard dismiss");
+                    // }}
+                    activeOpacity={1}
+                > */}
+                <View
+                    style={styles.modalContainer}
+                    // onPress={() => {
+                    //     Keyboard.dismiss();
+                    //     console.log("keyboard dismiss");
+                    // }}
+                    // activeOpacity={1}
+                >
+                    <View style={styles.modalContent}>
+                        {/* Title */}
+                        <View>
+                            <Text style={styles.infoTextContainer}>
+                                제목을 입력해주세요.
+                            </Text>
+                        </View>
+                        {/* Title Input */}
+                        <View>
+                            <TextInput
+                                style={styles.textInput}
+                                onChangeText={setTitle}
+                                value={title}
+                                placeholder="텍스트를 입력하세요"
+                                autoCorrect={false}
+                                autoComplete="off"
+                            />
+                        </View>
+                        {/* Bottom */}
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                height: 60,
+                                alignSelf: "stretch",
+                                marginBottom: 10,
+                                marginHorizontal: 10,
                             }}
-                            textStyle={[
-                                styles.bottomTextStyle,
-                                { fontWeight: "bold" },
-                            ]}
-                            hasShadow={false}
-                            backgroundStyle={[
-                                styles.bottomButtonBackground,
-                                { borderLeftWidth: 1 },
-                            ]}
-                        />
+                        >
+                            <TextButton
+                                title="닫기"
+                                onPress={() => {
+                                    console.log("cancel tapped");
+                                    setTitleModalVisible(false);
+                                }}
+                                backgroundStyle={{
+                                    flex: 0.5,
+                                    backgroundColor: "white",
+                                    marginHorizontal: 9,
+                                    marginTop: 12,
+                                    marginBottom: 6,
+                                    borderRadius: 6,
+                                }}
+                                textStyle={{
+                                    color: "black",
+                                    letterSpacing: 2,
+                                    fontSize: 16,
+                                }}
+                            />
+                            <TextButton
+                                title="확인"
+                                onPress={() => {
+                                    console.log("confirm tapped");
+                                    setSurveyTitle(title);
+                                    setTitleModalVisible(false);
+                                    setConfirmTapped(true);
+                                }}
+                                backgroundStyle={{
+                                    backgroundColor: colors.deeperMainColor,
+                                    flex: 0.5,
+                                    marginHorizontal: 9,
+                                    marginTop: 12,
+                                    marginBottom: 6,
+                                    borderRadius: 6,
+                                }}
+                                textStyle={{
+                                    color: "white",
+                                    letterSpacing: 2,
+                                    fontSize: 16,
+                                }}
+                            />
+                        </View>
                     </View>
                 </View>
-            </View>
+                {/* </TouchableOpacity> */}
+            </Animated.View>
         </Modal>
     );
 };
@@ -89,11 +180,33 @@ const styles = StyleSheet.create({
         flex: 1, // 화면 모두 가리기
         backgroundColor: colors.modalBackground,
     },
-    coreContainer: {
+
+    modalContainer: {
+        width: screenWidth,
+        height: screenHeight,
+        backgroundColor: "rgba(0, 0, 0, 0.85)",
+        borderWidth: 1,
+        borderColor: "black",
         borderRadius: 20,
         overflow: "hidden",
-        borderWidth: 2,
-        backgroundColor: colors.gray5,
+        justifyContent: "center",
+    },
+
+    coreContainer: {
+        // borderRadius: 20,
+        // marginHorizontal: 40,
+        // overflow: "hidden",
+        // borderWidth: 2,
+        // backgroundColor: colors.gray5,
+    },
+    modalContent: {
+        height: 240,
+        marginHorizontal: 40,
+        backgroundColor: colors.background,
+        borderRadius: 10,
+        overflow: "hidden",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
     infoTextContainer: {
         margin: 10,

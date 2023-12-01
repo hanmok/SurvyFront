@@ -78,11 +78,13 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                     activeOpacity={1}
                 >
                     <View style={styles.modalContent}>
+                        {/* Title */}
                         <View style={{ marginTop: 30, alignItems: "center" }}>
                             <Text style={{ fontSize: 22, fontWeight: "800" }}>
                                 {title}
                             </Text>
                         </View>
+                        {/* Search */}
                         <View
                             style={{
                                 alignItems: "center",
@@ -110,6 +112,7 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                                 />
                             </View>
                         </View>
+                        {/* Bottom Container */}
                         <View
                             style={{
                                 flexDirection: "row",
@@ -123,24 +126,32 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                                 title={cancelText}
                                 onPress={() => {
                                     onClose();
+                                    console.log("cancel tapped");
                                 }}
                                 backgroundStyle={{
                                     flex: 0.5,
                                     backgroundColor: "white",
-                                    margin: 6,
+                                    // margin: 9,
+                                    marginHorizontal: 9,
+                                    marginTop: 12,
+                                    marginBottom: 6,
                                     borderRadius: 6,
                                 }}
                             />
                             <TextButton
                                 title={secondSelectionText}
                                 onPress={() => {
+                                    console.log("confirm tapped");
                                     onSecondSelection();
                                     onClose();
                                 }}
                                 backgroundStyle={{
                                     backgroundColor: colors.deeperMainColor,
                                     flex: 0.5,
-                                    margin: 6,
+                                    // margin: 9,
+                                    marginHorizontal: 9,
+                                    marginTop: 12,
+                                    marginBottom: 6,
                                     borderRadius: 6,
                                 }}
                                 textStyle={{ color: "white" }}

@@ -36,6 +36,7 @@ import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
+import { SearchingModal } from "../modals/SearchingModal";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -50,7 +51,11 @@ function HomeScreen({
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isPostingModalVisible, setIsPostingModalVisible] = useState(false);
+    const [isSearchingModalVisible, setIsSearchingModalVisible] =
+        useState(false);
+
+    const [searchingCode, setSearchingCode] = useState("");
 
     const {
         userDetail,
@@ -63,8 +68,12 @@ function HomeScreen({
     const [postingSurvey, setPostingSurvey] =
         useState<PostingSurveyState>(undefined);
 
-    const toggleModalVisibility = () => {
-        setIsModalVisible(!isModalVisible);
+    const togglePostingModalVisibility = () => {
+        setIsPostingModalVisible(!isPostingModalVisible);
+    };
+
+    const toggleSearchingModalVisibility = () => {
+        setIsSearchingModalVisible(!isSearchingModalVisible);
     };
 
     const moveToPostingScreen = () => {
@@ -118,7 +127,9 @@ function HomeScreen({
                             size={24}
                             color="black"
                             onPress={() => {
-                                console.log("hi");
+                                // console.log("hi");
+                                toggleSearchingModalVisibility();
+                                setIsSearchingModalVisible(true);
                             }}
                         />
                     </TouchableOpacity>
@@ -156,6 +167,10 @@ function HomeScreen({
 
         console.log("HomeScreen Testing");
     }, []);
+
+    useEffect(() => {
+        setSearchingCode("");
+    }, [isSearchingModalVisible]);
 
     useEffect(() => {
         const postingSurvey = async () => {
@@ -199,7 +214,7 @@ function HomeScreen({
             }
         };
         const unsubscribeFocus = navigation.addListener("focus", () => {
-            setIsModalVisible(false);
+            setIsPostingModalVisible(false);
             fetchPostingSurvey();
         });
         return unsubscribeFocus;
@@ -214,25 +229,39 @@ function HomeScreen({
                         description="이어서 작성할까요?"
                         firstSelectionText="이어서 작성할게요"
                         onFirstSelection={() => {
-                            setIsModalVisible(false);
+                            setIsPostingModalVisible(false);
                             navigation.navigate(NavigationTitle.posting, {
                                 postingSurveyState: postingSurvey,
                             });
                         }}
                         secondSelectionText="새로 작성할게요"
                         onSecondSelection={() => {
-                            setIsModalVisible(false);
+                            setIsPostingModalVisible(false);
                             navigation.navigate(NavigationTitle.posting, {
                                 postingSurveyState: null,
                             });
                         }}
-                        isModalVisible={isModalVisible}
+                        isModalVisible={isPostingModalVisible}
                         onClose={() => {
                             console.log("onClose tapped");
-                            toggleModalVisibility();
+                            togglePostingModalVisibility();
                         }}
                     />
                 )}
+                <SearchingModal
+                    title="설문 코드 검색"
+                    onSearchAction={() => {
+                        log("second selection tapped");
+                    }}
+                    searchingCode={searchingCode}
+                    setSearchingCode={setSearchingCode}
+                    cancelText="취소"
+                    searchText="검색"
+                    isModalVisible={isSearchingModalVisible}
+                    onClose={() => {
+                        setIsSearchingModalVisible(false);
+                    }}
+                />
                 <FlatList
                     data={surveys}
                     renderItem={renderItem}
@@ -252,7 +281,7 @@ function HomeScreen({
                     style={styles.floatingButton}
                     onPress={() => {
                         if (postingSurvey) {
-                            toggleModalVisibility();
+                            togglePostingModalVisibility();
                         } else {
                             moveToPostingScreen();
                         }

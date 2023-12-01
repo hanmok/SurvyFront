@@ -21,3 +21,39 @@ export const commonStyles = StyleSheet.create({
         backgroundColor: "magenta",
     },
 });
+
+export const modalStyles = StyleSheet.create({
+    bottomBtnContainer: {
+        flexDirection: "row",
+        height: 60,
+        alignSelf: "stretch",
+        marginBottom: 10,
+        marginHorizontal: 10,
+    },
+    cancelBtnBG: {
+        flex: 0.5,
+        backgroundColor: "white",
+        marginHorizontal: 9,
+        marginTop: 12,
+        marginBottom: 6,
+        borderRadius: 6,
+    },
+    cancelBtnText: {
+        color: "black",
+        letterSpacing: 2,
+        fontSize: 16,
+    },
+    confirmBtnBG: {
+        backgroundColor: colors.deeperMainColor,
+        flex: 0.5,
+        marginHorizontal: 9,
+        marginTop: 12,
+        marginBottom: 6,
+        borderRadius: 6,
+    },
+    confirmBtnText: {
+        color: "white",
+        letterSpacing: 2,
+        fontSize: 16,
+    },
+});

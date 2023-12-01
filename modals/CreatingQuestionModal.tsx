@@ -46,63 +46,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
     const [satisfied, setSatisfied] = useState<boolean>(false);
     const [placeHolder, setPlaceHolder] = useState<string>("");
 
-    const [confirmTapped, setConfirmTapped] = useState(false);
-
-    // useEffect(() => {
-    //     const handleConfirm = () => {
-    //         let selectableOptions: SelectableOption[] = [];
-    //         let question = makeQuestion(
-    //             position,
-    //             questionTitle,
-    //             questionTypeId,
-    //             [] // selectableOptions
-    //         );
-    //         log(`question made: ${JSON.stringify(question)}`);
-
-    //         if (questionTypeId === QuestionTypeId.Essay) {
-    //             const selectableOption = makeSelectableOption(
-    //                 question.id,
-    //                 0,
-    //                 placeHolder,
-    //                 0
-    //             );
-    //             console.log("essay case, placeHolder:", placeHolder);
-    //             selectableOptions.push(selectableOption);
-    //         } else {
-    //             dynamicInputValues.map((optionText, index) => {
-    //                 if (optionText !== "") {
-    //                     const selectableOption = makeSelectableOption(
-    //                         question.id,
-    //                         index,
-    //                         optionText,
-    //                         0
-    //                     );
-    //                     selectableOptions.push(selectableOption);
-    //                 }
-    //             });
-
-    //             if (isExtraOptionEnabled) {
-    //                 const selectableOption = makeSelectableOption(
-    //                     question.id,
-    //                     dynamicInputValues.length,
-    //                     "기타",
-    //                     1
-    //                 );
-    //                 selectableOptions.push(selectableOption);
-    //             }
-    //         }
-
-    //         question.selectableOptions = selectableOptions;
-    //         logObject("question added", question);
-    //         onAdd(question);
-
-    //         setIsExtraOptionEnabled(false);
-    //     };
-    //     if (confirmTapped) {
-    //         handleConfirm();
-    //     }
-    // }, [confirmTapped]);
-
     const handleConfirm = () => {
         let selectableOptions: SelectableOption[] = [];
         let question = makeQuestion(
@@ -277,7 +220,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                     <View
                                         style={{
                                             flexDirection: "row",
-                                            // justifyContent: "center",
                                             justifyContent: "space-between",
                                             alignItems: "center",
                                         }}
@@ -299,39 +241,51 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 <View style={{ height: 20 }} />
                             </View>
                         </View>
+
                         <View
                             style={{
                                 flexDirection: "row",
-                                justifyContent: "space-between",
+                                height: 60,
+                                alignSelf: "stretch",
+                                marginBottom: 10,
+                                marginHorizontal: 10,
                             }}
                         >
                             <TextButton
-                                title="취소"
-                                textStyle={styles.bottomTextStyle}
+                                title="닫기"
                                 onPress={handleModalClose}
-                                backgroundStyle={
-                                    styles.bottomLeftButtonTextContainer
-                                }
+                                backgroundStyle={{
+                                    flex: 0.5,
+                                    backgroundColor: "white",
+                                    marginHorizontal: 9,
+                                    marginTop: 12,
+                                    marginBottom: 6,
+                                    borderRadius: 6,
+                                }}
+                                textStyle={{
+                                    color: "black",
+                                    letterSpacing: 2,
+                                    fontSize: 16,
+                                }}
                             />
-
                             <TextButton
-                                onPress={handleConfirm}
-                                // onPress={() => {
-                                // setConfirmTapped(true);
-                                // }}
                                 title="확인"
-                                backgroundStyle={
-                                    satisfied
-                                        ? [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.activatedStyle,
-                                          ]
-                                        : [
-                                              styles.bottomRightButtonTextContainer,
-                                              styles.inactivatedStyle,
-                                          ]
-                                }
-                                textStyle={styles.bottomTextStyle}
+                                onPress={handleConfirm}
+                                backgroundStyle={{
+                                    backgroundColor: satisfied
+                                        ? colors.deeperMainColor
+                                        : colors.gray4,
+                                    flex: 0.5,
+                                    marginHorizontal: 9,
+                                    marginTop: 12,
+                                    marginBottom: 6,
+                                    borderRadius: 6,
+                                }}
+                                textStyle={{
+                                    color: "white",
+                                    letterSpacing: 2,
+                                    fontSize: 16,
+                                }}
                             />
                         </View>
                     </View>
@@ -349,13 +303,13 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         flex: 1,
-        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        backgroundColor: "rgba(0, 0, 0, 0.85)",
     },
     modalContent: {
         flexGrow: 1,
         marginVertical: 60, // 전체 화면 관리
         marginHorizontal: 20,
-        backgroundColor: "white",
+        backgroundColor: colors.background,
         borderRadius: 10,
         justifyContent: "space-between",
     },

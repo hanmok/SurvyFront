@@ -13,6 +13,7 @@ import { fontSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import TextButton from "../components/TextButton";
 import { useEffect, useRef, useState } from "react";
+import { modalStyles } from "../utils/CommonStyles";
 
 interface SearhchingModalProps {
     cancelText: string;
@@ -113,30 +114,15 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                             </View>
                         </View>
                         {/* Bottom Container */}
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                height: 60,
-                                alignSelf: "stretch",
-                                marginBottom: 10,
-                                marginHorizontal: 10,
-                            }}
-                        >
+                        <View style={modalStyles.bottomBtnContainer}>
                             <TextButton
                                 title={cancelText}
                                 onPress={() => {
                                     onClose();
                                     console.log("cancel tapped");
                                 }}
-                                backgroundStyle={{
-                                    flex: 0.5,
-                                    backgroundColor: "white",
-                                    // margin: 9,
-                                    marginHorizontal: 9,
-                                    marginTop: 12,
-                                    marginBottom: 6,
-                                    borderRadius: 6,
-                                }}
+                                backgroundStyle={modalStyles.cancelBtnBG}
+                                textStyle={modalStyles.cancelBtnText}
                             />
                             <TextButton
                                 title={secondSelectionText}
@@ -145,16 +131,8 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                                     onSecondSelection();
                                     onClose();
                                 }}
-                                backgroundStyle={{
-                                    backgroundColor: colors.deeperMainColor,
-                                    flex: 0.5,
-                                    // margin: 9,
-                                    marginHorizontal: 9,
-                                    marginTop: 12,
-                                    marginBottom: 6,
-                                    borderRadius: 6,
-                                }}
-                                textStyle={{ color: "white" }}
+                                backgroundStyle={modalStyles.confirmBtnBG}
+                                textStyle={modalStyles.confirmBtnText}
                             />
                         </View>
                     </View>

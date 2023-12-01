@@ -14,6 +14,7 @@ import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { log, logObject } from "../utils/Log";
+import { modalStyles } from "../utils/CommonStyles";
 
 interface SurveyTitleModalProps {
     setSurveyTitle: (string) => void;
@@ -111,34 +112,15 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                             />
                         </View>
                         {/* Bottom */}
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                height: 60,
-                                alignSelf: "stretch",
-                                marginBottom: 10,
-                                marginHorizontal: 10,
-                            }}
-                        >
+                        <View style={modalStyles.bottomBtnContainer}>
                             <TextButton
                                 title="닫기"
                                 onPress={() => {
                                     console.log("cancel tapped");
                                     setTitleModalVisible(false);
                                 }}
-                                backgroundStyle={{
-                                    flex: 0.5,
-                                    backgroundColor: "white",
-                                    marginHorizontal: 9,
-                                    marginTop: 12,
-                                    marginBottom: 6,
-                                    borderRadius: 6,
-                                }}
-                                textStyle={{
-                                    color: "black",
-                                    letterSpacing: 2,
-                                    fontSize: 16,
-                                }}
+                                backgroundStyle={modalStyles.cancelBtnBG}
+                                textStyle={modalStyles.cancelBtnText}
                             />
                             <TextButton
                                 title="확인"
@@ -148,19 +130,8 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                                     setTitleModalVisible(false);
                                     setConfirmTapped(true);
                                 }}
-                                backgroundStyle={{
-                                    backgroundColor: colors.deeperMainColor,
-                                    flex: 0.5,
-                                    marginHorizontal: 9,
-                                    marginTop: 12,
-                                    marginBottom: 6,
-                                    borderRadius: 6,
-                                }}
-                                textStyle={{
-                                    color: "white",
-                                    letterSpacing: 2,
-                                    fontSize: 16,
-                                }}
+                                backgroundStyle={modalStyles.confirmBtnBG}
+                                textStyle={modalStyles.confirmBtnText}
                             />
                         </View>
                     </View>
@@ -180,7 +151,6 @@ const styles = StyleSheet.create({
         flex: 1, // 화면 모두 가리기
         backgroundColor: colors.modalBackground,
     },
-
     modalContainer: {
         width: screenWidth,
         height: screenHeight,
@@ -190,14 +160,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         overflow: "hidden",
         justifyContent: "center",
-    },
-
-    coreContainer: {
-        // borderRadius: 20,
-        // marginHorizontal: 40,
-        // overflow: "hidden",
-        // borderWidth: 2,
-        // backgroundColor: colors.gray5,
     },
     modalContent: {
         height: 240,
@@ -243,18 +205,49 @@ const styles = StyleSheet.create({
     modalBGStyle: {
         borderColor: colors.deepMainColor,
         borderWidth: 5,
-
         borderTopLeftRadius: borderSizes.m10,
         borderTopRightRadius: borderSizes.m10,
         height: 50,
         marginTop: marginSizes.xxs4,
         marginBottom: marginSizes.xxs4,
-
         width: screenWidth - marginSizes.s12 * 2,
     },
     modalTextStyle: {
         textAlign: "center",
         fontSize: 18,
         fontWeight: "bold",
+    },
+    bottomBtnContainer: {
+        flexDirection: "row",
+        height: 60,
+        alignSelf: "stretch",
+        marginBottom: 10,
+        marginHorizontal: 10,
+    },
+    cancelBtnBG: {
+        flex: 0.5,
+        backgroundColor: "white",
+        marginHorizontal: 9,
+        marginTop: 12,
+        marginBottom: 6,
+        borderRadius: 6,
+    },
+    cancelBtnText: {
+        color: "black",
+        letterSpacing: 2,
+        fontSize: 16,
+    },
+    confirmBtnBG: {
+        backgroundColor: colors.deeperMainColor,
+        flex: 0.5,
+        marginHorizontal: 9,
+        marginTop: 12,
+        marginBottom: 6,
+        borderRadius: 6,
+    },
+    confirmBtnText: {
+        color: "white",
+        letterSpacing: 2,
+        fontSize: 16,
     },
 });

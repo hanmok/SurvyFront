@@ -340,8 +340,6 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                     />
 
                     <BottomButtonContainer
-                        leftTitle="취소"
-                        rightTitle="확인"
                         leftAction={onClose}
                         rightAction={() => {
                             confirmGeoSelection(selectedCities);

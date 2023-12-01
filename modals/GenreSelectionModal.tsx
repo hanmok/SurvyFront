@@ -192,8 +192,6 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                             </View>
                         </View>
                         <BottomButtonContainer
-                            leftTitle="취소"
-                            rightTitle="확인"
                             leftAction={onClose}
                             rightAction={() => {
                                 onGenreSelection(selectedGenres);

@@ -245,7 +245,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
 
                         <BottomButtonContainer
                             leftTitle="닫기"
-                            rightTitle="확인"
                             leftAction={handleModalClose}
                             rightAction={handleConfirm}
                             satisfied={satisfied}

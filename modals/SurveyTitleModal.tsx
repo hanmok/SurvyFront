@@ -117,33 +117,8 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                                 autoComplete="off"
                             />
                         </View>
-                        {/* Bottom */}
-                        {/* <View style={modalStyles.bottomBtnContainer}>
-                            <TextButton
-                                title="닫기"
-                                onPress={() => {
-                                    console.log("cancel tapped");
-                                    setTitleModalVisible(false);
-                                }}
-                                backgroundStyle={modalStyles.cancelBtnBG}
-                                textStyle={modalStyles.cancelBtnText}
-                            />
-                            <TextButton
-                                title="확인"
-                                onPress={() => {
-                                    console.log("confirm tapped");
-                                    setSurveyTitle(title);
-                                    setTitleModalVisible(false);
-                                    setConfirmTapped(true);
-                                }}
-                                backgroundStyle={modalStyles.confirmBtnBG}
-                                textStyle={modalStyles.confirmBtnText}
-                            />
-                        </View> */}
-
                         <BottomButtonContainer
                             leftTitle="닫기"
-                            rightTitle="확인"
                             leftAction={() => {
                                 setTitleModalVisible(false);
                             }}

@@ -5,17 +5,17 @@ import TextButton from "../TextButton";
 import { colors } from "../../utils/colors";
 
 interface BottomButtonContainerProps {
-    leftTitle: string;
+    leftTitle?: string;
     leftAction: () => void;
-    rightTitle: string;
+    rightTitle?: string;
     rightAction: () => void;
     satisfied?: boolean;
 }
 
 export const BottomButtonContainer: React.FC<BottomButtonContainerProps> = ({
-    leftTitle,
+    leftTitle = "취소",
     leftAction,
-    rightTitle,
+    rightTitle = "확인",
     rightAction,
     satisfied = true,
 }) => {

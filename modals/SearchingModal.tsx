@@ -17,7 +17,6 @@ import { modalStyles } from "../utils/CommonStyles";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface SearhchingModalProps {
-    cancelText: string;
     onSearchAction: () => void;
     searchText: string;
     onClose: () => void;
@@ -32,7 +31,6 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
     title,
     isModalVisible,
     searchText: secondSelectionText,
-    cancelText,
     onClose,
     searchingCode,
     setSearchingCode,
@@ -103,7 +101,6 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                             </View>
                         </View>
                         <BottomButtonContainer
-                            leftTitle={cancelText}
                             rightTitle={secondSelectionText}
                             leftAction={() => {
                                 onClose();

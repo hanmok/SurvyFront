@@ -126,7 +126,7 @@ export default function PostingScreen({
 
     useEffect(() => {
         setIsSatisfied(questions.length !== 0 && surveyTitle !== ""); // 0 이 아니면 satisfied 는 true
-    }, [questions]);
+    }, [questions, surveyTitle]);
 
     useEffect(() => {
         setIsNextButtonTapped(false);
@@ -588,7 +588,9 @@ export default function PostingScreen({
 
                 <TextButton
                     backgroundStyle={{
-                        backgroundColor: isSatisfied ? "#ffffff" : "#b3b3b3", // inactive
+                        backgroundColor: isSatisfied
+                            ? colors.deeperMainColor
+                            : "#b3b3b3", // inactive
                         height: 46,
                         marginBottom: 30,
                         marginHorizontal: 20,
@@ -598,7 +600,7 @@ export default function PostingScreen({
                     textStyle={[
                         styles.nextButtonText,
                         {
-                            color: isSatisfied ? colors.black : "#cbcbcb",
+                            color: isSatisfied ? colors.white : "#cbcbcb",
                         },
                     ]}
                     // hasShadow={false}

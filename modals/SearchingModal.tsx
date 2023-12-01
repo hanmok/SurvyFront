@@ -14,6 +14,7 @@ import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import TextButton from "../components/TextButton";
 import { useEffect, useRef, useState } from "react";
 import { modalStyles } from "../utils/CommonStyles";
+import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface SearhchingModalProps {
     cancelText: string;
@@ -101,28 +102,17 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                                 />
                             </View>
                         </View>
-                        {/* Bottom Container */}
-                        <View style={modalStyles.bottomBtnContainer}>
-                            <TextButton
-                                title={cancelText}
-                                onPress={() => {
-                                    onClose();
-                                    console.log("cancel tapped");
-                                }}
-                                backgroundStyle={modalStyles.cancelBtnBG}
-                                textStyle={modalStyles.cancelBtnText}
-                            />
-                            <TextButton
-                                title={secondSelectionText}
-                                onPress={() => {
-                                    console.log("confirm tapped");
-                                    onSecondSelection();
-                                    onClose();
-                                }}
-                                backgroundStyle={modalStyles.confirmBtnBG}
-                                textStyle={modalStyles.confirmBtnText}
-                            />
-                        </View>
+                        <BottomButtonContainer
+                            leftTitle={cancelText}
+                            rightTitle={secondSelectionText}
+                            leftAction={() => {
+                                onClose();
+                            }}
+                            rightAction={() => {
+                                onSecondSelection();
+                                onClose();
+                            }}
+                        />
                     </View>
                 </TouchableOpacity>
             </Animated.View>

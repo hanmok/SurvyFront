@@ -15,6 +15,7 @@ import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { log, logObject } from "../utils/Log";
 import { modalStyles } from "../utils/CommonStyles";
+import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface SurveyTitleModalProps {
     setSurveyTitle: (string) => void;
@@ -112,7 +113,7 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                             />
                         </View>
                         {/* Bottom */}
-                        <View style={modalStyles.bottomBtnContainer}>
+                        {/* <View style={modalStyles.bottomBtnContainer}>
                             <TextButton
                                 title="닫기"
                                 onPress={() => {
@@ -133,7 +134,20 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                                 backgroundStyle={modalStyles.confirmBtnBG}
                                 textStyle={modalStyles.confirmBtnText}
                             />
-                        </View>
+                        </View> */}
+
+                        <BottomButtonContainer
+                            leftTitle="닫기"
+                            rightTitle="확인"
+                            leftAction={() => {
+                                setTitleModalVisible(false);
+                            }}
+                            rightAction={() => {
+                                setSurveyTitle(title);
+                                setTitleModalVisible(false);
+                                setConfirmTapped(true);
+                            }}
+                        />
                     </View>
                 </View>
                 {/* </TouchableOpacity> */}

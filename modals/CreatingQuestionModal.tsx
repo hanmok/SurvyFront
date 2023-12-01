@@ -24,6 +24,7 @@ import { log, logObject } from "../utils/Log";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
 import DefaultSwitch from "../components/DefaultSwitch";
+import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface CreatingQuestionModalProps {
     isCreatingQuestionModalVisible: boolean;
@@ -242,52 +243,13 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                             </View>
                         </View>
 
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                height: 60,
-                                alignSelf: "stretch",
-                                marginBottom: 10,
-                                marginHorizontal: 10,
-                            }}
-                        >
-                            <TextButton
-                                title="닫기"
-                                onPress={handleModalClose}
-                                backgroundStyle={{
-                                    flex: 0.5,
-                                    backgroundColor: "white",
-                                    marginHorizontal: 9,
-                                    marginTop: 12,
-                                    marginBottom: 6,
-                                    borderRadius: 6,
-                                }}
-                                textStyle={{
-                                    color: "black",
-                                    letterSpacing: 2,
-                                    fontSize: 16,
-                                }}
-                            />
-                            <TextButton
-                                title="확인"
-                                onPress={handleConfirm}
-                                backgroundStyle={{
-                                    backgroundColor: satisfied
-                                        ? colors.deeperMainColor
-                                        : colors.gray4,
-                                    flex: 0.5,
-                                    marginHorizontal: 9,
-                                    marginTop: 12,
-                                    marginBottom: 6,
-                                    borderRadius: 6,
-                                }}
-                                textStyle={{
-                                    color: "white",
-                                    letterSpacing: 2,
-                                    fontSize: 16,
-                                }}
-                            />
-                        </View>
+                        <BottomButtonContainer
+                            leftTitle="닫기"
+                            rightTitle="확인"
+                            leftAction={handleModalClose}
+                            rightAction={handleConfirm}
+                            satisfied={satisfied}
+                        />
                     </View>
                 </View>
             </TouchableWithoutFeedback>

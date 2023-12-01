@@ -581,7 +581,6 @@ export default function PostingScreen({
                             )}
                             ListFooterComponent={listFooter}
                             ListHeaderComponent={listHeader}
-                            // ListHeaderComponentStyle={{ marginTop: 20 }}
                             ListFooterComponentStyle={{ marginTop: 20 }}
                         />
                     )}

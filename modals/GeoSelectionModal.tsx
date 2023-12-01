@@ -12,6 +12,7 @@ import { log, logObject } from "../utils/Log";
 import Spacer from "../components/common/Spacer";
 // import { geoDataManager } from "../utils/Storage";
 import { fetchAllGeoInfos } from "../API/GeoAPI";
+import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface GeoSelectionModalProps {
     onClose: () => void;
@@ -338,36 +339,16 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
                         textStyle={{ color: "white" }}
                     />
 
-                    {/* Bottom Confirm / Cancel */}
-                    <View style={styles.bottomContainer}>
-                        <TextButton
-                            title="취소"
-                            textStyle={styles.bottomTextStyle}
-                            onPress={onClose}
-                            backgroundStyle={
-                                styles.bottomLeftButtonTextContainer
-                            }
-                        />
-                        <TextButton
-                            onPress={() => {
-                                confirmGeoSelection(selectedCities);
-                                onClose();
-                            }}
-                            title="확인"
-                            backgroundStyle={
-                                satisfied
-                                    ? [
-                                          styles.bottomRightButtonTextContainer,
-                                          styles.activatedStyle,
-                                      ]
-                                    : [
-                                          styles.bottomRightButtonTextContainer,
-                                          styles.inactivatedStyle,
-                                      ]
-                            }
-                            textStyle={styles.bottomTextStyle}
-                        />
-                    </View>
+                    <BottomButtonContainer
+                        leftTitle="취소"
+                        rightTitle="확인"
+                        leftAction={onClose}
+                        rightAction={() => {
+                            confirmGeoSelection(selectedCities);
+                            onClose();
+                        }}
+                        satisfied={satisfied}
+                    />
                 </View>
             </View>
         </Modal>

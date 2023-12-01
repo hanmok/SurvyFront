@@ -31,8 +31,13 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
     setTitleModalVisible,
     setConfirmTapped,
 }) => {
+    const [satisfied, setSatisfied] = useState(false);
     const [title, setTitle] = useState("");
     const translateY = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        setSatisfied(title !== "");
+    }, [title]);
 
     useEffect(() => {
         console.log("modalVisible changed");
@@ -147,6 +152,7 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                                 setTitleModalVisible(false);
                                 setConfirmTapped(true);
                             }}
+                            satisfied={satisfied}
                         />
                     </View>
                 </View>

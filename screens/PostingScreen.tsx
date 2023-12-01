@@ -687,9 +687,11 @@ const styles = StyleSheet.create({
     nextButtonText: {
         color: colors.black,
         textAlign: "center",
-        fontSize: fontSizes.m20,
-        fontWeight: "bold",
-        letterSpacing: 1,
+        // fontSize: fontSizes.m20,
+        fontSize: 18,
+        // fontWeight: "bold",
+        fontWeight: "900",
+        letterSpacing: 2,
     },
     expectedTime: {
         flexBasis: 24,

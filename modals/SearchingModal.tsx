@@ -91,21 +91,9 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                                 alignItems: "center",
                             }}
                         >
-                            <View
-                                style={{
-                                    borderWidth: 1,
-                                    borderRadius: 6,
-                                    width: 200,
-                                    height: 40,
-                                    justifyContent: "center",
-                                }}
-                            >
+                            <View style={styles.searchContainer}>
                                 <TextInput
-                                    style={{
-                                        fontSize: 20,
-                                        textAlignVertical: "center",
-                                        paddingLeft: 10,
-                                    }}
+                                    style={styles.searchInput}
                                     autoCapitalize="characters"
                                     keyboardType="default"
                                     value={searchingCode}
@@ -207,5 +195,17 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 30,
         marginHorizontal: 20,
+    },
+    searchInput: {
+        fontSize: 20,
+        textAlignVertical: "center",
+        paddingLeft: 10,
+    },
+    searchContainer: {
+        borderWidth: 1,
+        borderRadius: 6,
+        width: 200,
+        height: 40,
+        justifyContent: "center",
     },
 });

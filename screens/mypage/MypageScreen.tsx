@@ -21,6 +21,7 @@ import TextButton from "../../components/TextButton";
 import PointBlockView from "../../components/PointBlockView";
 import ReputationBlockView from "../../components/ReputationBlockView";
 import showToast from "../../components/common/toast/Toast";
+import { WithdrawalModal } from "../../modals/WithdrawalModal";
 // import { getParticipatedSurveyIds, getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 
 function MypageScreen({
@@ -32,7 +33,7 @@ function MypageScreen({
         useState<number>(0);
     const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
     const { userId, accessToken } = useCustomContext();
-
+    const [withdrawalModalVisible, setWithdrawalModalVisible] = useState(false);
     const getNumbers = async () => {
         await getPostedSurveyIds(userId, accessToken).then(postings =>
             setNumOfPostedSurveys(postings.length)
@@ -43,10 +44,6 @@ function MypageScreen({
     };
 
     const { userDetail } = useCustomContext();
-
-    // const navigateToSetting = () => {
-    //     navigation.navigate(NavigationTitle.setting);
-    // };
 
     const navigateToMyInfo = () => {
         navigation.navigate(NavigationTitle.myinfo);
@@ -60,6 +57,13 @@ function MypageScreen({
 
     return (
         <View style={{ flex: 1, alignItems: "center" }}>
+            <WithdrawalModal
+                isModalVisible={withdrawalModalVisible}
+                onClose={() => {
+                    setWithdrawalModalVisible(false);
+                }}
+                totalPoint={userDetail?.collectedReward ?? 0}
+            />
             <View
                 style={{
                     alignSelf: "stretch",
@@ -123,7 +127,9 @@ function MypageScreen({
                         // showToast("success", "navToParticipatedSurveys");
                         navigation.navigate(NavigationTitle.pointHistory);
                     }}
-                    onPressWithdrawal={() => {}}
+                    onPressWithdrawal={() => {
+                        setWithdrawalModalVisible(true);
+                    }}
                     collectedReward={userDetail?.collectedReward}
                 />
                 <ReputationBlockView reputation={userDetail?.reputation} />

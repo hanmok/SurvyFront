@@ -24,7 +24,6 @@ import ReputationBlockView from "../../components/ReputationBlockView";
 import showToast from "../../components/common/toast/Toast";
 import { WithdrawalModal } from "../../modals/WithdrawalModal";
 import showAdminToast from "../../components/common/toast/showAdminToast";
-// import { getParticipatedSurveyIds, getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 
 function MypageScreen({
     navigation,
@@ -34,20 +33,33 @@ function MypageScreen({
     const [numOfParticipatedSurveys, setNumOfParticipatedSurveys] =
         useState<number>(0);
     const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
-    const { userId, accessToken, updateUserDetail } = useCustomContext();
+    const {
+        userId,
+        accessToken,
+        userDetail,
+        updateUserDetail,
+        updateLoadingStatus,
+    } = useCustomContext();
     const [withdrawalModalVisible, setWithdrawalModalVisible] = useState(false);
+
     const getNumbers = async () => {
-        await getPostedSurveyIds(userId, accessToken).then(postings =>
-            setNumOfPostedSurveys(postings.length)
+        updateLoadingStatus(true);
+
+        const postedSurveysPromise = getPostedSurveyIds(
+            userId,
+            accessToken
+        ).then(postings => setNumOfPostedSurveys(postings.length));
+
+        const participatedSurveysPromise = getParticipatedSurveyIds(
+            userId,
+            accessToken
+        ).then(participatings =>
+            setNumOfParticipatedSurveys(participatings.length)
         );
-        await getParticipatedSurveyIds(userId, accessToken).then(
-            participatings => setNumOfParticipatedSurveys(participatings.length)
-        );
+
+        await Promise.all([postedSurveysPromise, participatedSurveysPromise]);
+        updateLoadingStatus(false);
     };
-
-    const { userDetail } = useCustomContext();
-
-    // onConfirm 에서... 이것들 처리해야함.
 
     const updateUser = () => {
         const fetchUserDetail = async () => {

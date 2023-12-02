@@ -13,6 +13,7 @@ import { Genre } from "../../interfaces/Genre";
 import { colors } from "../../utils/colors";
 import { GeoInfo } from "../../interfaces/GeoInfo";
 import Spacer from "../../components/common/Spacer";
+import TextButton from "../../components/TextButton";
 
 // 내 정보
 function MyInfoScreen({
@@ -30,8 +31,10 @@ function MyInfoScreen({
 
     useEffect(() => {
         const getMyGenres = async () => {
+            updateLoadingStatus(true);
             getUserGenres(accessToken, userId).then(response => {
                 setMyGenres(response);
+                updateLoadingStatus(false);
             });
         };
         getMyGenres();
@@ -70,12 +73,54 @@ function MyInfoScreen({
                         justifyContent: "space-between",
                         flexDirection: "row",
                         paddingRight: 20,
+                        alignItems: "center",
                     }}
                 >
                     <Text style={{ fontSize: 18 }}>관심사</Text>
-                    <Text style={{ fontSize: 16 }}>
-                        {myGenres.map(genre => genre.name).join(", ")}
-                    </Text>
+                    {/* {myGenres.map(genre => {
+                        <Text>{genre.name}</Text>;
+                    })} */}
+
+                    <View
+                        style={{
+                            // width: screenWidth - 80,
+                            // alignItems: "flex-start",
+                            flexDirection: "row",
+                            // justifyContent: "flex-start",
+                            // justifyContent: "flex-end",
+                            // backgroundColor: "magenta",
+                            flexWrap: "wrap",
+                            // marginTop: 10,
+                            // alignSelf: "flex-start",
+                        }}
+                    >
+                        {myGenres.map(genre => (
+                            <TextButton
+                                title={genre.name}
+                                onPress={() => {}}
+                                backgroundStyle={{
+                                    // backgroundColor: colors.gray1,
+                                    backgroundColor: colors.gray5,
+                                    padding: 4,
+                                    paddingHorizontal: 6,
+                                    marginLeft: 8,
+                                    borderRadius: 6,
+                                    height: 30,
+                                    // marginVertical: 4,
+                                }}
+                                hasShadow={false}
+                                key={`${genre.id}`}
+                                textStyle={{
+                                    color: colors.black,
+                                }}
+                            />
+                        ))}
+                    </View>
+
+                    {/* <Text style={{ fontSize: 16 }}> */}
+                    {/* {myGenres.map(genre => genre.name).join(", ")} */}
+
+                    {/* </Text> */}
                 </View>
             </BlockView>
 
@@ -182,8 +227,8 @@ function MyInfoScreen({
                     </Text>
                 </View>
             </BlockView>
-
-            <BlockView
+            {/* Occupation (직업) */}
+            {/* <BlockView
                 size={50}
                 onPress={() => {
                     console.log("hi");
@@ -209,7 +254,7 @@ function MyInfoScreen({
                         {userDetail?.occupation?.name ?? "직업 선택"}
                     </Text>
                 </View>
-            </BlockView>
+            </BlockView> */}
         </View>
     );
 }

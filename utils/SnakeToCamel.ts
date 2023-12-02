@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export const convertKeysToCamelCase = (obj: any) => {
     const newObj: any = {};
     for (let key in obj) {
@@ -10,6 +12,10 @@ export const convertKeysToCamelCase = (obj: any) => {
     }
     return newObj;
 };
+
+export function convertToSnakeCase(obj) {
+    return _.mapKeys(obj, (value, key) => _.snakeCase(key));
+}
 
 export const convertKeysToCamelCaseRecursive = obj => {
     if (obj === null || typeof obj !== "object") {

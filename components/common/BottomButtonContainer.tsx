@@ -35,6 +35,7 @@ export const BottomButtonContainer: React.FC<BottomButtonContainerProps> = ({
                 onPress={() => {
                     rightAction();
                 }}
+                isEnabled={satisfied}
                 backgroundStyle={[
                     modalStyles.confirmBtnBG,
                     !satisfied && { backgroundColor: colors.gray4 },

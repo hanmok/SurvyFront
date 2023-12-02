@@ -10,10 +10,7 @@ import _ from "lodash";
 import { makeSurvey } from "../interfaces/Survey";
 import { useCustomContext } from "../features/context/CustomContext";
 import { fetchData } from "./BaseAPI";
-
-function convertToSnakeCase(obj) {
-    return _.mapKeys(obj, (value, key) => _.snakeCase(key));
-}
+import { convertToSnakeCase } from "../utils/SnakeToCamel";
 
 export async function createSurvey(
     surveyTitle: string,

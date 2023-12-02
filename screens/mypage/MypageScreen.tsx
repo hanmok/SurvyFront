@@ -15,6 +15,7 @@ import { API_BASE_URL } from "../../API/API";
 import {
     getParticipatedSurveyIds,
     getPostedSurveyIds,
+    getUserDetail,
 } from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
 import TextButton from "../../components/TextButton";
@@ -22,6 +23,7 @@ import PointBlockView from "../../components/PointBlockView";
 import ReputationBlockView from "../../components/ReputationBlockView";
 import showToast from "../../components/common/toast/Toast";
 import { WithdrawalModal } from "../../modals/WithdrawalModal";
+import showAdminToast from "../../components/common/toast/showAdminToast";
 // import { getParticipatedSurveyIds, getParticipatedSurveyIds, getPostedSurveyIds } from "../API/UserAPI";
 
 function MypageScreen({
@@ -32,7 +34,7 @@ function MypageScreen({
     const [numOfParticipatedSurveys, setNumOfParticipatedSurveys] =
         useState<number>(0);
     const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
-    const { userId, accessToken } = useCustomContext();
+    const { userId, accessToken, updateUserDetail } = useCustomContext();
     const [withdrawalModalVisible, setWithdrawalModalVisible] = useState(false);
     const getNumbers = async () => {
         await getPostedSurveyIds(userId, accessToken).then(postings =>
@@ -44,6 +46,22 @@ function MypageScreen({
     };
 
     const { userDetail } = useCustomContext();
+
+    // onConfirm 에서... 이것들 처리해야함.
+
+    const updateUser = () => {
+        const fetchUserDetail = async () => {
+            try {
+                const detailInfo = await getUserDetail(accessToken);
+                logObject("userDetail", detailInfo);
+                updateUserDetail(detailInfo);
+            } catch (error) {
+                showAdminToast("error", error.message);
+                console.error(error);
+            }
+        };
+        fetchUserDetail();
+    };
 
     const navigateToMyInfo = () => {
         navigation.navigate(NavigationTitle.myinfo);
@@ -61,6 +79,10 @@ function MypageScreen({
                 isModalVisible={withdrawalModalVisible}
                 onClose={() => {
                     setWithdrawalModalVisible(false);
+                }}
+                onConfirm={() => {
+                    setWithdrawalModalVisible(false);
+                    updateUser();
                 }}
                 totalPoint={userDetail?.collectedReward ?? 0}
             />

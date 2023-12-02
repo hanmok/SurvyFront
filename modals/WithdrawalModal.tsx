@@ -16,16 +16,23 @@ import { useEffect, useRef, useState } from "react";
 import { modalStyles } from "../utils/CommonStyles";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 import Spacer from "../components/common/Spacer";
+import { createWithdrawal, patchWithdrawal } from "../API/WithdrawalAPI";
+import { useCustomContext } from "../features/context/CustomContext";
+import { Withdrawal } from "../interfaces/Withdrawal";
+import showToast from "../components/common/toast/Toast";
+import showAdminToast from "../components/common/toast/showAdminToast";
 
 interface WithdrawalModalProps {
     isModalVisible: boolean;
     onClose: () => void;
+    onConfirm: () => void;
     totalPoint: number;
 }
 
 export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     isModalVisible,
     onClose,
+    onConfirm,
     totalPoint,
 }) => {
     const [bankAccount, setBankAccount] = useState("");
@@ -76,6 +83,38 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
         };
     }, [translateY]);
 
+    const { accessToken, userId, updateLoadingStatus } = useCustomContext();
+    const [confirmTapped, setConfirmTapped] = useState(false);
+
+    const handleConfirm = () => {
+        setConfirmTapped(true);
+    };
+
+    const handleWithdrawal = async () => {
+        updateLoadingStatus(true);
+
+        try {
+            const withdrawal: Withdrawal = await createWithdrawal(
+                accessToken,
+                userId,
+                amount
+            );
+            await patchWithdrawal(accessToken, withdrawal.id);
+            showToast("success", `${amount} 원이 출금되었습니다.`);
+            onConfirm();
+        } catch (error) {
+            showAdminToast("error", error);
+        } finally {
+            updateLoadingStatus(false);
+        }
+    };
+
+    useEffect(() => {
+        if (confirmTapped) {
+            handleWithdrawal();
+        }
+    }, [confirmTapped, amount]);
+
     return (
         <Modal transparent={true} visible={isModalVisible}>
             <Animated.View style={{ transform: [{ translateY: translateY }] }}>
@@ -100,8 +139,8 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                             </Text>
                             <Spacer size={10} />
                             <Text>
-                                계좌번호 또는 이름이 조회되지 않을 시 출금이
-                                정상적으로 되지 않습니다.
+                                계좌와 이름이 일치하지 않을 시 출금이 정상적으로
+                                되지 않습니다.
                             </Text>
                             <Spacer size={10} />
                         </View>
@@ -199,8 +238,8 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                             leftAction={onClose}
                             rightTitle="출금"
                             rightAction={() => {
-                                // onConfirm()
-                                onClose();
+                                // setConfirmTapped(true);
+                                handleConfirm();
                             }}
                             satisfied={satisfied}
                         />

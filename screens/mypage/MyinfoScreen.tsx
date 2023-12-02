@@ -25,7 +25,8 @@ function MyInfoScreen({
     };
     const [myGenres, setMyGenres] = useState<Genre[]>([]);
 
-    const { accessToken, userId, userDetail } = useCustomContext();
+    const { accessToken, userId, userDetail, updateLoadingStatus } =
+        useCustomContext();
 
     useEffect(() => {
         const getMyGenres = async () => {

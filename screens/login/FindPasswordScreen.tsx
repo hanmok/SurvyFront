@@ -4,8 +4,11 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { fontSizes } from "../../utils/sizes";
 import TextButton from "../../components/TextButton";
-import { useEffect, useState } from "react";
+import { isValidElement, useEffect, useState } from "react";
 import { colors } from "../../utils/colors";
+import isValidEmail from "../../utils/EmailValidation";
+import showToast from "../../components/common/toast/Toast";
+import { screenWidth } from "../../utils/ScreenSize";
 
 export default function FindPasswordScreen({
     navigation,
@@ -13,27 +16,59 @@ export default function FindPasswordScreen({
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.findID>;
 }) {
     const [isPhoneAuthTapped, setIsPhoneAuthTapped] = useState(true);
-    const [isSatisfied, setSatisfied] = useState(false);
-    const [nameInput, setNameInput] = useState("");
-    const [phoneInput, setPhoneInput] = useState("");
 
-    const [mailInput, setMailInput] = useState("");
+    const [randomNumber, setRandomNumber] = useState("");
+
+    const [phoneAuthSatisfied, setPhoneAuthSatisfied] = useState(false);
+
+    const [mailAuthSatisfied, setMailAuthSatisfied] = useState(false);
+
+    const [usernameInput, setUserNameInput] = useState("");
+    const [phoneInput, setPhoneInput] = useState("");
+    const [authCodeInput, setAuthCodeInput] = useState("");
+
+    const [authCodeSatisfied, setAuthCodeSatisfied] = useState(false);
+
+    // 아이디, 폰번호 형식이 모두 정상 -> 인증번호 받기 버튼 활성화 (phoneAuthSatisfied)
+    // 인증번호 모두 입력 -> 확인 버튼 활성화 (authCodeSatisfied)
+
+    useEffect(() => {
+        setAuthCodeSatisfied(authCodeInput.length === 6);
+    }, [authCodeInput]);
 
     const setAuthMethodToPhone = isPhoneAuth => {
         setIsPhoneAuthTapped(isPhoneAuth);
     };
+
+    function generateSixDigitRandomNumber(): number {
+        // 100000부터 999999까지의 랜덤 숫자를 생성
+        const randomNumber = Math.floor(100000 + Math.random() * 900000);
+        setRandomNumber(String(randomNumber));
+        return randomNumber;
+    }
 
     const navigate = () => {
         navigation.navigate(NavigationTitle.settingPassword);
     };
 
     useEffect(() => {
-        if (nameInput !== "" && phoneInput.length == 13) {
-            setSatisfied(true);
+        const valid = isValidEmail(usernameInput);
+        setMailAuthSatisfied(valid);
+    }, [usernameInput]);
+
+    useEffect(() => {
+        const validUsername = isValidEmail(usernameInput);
+        const validPhone = phoneInput.length === 13;
+        setPhoneAuthSatisfied(validUsername && validPhone);
+    }, [usernameInput, phoneInput]);
+
+    useEffect(() => {
+        if (isValidEmail(usernameInput) && phoneInput.length == 13) {
+            setPhoneAuthSatisfied(true);
         } else {
-            setSatisfied(false);
+            setPhoneAuthSatisfied(false);
         }
-    }, [nameInput, phoneInput]);
+    }, [usernameInput, phoneInput]);
 
     useEffect(() => {
         if (phoneInput.length === 4 && phoneInput.includes("-") === false) {
@@ -124,93 +159,166 @@ export default function FindPasswordScreen({
                     <TextInput
                         placeholder="아이디를 입력해주세요"
                         style={[styles.guideText, { paddingLeft: 8 }]}
-                        value={nameInput}
-                        onChangeText={setNameInput}
+                        value={usernameInput}
+                        onChangeText={setUserNameInput}
                         autoComplete="off"
                         autoCorrect={false}
+                        autoCapitalize="none"
                     />
                 </View>
             </View>
 
-            {isPhoneAuthTapped ? (
+            {isPhoneAuthTapped && (
                 // {/* 휴대폰 번호 */}
                 <View
                     style={{
                         marginHorizontal: 18,
-                        marginBottom: 26,
                     }}
                 >
                     <Text style={[styles.guideText, { marginBottom: 14 }]}>
                         휴대폰 번호
                     </Text>
-                    <View // Text Input Box
-                        style={styles.textInputBox}
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            // backgroundColor: "magenta",
+                        }}
                     >
-                        <TextInput
-                            placeholder="휴대폰번호를 입력해주세요"
-                            style={[styles.guideText, { paddingLeft: 8 }]}
-                            value={phoneInput}
-                            onChangeText={setPhoneInput}
-                            keyboardType="phone-pad"
-                            autoComplete="off"
-                            autoCorrect={false}
+                        <View // Text Input Box
+                            style={[styles.textInputBox, { flex: 0.9 }]}
+                        >
+                            <TextInput
+                                placeholder="휴대폰번호를 입력해주세요"
+                                style={[styles.guideText, { paddingLeft: 8 }]}
+                                value={phoneInput}
+                                onChangeText={setPhoneInput}
+                                keyboardType="phone-pad"
+                                autoComplete="off"
+                                autoCorrect={false}
+                            />
+                        </View>
+                        <TextButton
+                            title="인증번호 받기"
+                            onPress={() => {
+                                const randomNumber =
+                                    generateSixDigitRandomNumber();
+                                showToast("success", `${randomNumber}`);
+                            }}
+                            backgroundStyle={[
+                                styles.authButtonBackground,
+                                phoneAuthSatisfied
+                                    ? styles.activatedBackground
+                                    : styles.inactivatedBackground,
+                            ]}
+                            isEnabled={phoneAuthSatisfied}
+                            hasShadow={false}
+                            textStyle={[
+                                { fontSize: 14 },
+                                phoneAuthSatisfied
+                                    ? { color: colors.white }
+                                    : { color: colors.black },
+                            ]}
                         />
                     </View>
-                </View>
-            ) : (
-                // 이메일
-                <View
-                    style={{
-                        marginHorizontal: 18,
-                        marginBottom: 26,
-                    }}
-                >
-                    <Text style={[styles.guideText, { marginBottom: 14 }]}>
-                        이메일 주소
-                    </Text>
-                    <View // Text Input Box
-                        style={styles.textInputBox}
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            // backgroundColor: "magenta",
+                        }}
                     >
-                        <TextInput
-                            placeholder="이메일 주소를 입력해주세요"
-                            style={[styles.guideText, { paddingLeft: 8 }]}
-                            value={mailInput}
-                            onChangeText={setMailInput}
-                            keyboardType="email-address"
-                            autoComplete="off"
-                            autoCorrect={false}
+                        <View // Text Input Box
+                            style={[
+                                styles.textInputBox,
+                                { marginTop: 10, flex: 0.9 },
+                            ]}
+                        >
+                            <TextInput
+                                placeholder="인증번호를 입력해주세요"
+                                style={[styles.guideText, { paddingLeft: 8 }]}
+                                value={authCodeInput}
+                                onChangeText={setAuthCodeInput}
+                                keyboardType="phone-pad"
+                                autoComplete="off"
+                                autoCorrect={false}
+                            />
+                        </View>
+                        <TextButton
+                            title="재발송"
+                            onPress={() => {
+                                // navigation.navigate(NavigationTitle.foundID);
+                                const randomNumber =
+                                    generateSixDigitRandomNumber();
+                                showToast("success", `${randomNumber}`);
+                            }}
+                            backgroundStyle={[
+                                styles.authButtonBackground,
+                                styles.inactivatedBackground,
+                            ]}
+                            // hasShadow={isSatisfied}
+                            hasShadow={false}
+                            textStyle={{ color: "black", fontSize: 14 }}
                         />
                     </View>
                 </View>
             )}
             {isPhoneAuthTapped ? (
-                <TextButton
-                    title="인증번호 받기"
-                    onPress={() => {
-                        // navigation.navigate(NavigationTitle.settingPassword)
-                        navigate(); // TODO: ?? clearify
-                    }}
-                    backgroundStyle={[
-                        styles.authButtonBackground,
-                        isSatisfied
-                            ? styles.activatedBackground
-                            : styles.inactivatedBackground,
-                    ]}
-                    hasShadow={isSatisfied}
-                    textStyle={{ color: "white", fontSize: fontSizes.m20 }}
-                />
+                <View style={{ marginHorizontal: 18 }}>
+                    <TextButton
+                        title="확인"
+                        onPress={() => {
+                            if (randomNumber === authCodeInput) {
+                                showToast("success", "인증되었습니다.");
+                                // navigation.navigate(NavigationTitle.foundID);
+                                navigation.navigate(
+                                    NavigationTitle.settingPassword
+                                );
+                            } else {
+                                showToast(
+                                    "error",
+                                    "인증번호를 다시 확인해주세요."
+                                );
+                            }
+                        }}
+                        backgroundStyle={[
+                            styles.authButtonBackground,
+                            { marginTop: 20, width: screenWidth - 36 },
+                            authCodeSatisfied
+                                ? { backgroundColor: colors.deeperMainColor }
+                                : styles.inactivatedBackground,
+                        ]}
+                        hasShadow={false}
+                        textStyle={[
+                            { fontSize: 14 },
+                            authCodeSatisfied
+                                ? { color: "white" }
+                                : { color: "black" },
+                        ]}
+                    />
+                </View>
             ) : (
                 <TextButton
                     title="인증 메일 받기"
                     onPress={() => {}}
                     backgroundStyle={[
                         styles.authButtonBackground,
-                        isSatisfied
+                        {
+                            // marginTop: 20,
+                            width: screenWidth - 36,
+                            marginHorizontal: 18,
+                        },
+                        mailAuthSatisfied
                             ? styles.activatedBackground
                             : styles.inactivatedBackground,
                     ]}
-                    hasShadow={isSatisfied}
-                    textStyle={{ color: "white", fontSize: fontSizes.m20 }}
+                    hasShadow={phoneAuthSatisfied}
+                    textStyle={{
+                        fontSize: 14,
+                        color: mailAuthSatisfied ? "white" : "black",
+                    }}
                 />
             )}
         </View>
@@ -253,14 +361,18 @@ const styles = StyleSheet.create({
         marginHorizontal: 18,
     },
     inactivatedBackground: {
-        backgroundColor: "#ddd",
+        // backgroundColor: "#ddd",
+        borderWidth: 1,
+        borderColor: colors.gray4,
     },
     activatedBackground: {
         backgroundColor: colors.deepMainColor,
     },
     authButtonBackground: {
-        height: 50,
-        marginHorizontal: 18,
+        // height: 50,
+        height: 42,
+        width: 110,
+        // marginHorizontal: 18,
         borderRadius: 6,
     },
 });

@@ -95,6 +95,7 @@ const App: React.FC = () => {
                                     // options={}
                                     options={({ route }) => ({
                                         headerTitle: "비밀번호 재설정",
+                                        headerBackTitleVisible: false,
                                     })}
                                 />
 

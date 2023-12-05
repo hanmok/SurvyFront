@@ -19,9 +19,9 @@ export default function FindIDScreen({
 
     const [mailInput, setMailInput] = useState("");
 
-    const setAuthMethodToPhone = isPhoneAuth => {
-        setIsPhoneAuthTapped(isPhoneAuth);
-    };
+    // const setAuthMethodToPhone = isPhoneAuth => {
+    //     setIsPhoneAuthTapped(isPhoneAuth);
+    // };
 
     useEffect(() => {
         if (nameInput !== "" && phoneInput.length == 13) {
@@ -80,7 +80,7 @@ export default function FindIDScreen({
                     <TextButton
                         title={"휴대폰 인증"}
                         onPress={() => {
-                            setAuthMethodToPhone(true);
+                            setIsPhoneAuthTapped(true);
                         }}
                         backgroundStyle={{
                             marginBottom: 12,
@@ -92,18 +92,19 @@ export default function FindIDScreen({
                         style={isPhoneAuthTapped && styles.selectedBar}
                     ></View>
                 </View>
+
                 <View style={[styles.authBackground, { marginRight: 10 }]}>
                     <TextButton
                         title={"이메일 인증"}
                         onPress={() => {
-                            setAuthMethodToPhone(false);
+                            setIsPhoneAuthTapped(false);
                         }}
                         hasShadow={false}
                         textStyle={styles.authText}
                         backgroundStyle={{ marginBottom: 12 }}
                     />
                     <View
-                        style={isPhoneAuthTapped && styles.selectedBar}
+                        style={!isPhoneAuthTapped && styles.selectedBar}
                     ></View>
                 </View>
             </View>

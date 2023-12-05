@@ -5,6 +5,7 @@ import { UserDetail } from "../features/context/CustomContext";
 import { fetchData } from "./BaseAPI";
 import { UserGenre } from "../interfaces/UserGenre";
 import { Genre } from "../interfaces/Genre";
+import showAdminToast from "../components/common/toast/showAdminToast";
 
 export type UserResponse = ApiResponse<UserState>;
 
@@ -54,9 +55,34 @@ export async function signin(
     });
 }
 
-export async function signup(username: string, password: string) {
+// export async function signup(username: string, password: string) {
+//     const url = `${API_BASE_URL}/user/signup`;
+//     const data = { username, password };
+
+//     return fetchData(url, {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(data),
+//     });
+// }
+
+export async function signup(
+    username: string,
+    password: string,
+    phoneNumber: string,
+    birthDate: string,
+    isMale: number
+) {
     const url = `${API_BASE_URL}/user/signup`;
-    const data = { username, password };
+    const data = {
+        username,
+        password,
+        phoneNumber,
+        birthDate,
+        isMale,
+    };
 
     return fetchData(url, {
         method: "POST",
@@ -146,6 +172,20 @@ export async function fetchParticipatedSurveys(
         },
     });
 }
+
+export const updatePassword = async (username: string, password: string) => {
+    const url = `${API_BASE_URL}/user/update-password`;
+    const data = { username, password };
+    try {
+        return fetchData(url, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+    } catch (error) {
+        showAdminToast("error", "failed updating password");
+    }
+};
 
 export async function updateUserGenres(
     userId: number,

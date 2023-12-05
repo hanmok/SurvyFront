@@ -6,10 +6,17 @@ import { fontSizes } from "../../utils/sizes";
 import { colors } from "../../utils/colors";
 import TextButton from "../../components/TextButton";
 import Spacer from "../../components/common/Spacer";
+import { updatePassword } from "../../API/UserAPI";
+import { RouteProp } from "@react-navigation/native";
+import showToast from "../../components/common/toast/Toast";
+import showAdminToast from "../../components/common/toast/showAdminToast";
+import { useCustomContext } from "../../features/context/CustomContext";
 
 export default function PasswordSettingScreen({
+    route,
     navigation,
 }: {
+    route: RouteProp<RootStackParamList, NavigationTitle.settingPassword>;
     navigation: StackNavigationProp<
         RootStackParamList,
         NavigationTitle.settingPassword
@@ -18,6 +25,31 @@ export default function PasswordSettingScreen({
     const [passwordInput1, setPasswordInput1] = useState("");
     const [passwordInput2, setPasswordInput2] = useState("");
     const [isSatisfied, setIsSatisfied] = useState(false);
+    const [confirmTapped, setConfirmTapped] = useState(false);
+    const { username } = route.params;
+    const { updateLoadingStatus } = useCustomContext();
+
+    useEffect(() => {
+        const update = async () => {
+            updateLoadingStatus(true);
+            await updatePassword(username, passwordInput1)
+                .then(() => {
+                    showToast("success", "비밀번호가 변경되었습니다.");
+                })
+                .catch(error => {
+                    showAdminToast("error", "비밀번호 변경에 실패하였습니다.");
+                })
+                .finally(() => {
+                    updateLoadingStatus(false);
+                });
+        };
+
+        if (confirmTapped && passwordInput1 === passwordInput2) {
+            update();
+
+            navigation.popToTop();
+        }
+    }, [confirmTapped, username, passwordInput1, passwordInput2]);
 
     useEffect(() => {
         const condition =
@@ -76,8 +108,7 @@ export default function PasswordSettingScreen({
             <TextButton
                 title="확인"
                 onPress={() => {
-                    // navigate to login screen
-                    navigation.popToTop();
+                    setConfirmTapped(true);
                 }}
                 backgroundStyle={[
                     styles.authButtonBackground,

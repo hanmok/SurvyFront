@@ -47,10 +47,6 @@ export default function FindPasswordScreen({
         return randomNumber;
     }
 
-    const navigate = () => {
-        navigation.navigate(NavigationTitle.settingPassword);
-    };
-
     useEffect(() => {
         const valid = isValidEmail(usernameInput);
         setMailAuthSatisfied(valid);
@@ -249,7 +245,6 @@ export default function FindPasswordScreen({
                         <TextButton
                             title="재발송"
                             onPress={() => {
-                                // navigation.navigate(NavigationTitle.foundID);
                                 const randomNumber =
                                     generateSixDigitRandomNumber();
                                 showToast("success", `${randomNumber}`);
@@ -272,9 +267,10 @@ export default function FindPasswordScreen({
                         onPress={() => {
                             if (randomNumber === authCodeInput) {
                                 showToast("success", "인증되었습니다.");
-                                // navigation.navigate(NavigationTitle.foundID);
+
                                 navigation.navigate(
-                                    NavigationTitle.settingPassword
+                                    NavigationTitle.settingPassword,
+                                    { username: usernameInput }
                                 );
                             } else {
                                 showToast(

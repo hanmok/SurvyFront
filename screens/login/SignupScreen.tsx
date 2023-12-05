@@ -60,7 +60,13 @@ export default function SignUpScreen({
     const handleSignup = async () => {
         console.log("handleSignup tapped");
         updateLoadingStatus(true);
-        await signup(usernameInput, passwordInput1)
+        await signup(
+            usernameInput,
+            passwordInput1,
+            phoneInput,
+            birthDate,
+            genderIndex
+        )
             .then(() => {
                 navigation.pop();
             })

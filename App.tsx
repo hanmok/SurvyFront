@@ -98,7 +98,7 @@ const App: React.FC = () => {
                                         headerBackTitleVisible: false,
                                     })}
                                 />
-
+                                {/* 새 비밀번호 등록 */}
                                 <Stack.Screen
                                     name={NavigationTitle.mainTabs}
                                     component={MainTabs}

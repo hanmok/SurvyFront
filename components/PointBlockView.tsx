@@ -32,7 +32,7 @@ const PointBlockView: React.FC<PointBlockProps> = ({
         <View
             style={[styles.container, styles.basicContainer, backgroundStyle]}
         >
-            <View>
+            <View style={{ paddingLeft: 20 }}>
                 <View style={styles.topContainer}>
                     <Text style={[styles.eachBoxTextStyle, { padding: 20 }]}>
                         포인트
@@ -81,7 +81,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
     },
     topContainer: {
-        paddingLeft: 10,
+        // paddingLeft: 10,
+        // paddingLeft: 20,
         justifyContent: "space-between",
         flexDirection: "row",
         alignItems: "center",

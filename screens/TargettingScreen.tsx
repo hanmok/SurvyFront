@@ -1,4 +1,4 @@
-import GeoSelectionModal from "../modals/GeoSelectionModal";
+import GeoMultipleSelectionModal from "../modals/GeoMultipleSelectionModal";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
@@ -226,7 +226,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                 participationGoal={participationGoal}
             />
 
-            <GeoSelectionModal
+            <GeoMultipleSelectionModal
                 onClose={toggleGeoModal}
                 confirmGeoSelection={confirmGeoSelection}
                 selectedGeos={selectedGeos}

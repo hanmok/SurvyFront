@@ -7,13 +7,21 @@ import BlockView from "../../components/BlockView";
 import { fontSizes, marginSizes } from "../../utils/sizes";
 import { screenWidth } from "../../utils/ScreenSize";
 import { useEffect, useState } from "react";
-import { getUserGenres } from "../../API/UserAPI";
+import {
+    getUserDetail,
+    getUserGenres,
+    updateHomeAddress,
+    updateOfficeAddress,
+} from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
 import { Genre } from "../../interfaces/Genre";
 import { colors } from "../../utils/colors";
 import { GeoInfo } from "../../interfaces/GeoInfo";
 import Spacer from "../../components/common/Spacer";
 import TextButton from "../../components/TextButton";
+import GeoSingleSelectionModal from "../../modals/GeoSingleSelectionModal";
+import showMessageAlert from "../../components/CustomAlert";
+import showToast from "../../components/common/toast/Toast";
 
 // 내 정보
 function MyInfoScreen({
@@ -21,13 +29,39 @@ function MyInfoScreen({
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.myinfo>;
 }) {
+    // single.. dma... 거주지, 근무지 나눠야함.
+
+    const [myGenres, setMyGenres] = useState<Genre[]>([]);
+    const [homeAddress, setHomeAddress] = useState<GeoInfo | null>(null);
+    const [officeAddress, setOfficeAddress] = useState<GeoInfo | null>(null);
+    const {
+        accessToken,
+        userId,
+        userDetail,
+        updateUserDetail,
+        updateLoadingStatus,
+    } = useCustomContext();
+    const [isHomeModalVisible, setHomeModalVisible] = useState(false);
+    const [isOfficeModalVisible, setOfficeModalVisible] = useState(false);
+
     const moveToCategory = () => {
         navigation.navigate(NavigationTitle.myGenre);
     };
-    const [myGenres, setMyGenres] = useState<Genre[]>([]);
 
-    const { accessToken, userId, userDetail, updateLoadingStatus } =
-        useCustomContext();
+    // 처음 로딩 시, 호출되면 안됨 (null, userDetail?.homeAddress 와 같은 값일 때. )
+    // 지우고 싶으면?
+
+    // useEffect(() => {
+    //     if (homeAddress && homeAddress !== userDetail?.homeAddress) {
+    //     }
+    // }, [homeAddress]);
+
+    useEffect(() => {}, [officeAddress]);
+
+    useEffect(() => {
+        setHomeAddress(userDetail?.homeAddress);
+        setOfficeAddress(userDetail?.officeAddress);
+    }, [userDetail]);
 
     useEffect(() => {
         const getMyGenres = async () => {
@@ -48,6 +82,42 @@ function MyInfoScreen({
                 marginTop: marginSizes.xxl28,
             }}
         >
+            <GeoSingleSelectionModal
+                onClose={() => {
+                    setHomeModalVisible(false);
+                }}
+                initialGeo={homeAddress}
+                confirmGeoSelection={async (geo: GeoInfo | null) => {
+                    setHomeAddress(geo);
+                    updateLoadingStatus(true);
+                    await updateHomeAddress(userId, geo?.id ?? null);
+                    const userDetail = await getUserDetail(accessToken);
+                    updateUserDetail(userDetail);
+                    showToast("success", "거주지가 변경되었습니다.");
+                    updateLoadingStatus(false);
+                }}
+                isHome={true}
+                isGeoModalVisible={isHomeModalVisible}
+            />
+
+            <GeoSingleSelectionModal
+                onClose={() => {
+                    setOfficeModalVisible(false);
+                }}
+                initialGeo={officeAddress}
+                confirmGeoSelection={async (geo: GeoInfo | null) => {
+                    setOfficeAddress(geo);
+                    updateLoadingStatus(true);
+                    await updateOfficeAddress(userId, geo?.id);
+                    const userDetail = await getUserDetail(accessToken);
+                    updateUserDetail(userDetail);
+                    updateLoadingStatus(false);
+                    showToast("success", "근무지가 변경되었습니다.");
+                }}
+                isHome={false}
+                isGeoModalVisible={isOfficeModalVisible}
+            />
+
             <BlockView size={50}>
                 <View
                     style={{
@@ -171,7 +241,7 @@ function MyInfoScreen({
                 size={50}
                 onPress={() => {
                     console.log("hi");
-                    // navigation.navigate(NavigationTitle.myGenre);
+                    setHomeModalVisible(true);
                 }}
             >
                 <View
@@ -182,17 +252,14 @@ function MyInfoScreen({
                     }}
                 >
                     {/* home_address */}
-                    {/* office_address */}
                     <Text style={{ fontSize: 18 }}>거주지</Text>
                     <Text
                         style={{
                             fontSize: 16,
-                            color: userDetail?.homeAddress
-                                ? "black"
-                                : colors.gray3,
+                            color: homeAddress ? "black" : colors.gray3,
                         }}
                     >
-                        {userDetail?.homeAddress?.city}
+                        {homeAddress?.state} {homeAddress?.city ?? "선택 안함"}
                     </Text>
                 </View>
             </BlockView>
@@ -201,8 +268,7 @@ function MyInfoScreen({
                 size={50}
                 onPress={() => {
                     console.log("hi");
-                    // navigation.navigate(NavigationTitle.myGenre);
-                    // moveToCategory();
+                    setOfficeModalVisible(true);
                 }}
             >
                 <View
@@ -218,12 +284,11 @@ function MyInfoScreen({
                     <Text
                         style={{
                             fontSize: 16,
-                            color: userDetail?.officeAddress
-                                ? "black"
-                                : colors.gray3,
+                            color: officeAddress ? "black" : colors.gray3,
                         }}
                     >
-                        {userDetail?.officeAddress?.city}
+                        {officeAddress?.state}{" "}
+                        {officeAddress?.city ?? "선택 안함"}
                     </Text>
                 </View>
             </BlockView>
@@ -260,3 +325,5 @@ function MyInfoScreen({
 }
 
 export default MyInfoScreen;
+
+// 'user', 'CREATE TABLE `user` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `password` varchar(200) DEFAULT NULL,\n  `collected_reward` int(11) DEFAULT \'0\',\n  `fatigue` int(11) NOT NULL DEFAULT \'0\',\n  `birth_date` date DEFAULT NULL,\n  `nickname` varchar(100) DEFAULT NULL,\n  `is_male` tinyint(4) DEFAULT NULL,\n  `registered_at` datetime DEFAULT CURRENT_TIMESTAMP,\n  `device_token` text,\n  `username` varchar(30) DEFAULT NULL,\n  `reputation` int(11) DEFAULT \'0\',\n  `age` int(11) DEFAULT NULL,\n  `home_address` int(11) DEFAULT NULL,\n  `office_address` int(11) DEFAULT NULL,\n  `occupation` int(11) DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `nickname` (`nickname`),\n  UNIQUE KEY `username` (`username`)\n) ENGINE=InnoDB AUTO_INCREMENT=854 DEFAULT CHARSET=utf8'

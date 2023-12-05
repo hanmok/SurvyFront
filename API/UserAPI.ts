@@ -195,3 +195,38 @@ export async function checkUsernameDuplicate(username: string) {
     logObject("checkUsernameResponse", checkUsernameResponse);
     return checkUsernameResponse;
 }
+
+export const updateHomeAddress = async (
+    userId: number,
+    geoId: number | null
+) => {
+    let url = `${API_BASE_URL}/user/${userId}/home`;
+    if (geoId) {
+        url += `/${geoId}`;
+    }
+    console.log(`updateHomeAddress url: ${url}`);
+    return fetchData(url, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+};
+
+export const updateOfficeAddress = async (
+    userId: number,
+    geoId: number | null
+) => {
+    let url = `${API_BASE_URL}/user/${userId}/office`;
+
+    if (geoId) {
+        url += `/${geoId}`;
+    }
+    console.log(`url: ${url}`);
+    return fetchData(url, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+};

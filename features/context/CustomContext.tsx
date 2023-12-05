@@ -3,7 +3,7 @@ import { UserState } from "../../interfaces/UserState";
 import { AccessToken, UserId } from "../../types/types";
 import { GeoInfo } from "../../interfaces/GeoInfo";
 import showAdminToast from "../../components/common/toast/showAdminToast";
-
+/** collectedReward, age, birthDate, isMale, reputation, fatigue, homeAddress, officeAddresss, occupation */
 export interface UserDetail {
     collectedReward: number;
     birthDate: string | null;

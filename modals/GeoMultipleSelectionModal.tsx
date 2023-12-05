@@ -14,14 +14,14 @@ import Spacer from "../components/common/Spacer";
 import { fetchAllGeoInfos } from "../API/GeoAPI";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
-interface GeoSelectionModalProps {
+interface GeoMultipleSelectionModalProps {
     onClose: () => void;
     confirmGeoSelection: (selectedGeos: GeoInfo[]) => void;
     isGeoModalVisible: boolean;
     selectedGeos: GeoInfo[];
 }
 
-const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
+const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
     onClose,
     confirmGeoSelection,
     isGeoModalVisible,
@@ -353,7 +353,7 @@ const GeoSelectionModal: React.FC<GeoSelectionModalProps> = ({
     );
 };
 
-export default GeoSelectionModal;
+export default GeoMultipleSelectionModal;
 
 const styles = StyleSheet.create({
     modalContainer: {

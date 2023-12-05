@@ -20,6 +20,31 @@ export const commonStyles = StyleSheet.create({
     magenta: {
         backgroundColor: "magenta",
     },
+    selectedGenreButtonBG: {
+        padding: 4,
+        paddingHorizontal: 12,
+        marginHorizontal: 6,
+        borderRadius: 14,
+        height: 32,
+        marginVertical: 4,
+        backgroundColor: colors.gray14,
+    },
+    unselectedGenreButtonBG: {
+        padding: 4,
+        paddingHorizontal: 12,
+        marginHorizontal: 6,
+        borderRadius: 14,
+        height: 32,
+        marginVertical: 4,
+        backgroundColor: colors.white,
+    },
+
+    selectedGenreText: {
+        color: colors.white,
+    },
+    unselectedGenreText: {
+        color: colors.black,
+    },
 });
 
 export const modalStyles = StyleSheet.create({

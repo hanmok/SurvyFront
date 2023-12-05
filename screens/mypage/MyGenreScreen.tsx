@@ -15,7 +15,9 @@ import { Entypo } from "@expo/vector-icons";
 import TextButton from "../../components/TextButton";
 import { areSetsEqual, setDifference } from "../../utils/Set";
 import { DefaultModal } from "../../modals/DefaultModal";
+import { commonStyles } from "../../utils/CommonStyles";
 
+// 내 관심사
 function MyGenreScreen({
     navigation,
 }: {
@@ -171,26 +173,21 @@ function MyGenreScreen({
                         onPress={() => {
                             toggleGenreSelection(genre);
                         }}
-                        backgroundStyle={{
-                            backgroundColor: selectedGenres
+                        backgroundStyle={
+                            selectedGenres
                                 .map(genre => genre.id)
                                 .includes(genre.id)
-                                ? colors.gray1
-                                : colors.white,
-                            padding: 4,
-                            paddingHorizontal: 6,
-                            marginHorizontal: 6,
-                            borderRadius: 6,
-                            height: 30,
-                            marginVertical: 4,
-                        }}
-                        textStyle={{
-                            color: selectedGenres
+                                ? commonStyles.selectedGenreButtonBG
+                                : commonStyles.unselectedGenreButtonBG
+                        }
+                        textStyle={
+                            selectedGenres
                                 .map(genre => genre.id)
                                 .includes(genre.id)
-                                ? colors.white
-                                : colors.black,
-                        }}
+                                ? commonStyles.selectedGenreText
+                                : commonStyles.unselectedGenreText
+                        }
+                        key={`showing${genre.name}`}
                     />
                 ))}
             </View>
@@ -198,13 +195,12 @@ function MyGenreScreen({
                 <TextButton
                     title="확인"
                     onPress={() => {
-                        // set myGenres
                         setConfirmTapped(true);
                     }}
+                    textStyle={{ color: "white" }}
                     backgroundStyle={{
                         // activated, inactivated
-                        // backgroundColor: "magenta",
-                        backgroundColor: colors.white,
+                        backgroundColor: colors.deeperMainColor,
                         borderRadius: 8,
                         height: 45,
                     }}
@@ -297,14 +293,25 @@ const styles = StyleSheet.create({
     },
 
     genreButtonBG: {
-        backgroundColor: colors.gray1,
+        backgroundColor: colors.gray14,
         padding: 4,
-        paddingHorizontal: 6,
+        paddingHorizontal: 10,
         marginHorizontal: 6,
-        borderRadius: 6,
-        height: 30,
+        borderRadius: 14,
+        height: 32,
         marginVertical: 4,
     },
+
+    // genreButtonBG: {
+    //     backgroundColor: colors.gray1,
+    //     padding: 6,
+    //     paddingHorizontal: 10,
+    //     marginHorizontal: 8,
+    //     borderRadius: 8,
+    //     height: 36,
+    //     marginVertical: 6,
+    // },
+
     bottomContainer: {
         flexDirection: "row",
         justifyContent: "space-between",

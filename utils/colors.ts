@@ -19,6 +19,7 @@ export const colors = {
     gray15: "#555",
     gray2: "#666",
     gray3: "#999",
+    gray33: "#aaa",
     gray4: "#ccc",
     gray5: "#eee",
     transparent: "rgba(0,0,0,0)",

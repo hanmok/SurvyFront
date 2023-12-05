@@ -13,12 +13,12 @@ import { fontSizes } from "./utils/sizes";
 
 interface CostSelectionProps {
     initialIndex: number;
-    toggleFreeState: (boolean) => void;
+    // toggleFreeState: (boolean) => void;
 }
 
 const CostSelectionContainer: React.FC<CostSelectionProps> = ({
     initialIndex,
-    toggleFreeState,
+    // toggleFreeState,
 }) => {
     const [selectedIndex, setSelectedIndex] = useState(initialIndex);
     return (
@@ -29,7 +29,7 @@ const CostSelectionContainer: React.FC<CostSelectionProps> = ({
                 selectedIndex={selectedIndex}
                 onPress={() => {
                     setSelectedIndex(0);
-                    toggleFreeState(true);
+                    // toggleFreeState(true);
                 }}
                 backgroundStyle={styles.buttonContainer}
                 textStyle={{ textAlign: "center" }}
@@ -45,7 +45,7 @@ const CostSelectionContainer: React.FC<CostSelectionProps> = ({
                 selectedBackgroundStyle={{ backgroundColor: colors.black }}
             />
 
-            <SingleSelectionButton
+            {/* <SingleSelectionButton
                 index={1}
                 title="Paid"
                 selectedIndex={selectedIndex}
@@ -65,7 +65,7 @@ const CostSelectionContainer: React.FC<CostSelectionProps> = ({
                     fontSize: fontSizes.s16,
                 }}
                 selectedBackgroundStyle={{ backgroundColor: colors.black }}
-            />
+            /> */}
         </View>
     );
 };

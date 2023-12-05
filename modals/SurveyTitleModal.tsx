@@ -107,7 +107,14 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                             </Text>
                         </View>
                         {/* Title Input */}
-                        <View>
+                        <View
+                            style={
+                                {
+                                    // paddingHorizontal: 40,
+                                    // backgroundColor: "cyan",
+                                }
+                            }
+                        >
                             <TextInput
                                 style={styles.textInput}
                                 onChangeText={setTitle}
@@ -168,6 +175,7 @@ const styles = StyleSheet.create({
     infoTextContainer: {
         margin: 10,
         marginTop: 20,
+        // paddingHorizontal: 20,
         fontWeight: "bold",
         fontSize: fontSizes.m20,
         textAlign: "center",
@@ -178,7 +186,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         overflow: "hidden",
-        width: 300,
+        width: 240,
         paddingLeft: 10,
         marginVertical: 20,
         marginHorizontal: 20,

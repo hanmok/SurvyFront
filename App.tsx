@@ -216,7 +216,7 @@ const App: React.FC = () => {
                                     })}
                                 />
 
-                                <Stack.Screen
+                                {/* <Stack.Screen
                                     name={NavigationTitle.pointHistory}
                                     component={PointHistoryScreen}
                                     options={({ route }) => ({
@@ -226,7 +226,7 @@ const App: React.FC = () => {
                                             backgroundColor: colors.background,
                                         },
                                     })}
-                                />
+                                /> */}
 
                                 <Stack.Screen
                                     name={NavigationTitle.targetting}

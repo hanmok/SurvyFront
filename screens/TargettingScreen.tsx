@@ -421,7 +421,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                     <TextButton
                         backgroundStyle={{
                             backgroundColor: isSatisfied
-                                ? "#ffffff"
+                                ? colors.deeperMainColor
                                 : "#b3b3b3", // inactive
                             height: 46,
                             marginBottom: 30,
@@ -432,7 +432,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                         title="다음"
                         textStyle={[
                             styles.nextButtonText,
-                            { color: isSatisfied ? colors.black : "#cbcbcb" },
+                            { color: isSatisfied ? colors.white : "#cbcbcb" },
                         ]}
                         onPress={() => {
                             // setIsNextButtonTapped(true);

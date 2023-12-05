@@ -80,7 +80,8 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                             설문 제출
                         </Text>
 
-                        <View style={{ height: 300, width: 300 }}>
+                        {/* <View style={{ height: 300, width: 300 }}> */}
+                        <View style={{ height: 200, width: 300 }}>
                             <View style={styles.mainContent}>
                                 <View style={styles.rowContainer}>
                                     <Text style={commonStyles.font16}>
@@ -94,14 +95,13 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         style={[
                                             commonStyles.font20,
                                             {
-                                                color: colors.gray2,
-                                                borderColor: "black",
-                                                borderWidth: 1,
+                                                color: colors.gray33,
                                                 borderRadius: 6,
                                                 minWidth: 50,
                                                 textAlign: "right",
                                                 paddingRight: 6,
-                                                backgroundColor: "#fff",
+                                                // backgroundColor: "#fff",
+                                                backgroundColor: "white",
                                             },
                                         ]}
                                     />
@@ -115,14 +115,16 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         {expectedTimeInMin} 분{" "}
                                     </Text>
                                 </View>
-                                <View style={styles.rowContainer}>
+
+                                {/* <View style={styles.rowContainer}>
                                     <Text style={commonStyles.font16}>
                                         가격
                                     </Text>
                                     <Text style={commonStyles.font16}>
                                         {price} 원
                                     </Text>
-                                </View>
+                                </View> */}
+
                                 <View
                                     style={[
                                         {
@@ -131,10 +133,10 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         },
                                     ]}
                                 >
-                                    <CostSelectionContainer
+                                    {/* <CostSelectionContainer
                                         initialIndex={isFree ? 0 : 1}
-                                        toggleFreeState={setIsFree}
-                                    />
+                                        // toggleFreeState={setIsFree}
+                                    /> */}
                                 </View>
                             </View>
                         </View>
@@ -166,7 +168,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
         borderRadius: 10,
         overflow: "hidden",
-
         justifyContent: "space-between",
         alignItems: "center",
     },
@@ -178,7 +179,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: fontSizes.s16,
     },
-
     bottomLeftButtonTextContainer: {
         flexGrow: 1,
         flexDirection: "row",

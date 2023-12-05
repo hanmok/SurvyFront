@@ -213,27 +213,6 @@ function MyInfoScreen({
                     }}
                 />
                 <Spacer size={5} />
-                <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "flex-end",
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            color: "red",
-                            marginLeft: 10,
-                            marginRight: 4,
-                            // marginTop: -3
-                        }}
-                    >
-                        *
-                    </Text>
-                    <Text style={{ fontSize: 12 }}>
-                        추가정보 입력시 유료설문의 기회가 많아집니다.
-                    </Text>
-                </View>
             </View>
 
             {/* 거주지 */}

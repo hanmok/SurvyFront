@@ -6,30 +6,27 @@ import { fontSizes } from "../../utils/sizes";
 import TextButton from "../../components/TextButton";
 import { useEffect, useState } from "react";
 import { colors } from "../../utils/colors";
+import { screenWidth } from "../../utils/ScreenSize";
+import showToast from "../../components/common/toast/Toast";
 
 export default function FindIDScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.findID>;
 }) {
-    const [isPhoneAuthTapped, setIsPhoneAuthTapped] = useState(true);
-    const [isSatisfied, setSatisfied] = useState(false);
-    const [nameInput, setNameInput] = useState("");
+    const [phoneNumberSatisfied, setPhoneNumberSatisfied] = useState(false);
+    const [authSatisfied, setAuthSatisfied] = useState(false);
+
     const [phoneInput, setPhoneInput] = useState("");
-
-    const [mailInput, setMailInput] = useState("");
-
-    // const setAuthMethodToPhone = isPhoneAuth => {
-    //     setIsPhoneAuthTapped(isPhoneAuth);
-    // };
+    const [authInput, setAuthInput] = useState("");
 
     useEffect(() => {
-        if (nameInput !== "" && phoneInput.length == 13) {
-            setSatisfied(true);
-        } else {
-            setSatisfied(false);
-        }
-    }, [nameInput, phoneInput]);
+        setAuthSatisfied(authInput.length === 6);
+    }, [authInput]);
+
+    useEffect(() => {
+        setPhoneNumberSatisfied(phoneInput.length === 13);
+    }, [phoneInput]);
 
     useEffect(() => {
         if (phoneInput.length === 4 && phoneInput.includes("-") === false) {
@@ -75,71 +72,28 @@ export default function FindIDScreen({
                     flexDirection: "row",
                     justifyContent: "space-between",
                 }}
+            ></View>
+
+            <View
+                style={{
+                    marginHorizontal: 18,
+                    marginBottom: 26,
+                    marginTop: 12,
+                }}
             >
-                <View style={[styles.authBackground, { marginLeft: 10 }]}>
-                    <TextButton
-                        title={"휴대폰 인증"}
-                        onPress={() => {
-                            setIsPhoneAuthTapped(true);
-                        }}
-                        backgroundStyle={{
-                            marginBottom: 12,
-                        }}
-                        hasShadow={false}
-                        textStyle={styles.authText}
-                    />
-                    <View
-                        style={isPhoneAuthTapped && styles.selectedBar}
-                    ></View>
-                </View>
-
-                <View style={[styles.authBackground, { marginRight: 10 }]}>
-                    <TextButton
-                        title={"이메일 인증"}
-                        onPress={() => {
-                            setIsPhoneAuthTapped(false);
-                        }}
-                        hasShadow={false}
-                        textStyle={styles.authText}
-                        backgroundStyle={{ marginBottom: 12 }}
-                    />
-                    <View
-                        style={!isPhoneAuthTapped && styles.selectedBar}
-                    ></View>
-                </View>
-            </View>
-            {/* name */}
-            <View style={styles.nameContainer}>
                 <Text style={[styles.guideText, { marginBottom: 14 }]}>
-                    이름
+                    휴대폰 번호
                 </Text>
-                <View // Text Input Box
-                    style={styles.textInputBox}
-                >
-                    <TextInput
-                        placeholder="이름을 입력해주세요"
-                        style={[styles.guideText, { paddingLeft: 8 }]}
-                        value={nameInput}
-                        onChangeText={setNameInput}
-                        autoComplete="off"
-                        autoCorrect={false}
-                    />
-                </View>
-            </View>
-
-            {isPhoneAuthTapped ? (
-                // {/* 휴대폰 번호 */}
                 <View
                     style={{
-                        marginHorizontal: 18,
-                        marginBottom: 26,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        // backgroundColor: "magenta",
                     }}
                 >
-                    <Text style={[styles.guideText, { marginBottom: 14 }]}>
-                        휴대폰 번호
-                    </Text>
                     <View // Text Input Box
-                        style={styles.textInputBox}
+                        style={[styles.textInputBox, { flex: 0.9 }]}
                     >
                         <TextInput
                             placeholder="휴대폰번호를 입력해주세요"
@@ -151,64 +105,100 @@ export default function FindIDScreen({
                             autoCorrect={false}
                         />
                     </View>
+
+                    <TextButton
+                        title="인증번호 받기"
+                        onPress={() => {
+                            // navigation.navigate(NavigationTitle.foundID);
+                            showToast("success", "인증번호는 xxx 입니다");
+                        }}
+                        backgroundStyle={[
+                            styles.authButtonBackground,
+                            phoneNumberSatisfied
+                                ? styles.activatedBackground
+                                : styles.inactivatedBackground,
+                        ]}
+                        // hasShadow={isSatisfied}
+                        hasShadow={false}
+                        // textStyle={{ color: "white", fontSize: 14 }}
+                        textStyle={[
+                            { fontSize: 14 },
+                            phoneNumberSatisfied
+                                ? { color: colors.white }
+                                : { color: colors.black },
+                        ]}
+                    />
                 </View>
-            ) : (
-                // 이메일
+                {/* <View
+                    style={{
+                        backgroundColor: "magenta",
+                        width: 10,
+                        height: 10,
+                    }}
+                ></View> */}
                 <View
                     style={{
-                        marginHorizontal: 18,
-                        marginBottom: 26,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        // backgroundColor: "magenta",
                     }}
                 >
-                    <Text style={[styles.guideText, { marginBottom: 14 }]}>
-                        이메일 주소
-                    </Text>
                     <View // Text Input Box
-                        style={styles.textInputBox}
+                        style={[
+                            styles.textInputBox,
+                            { marginTop: 10, flex: 0.9 },
+                        ]}
                     >
                         <TextInput
-                            placeholder="이메일 주소를 입력해주세요"
+                            placeholder="인증번호를 입력해주세요"
                             style={[styles.guideText, { paddingLeft: 8 }]}
-                            value={mailInput}
-                            onChangeText={setMailInput}
-                            keyboardType="email-address"
+                            value={authInput}
+                            onChangeText={setAuthInput}
+                            keyboardType="phone-pad"
                             autoComplete="off"
                             autoCorrect={false}
                         />
                     </View>
+                    <TextButton
+                        title="재발송"
+                        onPress={() => {
+                            navigation.navigate(NavigationTitle.foundID);
+                        }}
+                        backgroundStyle={[
+                            styles.authButtonBackground,
+                            styles.inactivatedBackground,
+                        ]}
+                        // hasShadow={isSatisfied}
+                        hasShadow={false}
+                        textStyle={{ color: "black", fontSize: 14 }}
+                    />
                 </View>
-            )}
-            {isPhoneAuthTapped ? (
-                <TextButton
-                    title="인증번호 받기"
-                    onPress={() => {
-                        navigation.navigate(NavigationTitle.foundID);
-                    }}
-                    backgroundStyle={[
-                        styles.authButtonBackground,
-                        isSatisfied
-                            ? styles.activatedBackground
-                            : styles.inactivatedBackground,
-                    ]}
-                    hasShadow={isSatisfied}
-                    textStyle={{ color: "white", fontSize: fontSizes.m20 }}
-                />
-            ) : (
-                <TextButton
-                    title="인증 메일 받기"
-                    onPress={() => {
-                        navigation.navigate(NavigationTitle.foundID);
-                    }}
-                    backgroundStyle={[
-                        styles.authButtonBackground,
-                        isSatisfied
-                            ? styles.activatedBackground
-                            : styles.inactivatedBackground,
-                    ]}
-                    hasShadow={isSatisfied}
-                    textStyle={{ color: "white", fontSize: fontSizes.m20 }}
-                />
-            )}
+                <View>
+                    <TextButton
+                        title="확인"
+                        onPress={() => {
+                            navigation.navigate(NavigationTitle.foundID);
+                        }}
+                        backgroundStyle={[
+                            styles.authButtonBackground,
+                            { marginTop: 20, width: screenWidth - 36 },
+                            authSatisfied
+                                ? { backgroundColor: colors.deeperMainColor }
+                                : styles.inactivatedBackground,
+                        ]}
+                        hasShadow={false}
+                        // textStyle={{ color: "white", fontSize: 14 }}
+                        // textStyle={{ color: "black", fontSize: 14 }}
+                        textStyle={[
+                            { fontSize: 14 },
+                            authSatisfied
+                                ? { color: "white" }
+                                : { color: "black" },
+                        ]}
+                    />
+                </View>
+            </View>
         </View>
     );
 }
@@ -249,14 +239,20 @@ const styles = StyleSheet.create({
         marginHorizontal: 18,
     },
     inactivatedBackground: {
-        backgroundColor: "#ddd",
+        // backgroundColor: "#ddd",
+        borderWidth: 1,
+        borderColor: colors.gray4,
     },
     activatedBackground: {
         backgroundColor: colors.deepMainColor,
     },
     authButtonBackground: {
-        height: 50,
-        marginHorizontal: 18,
+        // height: 50,
+        height: 42,
+        // marginHorizontal: 18,
+        // marginRight: 12,
         borderRadius: 6,
+        paddingHorizontal: 12,
+        width: 110,
     },
 });

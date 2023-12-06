@@ -13,6 +13,7 @@ import { screenWidth } from "../../utils/ScreenSize";
 import {
     hasDuplicateUsername,
     checkValidationOfUsernamePhoneNumber,
+    sendEmailAuth,
 } from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
 import { logObject } from "../../utils/Log";
@@ -52,24 +53,38 @@ export default function FindPasswordScreen({
 
     const { updateLoadingStatus } = useCustomContext();
 
-    const handleUserDuplicate = async (username: string) => {
+    const sendEmailAuthCode = async (username: string) => {
         updateLoadingStatus(true);
         console.log("mail input", username);
-        await hasDuplicateUsername(username)
-            .then(ret => {
-                if (ret.statusCode >= 400) {
-                    logObject("result", ret);
-                    showToast("success", "인증 메일을 확인해주세요");
-                } else {
-                    showToast("error", "존재하지 않는 메일입니다");
-                }
-            })
-            .catch(error => {
-                showAdminToast("error", error.message);
-            })
-            .finally(() => {
-                updateLoadingStatus(false);
-            });
+        try {
+            const ret = await hasDuplicateUsername(username);
+            if (ret.statusCode >= 400) {
+                logObject("result", ret);
+                await sendEmailAuth(username);
+                showToast("success", "인증 메일을 확인해주세요.");
+            }
+        } catch (error) {
+            showAdminToast("error", error.message);
+        } finally {
+            updateLoadingStatus(false);
+        }
+
+        // await hasDuplicateUsername(username)
+        //     .then(ret => {
+        //         if (ret.statusCode >= 400) {
+        //             logObject("result", ret);
+        //             await sendEmailAuth(username)
+        //             showToast("success", "인증 메일을 확인해주세요");
+        //         } else {
+        //             showToast("error", "존재하지 않는 메일입니다");
+        //         }
+        //     })
+        //     .catch(error => {
+        //         showAdminToast("error", error.message);
+        //     })
+        //     .finally(() => {
+        //         updateLoadingStatus(false);
+        //     });
     };
 
     const handleUsernamePhoneValidation = async (
@@ -351,7 +366,7 @@ export default function FindPasswordScreen({
                 <TextButton
                     title="인증 메일 받기"
                     onPress={() => {
-                        handleUserDuplicate(usernameInput);
+                        sendEmailAuthCode(usernameInput);
                     }}
                     backgroundStyle={[
                         styles.authButtonBackground,

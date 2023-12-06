@@ -304,3 +304,27 @@ export const updateOfficeAddress = async (
         },
     });
 };
+
+export const sendEmailAuth = async (username: string) => {
+    const url = `${API_BASE_URL}/user/send-mail`;
+    const body = { username };
+    return fetchData(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+};
+
+export const verifyEmailAuth = async (username: string, code: string) => {
+    const url = `${API_BASE_URL}/user/verify-email`;
+    const body = { username, code };
+    return fetchData(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+};

@@ -42,10 +42,9 @@ export default function FindIDScreen({
             await checkPhoneDuplicate(phoneInput)
                 .then(ret => {
                     if (ret.statusCode >= 400) {
-                        // if (ret.statusCode < 300) {
+                        // some has this phone number
                         logObject("result", ret);
                         showToast("success", "인증번호가 전송되었습니다.");
-                        // showToast("success", "사용하실 수 있는 .");
                     } else {
                         showToast(
                             "error",

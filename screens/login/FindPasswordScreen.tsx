@@ -10,6 +10,13 @@ import { colors } from "../../utils/colors";
 import { isValidEmail } from "../../utils/validation";
 import showToast from "../../components/common/toast/Toast";
 import { screenWidth } from "../../utils/ScreenSize";
+import {
+    hasDuplicateUsername,
+    checkValidationOfUsernamePhoneNumber,
+} from "../../API/UserAPI";
+import { useCustomContext } from "../../features/context/CustomContext";
+import { logObject } from "../../utils/Log";
+import showAdminToast from "../../components/common/toast/showAdminToast";
 
 export default function FindPasswordScreen({
     navigation,
@@ -39,6 +46,44 @@ export default function FindPasswordScreen({
 
     const setAuthMethodToPhone = isPhoneAuth => {
         setIsPhoneAuthTapped(isPhoneAuth);
+    };
+
+    const { updateLoadingStatus } = useCustomContext();
+
+    const handleUserDuplicate = async (username: string) => {
+        updateLoadingStatus(true);
+        console.log("mail input", username);
+        await hasDuplicateUsername(username)
+            .then(ret => {
+                if (ret.statusCode >= 400) {
+                    logObject("result", ret);
+                    showToast("success", "인증 메일을 확인해주세요");
+                } else {
+                    showToast("error", "존재하지 않는 메일입니다");
+                }
+            })
+            .catch(error => {
+                showAdminToast("error", error.message);
+            })
+            .finally(() => {
+                updateLoadingStatus(false);
+            });
+    };
+
+    const handleUsernamePhoneValidation = async (
+        username: string,
+        phone: string
+    ) => {
+        const ret = await checkValidationOfUsernamePhoneNumber(username, phone);
+        console.log(
+            `handleUsernamePhoneValidation, username: ${username}, phone: ${phone}`
+        );
+        if (ret.statusCode < 300) {
+            const randomNumber = generateSixDigitRandomNumber();
+            showToast("success", `${randomNumber}`);
+        } else {
+            showToast("error", "아이디, 휴대폰번호가 일치하지 않습니다.");
+        }
     };
 
     function generateSixDigitRandomNumber(): number {
@@ -199,9 +244,13 @@ export default function FindPasswordScreen({
                         <TextButton
                             title="인증번호 받기"
                             onPress={() => {
-                                const randomNumber =
-                                    generateSixDigitRandomNumber();
-                                showToast("success", `${randomNumber}`);
+                                handleUsernamePhoneValidation(
+                                    usernameInput,
+                                    phoneInput
+                                );
+                                // checkValidationOfUsernamePhoneNumber(usernameInput, phoneInput)
+                                // 먼저, 일치하는지 봐야함.
+                                // 입력된 ID 와 휴대폰번호가.
                             }}
                             backgroundStyle={[
                                 styles.authButtonBackground,
@@ -299,7 +348,9 @@ export default function FindPasswordScreen({
             ) : (
                 <TextButton
                     title="인증 메일 받기"
-                    onPress={() => {}}
+                    onPress={() => {
+                        handleUserDuplicate(usernameInput);
+                    }}
                     backgroundStyle={[
                         styles.authButtonBackground,
                         {
@@ -314,6 +365,7 @@ export default function FindPasswordScreen({
                     hasShadow={phoneAuthSatisfied}
                     textStyle={{
                         fontSize: 14,
+                        fontWeight: "800",
                         color: mailAuthSatisfied ? "white" : "black",
                     }}
                 />

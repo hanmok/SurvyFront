@@ -221,7 +221,7 @@ export async function updateUserGenres(
     }
 }
 
-export async function checkUsernameDuplicate(username: string) {
+export async function hasDuplicateUsername(username: string) {
     let url = `${API_BASE_URL}/user/check-username`;
 
     const queryParams = new URLSearchParams({ username });
@@ -269,6 +269,21 @@ export const updateHomeAddress = async (
         headers: {
             "Content-Type": "application/json",
         },
+    });
+};
+
+export const checkValidationOfUsernamePhoneNumber = async (
+    username: string,
+    phone: string
+) => {
+    const url = `${API_BASE_URL}/user/check-username-phone`;
+    const body = { username, phone };
+    return fetchData(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
     });
 };
 

@@ -6,7 +6,8 @@ import { fontSizes } from "../../utils/sizes";
 import TextButton from "../../components/TextButton";
 import { isValidElement, useEffect, useState } from "react";
 import { colors } from "../../utils/colors";
-import isValidEmail from "../../utils/EmailValidation";
+// import isValidEmail from "../../utils/EmailValidation";
+import { isValidEmail } from "../../utils/validation";
 import showToast from "../../components/common/toast/Toast";
 import { screenWidth } from "../../utils/ScreenSize";
 

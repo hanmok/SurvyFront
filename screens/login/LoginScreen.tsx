@@ -27,7 +27,8 @@ import Toast from "react-native-toast-message";
 import ShowToast from "../../components/common/toast/Toast";
 import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
-import isValidEmail from "../../utils/EmailValidation";
+// import isValidEmail from "../../utils/validation";
+import { isValidEmail } from "../../utils/validation";
 
 export default function LoginScreen({
     navigation,

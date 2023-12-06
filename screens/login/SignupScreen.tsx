@@ -14,7 +14,7 @@ import {
     signup,
 } from "../../API/UserAPI";
 import { log, logObject } from "../../utils/Log";
-import isValidEmail from "../../utils/EmailValidation";
+import { isValidEmail, isValidPhone } from "../../utils/validation";
 import { useCustomContext } from "../../features/context/CustomContext";
 import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
@@ -67,8 +67,8 @@ export default function SignUpScreen({
         }
     };
 
-    const handlePhoneDuplicate = async () => {
-        if (isValidEmail(usernameInput)) {
+    const handlePhoneDuplicate = async (phone: string) => {
+        if (isValidPhone(phone)) {
             updateLoadingStatus(true);
 
             await checkPhoneDuplicate(phoneInput)
@@ -118,14 +118,14 @@ export default function SignUpScreen({
             });
     };
 
-    const validatePhoneNumber = () => {
-        handlePhoneDuplicate();
-        const ret = true;
-        setPhoneConfirmed(ret);
+    // const validatePhoneNumber = () => {
+    //     handlePhoneDuplicate();
+    //     const ret = true;
+    //     setPhoneConfirmed(ret);
 
-        // alert("인증되었습니다.");
-        return ret;
-    };
+    //     // alert("인증되었습니다.");
+    //     return ret;
+    // };
 
     // const isPublishingAuthCodeTapped () => {
 
@@ -307,7 +307,7 @@ export default function SignUpScreen({
                                 //     "인증번호가 전송되었습니다."
                                 // );
                                 // validatePhoneNumber();
-                                handlePhoneDuplicate();
+                                handlePhoneDuplicate(phoneInput);
                             }}
                             backgroundStyle={[
                                 styles.duplicateCheckBoxBackground,

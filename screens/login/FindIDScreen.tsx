@@ -8,6 +8,11 @@ import { useEffect, useState } from "react";
 import { colors } from "../../utils/colors";
 import { screenWidth } from "../../utils/ScreenSize";
 import showToast from "../../components/common/toast/Toast";
+import { isValidPhone } from "../../utils/validation";
+import { useCustomContext } from "../../features/context/CustomContext";
+import { checkPhoneDuplicate } from "../../API/UserAPI";
+import { logObject } from "../../utils/Log";
+import showAdminToast from "../../components/common/toast/showAdminToast";
 
 export default function FindIDScreen({
     navigation,
@@ -27,6 +32,37 @@ export default function FindIDScreen({
     useEffect(() => {
         setPhoneNumberSatisfied(phoneInput.length === 13);
     }, [phoneInput]);
+
+    const { updateLoadingStatus } = useCustomContext();
+
+    const handlePhoneDuplicate = async (phone: string) => {
+        if (isValidPhone(phone)) {
+            updateLoadingStatus(true);
+
+            await checkPhoneDuplicate(phoneInput)
+                .then(ret => {
+                    if (ret.statusCode >= 400) {
+                        // if (ret.statusCode < 300) {
+                        logObject("result", ret);
+                        showToast("success", "인증번호가 전송되었습니다.");
+                        // showToast("success", "사용하실 수 있는 .");
+                    } else {
+                        showToast(
+                            "error",
+                            "해당 번호로 가입된 계정이 없습니다."
+                        );
+                    }
+                })
+                .catch(error => {
+                    showAdminToast("error", error.message);
+                })
+                .finally(() => {
+                    updateLoadingStatus(false);
+                });
+        } else {
+            showAdminToast("error", "Phone Error .");
+        }
+    };
 
     useEffect(() => {
         if (phoneInput.length === 4 && phoneInput.includes("-") === false) {
@@ -110,7 +146,8 @@ export default function FindIDScreen({
                         title="인증번호 받기"
                         onPress={() => {
                             // navigation.navigate(NavigationTitle.foundID);
-                            showToast("success", "인증번호는 xxx 입니다");
+                            // showToast("success", "인증번호는 xxx 입니다");
+                            handlePhoneDuplicate(phoneInput);
                         }}
                         backgroundStyle={[
                             styles.authButtonBackground,
@@ -118,9 +155,7 @@ export default function FindIDScreen({
                                 ? styles.activatedBackground
                                 : styles.inactivatedBackground,
                         ]}
-                        // hasShadow={isSatisfied}
                         hasShadow={false}
-                        // textStyle={{ color: "white", fontSize: 14 }}
                         textStyle={[
                             { fontSize: 14 },
                             phoneNumberSatisfied
@@ -188,8 +223,6 @@ export default function FindIDScreen({
                                 : styles.inactivatedBackground,
                         ]}
                         hasShadow={false}
-                        // textStyle={{ color: "white", fontSize: 14 }}
-                        // textStyle={{ color: "black", fontSize: 14 }}
                         textStyle={[
                             { fontSize: 14 },
                             authSatisfied

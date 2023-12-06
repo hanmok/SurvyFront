@@ -84,8 +84,8 @@ function HomeScreen({
 
     const onRefresh = () => {
         setRefreshing(true);
-        getSurveys(accessToken).then(newSurveys => {
-            setSurveys(newSurveys);
+        getSurveys(accessToken).then(surveysResult => {
+            setSurveys(surveysResult.data);
             setRefreshing(false);
         });
     };
@@ -97,9 +97,9 @@ function HomeScreen({
     useEffect(() => {
         const fetchUserDetail = async () => {
             try {
-                const detailInfo = await getUserDetail(accessToken);
-                logObject("userDetail", detailInfo);
-                updateUserDetail(detailInfo);
+                const detailInfoResult = await getUserDetail(accessToken);
+                logObject("userDetail", detailInfoResult);
+                updateUserDetail(detailInfoResult.data);
             } catch (error) {
                 showAdminToast("error", error.message);
                 console.error(error);
@@ -154,9 +154,9 @@ function HomeScreen({
     useEffect(() => {
         const updateSurveys = async () => {
             await getSurveys(accessToken)
-                .then(surveys => {
+                .then(surveysResult => {
                     setIsLoading(false);
-                    setSurveys(surveys);
+                    setSurveys(surveysResult.data);
                 })
                 .catch(error => {
                     showAdminToast("error", error.message);

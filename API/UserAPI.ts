@@ -28,7 +28,7 @@ export async function getParticipatedSurveyIds(
 export async function getPostedSurveyIds(
     userId: number,
     accessToken: string
-): Promise<number[]> {
+): Promise<ApiResponse<number[]>> {
     const url = `${API_BASE_URL}/posting/user/${userId}/posted-surveys`;
     return fetchData<number[]>(url, {
         method: "GET",
@@ -42,7 +42,7 @@ export async function getPostedSurveyIds(
 export async function signin(
     username: string,
     password: string
-): Promise<UserState> {
+): Promise<ApiResponse<UserState>> {
     const url = `${API_BASE_URL}/user/signin`;
     const data = { username, password };
 
@@ -104,7 +104,9 @@ export async function signOut(accessToken: string) {
     });
 }
 
-export async function autoSignin(refreshToken: string): Promise<UserState> {
+export async function autoSignin(
+    refreshToken: string
+): Promise<ApiResponse<UserState>> {
     const url = `${API_BASE_URL}/user/auto-signin`;
 
     return fetchData<UserState>(url, {
@@ -161,7 +163,7 @@ export async function removeUser(userId: number, accessToken: string) {
 export async function fetchParticipatedSurveys(
     userId: number,
     accessToken: string
-): Promise<number[]> {
+): Promise<ApiResponse<number[]>> {
     const url = `${API_BASE_URL}/user/${userId}/participated-surveys`;
 
     return fetchData<number[]>(url, {
@@ -225,7 +227,7 @@ export async function checkUsernameDuplicate(username: string) {
     const queryParams = new URLSearchParams({ username });
     url = `${url}?${queryParams.toString()}`;
 
-    const checkUsernameResponse = fetchData(url, {
+    const checkUsernameResponse = fetchData<ApiResponse>(url, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -234,6 +236,23 @@ export async function checkUsernameDuplicate(username: string) {
 
     logObject("checkUsernameResponse", checkUsernameResponse);
     return checkUsernameResponse;
+}
+
+export async function checkPhoneDuplicate(phone: string) {
+    let url = `${API_BASE_URL}/user/check-phone`;
+
+    const queryParams = new URLSearchParams({ phone });
+    url = `${url}?${queryParams.toString()}`;
+
+    const checkPhoneResponse = fetchData<ApiResponse>(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    logObject("checkPhoneResponse", checkPhoneResponse);
+    return checkPhoneResponse;
 }
 
 export const updateHomeAddress = async (

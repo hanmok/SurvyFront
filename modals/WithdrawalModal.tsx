@@ -94,12 +94,12 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
         updateLoadingStatus(true);
 
         try {
-            const withdrawal: Withdrawal = await createWithdrawal(
+            const withdrawal: ApiResponse<Withdrawal> = await createWithdrawal(
                 accessToken,
                 userId,
                 amount
             );
-            await patchWithdrawal(accessToken, withdrawal.id);
+            await patchWithdrawal(accessToken, withdrawal.data.id);
             showToast("success", `${amount} 원이 출금되었습니다.`);
             onConfirm();
         } catch (error) {

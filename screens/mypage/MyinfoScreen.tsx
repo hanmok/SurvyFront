@@ -67,7 +67,7 @@ function MyInfoScreen({
         const getMyGenres = async () => {
             updateLoadingStatus(true);
             getUserGenres(accessToken, userId).then(response => {
-                setMyGenres(response);
+                setMyGenres(response.data);
                 updateLoadingStatus(false);
             });
         };
@@ -92,7 +92,7 @@ function MyInfoScreen({
                     updateLoadingStatus(true);
                     await updateHomeAddress(userId, geo?.id ?? null);
                     const userDetail = await getUserDetail(accessToken);
-                    updateUserDetail(userDetail);
+                    updateUserDetail(userDetail.data);
                     showToast("success", "거주지가 변경되었습니다.");
                     updateLoadingStatus(false);
                 }}
@@ -110,7 +110,7 @@ function MyInfoScreen({
                     updateLoadingStatus(true);
                     await updateOfficeAddress(userId, geo?.id);
                     const userDetail = await getUserDetail(accessToken);
-                    updateUserDetail(userDetail);
+                    updateUserDetail(userDetail.data);
                     updateLoadingStatus(false);
                     showToast("success", "근무지가 변경되었습니다.");
                 }}

@@ -8,8 +8,12 @@ import { colors } from "../../utils/colors";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import TextButton from "../../components/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
-import { checkUsernameDuplicate, signup } from "../../API/UserAPI";
-import { log } from "../../utils/Log";
+import {
+    checkPhoneDuplicate,
+    checkUsernameDuplicate,
+    signup,
+} from "../../API/UserAPI";
+import { log, logObject } from "../../utils/Log";
 import isValidEmail from "../../utils/EmailValidation";
 import { useCustomContext } from "../../features/context/CustomContext";
 import showToast from "../../components/common/toast/Toast";
@@ -43,8 +47,14 @@ export default function SignUpScreen({
             updateLoadingStatus(true);
             await checkUsernameDuplicate(usernameInput)
                 .then(ret => {
-                    setUsernameConfirmed(true);
-                    showToast("success", "사용하실 수 있는 메일입니다.");
+                    if (ret.statusCode < 300) {
+                        // if (ret.statusCode < 300) {
+                        logObject("result", ret);
+                        setUsernameConfirmed(true);
+                        showToast("success", "사용하실 수 있는 메일입니다.");
+                    } else {
+                        showToast("error", "사용하실 수 없는 메일입니다.");
+                    }
                 })
                 .catch(error => {
                     showAdminToast("error", error.message);
@@ -54,6 +64,35 @@ export default function SignUpScreen({
                 });
         } else {
             showToast("error", "이메일 형식에 맞지 않습니다.");
+        }
+    };
+
+    const handlePhoneDuplicate = async () => {
+        if (isValidEmail(usernameInput)) {
+            updateLoadingStatus(true);
+
+            await checkPhoneDuplicate(phoneInput)
+                .then(ret => {
+                    if (ret.statusCode < 300) {
+                        // if (ret.statusCode < 300) {
+                        logObject("result", ret);
+                        showToast("success", "인증번호가 전송되었습니다.");
+                        // showToast("success", "사용하실 수 있는 .");
+                    } else {
+                        showToast(
+                            "error",
+                            "이미 해당 번호로 가입된 계정이 있습니다."
+                        );
+                    }
+                })
+                .catch(error => {
+                    showAdminToast("error", error.message);
+                })
+                .finally(() => {
+                    updateLoadingStatus(false);
+                });
+        } else {
+            showAdminToast("error", "Phone Error .");
         }
     };
 
@@ -80,11 +119,17 @@ export default function SignUpScreen({
     };
 
     const validatePhoneNumber = () => {
+        handlePhoneDuplicate();
         const ret = true;
         setPhoneConfirmed(ret);
-        alert("인증되었습니다.");
+
+        // alert("인증되었습니다.");
         return ret;
     };
+
+    // const isPublishingAuthCodeTapped () => {
+
+    // }
 
     useEffect(() => {
         const ret = birthDate.length === 8;
@@ -257,11 +302,12 @@ export default function SignUpScreen({
                         <TextButton
                             title="인증번호 받기"
                             onPress={() => {
-                                showToast(
-                                    "success",
-                                    "인증번호가 전송되었습니다."
-                                );
-                                validatePhoneNumber();
+                                // showToast(
+                                //     "success",
+                                //     "인증번호가 전송되었습니다."
+                                // );
+                                // validatePhoneNumber();
+                                handlePhoneDuplicate();
                             }}
                             backgroundStyle={[
                                 styles.duplicateCheckBoxBackground,

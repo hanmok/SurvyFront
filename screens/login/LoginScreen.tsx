@@ -84,9 +84,10 @@ export default function LoginScreen({
             try {
                 const userState = await userDataManager.loadUserState();
                 if (userState !== null && userState.refreshToken) {
-                    const responseUserState = await autoSignin(
+                    const responseUserStateResult = await autoSignin(
                         userState.refreshToken
                     );
+                    const responseUserState = responseUserStateResult.data;
 
                     const updatedUserState =
                         await userDataManager.saveUserState({
@@ -96,10 +97,11 @@ export default function LoginScreen({
                     updateAccessToken(updatedUserState.accessToken);
                     updateUserId(updatedUserState.userId);
 
-                    const userDetail = await getUserDetail(
+                    const userDetailResult = await getUserDetail(
                         updatedUserState.accessToken
                     );
-                    updateUserDetail(userDetail);
+
+                    updateUserDetail(userDetailResult.data);
                     moveToMainTab();
                 }
             } catch (error) {
@@ -127,7 +129,7 @@ export default function LoginScreen({
         let userState: UserState | null;
         await signin(username, password)
             .then(userResponse => {
-                const { userId, accessToken, refreshToken } = userResponse;
+                const { userId, accessToken, refreshToken } = userResponse.data;
                 userState = { userId, accessToken, refreshToken };
                 return getUserDetail(userState.accessToken);
             })

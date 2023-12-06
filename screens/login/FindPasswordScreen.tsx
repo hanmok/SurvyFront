@@ -17,6 +17,8 @@ import {
 import { useCustomContext } from "../../features/context/CustomContext";
 import { logObject } from "../../utils/Log";
 import showAdminToast from "../../components/common/toast/showAdminToast";
+import { MailerService } from "@nestjs-modules/mailer";
+import { Injectable } from "@nestjs/common";
 
 export default function FindPasswordScreen({
     navigation,

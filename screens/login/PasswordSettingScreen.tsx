@@ -26,7 +26,9 @@ export default function PasswordSettingScreen({
     const [passwordInput2, setPasswordInput2] = useState("");
     const [isSatisfied, setIsSatisfied] = useState(false);
     const [confirmTapped, setConfirmTapped] = useState(false);
-    const { username } = route.params;
+
+    const { username, shouldPopAll } = route.params;
+
     const { updateLoadingStatus } = useCustomContext();
 
     useEffect(() => {
@@ -46,8 +48,11 @@ export default function PasswordSettingScreen({
 
         if (confirmTapped && passwordInput1 === passwordInput2) {
             update();
-
-            navigation.popToTop();
+            if (shouldPopAll) {
+                navigation.popToTop();
+            } else {
+                navigation.pop();
+            }
         }
     }, [confirmTapped, username, passwordInput1, passwordInput2]);
 
@@ -154,9 +159,8 @@ const styles = StyleSheet.create({
     },
     nameContainer: {
         marginTop: 30,
-        // marginBottom: 30,
-        marginBottom: 10,
         marginHorizontal: 18,
+        backgroundColor: "magenta",
     },
     descriptionContainer: {
         marginHorizontal: 20,

@@ -36,10 +36,9 @@ export async function fetchData<T>(
             // return apiResponse.data;
             return apiResponse;
         } else {
-            // return {"statusCode: 400}
-            return apiResponse;
             console.error(apiResponse.message);
             showToast("error", apiResponse.message);
+            return apiResponse;
         }
     } catch (error) {
         console.error(`${url} API call failed: ${error.message}`);

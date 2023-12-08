@@ -20,7 +20,7 @@ export type RootStackParamList = {
     FindID: undefined;
     FoundID: undefined;
     FindPassword: undefined;
-    SettingPassword: { username: string };
+    SettingPassword: { username: string; shouldPopAll: boolean };
     SignUp: undefined;
     MyGenre: undefined;
     PointHistory: undefined;

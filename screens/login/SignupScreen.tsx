@@ -10,7 +10,7 @@ import TextButton from "../../components/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
 import {
     checkPhoneDuplicate,
-    checkUsernameDuplicate,
+    hasDuplicateUsername,
     signup,
 } from "../../API/UserAPI";
 import { log, logObject } from "../../utils/Log";
@@ -45,7 +45,7 @@ export default function SignUpScreen({
     const handleUserDuplicate = async () => {
         if (isValidEmail(usernameInput)) {
             updateLoadingStatus(true);
-            await checkUsernameDuplicate(usernameInput)
+            await hasDuplicateUsername(usernameInput)
                 .then(ret => {
                     if (ret.statusCode < 300) {
                         // if (ret.statusCode < 300) {
@@ -74,10 +74,8 @@ export default function SignUpScreen({
             await checkPhoneDuplicate(phoneInput)
                 .then(ret => {
                     if (ret.statusCode < 300) {
-                        // if (ret.statusCode < 300) {
                         logObject("result", ret);
                         showToast("success", "인증번호가 전송되었습니다.");
-                        // showToast("success", "사용하실 수 있는 .");
                     } else {
                         showToast(
                             "error",
@@ -156,21 +154,6 @@ export default function SignUpScreen({
         birthDateValidated,
         genderIndex,
     ]);
-
-    // const [usernameCheckTapped, setUsernameCheckTapped] = useState(false);
-
-    // useEffect(() => {
-    //     const checkUsernameDup = async () => {
-    //         const ret = await checkUsernameDuplicate(usernameInput);
-    //         if (ret.statusCode === 200) {
-    //             setUsernameConfirmed(true);
-    //         }
-    //     };
-    //     if (usernameCheckTapped) {
-    //         console.log("username check tapped");
-    //         checkUsernameDup();
-    //     }
-    // }, [usernameCheckTapped]);
 
     useEffect(() => {
         if (phoneInput.length === 4 && phoneInput.includes("-") === false) {

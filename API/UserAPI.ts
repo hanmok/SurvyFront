@@ -221,7 +221,7 @@ export async function updateUserGenres(
     }
 }
 
-export async function checkUsernameDuplicate(username: string) {
+export async function hasDuplicateUsername(username: string) {
     let url = `${API_BASE_URL}/user/check-username`;
 
     const queryParams = new URLSearchParams({ username });
@@ -272,6 +272,21 @@ export const updateHomeAddress = async (
     });
 };
 
+export const checkValidationOfUsernamePhoneNumber = async (
+    username: string,
+    phone: string
+) => {
+    const url = `${API_BASE_URL}/user/check-username-phone`;
+    const body = { username, phone };
+    return fetchData(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+};
+
 export const updateOfficeAddress = async (
     userId: number,
     geoId: number | null
@@ -287,5 +302,53 @@ export const updateOfficeAddress = async (
         headers: {
             "Content-Type": "application/json",
         },
+    });
+};
+
+export const sendEmailAuthCode = async (username: string) => {
+    const url = `${API_BASE_URL}/user/send-mail`;
+    const body = { username };
+    return fetchData(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+};
+
+export const verifyEmailAuth = async (username: string, code: string) => {
+    const url = `${API_BASE_URL}/user/verify-email`;
+    const body = { username, code };
+    return fetchData(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+};
+
+export const sendSMSAuthCode = async (username: string, phone: string) => {
+    const url = `${API_BASE_URL}/user/send-sms`;
+    const body = { username, phone };
+    return fetchData(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+};
+
+export const verifySMSAuth = async (username: string, code: string) => {
+    const url = `${API_BASE_URL}/user/verify-sms`;
+    const body = { username, code };
+    return fetchData(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
     });
 };

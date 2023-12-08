@@ -12,10 +12,11 @@ import { colors } from "../../utils/colors";
 // import Clipboard from "@react-native-clipboard/clipboard";
 
 import * as Clipboard from "expo-clipboard";
+import { convertUnixTimestampToDateTime } from "../../utils/DateFormatter";
 
 interface PostedSurveyItem {
     title: string;
-    createdAt: string;
+    createdAt: number;
     code: string;
     currentParticipation: number;
     participationGoal: number;
@@ -55,6 +56,9 @@ const PostedSurveyItems = ({
                             <Text>
                                 {item.currentParticipation} /{" "}
                                 {item.participationGoal}
+                            </Text>
+                            <Text>
+                                {convertUnixTimestampToDateTime(item.createdAt)}
                             </Text>
                         </View>
                         <View>

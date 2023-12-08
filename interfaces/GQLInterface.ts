@@ -65,7 +65,7 @@ export interface GQLSurvey {
     title: string;
     currentParticipation: number;
     participationGoal: number;
-    createdAt: string;
+    createdAt: number;
     endedAt: string;
     reward: number;
     code: string;

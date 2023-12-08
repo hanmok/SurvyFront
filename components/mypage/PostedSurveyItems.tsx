@@ -13,6 +13,7 @@ import { colors } from "../../utils/colors";
 
 import * as Clipboard from "expo-clipboard";
 import { convertUnixTimestampToDateTime } from "../../utils/DateFormatter";
+import Spacer from "../common/Spacer";
 
 interface PostedSurveyItem {
     title: string;
@@ -52,11 +53,13 @@ const PostedSurveyItems = ({
                     <View style={[commonStyles.border, styles.container]}>
                         <View>
                             <Text style={styles.surveyTitle}>{item.title}</Text>
+                            <Spacer size={6} />
                             {/* <Text>{convertTime(parseInt(item.createdAt))}</Text> */}
                             <Text>
                                 {item.currentParticipation} /{" "}
                                 {item.participationGoal}
                             </Text>
+                            <Spacer size={6} />
                             <Text>
                                 {convertUnixTimestampToDateTime(item.createdAt)}
                             </Text>

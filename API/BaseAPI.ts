@@ -12,7 +12,7 @@ export async function fetchData<T>(
     url: string,
     options: ApiOptions,
     message?: string
-): Promise<T> {
+): Promise<ApiResponse<T>> {
     try {
         const response = await fetch(url, options);
         logObject(
@@ -33,10 +33,12 @@ export async function fetchData<T>(
 
         if (statusCode >= 200 && statusCode < 300) {
             logObject("response data:", apiResponse.data);
-            return apiResponse.data;
+            // return apiResponse.data;
+            return apiResponse;
         } else {
             console.error(apiResponse.message);
             showToast("error", apiResponse.message);
+            return apiResponse;
         }
     } catch (error) {
         console.error(`${url} API call failed: ${error.message}`);

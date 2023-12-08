@@ -19,21 +19,8 @@ function SettingScreen({
         NavigationTitle.setting
     >;
 }) {
-    // const blockContainer = ({ text }: { text: string }) => {
-    const blockContainer = ({ text }: { text: string }) => {
-        return (
-            <BlockView>
-                <Text>{text}</Text>
-            </BlockView>
-        );
-    };
-
-    const handleResign = () => {
-        console.log("resign tapped");
-    };
-
     const [resignTapped, setResignTapped] = useState(false);
-    const { userId, accessToken } = useCustomContext();
+    const { username, userId, accessToken } = useCustomContext();
 
     useEffect(() => {
         const resign = async (userId: number, accessToken: string) => {
@@ -75,6 +62,21 @@ function SettingScreen({
                             style={[styles.eachBoxTextStyle, { padding: 20 }]}
                         >
                             이용약관
+                        </Text>
+                    </BlockView>
+
+                    <BlockView
+                        onPress={() => {
+                            navigation.navigate(
+                                NavigationTitle.settingPassword,
+                                { username, shouldPopAll: false }
+                            );
+                        }}
+                    >
+                        <Text
+                            style={[styles.eachBoxTextStyle, { padding: 20 }]}
+                        >
+                            비밀번호 변경
                         </Text>
                     </BlockView>
 

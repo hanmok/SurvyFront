@@ -95,9 +95,10 @@ const App: React.FC = () => {
                                     // options={}
                                     options={({ route }) => ({
                                         headerTitle: "비밀번호 재설정",
+                                        headerBackTitleVisible: false,
                                     })}
                                 />
-
+                                {/* 새 비밀번호 등록 */}
                                 <Stack.Screen
                                     name={NavigationTitle.mainTabs}
                                     component={MainTabs}

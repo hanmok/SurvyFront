@@ -97,8 +97,8 @@ function MyGenreScreen({
 
         const getMyGenres = async () => {
             getUserGenres(accessToken, userId).then(response => {
-                setInitialGenres(response);
-                setSelectedGenres(response);
+                setInitialGenres(response.data);
+                setSelectedGenres(response.data);
             });
         };
         getMyGenres();

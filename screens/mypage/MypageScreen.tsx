@@ -48,13 +48,13 @@ function MypageScreen({
         const postedSurveysPromise = getPostedSurveyIds(
             userId,
             accessToken
-        ).then(postings => setNumOfPostedSurveys(postings.length));
+        ).then(postings => setNumOfPostedSurveys(postings.data.length));
 
         const participatedSurveysPromise = getParticipatedSurveyIds(
             userId,
             accessToken
         ).then(participatings =>
-            setNumOfParticipatedSurveys(participatings.length)
+            setNumOfParticipatedSurveys(participatings.data.length)
         );
 
         await Promise.all([postedSurveysPromise, participatedSurveysPromise]);
@@ -66,7 +66,7 @@ function MypageScreen({
             try {
                 const detailInfo = await getUserDetail(accessToken);
                 logObject("userDetail", detailInfo);
-                updateUserDetail(detailInfo);
+                updateUserDetail(detailInfo.data);
             } catch (error) {
                 showAdminToast("error", error.message);
                 console.error(error);

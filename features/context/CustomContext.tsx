@@ -22,6 +22,8 @@ export interface Occupation {
 }
 
 interface CustomContextProps {
+    username: string;
+    updateUsername: (username: string) => void;
     postingSurveyId: number;
     updatePostingSurveyId: (postingSurveyId: number) => void;
     isLoadingStatus: boolean;
@@ -47,6 +49,7 @@ interface CustomProviderProps {
 }
 
 export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
+    const [username, setUsername] = useState<string>(null);
     const [postingSurveyId, setPostingSurveyId] = useState<number>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [userDetail, setUserDetail] = useState<UserDetail>(null);
@@ -58,9 +61,13 @@ export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
         number | null
     >(null);
 
-    const updateParticipatingSurveyId = (newId: number) => [
-        setParticipatingSurveyId(newId),
-    ];
+    const updateUsername = (username: string) => {
+        setUsername(username);
+    };
+
+    const updateParticipatingSurveyId = (newId: number) => {
+        setParticipatingSurveyId(newId);
+    };
 
     const updatePostingSurveyId = (newId: number) => {
         setPostingSurveyId(newId);
@@ -93,6 +100,8 @@ export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
     return (
         <CustomContext.Provider
             value={{
+                username,
+                updateUsername,
                 postingSurveyId,
                 updatePostingSurveyId,
                 isLoadingStatus: isLoading,

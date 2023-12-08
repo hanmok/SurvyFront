@@ -8,9 +8,13 @@ import { colors } from "../../utils/colors";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import TextButton from "../../components/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
-import { checkUsernameDuplicate, signup } from "../../API/UserAPI";
-import { log } from "../../utils/Log";
-import isValidEmail from "../../utils/EmailValidation";
+import {
+    checkPhoneDuplicate,
+    hasDuplicateUsername,
+    signup,
+} from "../../API/UserAPI";
+import { log, logObject } from "../../utils/Log";
+import { isValidEmail, isValidPhone } from "../../utils/validation";
 import { useCustomContext } from "../../features/context/CustomContext";
 import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
@@ -41,10 +45,16 @@ export default function SignUpScreen({
     const handleUserDuplicate = async () => {
         if (isValidEmail(usernameInput)) {
             updateLoadingStatus(true);
-            await checkUsernameDuplicate(usernameInput)
+            await hasDuplicateUsername(usernameInput)
                 .then(ret => {
-                    setUsernameConfirmed(true);
-                    showToast("success", "사용하실 수 있는 메일입니다.");
+                    if (ret.statusCode < 300) {
+                        // if (ret.statusCode < 300) {
+                        logObject("result", ret);
+                        setUsernameConfirmed(true);
+                        showToast("success", "사용하실 수 있는 메일입니다.");
+                    } else {
+                        showToast("error", "사용하실 수 없는 메일입니다.");
+                    }
                 })
                 .catch(error => {
                     showAdminToast("error", error.message);
@@ -57,10 +67,43 @@ export default function SignUpScreen({
         }
     };
 
+    const handlePhoneDuplicate = async (phone: string) => {
+        if (isValidPhone(phone)) {
+            updateLoadingStatus(true);
+
+            await checkPhoneDuplicate(phoneInput)
+                .then(ret => {
+                    if (ret.statusCode < 300) {
+                        logObject("result", ret);
+                        showToast("success", "인증번호가 전송되었습니다.");
+                    } else {
+                        showToast(
+                            "error",
+                            "이미 해당 번호로 가입된 계정이 있습니다."
+                        );
+                    }
+                })
+                .catch(error => {
+                    showAdminToast("error", error.message);
+                })
+                .finally(() => {
+                    updateLoadingStatus(false);
+                });
+        } else {
+            showAdminToast("error", "Phone Error .");
+        }
+    };
+
     const handleSignup = async () => {
         console.log("handleSignup tapped");
         updateLoadingStatus(true);
-        await signup(usernameInput, passwordInput1)
+        await signup(
+            usernameInput,
+            passwordInput1,
+            phoneInput,
+            birthDate,
+            genderIndex
+        )
             .then(() => {
                 navigation.pop();
             })
@@ -73,12 +116,18 @@ export default function SignUpScreen({
             });
     };
 
-    const validatePhoneNumber = () => {
-        const ret = true;
-        setPhoneConfirmed(ret);
-        alert("인증되었습니다.");
-        return ret;
-    };
+    // const validatePhoneNumber = () => {
+    //     handlePhoneDuplicate();
+    //     const ret = true;
+    //     setPhoneConfirmed(ret);
+
+    //     // alert("인증되었습니다.");
+    //     return ret;
+    // };
+
+    // const isPublishingAuthCodeTapped () => {
+
+    // }
 
     useEffect(() => {
         const ret = birthDate.length === 8;
@@ -105,21 +154,6 @@ export default function SignUpScreen({
         birthDateValidated,
         genderIndex,
     ]);
-
-    // const [usernameCheckTapped, setUsernameCheckTapped] = useState(false);
-
-    // useEffect(() => {
-    //     const checkUsernameDup = async () => {
-    //         const ret = await checkUsernameDuplicate(usernameInput);
-    //         if (ret.statusCode === 200) {
-    //             setUsernameConfirmed(true);
-    //         }
-    //     };
-    //     if (usernameCheckTapped) {
-    //         console.log("username check tapped");
-    //         checkUsernameDup();
-    //     }
-    // }, [usernameCheckTapped]);
 
     useEffect(() => {
         if (phoneInput.length === 4 && phoneInput.includes("-") === false) {
@@ -251,11 +285,12 @@ export default function SignUpScreen({
                         <TextButton
                             title="인증번호 받기"
                             onPress={() => {
-                                showToast(
-                                    "success",
-                                    "인증번호가 전송되었습니다."
-                                );
-                                validatePhoneNumber();
+                                // showToast(
+                                //     "success",
+                                //     "인증번호가 전송되었습니다."
+                                // );
+                                // validatePhoneNumber();
+                                handlePhoneDuplicate(phoneInput);
                             }}
                             backgroundStyle={[
                                 styles.duplicateCheckBoxBackground,

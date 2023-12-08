@@ -17,7 +17,7 @@ export default function FoundIDScreen({
         <View style={{ flex: 1, justifyContent: "space-between" }}>
             <View style={{ marginTop: 60, marginHorizontal: 18 }}>
                 <Text style={{ fontSize: 18 }}>고객님의 계정을 찾았습니다</Text>
-                <Text style={{ marginTop: 10 }}>gksahr278</Text>
+                <Text style={{ marginTop: 10 }}>dmammmm@naver.com</Text>
             </View>
             <View>
                 <TextButton

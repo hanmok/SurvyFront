@@ -81,5 +81,7 @@ interface GeoResponse {
 
 export async function fetchAllGeoInfos(): Promise<GeoInfo[]> {
     const url = `${API_BASE_URL}/geo`;
-    return fetchData<GeoInfo[]>(url, {});
+    const geoResponse = await fetchData<GeoInfo[]>(url, {});
+    return geoResponse.data;
+    // return fetchData<GeoInfo[]>(url, {}).;
 }

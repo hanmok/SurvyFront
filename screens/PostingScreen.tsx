@@ -34,7 +34,8 @@ import { log, logObject } from "../utils/Log";
 import ModifyingQuestionModal from "../modals/ModifyingQuestionModal";
 import * as Location from "expo-location";
 
-import { Section, makeSection } from "../interfaces/Section";
+// import { Section, SectionBuilder, makeSection } from "../interfaces/Section";
+import { Section, SectionBuilder } from "../interfaces/Section";
 
 // import { loadSavedPostingSurveys, savePostingSurvey } from "../utils/Storage";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
@@ -110,7 +111,8 @@ export default function PostingScreen({
     const [isSatisfied, setIsSatisfied] = useState(false);
 
     const addSection = () => {
-        const newSection = makeSection(sections.length);
+        // const newSection = makeSection(sections.length);
+        const newSection = new SectionBuilder(sections.length).build();
         setSectionAdded(true);
         setSections(prev => [...prev, newSection]);
     };
@@ -157,7 +159,8 @@ export default function PostingScreen({
 
     useEffect(() => {
         if (sections.length === 0 && !route.params.postingSurveyState) {
-            const newSection = makeSection(0);
+            // const newSection = makeSection(0);
+            const newSection = new SectionBuilder(0).build();
             setSections([newSection]);
         }
     }, []);

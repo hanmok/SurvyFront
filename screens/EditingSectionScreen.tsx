@@ -13,9 +13,12 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { useCustomContext } from "../features/context/CustomContext";
-import { Section, SectionBuilder, makeSection } from "../interfaces/Section";
+// import { Section, SectionBuilder, makeSection } from "../interfaces/Section";
+import { Section, SectionBuilder } from "../interfaces/Section";
 import { Question, makeQuestion } from "../interfaces/Question";
 import { colors } from "../utils/colors";
+import TextButton from "../components/TextButton";
+import { screenWidth } from "../utils/ScreenSize";
 
 export default function EditingSectionScreen({
     navigation,
@@ -28,6 +31,21 @@ export default function EditingSectionScreen({
     route: RouteProp<RootStackParamList, NavigationTitle.editSection>;
 }) {
     const { sections } = route.params;
+
+    const sectionData = [
+        new SectionBuilder(1)
+            .setQuestions([
+                makeQuestion(0, "s1q1", 100, []),
+                makeQuestion(1, "s1q2", 100, []),
+            ])
+            .build(),
+        new SectionBuilder(2)
+            .setQuestions([
+                makeQuestion(0, "s2q1", 100, []),
+                makeQuestion(1, "s2q2", 100, []),
+            ])
+            .build(),
+    ];
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -66,7 +84,7 @@ export default function EditingSectionScreen({
     }: {
         section: SectionListData<Question, Section>;
     }) => {
-        const sequence = section.sequence ?? 0;
+        // const sequence = section.sequence ?? 0;
 
         return (
             <View
@@ -78,28 +96,35 @@ export default function EditingSectionScreen({
                     justifyContent: "center",
                 }}
             >
-                <Text>{`Section ${sequence}`}</Text>
+                <Text>{`Section ${section.sequence + 1}`}</Text>
             </View>
         );
     };
 
-    const sectionData = [
-        new SectionBuilder(1)
-            .setQuestions([
-                makeQuestion(0, "s1q1", 100, []),
-                makeQuestion(1, "s1q2", 100, []),
-            ])
-            .build(),
-        new SectionBuilder(2)
-            .setQuestions([
-                makeQuestion(0, "s2q1", 100, []),
-                makeQuestion(1, "s2q2", 100, []),
-            ])
-            .build(),
-    ];
-
     return (
         <View>
+            <View
+                style={{
+                    justifyContent: "flex-end",
+                    width: screenWidth,
+                    alignSelf: "flex-end",
+                    alignItems: "flex-end",
+                    paddingRight: 20,
+                    // marginTop: 20,
+                    // marginVertical: 20,
+                    marginTop: 20,
+                    marginBottom: 10,
+                    // backgroundColor: "magenta",
+                }}
+            >
+                <TextButton
+                    title="초기화"
+                    onPress={() => {
+                        console.log("초기화 tapped");
+                    }}
+                    textStyle={{ color: colors.myRed }}
+                />
+            </View>
             <SectionList
                 // sections={sections.map(section => ({
                 sections={sectionData.map(section => ({

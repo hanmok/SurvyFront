@@ -9,7 +9,7 @@ import {
     View,
     SectionListData,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { useCustomContext } from "../features/context/CustomContext";
@@ -56,7 +56,8 @@ export default function EditingSectionScreen({
                             console.log("touchableOpacity tapped");
                         }}
                     >
-                        <FontAwesome5 name="check" size={24} color="black" />
+                        {/* <FontAwesome5 name="check" size={24} color="black" /> */}
+                        <Feather name="check" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
             ),
@@ -87,17 +88,17 @@ export default function EditingSectionScreen({
         // const sequence = section.sequence ?? 0;
 
         return (
-            <View
-                style={{
+            <TextButton
+                title={`Section ${section.sequence + 1}`}
+                onPress={() => {}}
+                textStyle={{ textAlign: "left" }}
+                backgroundStyle={{
                     backgroundColor: "gray",
                     height: 45,
                     marginTop: 10,
                     paddingLeft: 10,
-                    justifyContent: "center",
                 }}
-            >
-                <Text>{`Section ${section.sequence + 1}`}</Text>
-            </View>
+            />
         );
     };
 

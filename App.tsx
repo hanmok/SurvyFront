@@ -33,6 +33,8 @@ import MyGenreScreen from "./screens/mypage/MyGenreScreen";
 import Toast from "react-native-toast-message";
 import toastConfig from "./components/common/toast/ToastConfig";
 import PointHistoryScreen from "./screens/PointHistoryScreen";
+import EditingSectionScreen from "./screens/EditingSectionScreen";
+import { FontAwesome5 } from "@expo/vector-icons";
 // export default function App() {
 const App: React.FC = () => {
     return (
@@ -140,6 +142,25 @@ const App: React.FC = () => {
                                         headerRight: () => (
                                             <ImageButton
                                                 img={require("./assets/selectedSingleSelection.png")}
+                                            />
+                                        ),
+                                    })}
+                                />
+
+                                <Stack.Screen
+                                    name={NavigationTitle.editSection}
+                                    component={EditingSectionScreen}
+                                    options={({ route }) => ({
+                                        headerTitle: "수정",
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.background,
+                                        },
+                                        headerRight: () => (
+                                            <FontAwesome5
+                                                name="check"
+                                                size={24}
+                                                color="black"
                                             />
                                         ),
                                     })}

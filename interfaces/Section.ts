@@ -30,3 +30,19 @@ export const makeSection = (
     };
     return section;
 };
+
+export class SectionBuilder {
+    section: Section;
+    constructor(sectionNumber) {
+        this.section = makeSection(sectionNumber);
+    }
+
+    setQuestions(questions: Question[]) {
+        this.section.questions = questions;
+        return this;
+    }
+
+    build() {
+        return this.section;
+    }
+}

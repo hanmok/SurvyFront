@@ -49,11 +49,8 @@ import { RouteProp } from "@react-navigation/native";
 import PopupMenu from "../components/PopupMenu";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showAdminToast from "../components/common/toast/showAdminToast";
-// import {
-//     initializePostingSurvey,
-//     loadPostingSurvey,
-//     savePostingSurvey,
-// } from "../utils/PostingSurveyStorage";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function PostingScreen({
     navigation,
@@ -71,6 +68,7 @@ export default function PostingScreen({
     const [selectedQuestionIndex, setSelectedQuestionIndex] =
         useState<number>(undefined);
     const [surveyTitle, setSurveyTitle] = useState<string>("");
+
     // 0 부터 시작
     const [sections, setSections] = useState<Section[]>([]);
 
@@ -107,6 +105,7 @@ export default function PostingScreen({
             setSurveyTitle(prevSurveyTitle);
         }
     }, []);
+
     const [sectionAdded, setSectionAdded] = useState(false);
     const [isSatisfied, setIsSatisfied] = useState(false);
 
@@ -174,30 +173,40 @@ export default function PostingScreen({
         setIsModifyingQuestionModalVisible(!isModifyingQuestionModalVisible);
     };
 
+    const [editTapped, setEditTapped] = useState(false);
+
+    useEffect(() => {
+        if (editTapped) {
+            // Section, question 매치시킨 후 section 에 넣어주기.
+            const newSections = [...sections];
+            questions.forEach(q => {});
+
+            logObject("passing sections", sections);
+            navigation.navigate(NavigationTitle.editSection, {
+                sections: sections,
+            });
+        }
+    }, [editTapped, sections, questions]);
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <View style={styles.rightNavContainer}>
-                    <PopupMenu
-                        options={[
-                            {
-                                title: "순서 바꾸기",
-                                action: handleFirstOptionTapped,
-                            },
-                            {
-                                title: "초기화",
-                                action: initializeAll,
-                            },
-                            {
-                                title: "현재 Section 초기화",
-                                action: toggleInitializeCurrentSection,
-                            },
-                            {
-                                title: "저장",
-                                action: toggleSave,
-                            },
-                        ]}
-                    />
+                    <TouchableOpacity
+                        onPress={() => {
+                            console.log("touchableOpacity tapped");
+                            setEditTapped(true);
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="playlist-edit"
+                            size={24}
+                            color="black"
+                            onPress={() => {
+                                console.log("hi");
+                            }}
+                        />
+                    </TouchableOpacity>
                 </View>
             ),
         });
@@ -270,6 +279,7 @@ export default function PostingScreen({
                 questions,
             });
         }
+
         // Sections 에 SelectableOption 까지 모두 들어가는데 ? 굳이 Questions 도 따로 넣어야해?
     }, [isNextButtonTapped, surveyTitle, sections, questions]);
 
@@ -304,7 +314,6 @@ export default function PostingScreen({
             logObject("currentQuestions", questions);
             const prevQuestions = [...questions];
 
-            // const filteredQuestions = questions.filter(
             const filteredQuestions = prevQuestions.filter(
                 q => q.sectionId !== currentSectionId
             );
@@ -408,6 +417,15 @@ export default function PostingScreen({
     useEffect(() => {
         console.log(`[PostingScreen] surveyTitle changed to ${surveyTitle}`);
     }, [surveyTitle]);
+
+    useEffect(() => {
+        // setEditTapped(false)
+
+        const unsubscribeFocus = navigation.addListener("focus", () => {
+            setEditTapped(false);
+        });
+        return unsubscribeFocus;
+    }, [navigation]);
 
     const listHeader = () => {
         return (
@@ -757,9 +775,6 @@ const styles = StyleSheet.create({
     },
     optionText: {
         fontSize: fontSizes.s16,
-    },
-    threeDotMenu: {
-        marginTop: 5,
     },
     rightNavContainer: {
         flexDirection: "row",

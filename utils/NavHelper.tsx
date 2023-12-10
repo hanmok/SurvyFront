@@ -1,4 +1,5 @@
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
+import { Section } from "../interfaces/Section";
 import { SurveyProps } from "../interfaces/Survey";
 
 export type RootStackParamList = {
@@ -24,6 +25,7 @@ export type RootStackParamList = {
     SignUp: undefined;
     MyGenre: undefined;
     PointHistory: undefined;
+    EditSection: { sections: Section[] };
 };
 
 export enum NavigationTitle {
@@ -48,4 +50,5 @@ export enum NavigationTitle {
     signup = "SignUp",
     myGenre = "MyGenre",
     pointHistory = "PointHistory",
+    editSection = "EditSection",
 }

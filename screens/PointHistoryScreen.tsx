@@ -20,6 +20,19 @@ interface ParticipatedSurveyResponse {
     };
 }
 
+export interface ParticipatingItem {
+    title: string;
+    reward: number;
+    id: number;
+    createdAt: number;
+}
+
+interface ParticipatingResponse {
+    user: {
+        participated_surveys: ParticipatedSurveyItem[];
+    };
+}
+
 // 참여한 설문
 function PointHistoryScreen() {
     const { userId } = useCustomContext();

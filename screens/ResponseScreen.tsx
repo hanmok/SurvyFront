@@ -195,7 +195,7 @@ export default function ResponseScreen({
                 logObject("sheet data:", response);
                 if (response) {
                     const sheetResponse = response;
-                    generateExcel(sheetResponse, survey.title);
+                    generateExcel(sheetResponse.data, survey.title);
                 }
             });
         };

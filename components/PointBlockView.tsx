@@ -11,6 +11,7 @@ import {
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import TextButton from "./TextButton";
+import makeGQL from "../API/gqlAPI";
 
 interface PointBlockProps {
     // onPress?: () => void;
@@ -28,6 +29,10 @@ const PointBlockView: React.FC<PointBlockProps> = ({
     backgroundStyle,
     collectedReward = 0,
 }) => {
+    // const callAPI = async () => {
+    //     return await makeGQL(participating)
+    // }
+
     return (
         <View
             style={[styles.container, styles.basicContainer, backgroundStyle]}
@@ -57,6 +62,7 @@ const PointBlockView: React.FC<PointBlockProps> = ({
                     <TextButton
                         title="내역"
                         onPress={onPressHistory}
+                        // onPress={callAPI}
                         backgroundStyle={styles.buttonBackground}
                         textStyle={styles.buttonText}
                     />

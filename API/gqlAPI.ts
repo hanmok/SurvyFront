@@ -15,7 +15,7 @@ const makeGQL = async (query, message) => {
     logObject(`[${message}]`, data);
     return data;
 };
-
+export default makeGQL;
 // export async function getSurvey(surveyId: number) {
 //     const response = await fetch(GQL_URL, {
 //         method: "POST",

@@ -78,6 +78,19 @@ export const getAnswersQuery = gql`
     }
 `;
 
+export const participatingsByUserIdQuery = gql`
+    query ParticipatingsByUserId($userId: ID!) {
+        participatingsByUserId(user_id: $userId) {
+            id
+            created_at
+            survey {
+                title
+                reward
+            }
+        }
+    }
+`;
+
 export const getParticipatingQuery = gql`
     query Participatings($surveyId: ID!) {
         participatings(survey_id: $surveyId) {
@@ -85,6 +98,15 @@ export const getParticipatingQuery = gql`
                 id
             }
             sequence
+        }
+    }
+`;
+
+// export const getAllParticipatingsQuery = gql`
+export const getAllParticipatingsQuery = `
+    query AllParticipatings {
+        participatings {
+            id
         }
     }
 `;

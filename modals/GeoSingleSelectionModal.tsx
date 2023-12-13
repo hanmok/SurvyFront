@@ -93,9 +93,6 @@ const GeoSingleSelectionModal: React.FC<GeoSingleSelectionModalProps> = ({
                 .sort((a, b) => (a.city < b.city ? -1 : 1));
 
             // 전체 (각 state 내 전체 도시 선택 버튼)
-            // const firstCity = geos.find(geo => geo.code === selectedState.code);
-            // selectableCities.unshift(firstCity);
-            // if (selectableCities)
 
             if (selectableCities.length === 0) {
                 const firstCity = geos.find(geo => geo.state === "세종");
@@ -117,15 +114,19 @@ const GeoSingleSelectionModal: React.FC<GeoSingleSelectionModalProps> = ({
                 backgroundStyle={{
                     height: 50,
                     backgroundColor:
-                        selectedState === item ? colors.gray1 : colors.white,
-                    borderColor:
                         selectedState === item
-                            ? colors.gray
-                            : colors.transparent,
-                    borderWidth: selectedState === item ? 2 : 0,
+                            ? colors.white
+                            : colors.unselectedGeoBG,
+                    paddingLeft: 10,
+                    borderColor: colors.unselectedGeoBG,
+                    borderRightWidth: 2,
                 }}
                 textStyle={{
-                    color: selectedState === item ? colors.white : colors.black,
+                    color:
+                        selectedState === item
+                            ? colors.black
+                            : colors.unselectedGeoText,
+                    textAlign: "left",
                 }}
             />
         );
@@ -141,10 +142,17 @@ const GeoSingleSelectionModal: React.FC<GeoSingleSelectionModalProps> = ({
                 backgroundStyle={{
                     height: 50,
                     backgroundColor:
-                        selectedCity === item ? colors.gray2 : colors.gray4,
+                        selectedCity === item
+                            ? colors.white
+                            : colors.unselectedGeoBG,
+                    paddingLeft: 10,
                 }}
                 textStyle={{
-                    color: selectedCity === item ? colors.white : colors.black,
+                    color:
+                        selectedState === item
+                            ? colors.black
+                            : colors.unselectedGeoText,
+                    textAlign: "left",
                 }}
                 hasShadow={false}
             />
@@ -173,12 +181,9 @@ const GeoSingleSelectionModal: React.FC<GeoSingleSelectionModalProps> = ({
                                 {isHome ? "거주지 선택" : "근무지 선택"}
                             </Text>
                         </View>
-                        {/* <Spacer size={14} /> */}
                         <View style={{ height: 14 }} />
-                        {/* Horizontal  */}
                         <View
                             style={{
-                                // alignSelf: "stretch",
                                 height: screenHeight - 300,
                                 flexDirection: "row",
                                 borderColor: colors.gray4,
@@ -219,7 +224,7 @@ const GeoSingleSelectionModal: React.FC<GeoSingleSelectionModalProps> = ({
                         backgroundStyle={{
                             backgroundColor: isNullTapped
                                 ? colors.gray1
-                                : colors.gray4,
+                                : colors.gray25,
                             flexDirection: "column",
                             alignSelf: "stretch",
                             padding: 10,

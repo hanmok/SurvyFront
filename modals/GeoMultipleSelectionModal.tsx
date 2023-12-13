@@ -222,19 +222,20 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                 title={item.state}
                 backgroundStyle={{
                     height: 50,
-                    backgroundColor: selectedStates.includes(item)
-                        ? colors.gray1
-                        : colors.white,
-                    borderColor:
+                    backgroundColor:
                         selectedState === item
-                            ? colors.gray
-                            : colors.transparent,
-                    borderWidth: selectedState === item ? 2 : 0,
+                            ? colors.white
+                            : colors.unselectedGeoBG,
+                    paddingLeft: 10,
+                    borderColor: colors.unselectedGeoBG,
+                    borderRightWidth: 2,
                 }}
                 textStyle={{
-                    color: selectedStates.includes(item)
-                        ? colors.white
-                        : colors.black,
+                    color:
+                        selectedState === item
+                            ? colors.black
+                            : colors.unselectedGeoText,
+                    textAlign: "left",
                 }}
             />
         );

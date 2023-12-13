@@ -18,7 +18,9 @@ export const colors = {
     gray14: "#444",
     gray15: "#555",
     gray2: "#666",
+    gray25: "#888",
     gray3: "#999",
+    gray35: "#aaa",
     gray4: "#ccc",
     gray5: "#eee",
     transparent: "rgba(0,0,0,0)",
@@ -29,4 +31,8 @@ export const colors = {
     unselectedQuestionBoxText: "#777777",
     placeHolder: "#C5C5C5",
     buttonText: "#0074F9",
+    unselectedGeoBG: "#E2E2E4",
+    unselectedGeoText: "B9B9BA",
+
+    // unselected-geo: "#F2F2F4"
 };

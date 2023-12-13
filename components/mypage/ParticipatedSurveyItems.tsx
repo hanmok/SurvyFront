@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { commonStyles } from "../../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../../utils/sizes";
@@ -13,7 +13,10 @@ const ParticipatedSurveyItems = ({
         <FlatList
             data={participatedSurveys}
             renderItem={({ item }) => (
-                <View
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log(`title: ${item.title}, id: ${item.id}`);
+                    }}
                     style={[
                         commonStyles.border,
                         {
@@ -43,7 +46,7 @@ const ParticipatedSurveyItems = ({
                         <Text>+{accounting.formatNumber(item.reward)} P</Text>
                     </View>
                     {/* <Text>{convertTime(item.createdAt)}</Text> */}
-                </View>
+                </TouchableOpacity>
             )}
             // 참여한 날짜가 아니야.
             // keyExtractor={item => `${item.code}${item.created_at}`}

@@ -19,6 +19,7 @@ import { Question, makeQuestion } from "../interfaces/Question";
 import { colors } from "../utils/colors";
 import TextButton from "../components/TextButton";
 import { screenWidth } from "../utils/ScreenSize";
+import { log, logObject } from "../utils/Log";
 
 export default function EditingSectionScreen({
     navigation,
@@ -56,7 +57,6 @@ export default function EditingSectionScreen({
                             console.log("touchableOpacity tapped");
                         }}
                     >
-                        {/* <FontAwesome5 name="check" size={24} color="black" /> */}
                         <Feather name="check" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -90,7 +90,11 @@ export default function EditingSectionScreen({
         return (
             <TextButton
                 title={`Section ${section.sequence + 1}`}
-                onPress={() => {}}
+                // title={section.}
+                onPress={() => {
+                    log(`Section: ${section.sequence}`);
+                    logObject("section", section);
+                }}
                 textStyle={{ textAlign: "left" }}
                 backgroundStyle={{
                     backgroundColor: "gray",
@@ -98,6 +102,7 @@ export default function EditingSectionScreen({
                     marginTop: 10,
                     paddingLeft: 10,
                 }}
+                hasShadow={false}
             />
         );
     };

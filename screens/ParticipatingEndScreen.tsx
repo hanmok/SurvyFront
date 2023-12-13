@@ -24,37 +24,43 @@ function ParticipatingEndScreen({
     >;
 }) {
     // type HonestType = true | false
-    const [selectedReponse, setSelectedResponse] = useState<boolean | null>(
-        null
-    );
+    const [shoulGoMain, setShouldGoHome] = useState<boolean | null>(null);
 
     useEffect(() => {
-        const patch = async (selectedResponse: boolean) => {
+        const patch = async (shouldGoMain: boolean) => {
             await patchParticipating(
                 accessToken,
                 userId,
                 participatingSurveyId,
-                selectedReponse
+                shoulGoMain
             ).finally(() => {
                 updateLoadingStatus(false);
-            });
-            if (selectedResponse === true) {
                 showToast(
                     "success",
                     "설문에 참여해주셔서 감사합니다",
                     "포인트는 검수 후 지급됩니다"
                 );
+                if (shouldGoMain) {
+                    navigation.pop(2);
+                } else {
+                    navigation.navigate(NavigationTitle.response, {
+                        surveyId: participatingSurveyId,
+                    });
+                }
+            });
+
+            if (shouldGoMain === true) {
             } else {
-                showToast("success", "응답해주셔서 감사합니다");
+                navigation;
             }
-            navigation.pop(2);
+            // navigation.pop(2);
         };
 
-        if (selectedReponse !== null) {
+        if (shoulGoMain !== null) {
             updateLoadingStatus(true);
-            patch(selectedReponse);
+            patch(shoulGoMain);
         }
-    }, [selectedReponse]);
+    }, [shoulGoMain]);
 
     const {
         accessToken,
@@ -77,7 +83,7 @@ function ParticipatingEndScreen({
             </Text>
 
             <View>
-                <DescriptionTextButton
+                {/* <DescriptionTextButton
                     // title="불성실 응답을 했어요"
                     title="대충 응답한 문항이 있어요"
                     description="어떠한 패널티도 주어지지 않습니다. (포인트 지급X)"
@@ -91,10 +97,36 @@ function ParticipatingEndScreen({
                         padding: 10,
                         backgroundColor: "white",
                     }}
+                /> */}
+                <TextButton
+                    title={"메인으로 돌아가기"}
+                    onPress={() => {
+                        setShouldGoHome(true);
+                    }}
+                    backgroundStyle={{
+                        borderRadius: 12,
+                        padding: 16,
+                        backgroundColor: "white",
+                    }}
+                    textStyle={{ fontSize: 18 }}
                 />
+
                 <Spacer size={20} />
 
-                <DescriptionTextButton
+                <TextButton
+                    title={"설문 전체 결과 보기"}
+                    onPress={() => {
+                        setShouldGoHome(false);
+                    }}
+                    backgroundStyle={{
+                        borderRadius: 12,
+                        padding: 16,
+                        backgroundColor: "white",
+                    }}
+                    textStyle={{ fontSize: 18 }}
+                />
+
+                {/* <DescriptionTextButton
                     title="모든 문항에 성실하게 응답했어요"
                     description="불성실 응답으로 판독될 경우 포인트가 지급되지 않으며, 설문 참여에 제한이 있을 수 있습니다."
                     onPress={() => {
@@ -107,7 +139,37 @@ function ParticipatingEndScreen({
                         padding: 10,
                         backgroundColor: "white",
                     }}
-                />
+                /> */}
+
+                {/* <DescriptionTextButton
+                    title="설문 결과 보기"
+                    description="마이페이지 -> 참여한 설문에서도 보실 수 있습니다"
+                    onPress={() => {
+                        setSelectedResponse(false);
+                    }}
+                    titleStyle={{ fontSize: fontSizes.m20 }}
+                    descriptionStyle={{ fontSize: 12, marginTop: 10 }}
+                    backgroundStyle={{
+                        borderRadius: 12,
+                        padding: 10,
+                        backgroundColor: "white",
+                    }}
+                /> */}
+
+                {/* <DescriptionTextButton
+                     title="모든 문항에 성실하게 응답했어요"
+                     description="불성실 응답으로 판독될 경우 포인트가 지급되지 않으며, 설문 참여에 제한이 있을 수 있습니다."
+                     onPress={() => {
+                         setSelectedResponse(true);
+                     }}
+                     titleStyle={{ fontSize: fontSizes.m20 }}
+                     descriptionStyle={{ fontSize: 12, marginTop: 10 }}
+                     backgroundStyle={{
+                         borderRadius: 12,
+                         padding: 10,
+                         backgroundColor: "white",
+                     }}
+                 /> */}
             </View>
         </View>
     );

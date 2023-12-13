@@ -7,6 +7,7 @@ import {
     TextInput,
     TouchableWithoutFeedback,
     Keyboard,
+    Image,
 } from "react-native";
 import { colors } from "../../utils/colors";
 import TextButton from "../../components/TextButton";
@@ -36,6 +37,9 @@ export default function LoginScreen({
 }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const [satisfied, setSatisfied] = useState(false);
+
     const {
         updateUserDetail,
         updateAccessToken,
@@ -50,6 +54,11 @@ export default function LoginScreen({
             ref.current.focus();
         }
     };
+
+    useEffect(() => {
+        const isValid = isValidEmail(username) && password.length >= 8;
+        setSatisfied(isValid);
+    }, [username, password]);
 
     const handleDismissKeyboard = () => {
         console.log("dismiss keyboard called");
@@ -156,7 +165,16 @@ export default function LoginScreen({
         <SafeAreaView style={styles.mainContainer}>
             <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
                 <View style={[styles.mainContainer]}>
-                    <Spacer size={40} />
+                    <View>
+                        <Spacer size={150} />
+                        <Image
+                            source={require("../../assets/logo.png")}
+                            style={{
+                                height: screenWidth - 300,
+                                width: screenWidth - 200,
+                            }}
+                        />
+                    </View>
                     <View>
                         <View style={styles.loginInfoContainer}>
                             <TextInput
@@ -171,7 +189,7 @@ export default function LoginScreen({
                                 }}
                             />
                         </View>
-                        <View style={{ height: 4 }} />
+                        <View style={{ height: 8 }} />
                         <View style={styles.loginInfoContainer}>
                             <TextInput
                                 ref={passwordRef}
@@ -187,7 +205,7 @@ export default function LoginScreen({
                             />
                         </View>
 
-                        <View style={{ height: 30 }} />
+                        <View style={{ height: 25 }} />
 
                         <TextButton
                             title="로그인"
@@ -199,8 +217,14 @@ export default function LoginScreen({
                                 styles.loginInfoContainer,
                                 styles.bottomButtonContainer,
                                 styles.loginBackgroundStyle,
-                                { marginBottom: 10, marginTop: 30 },
+                                {
+                                    backgroundColor: satisfied
+                                        ? colors.deeperMainColor
+                                        : colors.gray35,
+                                },
                             ]}
+                            hasShadow={false}
+                            isEnabled={satisfied}
                         />
                         <Spacer size={10} />
                         <TextButton
@@ -211,7 +235,9 @@ export default function LoginScreen({
                                 styles.loginInfoContainer,
                                 styles.bottomButtonContainer,
                                 styles.loginBackgroundStyle,
+                                { backgroundColor: colors.deeperMainColor },
                             ]}
+                            hasShadow={false}
                         />
 
                         <Spacer size={20} />
@@ -266,11 +292,11 @@ const styles = StyleSheet.create({
         width: screenWidth - 40,
         marginLeft: 20,
         alignSelf: "center",
-        backgroundColor: colors.deepMainColor,
+        // backgroundColor: colors.deepMainColor,
         borderWidth: 0,
     },
     loginTextStyle: {
-        fontSize: 20,
+        fontSize: 18,
         justifyContent: "center",
         color: "white",
     },

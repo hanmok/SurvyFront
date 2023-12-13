@@ -1,7 +1,7 @@
 // import * as Permissions from "expo-permissions";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { SectionList, StyleSheet, Text, View } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { useQuery } from "@apollo/client";
 import {
@@ -20,7 +20,6 @@ import React, { useEffect, useState } from "react";
 import {
     GQLAnswer,
     GQLParticipating,
-    GQLSelectableOption,
     GQLSurvey,
 } from "../interfaces/GQLInterface";
 
@@ -29,13 +28,11 @@ import { log, logObject } from "../utils/Log";
 import OverallSelectionResponseContainer from "../components/response/OverallSelectionResponseContainer";
 import { QuestionResponseContainerProps } from "../components/response/OverallSelectionResponseContainer";
 import { ListRenderItem } from "react-native";
-import { fontSizes, marginSizes } from "../utils/sizes";
+import { fontSizes } from "../utils/sizes";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
 import OverallEssayResponseContainer from "../components/response/OverallEssayResponseContainer";
-import { Picker } from "@react-native-picker/picker";
 import CustomSegmentedControl from "../components/CustomSegmentedControl";
-import { Answer } from "../interfaces/Answer";
 import IndivisualSelectionResponseContainer from "../components/response/IndivisualSelectionResponseContainer";
 import IndivisualEssayResponseContainer from "../components/response/IndivisualEssayResponseContainer";
 import { Entypo, Ionicons } from "@expo/vector-icons";
@@ -49,9 +46,23 @@ import { SheetData, getResultSheet } from "../API/AnswerAPI";
 import { useCustomContext } from "../features/context/CustomContext";
 import { QuestionTypeId } from "../QuestionType";
 
-interface EachRow {
-    userId: number;
-    answer: string[];
+class ResponseSection {
+    responseProp: QuestionResponseContainerProps[] | undefined;
+    constructor(public index: number) {}
+}
+
+class SectionDataBuilder {
+    public sectionData: ResponseSection;
+    constructor(index: number) {
+        this.sectionData = new ResponseSection(index + 1);
+    }
+    setResponse(response: QuestionResponseContainerProps[]) {
+        this.sectionData.responseProp = response;
+        return this;
+    }
+    build() {
+        return this.sectionData;
+    }
 }
 
 export default function ResponseScreen({
@@ -75,13 +86,9 @@ export default function ResponseScreen({
     const [currentSequence, setCurrentSequence] = useState<number>(1);
     const [currentUserId, setCurrentUserId] = useState<number>(undefined);
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
     const [isShowingOverall, setIsShowingOverall] = useState<boolean>(true);
 
-    const [responseProps, setResponseProps] = useState<
-        QuestionResponseContainerProps[]
-    >([]);
+    const [sectionData, setSectionData] = useState<ResponseSection[]>([]);
 
     const [survey, setSurvey] = useState<GQLSurvey>(null);
     const [answers, setAnswers] = useState<GQLAnswer[]>(null);
@@ -148,11 +155,6 @@ export default function ResponseScreen({
         let ws = XLSX.utils.aoa_to_sheet(sum);
 
         XLSX.utils.book_append_sheet(wb, ws, title, true);
-
-        console.log("title: " + title);
-
-        const sanitizedName = title.replace(/[\\/:*?"<>|]/g, "");
-        let testFileName = "survey Result";
 
         const base64 = XLSX.write(wb, { type: "base64" });
         const filename = FileSystem.documentDirectory + `survey_responses.xlsx`;
@@ -270,8 +272,13 @@ export default function ResponseScreen({
             logObject("survey:", survey);
             logObject("answers:", answers);
 
+            const tempResponseSections: ResponseSection[] = [];
             survey.sections.sort((sec1, sec2) => sec1.sequence - sec2.sequence);
+
             survey.sections.forEach(section => {
+                const newSection = new SectionDataBuilder(section.sequence);
+                // Section 별로 담아야함. Props[] 를 Section 별로 만들어야함. 만든 후
+                const newProps: QuestionResponseContainerProps[] = [];
                 // question sorted 된거 사용하기.
                 section.questions.sort();
                 section.questions.forEach((question, index) => {
@@ -284,7 +291,7 @@ export default function ResponseScreen({
                         ans => ans.question.id === question.id
                     );
                     // candidate 2
-                    const userId = correspondingAnswers[0].user.id; // 여기네..
+                    const userId = correspondingAnswers[0].user.id;
                     // section 에 대한 정보가 없음.
                     const questionTitle = ` ${question.position + 1}. ${
                         question.text
@@ -297,12 +304,16 @@ export default function ResponseScreen({
                         questionTypeId: String(question.questionType.id),
                         selectedUserId: userId,
                     };
-                    // logObject("prop obj", props);
                     logObject("QuestionResponseContainer: ", props);
                     tempQuestionResponseContainerProps.push(props);
+                    newProps.push(props);
                 });
+                newSection.setResponse(newProps);
+                const some = newSection.build();
+                tempResponseSections.push(some);
             });
-            setResponseProps(tempQuestionResponseContainerProps);
+
+            setSectionData(tempResponseSections);
         }
     }, [answers, survey]);
 
@@ -310,31 +321,27 @@ export default function ResponseScreen({
         QuestionResponseContainerProps
     > = ({ item }) => {
         return item.questionTypeId === `${QuestionTypeId.Essay}` ? (
-            <OverallEssayResponseContainer
-                sectionSequence={item.sectionSequence}
-                questionTitle={item.questionTitle}
-                selectableOptions={[]} // 필요 없음.
-                answers={item.answers}
-                questionTypeId={item.questionTypeId}
-                selectedUserId={undefined}
-            />
+            <View style={{ marginHorizontal: 12 }}>
+                <OverallEssayResponseContainer
+                    sectionSequence={item.sectionSequence}
+                    questionTitle={item.questionTitle}
+                    selectableOptions={[]} // 필요 없음.
+                    answers={item.answers}
+                    questionTypeId={item.questionTypeId}
+                    selectedUserId={undefined}
+                />
+            </View>
         ) : (
-            <OverallSelectionResponseContainer
-                sectionSequence={item.sectionSequence}
-                questionTitle={item.questionTitle}
-                selectableOptions={item.selectableOptions}
-                answers={item.answers}
-                questionTypeId={item.questionTypeId}
-                selectedUserId={undefined}
-            />
-        );
-    };
-
-    const bottomOverallView = () => {
-        return (
-            <Text style={styles.bottom}>
-                총 설문 인원 {survey?.currentParticipation ?? 0}
-            </Text>
+            <View style={{ marginHorizontal: 12 }}>
+                <OverallSelectionResponseContainer
+                    sectionSequence={item.sectionSequence}
+                    questionTitle={item.questionTitle}
+                    selectableOptions={item.selectableOptions}
+                    answers={item.answers}
+                    questionTypeId={item.questionTypeId}
+                    selectedUserId={undefined}
+                />
+            </View>
         );
     };
 
@@ -342,28 +349,48 @@ export default function ResponseScreen({
         QuestionResponseContainerProps
     > = ({ item }) => {
         return item.questionTypeId === `${QuestionTypeId.Essay}` ? (
-            <IndivisualEssayResponseContainer
-                sectionSequence={item.sectionSequence}
-                questionTitle={item.questionTitle}
-                selectableOptions={[]} // 필요 없음.
-                answers={item.answers}
-                questionTypeId={item.questionTypeId}
-                selectedUserId={currentUserId}
-            />
+            <View style={{ marginHorizontal: 12 }}>
+                <IndivisualEssayResponseContainer
+                    sectionSequence={item.sectionSequence}
+                    questionTitle={item.questionTitle}
+                    selectableOptions={[]} // 필요 없음.
+                    answers={item.answers}
+                    questionTypeId={item.questionTypeId}
+                    selectedUserId={currentUserId}
+                />
+            </View>
         ) : (
-            <IndivisualSelectionResponseContainer
-                sectionSequence={item.sectionSequence}
-                questionTitle={item.questionTitle}
-                selectableOptions={item.selectableOptions}
-                answers={item.answers}
-                questionTypeId={item.questionTypeId}
-                selectedUserId={currentUserId}
-            />
+            <View style={{ marginHorizontal: 12 }}>
+                <IndivisualSelectionResponseContainer
+                    sectionSequence={item.sectionSequence}
+                    questionTitle={item.questionTitle}
+                    selectableOptions={item.selectableOptions}
+                    answers={item.answers}
+                    questionTypeId={item.questionTypeId}
+                    selectedUserId={currentUserId}
+                />
+            </View>
         );
     };
 
     const listHeader = () => {
-        return <Text style={styles.listHeader}>{survey?.title}</Text>;
+        return (
+            <View style={{ marginTop: 20 }}>
+                <Text style={styles.listHeader}>{survey?.title}</Text>
+            </View>
+        );
+    };
+
+    const listFooter = () => {
+        return (
+            <View
+                style={{
+                    marginTop: 20,
+                    height: 1,
+                    marginBottom: 20,
+                }}
+            ></View>
+        );
     };
 
     if (surveyError) {
@@ -380,47 +407,56 @@ export default function ResponseScreen({
 
     return (
         <View style={styles.container}>
-            <Text style={{ color: colors.gray3 }}>surveyId: {surveyId}</Text>
-            {currentUserId && (
-                <Text style={{ color: colors.gray3 }}>
-                    currentUserId: {currentUserId ?? 0}
-                </Text>
-            )}
             <View
-                style={{ height: 30, flex: 1, justifyContent: "space-between" }}
+                style={{
+                    height: 30,
+                    flex: 1,
+                    justifyContent: "space-between",
+                }}
             >
                 <>
-                    {isShowingOverall ? (
-                        <FlatList
-                            data={responseProps}
-                            renderItem={overallQuestionResponseBoxItem}
-                            keyExtractor={item => `${item.questionTitle}`}
-                            ItemSeparatorComponent={() => {
-                                return <View style={{ height: 10 }} />;
-                            }}
-                            ListHeaderComponent={listHeader}
-                        />
-                    ) : (
-                        <FlatList
-                            data={responseProps}
-                            renderItem={indivisualQuestionResponseBoxItem}
-                            keyExtractor={item => `${item.questionTitle}`}
-                            ItemSeparatorComponent={() => {
-                                return <View style={{ height: 10 }} />;
-                            }}
-                            ListHeaderComponent={listHeader}
-                        />
-                    )}
+                    <SectionList
+                        sections={sectionData.map(
+                            (response: ResponseSection) => ({
+                                title: `Section ${response.index}`,
+                                data: response.responseProp,
+                            })
+                        )}
+                        renderItem={
+                            isShowingOverall
+                                ? overallQuestionResponseBoxItem
+                                : indivisualQuestionResponseBoxItem
+                        }
+                        keyExtractor={item => `${item.questionTitle}`}
+                        ItemSeparatorComponent={() => {
+                            return <View style={{ height: 10 }} />;
+                        }}
+                        ListHeaderComponent={listHeader} // Survey Title
+                        ListFooterComponent={listFooter}
+                        stickySectionHeadersEnabled={false}
+                        renderSectionHeader={({ section }) => (
+                            <View
+                                style={{
+                                    marginTop: 60,
+                                    marginBottom: 10,
+                                    paddingLeft: 20,
+                                }}
+                            >
+                                <Text style={{ fontSize: 28 }}>
+                                    {section.title}
+                                </Text>
+                            </View>
+                        )}
+                    />
                 </>
-                <View
-                    style={{
-                        width: screenWidth - 24,
-                        height: 100,
-                    }}
-                >
+
+                <View style={styles.bottomLayout}>
                     {isShowingOverall ? (
-                        bottomOverallView()
+                        <Text style={styles.bottom}>
+                            총 설문 인원 {survey?.currentParticipation ?? 0}
+                        </Text>
                     ) : (
+                        // Separate
                         <View style={styles.userIndexContainer}>
                             <Entypo
                                 name="chevron-left"
@@ -433,7 +469,8 @@ export default function ResponseScreen({
                                 backgroundStyle={
                                     styles.currentUserIndexContainerBG
                                 }
-                                onPress={countDown}
+                                onPress={() => {}}
+                                isEnabled={false}
                             />
                             <Entypo
                                 name="chevron-right"
@@ -442,13 +479,14 @@ export default function ResponseScreen({
                             />
                         </View>
                     )}
-
-                    <CustomSegmentedControl
-                        options={options}
-                        handlePress={idx => {
-                            setIsShowingOverall(idx === 0);
-                        }}
-                    />
+                    <View style={styles.bottomSegment}>
+                        <CustomSegmentedControl
+                            options={options}
+                            handlePress={idx => {
+                                setIsShowingOverall(idx === 0);
+                            }}
+                        />
+                    </View>
                 </View>
             </View>
         </View>
@@ -457,12 +495,11 @@ export default function ResponseScreen({
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: marginSizes.s12,
         flex: 1,
     },
     listHeader: {
         fontWeight: "bold",
-        fontSize: 22,
+        fontSize: 30,
         textAlign: "center",
     },
     bottom: {
@@ -470,11 +507,13 @@ const styles = StyleSheet.create({
         marginRight: 30,
         fontSize: fontSizes.s16,
         marginTop: 10,
+        marginBottom: 10,
     },
     userIndexContainer: {
         alignSelf: "flex-end",
         marginRight: 30,
         marginTop: 10,
+        marginBottom: 10,
         flexDirection: "row",
     },
     currentUserIndexContainerBG: {
@@ -483,5 +522,17 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         backgroundColor: colors.blurredGray,
         overflow: "hidden",
+    },
+    bottomLayout: {
+        width: screenWidth - 24,
+        marginHorizontal: 12,
+        marginBottom: 30,
+    },
+    bottomSegment: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignSelf: "flex-start",
+        alignContent: "center",
+        marginHorizontal: 12,
     },
 });

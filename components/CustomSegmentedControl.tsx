@@ -30,11 +30,20 @@ const CustomSegmentedControl: React.FC<CustomSegmentedControlProps> = ({
         setSelectedIndex(index);
     };
 
-    const myrenderItem: ListRenderItem<SegmentProps> = ({ item }) => {
+    const renderItem: ListRenderItem<SegmentProps> = ({ item }) => {
         return (
             <TouchableOpacity
                 style={[
-                    { width: (screenWidth - 60) / 2 },
+                    {
+                        // width: (screenWidth - 60) / 2,
+                        width: (screenWidth - 24) / 2,
+                        // borderRadius: 12,
+                        borderTopLeftRadius: item.index === 0 ? 6 : 0,
+                        borderBottomLeftRadius: item.index === 0 ? 6 : 0,
+
+                        borderTopRightRadius: item.index === 1 ? 6 : 0,
+                        borderBottomRightRadius: item.index === 1 ? 6 : 0,
+                    },
                     styles.segment,
                     selectedIndex === item.index && styles.selectedSegment,
                 ]}
@@ -63,10 +72,10 @@ const CustomSegmentedControl: React.FC<CustomSegmentedControlProps> = ({
                     const seg: SegmentProps = { item, index };
                     return seg;
                 })}
-                renderItem={myrenderItem}
+                renderItem={renderItem}
                 keyExtractor={item => `${item.index}`}
                 horizontal={true}
-                style={{ flex: 1 }}
+                // style={{ flex: 1 }}
                 contentContainerStyle={{ justifyContent: "space-around" }}
             />
         </View>
@@ -78,7 +87,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#eee",
+        // backgroundColor: "#eee",
+        // backgroundColor: "magenta",
         borderRadius: 8,
         overflow: "hidden",
         height: 40,
@@ -96,6 +106,8 @@ const styles = StyleSheet.create({
     },
     segmentText: {
         color: "#d1d1d1",
+        letterSpacing: 2,
+        fontSize: 16,
     },
     selectedSegmentText: {
         color: colors.black,

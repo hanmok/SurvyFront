@@ -4,7 +4,7 @@ import { RootStackParamList } from "../../utils/NavHelper";
 import { NavigationTitle } from "../../utils/NavHelper";
 import { useEffect, useState } from "react";
 import { fontSizes } from "../../utils/sizes";
-import { colors } from "../../utils/colors";
+import { buttonColors, colors } from "../../utils/colors";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import TextButton from "../../components/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
@@ -19,6 +19,7 @@ import { useCustomContext } from "../../features/context/CustomContext";
 import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
 import showMessageAlert from "../../components/CustomAlert";
+import Spacer from "../../components/common/Spacer";
 
 export default function SignUpScreen({
     navigation,
@@ -28,13 +29,23 @@ export default function SignUpScreen({
     const [usernameInput, setUsernameInput] = useState("");
     const [usernameConfirmed, setUsernameConfirmed] = useState(false);
 
+    const [usernameSatisfied, setUsernameSatisfied] = useState(false);
+
+    useEffect(() => {
+        setUsernameSatisfied(isValidEmail(usernameInput));
+    }, [usernameInput]);
+
     const [passwordInput1, setPasswordInput1] = useState("");
     const [passwordInput2, setPasswordInput2] = useState("");
 
     // 휴대폰번호 확인해야함..
     const [phoneInput, setPhoneInput] = useState("");
     const [phoneConfirmed, setPhoneConfirmed] = useState(false);
+    const [phoneSatisfied, setPhoneSatisfied] = useState(false);
 
+    useEffect(() => {
+        setPhoneSatisfied(phoneInput.length === 13);
+    }, [phoneInput]);
     const [birthDate, setBirthDate] = useState("");
     const [birthDateValidated, setBirthDateValidated] = useState(false);
     const [genderIndex, setGenderIndex] = useState<number>(null);
@@ -218,11 +229,26 @@ export default function SignUpScreen({
                         <TextButton
                             title="중복확인"
                             onPress={() => {
-                                // setUsernameCheckTapped(true);
                                 handleUserDuplicate();
                             }}
-                            backgroundStyle={styles.duplicateCheckBoxBackground}
-                            textStyle={{ color: colors.deeperMainColor }}
+                            hasShadow={false}
+                            backgroundStyle={[
+                                {
+                                    alignSelf: "stretch",
+                                    flex: 0.2,
+                                    borderRadius: 6,
+                                    paddingHorizontal: 12,
+                                },
+                                usernameSatisfied
+                                    ? styles.activatedBackground
+                                    : styles.inactivatedBorder,
+                            ]}
+                            // textStyle={{ color: colors.deeperMainColor }}
+                            textStyle={{
+                                color: usernameSatisfied
+                                    ? colors.white
+                                    : colors.gray2,
+                            }}
                         />
                     </View>
                 </View>
@@ -285,18 +311,22 @@ export default function SignUpScreen({
                         <TextButton
                             title="인증번호 받기"
                             onPress={() => {
-                                // showToast(
-                                //     "success",
-                                //     "인증번호가 전송되었습니다."
-                                // );
-                                // validatePhoneNumber();
                                 handlePhoneDuplicate(phoneInput);
                             }}
                             backgroundStyle={[
-                                styles.duplicateCheckBoxBackground,
-                                { flex: 0.3 },
+                                {
+                                    alignSelf: "stretch",
+                                    borderRadius: 6,
+                                    flex: 0.3,
+                                },
+                                phoneSatisfied
+                                    ? styles.activatedBackground
+                                    : styles.inactivatedBorder,
                             ]}
-                            textStyle={{ color: colors.deeperMainColor }}
+                            hasShadow={false}
+                            textStyle={{
+                                color: phoneSatisfied ? "white" : colors.gray2,
+                            }}
                         />
                     </View>
                 </View>
@@ -334,25 +364,9 @@ export default function SignUpScreen({
                         />
                     </View>
                 </View>
-
-                <View
-                    style={{
-                        marginTop: 40,
-                        borderTopColor: colors.gray4,
-                        borderTopWidth: 1,
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontSize: fontSizes.m20,
-                            marginTop: 20,
-                            marginLeft: 20,
-                        }}
-                    >
-                        이용약관
-                    </Text>
-                </View>
             </View>
+
+            <Spacer size={80} />
 
             <TextButton
                 title="가입하기"
@@ -364,15 +378,16 @@ export default function SignUpScreen({
                     {
                         marginBottom: 20,
                         marginTop: 40,
+                        backgroundColor: satisfied
+                            ? buttonColors.enabledButtonBG
+                            : buttonColors.disabledButtonBG,
                     },
-                    satisfied
-                        ? { backgroundColor: colors.deepMainColor }
-                        : { backgroundColor: colors.gray2 },
                 ]}
+                hasShadow={false}
                 textStyle={[
                     {
                         fontSize: 16,
-                        color: satisfied ? colors.white : colors.gray4,
+                        color: "white",
                     },
                 ]}
                 isEnabled={satisfied}
@@ -417,10 +432,16 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         flex: 0.2,
     },
-
     buttonBackground: {
         marginHorizontal: 18,
         borderRadius: 6,
         height: 45,
+    },
+    inactivatedBorder: {
+        borderWidth: 1,
+        borderColor: colors.gray4,
+    },
+    activatedBackground: {
+        backgroundColor: buttonColors.enabledButtonBG,
     },
 });

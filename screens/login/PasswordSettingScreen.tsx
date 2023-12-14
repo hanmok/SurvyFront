@@ -3,7 +3,7 @@ import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import { useEffect, useState } from "react";
 import { fontSizes } from "../../utils/sizes";
-import { colors } from "../../utils/colors";
+import { buttonColors, colors } from "../../utils/colors";
 import TextButton from "../../components/TextButton";
 import Spacer from "../../components/common/Spacer";
 import { updatePassword } from "../../API/UserAPI";
@@ -117,9 +117,11 @@ export default function PasswordSettingScreen({
                 }}
                 backgroundStyle={[
                     styles.authButtonBackground,
-                    isSatisfied
-                        ? styles.activatedBackground
-                        : styles.inactivatedBackground,
+                    {
+                        backgroundColor: isSatisfied
+                            ? buttonColors.enabledButtonBG
+                            : buttonColors.disabledButtonBG,
+                    },
                 ]}
                 hasShadow={isSatisfied}
                 textStyle={{ color: "white", fontSize: fontSizes.m20 }}
@@ -160,16 +162,9 @@ const styles = StyleSheet.create({
     nameContainer: {
         marginTop: 30,
         marginHorizontal: 18,
-        backgroundColor: "magenta",
     },
     descriptionContainer: {
         marginHorizontal: 20,
-    },
-    inactivatedBackground: {
-        backgroundColor: "#ddd",
-    },
-    activatedBackground: {
-        backgroundColor: colors.deepMainColor,
     },
     authButtonBackground: {
         height: 50,

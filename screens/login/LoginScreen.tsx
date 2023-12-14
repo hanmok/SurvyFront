@@ -9,7 +9,7 @@ import {
     Keyboard,
     Image,
 } from "react-native";
-import { colors } from "../../utils/colors";
+import { buttonColors, colors } from "../../utils/colors";
 import TextButton from "../../components/TextButton";
 import { screenWidth } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
@@ -220,8 +220,8 @@ export default function LoginScreen({
                                 styles.loginBackgroundStyle,
                                 {
                                     backgroundColor: satisfied
-                                        ? colors.deeperMainColor
-                                        : colors.gray35,
+                                        ? buttonColors.enabledButtonBG
+                                        : buttonColors.disabledButtonBG,
                                 },
                             ]}
                             hasShadow={false}

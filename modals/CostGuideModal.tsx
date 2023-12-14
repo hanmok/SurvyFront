@@ -83,7 +83,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                         <View style={{ height: 300, width: 300 }}>
                             <View style={styles.mainContent}>
                                 <View style={styles.rowContainer}>
-                                    <Text style={commonStyles.font16}>
+                                    <Text style={{ fontSize: fontSizes.s16 }}>
                                         설문 인원
                                     </Text>
                                     <TextInput
@@ -92,10 +92,11 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         keyboardType="number-pad"
                                         placeholder="10"
                                         style={[
-                                            commonStyles.font20,
                                             {
+                                                fontSize: fontSizes.m20,
                                                 color: colors.gray2,
-                                                borderColor: "black",
+                                                // borderColor: "black",
+                                                borderColor: colors.gray3,
                                                 borderWidth: 1,
                                                 borderRadius: 6,
                                                 minWidth: 50,
@@ -106,20 +107,21 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         ]}
                                     />
                                 </View>
+
                                 <View style={styles.rowContainer}>
-                                    <Text style={commonStyles.font16}>
+                                    <Text style={{ fontSize: fontSizes.s16 }}>
                                         예상 소요 시간
                                     </Text>
-                                    <Text style={commonStyles.font16}>
+                                    <Text style={{ fontSize: fontSizes.s16 }}>
                                         {" "}
                                         {expectedTimeInMin} 분{" "}
                                     </Text>
                                 </View>
                                 <View style={styles.rowContainer}>
-                                    <Text style={commonStyles.font16}>
+                                    <Text style={{ fontSize: fontSizes.s16 }}>
                                         가격
                                     </Text>
-                                    <Text style={commonStyles.font16}>
+                                    <Text style={{ fontSize: fontSizes.s16 }}>
                                         {price} 원
                                     </Text>
                                 </View>

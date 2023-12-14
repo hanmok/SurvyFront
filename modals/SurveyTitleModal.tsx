@@ -103,16 +103,29 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                         {/* Title */}
                         <View>
                             <Text style={styles.infoTextContainer}>
-                                제목을 입력해주세요.
+                                설문 제목
                             </Text>
                         </View>
                         {/* Title Input */}
-                        <View>
+                        <View
+                            style={{
+                                marginHorizontal: 12,
+                                alignSelf: "stretch",
+                            }}
+                        >
                             <TextInput
-                                style={styles.textInput}
+                                style={{
+                                    borderColor: "gray",
+                                    borderWidth: 1,
+                                    borderRadius: 10,
+                                    overflow: "hidden",
+                                    height: 40,
+                                    paddingLeft: 12,
+                                    marginHorizontal: 12,
+                                }}
                                 onChangeText={setTitle}
                                 value={title}
-                                placeholder="텍스트를 입력하세요"
+                                placeholder="무엇에 대한 설문인가요?"
                                 autoCorrect={false}
                                 autoComplete="off"
                             />

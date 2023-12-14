@@ -5,7 +5,7 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native";
 import { fontSizes } from "../../utils/sizes";
 import TextButton from "../../components/TextButton";
 import { isValidElement, useEffect, useState } from "react";
-import { colors } from "../../utils/colors";
+import { buttonColors, colors } from "../../utils/colors";
 // import isValidEmail from "../../utils/EmailValidation";
 import { isValidEmail } from "../../utils/validation";
 import showToast from "../../components/common/toast/Toast";
@@ -109,12 +109,19 @@ export default function FindPasswordScreen({
         setMailSendingCodeButtonTapped(true);
         updateLoadingStatus(true);
         console.log("mail input", username);
+
         try {
             const ret = await hasDuplicateUsername(username);
             if (ret.statusCode >= 400) {
                 logObject("result", ret);
                 await sendEmailAuthCode(username);
                 showToast("success", "인증 메일을 확인해주세요.");
+            } else {
+                showToast(
+                    "error",
+                    "존재하지 않는 아이디입니다.",
+                    "아이디를 다시 확인해주세요."
+                );
             }
         } catch (error) {
             showAdminToast("error", error.message);
@@ -373,9 +380,14 @@ export default function FindPasswordScreen({
                             }}
                             backgroundStyle={[
                                 styles.confirmButtonBG,
-                                allPhoneConditionSatisfied
-                                    ? styles.activatedBackground
-                                    : styles.inactivatedBackground,
+                                // allPhoneConditionSatisfied
+                                //     ? styles.activatedBackground
+                                //     : styles.inactivatedBackground,
+                                {
+                                    backgroundColor: allPhoneConditionSatisfied
+                                        ? buttonColors.enabledButtonBG
+                                        : buttonColors.disabledButtonBG,
+                                },
                             ]}
                             isEnabled={allPhoneConditionSatisfied}
                             hasShadow={false}
@@ -447,9 +459,14 @@ export default function FindPasswordScreen({
                             }}
                             backgroundStyle={[
                                 styles.confirmButtonBG,
-                                allMailConditionSatisfied
-                                    ? styles.activatedBackground
-                                    : styles.inactivatedBackground,
+                                {
+                                    backgroundColor: allMailConditionSatisfied
+                                        ? buttonColors.enabledButtonBG
+                                        : buttonColors.disabledButtonBG,
+                                },
+                                // allMailConditionSatisfied
+                                //     ? styles.activatedBackground
+                                //     : styles.inactivatedBackground,
                             ]}
                             isEnabled={allMailConditionSatisfied}
                             hasShadow={false}
@@ -504,7 +521,7 @@ const styles = StyleSheet.create({
         borderColor: colors.gray4,
     },
     activatedBackground: {
-        backgroundColor: colors.deeperMainColor,
+        backgroundColor: buttonColors.enabledButtonBG,
     },
     authButtonBackground: {
         height: 42,

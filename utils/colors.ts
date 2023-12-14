@@ -28,11 +28,15 @@ export const colors = {
     bottomModalBackground: "rgba(0, 0, 0, 0.5)",
     unselectedQuestionBoxBG: "#DCEAFF",
     selectedQuestionBoxBG: "#5094FD",
-    unselectedQuestionBoxText: "#777777",
+
     placeHolder: "#C5C5C5",
     buttonText: "#0074F9",
     unselectedGeoBG: "#E2E2E4",
     unselectedGeoText: "B9B9BA",
-
     // unselected-geo: "#F2F2F4"
+};
+
+export const buttonColors = {
+    enabledButtonBG: "#226DE5",
+    disabledButtonBG: "#ccc",
 };

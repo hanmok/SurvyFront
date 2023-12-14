@@ -29,9 +29,15 @@ const QuestionTypeSelectionBox: React.FC<QuestionTypeProps> = ({
                     : [styles.commonText, styles.unselectedText]
             }
             backgroundStyle={
-                isSelected
-                    ? [styles.commonBackground, styles.selectedBackground]
-                    : [styles.commonBackground, styles.unselectedBackground]
+                [
+                    styles.commonBackground,
+                    isSelected
+                        ? styles.selectedBackground
+                        : styles.unselectedBackground,
+                ]
+                // isSelected
+                //     ? [styles.commonBackground, styles.selectedBackground]
+                //     : [styles.commonBackground, styles.unselectedBackground]
             }
         />
     );
@@ -49,9 +55,13 @@ const styles = StyleSheet.create({
     commonText: {
         textAlign: "center",
     },
-    selectedBackground: { backgroundColor: colors.selectedQuestionBoxBG },
-    selectedText: { color: colors.white },
+    selectedBackground: { backgroundColor: "#5094FD" },
+    selectedText: { color: colors.white, fontWeight: "700" },
 
-    unselectedBackground: { backgroundColor: colors.unselectedQuestionBoxBG },
-    unselectedText: { color: colors.unselectedQuestionBoxText },
+    unselectedBackground: {
+        backgroundColor: "#DCEAFF",
+        borderWidth: 1,
+        borderColor: colors.lightMainColor,
+    },
+    unselectedText: { color: "#777777" },
 });

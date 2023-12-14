@@ -126,8 +126,8 @@ function MyInfoScreen({
                         paddingRight: 20,
                     }}
                 >
-                    <Text style={{ fontSize: 18 }}>성별 / 생년월일</Text>
-                    <Text style={{ fontSize: 16 }}>남성 / 1992 07 21</Text>
+                    <Text style={{ fontSize: 18 }}>성별 · 생년월일</Text>
+                    <Text style={{ fontSize: 16 }}>남성 · 1992 07 21</Text>
                 </View>
             </BlockView>
             <BlockView

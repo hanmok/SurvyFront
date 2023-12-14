@@ -9,7 +9,7 @@ import BlockView from "../components/BlockView";
 import { Genre } from "../interfaces/Genre";
 import { ReactNode } from "react";
 import TextButton from "../components/TextButton";
-import { colors } from "../utils/colors";
+import { buttonColors, colors } from "../utils/colors";
 import { fontSizes, marginSizes } from "../utils/sizes";
 import React from "react";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -420,19 +420,28 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                     {/* Next Button */}
                     <TextButton
                         backgroundStyle={{
+                            // backgroundColor: isSatisfied
+                            //     ? "#ffffff"
+                            //     : "#b3b3b3", // inactive
                             backgroundColor: isSatisfied
-                                ? "#ffffff"
-                                : "#b3b3b3", // inactive
+                                ? buttonColors.enabledButtonBG
+                                : buttonColors.disabledButtonBG,
                             height: 46,
                             marginBottom: 30,
                             marginHorizontal: 20,
                             borderRadius: 10,
                             marginTop: 30,
                         }}
+                        hasShadow={false}
                         title="다음"
                         textStyle={[
                             styles.nextButtonText,
-                            { color: isSatisfied ? colors.black : "#cbcbcb" },
+                            {
+                                // color: isSatisfied
+                                //     ? buttonColors.enabledButtonBG
+                                //     : buttonColors.disabledButtonBG,
+                                color: "white",
+                            },
                         ]}
                         onPress={() => {
                             // setIsNextButtonTapped(true);

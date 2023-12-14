@@ -52,7 +52,9 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
     const getGenres = async () => {
         getAllGenres(accessToken).then(response => {
             logObject("fetched genres: ", response);
-            setAllGenres(response);
+            if (response.statusCode < 300) {
+                setAllGenres(response.data);
+            }
         });
     };
 
@@ -258,9 +260,8 @@ const styles = StyleSheet.create({
 
     genreListWrapper: {
         borderBottomColor: colors.gray4,
-        borderBottomWidth: 1,
-        borderTopColor: colors.gray4,
-        borderTopWidth: 1,
+        borderBottomWidth: 2,
+        paddingBottom: 10,
         flex: 0,
         flexDirection: "row",
         flexWrap: "wrap",

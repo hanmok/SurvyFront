@@ -300,9 +300,6 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
     },
-    inactivatedStyle: {
-        backgroundColor: colors.gray2,
-    },
     activatedStyle: {
         backgroundColor: colors.white,
     },

@@ -10,7 +10,7 @@ import {
     TouchableNativeFeedback,
 } from "react-native";
 
-import { colors } from "../utils/colors";
+import { buttonColors, colors } from "../utils/colors";
 import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 
 import { RouteProp } from "@react-navigation/native";
@@ -348,16 +348,16 @@ function ParticipatingScreen({
                         }
                         onPress={toggleNextTapped}
                         textStyle={[
-                            { letterSpacing: 10 },
+                            { letterSpacing: 10, color: "white" },
                             isSatisfied
                                 ? styles.activatedButtonText
                                 : styles.inactivatedButtonText,
                         ]}
-                        backgroundStyle={
+                        backgroundStyle={[
                             isSatisfied
                                 ? styles.activatedFinishButtonBackground
-                                : styles.inactivatedFinishButtonBackground
-                        }
+                                : styles.inactivatedFinishButtonBackground,
+                        ]}
                         hasShadow={false}
                         isEnabled={isSatisfied}
                     />
@@ -415,16 +415,15 @@ const styles = StyleSheet.create({
     activatedButtonText: {
         textAlign: "center",
         fontSize: fontSizes.m20,
-        color: "#fff",
     },
     inactivatedButtonText: {
         textAlign: "center",
         fontSize: fontSizes.m20,
-        color: "#DDD",
     },
     activatedFinishButtonBackground: {
         marginTop: 20,
-        backgroundColor: "#666",
+        // backgroundColor: "#666",
+        backgroundColor: buttonColors.enabledButtonBG,
         alignSelf: "stretch",
         padding: 10,
         borderRadius: borderSizes.m10,
@@ -432,7 +431,8 @@ const styles = StyleSheet.create({
     },
     inactivatedFinishButtonBackground: {
         marginTop: 20,
-        backgroundColor: "#BBB",
+        // backgroundColor: "#BBB",
+        backgroundColor: buttonColors.disabledButtonBG,
         alignSelf: "stretch",
         padding: 10,
         borderRadius: borderSizes.m10,

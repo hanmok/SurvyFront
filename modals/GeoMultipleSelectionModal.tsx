@@ -251,13 +251,13 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                 backgroundStyle={{
                     height: 50,
                     backgroundColor: selectedCities.includes(item)
-                        ? colors.gray2
-                        : colors.gray4,
+                        ? colors.white
+                        : colors.unselectedGeoBG,
                 }}
                 textStyle={{
                     color: selectedCities.includes(item)
-                        ? colors.white
-                        : colors.black,
+                        ? colors.black
+                        : colors.unselectedGeoText,
                 }}
                 hasShadow={false}
             />

@@ -168,10 +168,11 @@ export default function LoginScreen({
                     <View>
                         <Spacer size={150} />
                         <Image
-                            source={require("../../assets/logo.png")}
+                            source={require("../../assets/logo_gugi.png")}
                             style={{
-                                height: screenWidth - 300,
-                                width: screenWidth - 200,
+                                aspectRatio: 2.74,
+                                height: (screenWidth - 150) / 2.74,
+                                width: screenWidth - 150,
                             }}
                         />
                     </View>

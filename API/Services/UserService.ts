@@ -169,19 +169,3 @@ export class UserService extends BaseApi {
         return this.fetchData(url, "POST", body);
     }
 }
-
-// Usage example:
-// const userService = new UserService();
-// const surveyService = new SurveyService();
-
-// userService.signin("user123", "password123").then(response => {
-//     console.log(response);
-// });
-
-// userService.getUserDetail("token123").then(userDetail => {
-//     console.log(userDetail);
-// });
-
-// surveyService.getParticipatedSurveyIds(1, "token123").then(surveyIds => {
-//     console.log(surveyIds);
-// });

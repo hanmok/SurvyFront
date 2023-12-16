@@ -8,8 +8,9 @@ import { ReactNode, useEffect, useState } from "react";
 import TextButton from "../../components/TextButton";
 import { colors } from "../../utils/colors";
 import { fontSizes } from "../../utils/sizes";
-import { removeUser } from "../../API/UserAPI";
+// import { removeUser } from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
+import { UserService } from "../../API/Services/UserService";
 
 function SettingScreen({
     navigation,
@@ -19,12 +20,13 @@ function SettingScreen({
         NavigationTitle.setting
     >;
 }) {
+    const userService = new UserService();
     const [resignTapped, setResignTapped] = useState(false);
     const { username, userId, accessToken } = useCustomContext();
 
     useEffect(() => {
         const resign = async (userId: number, accessToken: string) => {
-            await removeUser(userId, accessToken);
+            await userService.removeUser(userId, accessToken);
             navigation.popToTop();
         };
 

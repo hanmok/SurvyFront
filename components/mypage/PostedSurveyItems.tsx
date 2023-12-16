@@ -60,9 +60,10 @@ const PostedSurveyItems = ({
                                 {item.participationGoal}
                             </Text>
                             <Spacer size={6} />
-                            <Text>
+                            {/* FIXME: Date value out of bounds */}
+                            {/* <Text>
                                 {convertUnixTimestampToDateTime(item.createdAt)}
-                            </Text>
+                            </Text> */}
                         </View>
                         <View>
                             <TextButton

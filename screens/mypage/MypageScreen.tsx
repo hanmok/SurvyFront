@@ -12,11 +12,11 @@ import { NavigationTitle } from "../../utils/NavHelper";
 import { StackNavigationProp } from "@react-navigation/stack";
 // import { loadUserState } from "../utils/Storage";
 import { API_BASE_URL } from "../../API/API";
-import {
-    getParticipatedSurveyIds,
-    getPostedSurveyIds,
-    getUserDetail,
-} from "../../API/UserAPI";
+// import {
+//     getParticipatedSurveyIds,
+//     getPostedSurveyIds,
+//     getUserDetail,
+// } from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
 import TextButton from "../../components/TextButton";
 import PointBlockView from "../../components/PointBlockView";
@@ -24,12 +24,17 @@ import ReputationBlockView from "../../components/ReputationBlockView";
 import showToast from "../../components/common/toast/Toast";
 import { WithdrawalModal } from "../../modals/WithdrawalModal";
 import showAdminToast from "../../components/common/toast/showAdminToast";
+import { SurveyService } from "../../API/Services/SurveyService";
+import { UserService } from "../../API/Services/UserService";
 
 function MypageScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.mypage>;
 }) {
+    const surveyService = new SurveyService();
+    const userService = new UserService();
+
     const [numOfParticipatedSurveys, setNumOfParticipatedSurveys] =
         useState<number>(0);
     const [numOfPostedSurveys, setNumOfPostedSurveys] = useState<number>(0);
@@ -45,17 +50,15 @@ function MypageScreen({
     const getNumbers = async () => {
         updateLoadingStatus(true);
 
-        const postedSurveysPromise = getPostedSurveyIds(
-            userId,
-            accessToken
-        ).then(postings => setNumOfPostedSurveys(postings.data.length));
+        const postedSurveysPromise = surveyService
+            .getPostedSurveyIds(userId, accessToken)
+            .then(postings => setNumOfPostedSurveys(postings.data.length));
 
-        const participatedSurveysPromise = getParticipatedSurveyIds(
-            userId,
-            accessToken
-        ).then(participatings =>
-            setNumOfParticipatedSurveys(participatings.data.length)
-        );
+        const participatedSurveysPromise = surveyService
+            .getParticipatedSurveyIds(userId, accessToken)
+            .then(participatings =>
+                setNumOfParticipatedSurveys(participatings.data.length)
+            );
 
         await Promise.all([postedSurveysPromise, participatedSurveysPromise]);
         updateLoadingStatus(false);
@@ -64,7 +67,7 @@ function MypageScreen({
     const updateUser = () => {
         const fetchUserDetail = async () => {
             try {
-                const detailInfo = await getUserDetail(accessToken);
+                const detailInfo = await userService.getUserDetail(accessToken);
                 logObject("userDetail", detailInfo);
                 updateUserDetail(detailInfo.data);
             } catch (error) {

@@ -1,3 +1,8 @@
+import { Question } from "../../interfaces/Question";
+import { Section } from "../../interfaces/Section";
+import { SelectableOption } from "../../interfaces/SelectableOption";
+import { Survey, makeSurvey } from "../../interfaces/Survey";
+import { convertToSnakeCase } from "../../utils/SnakeToCamel";
 import { API_BASE_URL } from "../API";
 import BaseApi from "../BaseAPI";
 
@@ -24,5 +29,78 @@ export class SurveyService extends BaseApi {
     ): Promise<ApiResponse<number[]>> {
         const url = `${API_BASE_URL}/posting/user/${userId}/posted-surveys`;
         return this.fetchData<number[]>(url, "GET", undefined, accessToken);
+    }
+
+    async postWholeSurvey(
+        survey: Survey,
+        sections: Section[],
+        questions: Question[],
+        selectableOptions: SelectableOption[],
+        accessToken: string
+    ): Promise<ApiResponse> {
+        const url = `${API_BASE_URL}/survey/whole`;
+        const data = { survey, sections, questions, selectableOptions };
+        const body = {
+            survey: convertToSnakeCase(survey),
+            sections: sections.map(convertToSnakeCase),
+            questions: questions.map(convertToSnakeCase),
+            selectable_options: selectableOptions.map(convertToSnakeCase),
+        };
+        return this.fetchData(url, "POST", body, accessToken);
+    }
+
+    async getSurveys(accessToken: string) {
+        const url = `${API_BASE_URL}/survey`;
+        return this.fetchData<Survey[]>(url, "GET", undefined, accessToken);
+    }
+
+    async createSurvey(
+        surveyTitle: string,
+        participationGoal: number,
+        targetMinAge: number,
+        targetMaxAge: number,
+        genreIds: number[],
+        geoIds: number[],
+        sections: Section[],
+        questions: Question[],
+        isTargetMale: number | undefined,
+        reward: number,
+        cost: number,
+        userId: number,
+        accessToken: string
+    ) {
+        console.log(`createSurvey called`);
+        let dummySelectableOptions: SelectableOption[] = [];
+
+        questions.forEach(q => {
+            q.selectableOptions.forEach(so => {
+                dummySelectableOptions.push(so);
+            });
+        });
+
+        // const { userId, accessToken } = useCustomContext();
+
+        const numOfSections = sections.length;
+        const survey = makeSurvey(
+            userId,
+            surveyTitle,
+            participationGoal,
+            targetMinAge,
+            targetMaxAge,
+            genreIds,
+            geoIds,
+            isTargetMale,
+            reward,
+            cost,
+            numOfSections
+        );
+
+        return await this.postWholeSurvey(
+            survey,
+            sections,
+            questions,
+            dummySelectableOptions,
+            accessToken
+        );
     }
 }

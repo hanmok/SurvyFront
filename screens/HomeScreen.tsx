@@ -27,7 +27,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 import { fetchAllGeoInfos } from "../API/GeoAPI";
 
 import { useCustomContext } from "../features/context/CustomContext";
-import { getSurveys } from "../API/SurveyAPI";
+// import { getSurveys } from "../API/SurveyAPI";
 // import { getUserDetail } from "../API/UserAPI";
 import { UserService } from "../API/Services/UserService";
 import { DefaultModal } from "../modals/DefaultModal";
@@ -38,6 +38,7 @@ import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
 import { SearchingModal } from "../modals/SearchingModal";
+import { SurveyService } from "../API/Services/SurveyService";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -48,6 +49,8 @@ function HomeScreen({
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.home>;
 }) {
     const userService = new UserService();
+    const surveyService = new SurveyService();
+
     const [refreshing, setRefreshing] = useState(false);
 
     const [surveys, setSurveys] = useState<Survey[]>([]);
@@ -86,7 +89,7 @@ function HomeScreen({
 
     const onRefresh = () => {
         setRefreshing(true);
-        getSurveys(accessToken).then(surveysResult => {
+        surveyService.getSurveys(accessToken).then(surveysResult => {
             setSurveys(surveysResult.data);
             setRefreshing(false);
         });
@@ -157,7 +160,8 @@ function HomeScreen({
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {
         const updateSurveys = async () => {
-            await getSurveys(accessToken)
+            await surveyService
+                .getSurveys(accessToken)
                 .then(surveysResult => {
                     setIsLoading(false);
                     setSurveys(surveysResult.data);

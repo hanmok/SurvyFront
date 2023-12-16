@@ -32,7 +32,7 @@ import Spacer from "../components/common/Spacer";
 
 import { log, logObject } from "../utils/Log";
 // import { CustomLocation } from "../utils/Geo";
-import { createSurvey } from "../API/SurveyAPI";
+// import { createSurvey } from "../API/SurveyAPI";
 import { RouteProp } from "@react-navigation/native";
 import GenreSelectionModal from "../modals/GenreSelectionModal";
 import { screenWidth } from "../utils/ScreenSize";
@@ -41,6 +41,7 @@ import { GeoInfo } from "../interfaces/GeoInfo";
 import { useCustomContext } from "../features/context/CustomContext";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showToast from "../components/common/toast/Toast";
+import { SurveyService } from "../API/Services/SurveyService";
 // import { initializePostingSurvey } from "../utils/PostingSurveyStorage";
 // import { deletePostingSurvey } from "../utils/Storage";
 
@@ -67,7 +68,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         // console.log("send button tapped");
         toggleCostGuideModal();
     };
-
+    const surveyService = new SurveyService();
     // 여기에서 모두 처리해버리기.
     const [participationGoal, setParticipationGoal] = useState("10");
     const { surveyTitle, sections, questions } = route.params;
@@ -170,7 +171,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         const cost = parseInt(costWithComma.replace(/,/g, ""), 10);
         const reward = Math.floor(cost / 3 / parseInt(participationGoal));
 
-        await createSurvey(
+        await surveyService.createSurvey(
             surveyTitle,
             parseInt(participationGoal),
             targetMinAge,

@@ -1,7 +1,8 @@
 import { Question } from "../../interfaces/Question";
 import { Section } from "../../interfaces/Section";
 import { SelectableOption } from "../../interfaces/SelectableOption";
-import { Survey, makeSurvey } from "../../interfaces/Survey";
+// import { Survey, SurveyBuilder, makeSurvey } from "../../interfaces/Survey";
+import { Survey, SurveyBuilder } from "../../interfaces/Survey";
 import { convertToSnakeCase } from "../../utils/SnakeToCamel";
 import { API_BASE_URL } from "../API";
 import BaseApi from "../BaseAPI";
@@ -78,10 +79,9 @@ export class SurveyService extends BaseApi {
             });
         });
 
-        // const { userId, accessToken } = useCustomContext();
-
         const numOfSections = sections.length;
-        const survey = makeSurvey(
+
+        const survey = new SurveyBuilder(
             userId,
             surveyTitle,
             participationGoal,
@@ -93,7 +93,7 @@ export class SurveyService extends BaseApi {
             reward,
             cost,
             numOfSections
-        );
+        ).build();
 
         return await this.postWholeSurvey(
             survey,

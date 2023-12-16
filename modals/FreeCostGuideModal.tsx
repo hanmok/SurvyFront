@@ -64,7 +64,7 @@ const FreeCostGuideModal: React.FC<FreeCostGuideModalProps> = ({
                             <View style={styles.mainContent}>
                                 <View style={{ marginTop: 20 }}>
                                     <Text style={{ fontSize: 16 }}>
-                                        설문은 몇명에게서 받을까요?
+                                        설문 참여 희망 인원을 입력해주세요.
                                     </Text>
                                     <Spacer size={10} />
                                     <View
@@ -80,15 +80,17 @@ const FreeCostGuideModal: React.FC<FreeCostGuideModalProps> = ({
                                         <TextInput
                                             value={participationGoal}
                                             onChangeText={setParticipationGoal}
+                                            placeholderTextColor={colors.gray2}
                                             keyboardType="number-pad"
                                             placeholder="10"
                                             textAlign="right"
+                                            style={{ fontSize: 16 }}
                                         />
                                     </View>
                                     <Text
                                         style={{
                                             color: "red",
-                                            fontSize: 10,
+                                            fontSize: 11,
                                             marginTop: 10,
                                         }}
                                     >

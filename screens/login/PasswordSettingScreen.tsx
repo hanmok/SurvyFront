@@ -6,7 +6,8 @@ import { fontSizes } from "../../utils/sizes";
 import { buttonColors, colors } from "../../utils/colors";
 import TextButton from "../../components/TextButton";
 import Spacer from "../../components/common/Spacer";
-import { updatePassword } from "../../API/UserAPI";
+// import { updatePassword } from "../../API/UserAPI";
+import { UserService } from "../../API/Services/UserService";
 import { RouteProp } from "@react-navigation/native";
 import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
@@ -26,7 +27,7 @@ export default function PasswordSettingScreen({
     const [passwordInput2, setPasswordInput2] = useState("");
     const [isSatisfied, setIsSatisfied] = useState(false);
     const [confirmTapped, setConfirmTapped] = useState(false);
-
+    const userService = new UserService();
     const { username, shouldPopAll } = route.params;
 
     const { updateLoadingStatus } = useCustomContext();
@@ -34,7 +35,8 @@ export default function PasswordSettingScreen({
     useEffect(() => {
         const update = async () => {
             updateLoadingStatus(true);
-            await updatePassword(username, passwordInput1)
+            await userService
+                .updatePassword(username, passwordInput1)
                 .then(() => {
                     showToast("success", "비밀번호가 변경되었습니다.");
                 })

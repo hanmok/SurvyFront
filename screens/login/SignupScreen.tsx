@@ -8,11 +8,11 @@ import { buttonColors, colors } from "../../utils/colors";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import TextButton from "../../components/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
-import {
-    checkPhoneDuplicate,
-    hasDuplicateUsername,
-    signup,
-} from "../../API/UserAPI";
+// import {
+//     checkPhoneDuplicate,
+//     hasDuplicateUsername,
+//     signup,
+// } from "../../API/UserAPI";
 import { log, logObject } from "../../utils/Log";
 import { isValidEmail, isValidPhone } from "../../utils/validation";
 import { useCustomContext } from "../../features/context/CustomContext";
@@ -20,6 +20,7 @@ import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
 import showMessageAlert from "../../components/CustomAlert";
 import Spacer from "../../components/common/Spacer";
+import { UserService } from "../../API/Services/UserService";
 
 export default function SignUpScreen({
     navigation,
@@ -28,7 +29,7 @@ export default function SignUpScreen({
 }) {
     const [usernameInput, setUsernameInput] = useState("");
     const [usernameConfirmed, setUsernameConfirmed] = useState(false);
-
+    const userService = new UserService();
     const [usernameSatisfied, setUsernameSatisfied] = useState(false);
 
     useEffect(() => {
@@ -56,7 +57,8 @@ export default function SignUpScreen({
     const handleUserDuplicate = async () => {
         if (isValidEmail(usernameInput)) {
             updateLoadingStatus(true);
-            await hasDuplicateUsername(usernameInput)
+            await userService
+                .hasDuplicateUsername(usernameInput)
                 .then(ret => {
                     if (ret.statusCode < 300) {
                         // if (ret.statusCode < 300) {
@@ -82,7 +84,8 @@ export default function SignUpScreen({
         if (isValidPhone(phone)) {
             updateLoadingStatus(true);
 
-            await checkPhoneDuplicate(phoneInput)
+            await userService
+                .checkPhoneDuplicate(phoneInput)
                 .then(ret => {
                     if (ret.statusCode < 300) {
                         logObject("result", ret);
@@ -108,13 +111,14 @@ export default function SignUpScreen({
     const handleSignup = async () => {
         console.log("handleSignup tapped");
         updateLoadingStatus(true);
-        await signup(
-            usernameInput,
-            passwordInput1,
-            phoneInput,
-            birthDate,
-            genderIndex
-        )
+        await userService
+            .signup(
+                usernameInput,
+                passwordInput1,
+                phoneInput,
+                birthDate,
+                genderIndex
+            )
             .then(() => {
                 navigation.pop();
             })

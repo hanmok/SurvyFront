@@ -10,9 +10,10 @@ import { screenWidth } from "../../utils/ScreenSize";
 import showToast from "../../components/common/toast/Toast";
 import { isValidPhone } from "../../utils/validation";
 import { useCustomContext } from "../../features/context/CustomContext";
-import { checkPhoneDuplicate } from "../../API/UserAPI";
+// import { checkPhoneDuplicate } from "../../API/UserAPI";
 import { logObject } from "../../utils/Log";
 import showAdminToast from "../../components/common/toast/showAdminToast";
+import { UserService } from "../../API/Services/UserService";
 
 export default function FindIDScreen({
     navigation,
@@ -24,7 +25,7 @@ export default function FindIDScreen({
 
     const [phoneInput, setPhoneInput] = useState("");
     const [authInput, setAuthInput] = useState("");
-
+    const userService = new UserService();
     useEffect(() => {
         setAuthSatisfied(authInput.length === 6);
     }, [authInput]);
@@ -39,7 +40,8 @@ export default function FindIDScreen({
         if (isValidPhone(phone)) {
             updateLoadingStatus(true);
 
-            await checkPhoneDuplicate(phoneInput)
+            await userService
+                .checkPhoneDuplicate(phoneInput)
                 .then(ret => {
                     if (ret.statusCode >= 400) {
                         // some has this phone number

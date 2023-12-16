@@ -7,12 +7,12 @@ import BlockView from "../../components/BlockView";
 import { fontSizes, marginSizes } from "../../utils/sizes";
 import { screenWidth } from "../../utils/ScreenSize";
 import { useEffect, useState } from "react";
-import {
-    getUserDetail,
-    getUserGenres,
-    updateHomeAddress,
-    updateOfficeAddress,
-} from "../../API/UserAPI";
+// import {
+//     getUserDetail,
+//     getUserGenres,
+//     updateHomeAddress,
+//     updateOfficeAddress,
+// } from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
 import { Genre } from "../../interfaces/Genre";
 import { colors } from "../../utils/colors";
@@ -22,6 +22,7 @@ import TextButton from "../../components/TextButton";
 import GeoSingleSelectionModal from "../../modals/GeoSingleSelectionModal";
 import showMessageAlert from "../../components/CustomAlert";
 import showToast from "../../components/common/toast/Toast";
+import { UserService } from "../../API/Services/UserService";
 
 // 내 정보
 function MyInfoScreen({
@@ -30,7 +31,7 @@ function MyInfoScreen({
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.myinfo>;
 }) {
     // single.. dma... 거주지, 근무지 나눠야함.
-
+    const userService = new UserService();
     const [myGenres, setMyGenres] = useState<Genre[]>([]);
     const [homeAddress, setHomeAddress] = useState<GeoInfo | null>(null);
     const [officeAddress, setOfficeAddress] = useState<GeoInfo | null>(null);
@@ -66,7 +67,7 @@ function MyInfoScreen({
     useEffect(() => {
         const getMyGenres = async () => {
             updateLoadingStatus(true);
-            getUserGenres(accessToken, userId).then(response => {
+            userService.getUserGenres(accessToken, userId).then(response => {
                 setMyGenres(response.data);
                 updateLoadingStatus(false);
             });
@@ -90,8 +91,13 @@ function MyInfoScreen({
                 confirmGeoSelection={async (geo: GeoInfo | null) => {
                     setHomeAddress(geo);
                     updateLoadingStatus(true);
-                    await updateHomeAddress(userId, geo?.id ?? null);
-                    const userDetail = await getUserDetail(accessToken);
+                    await userService.updateHomeAddress(
+                        userId,
+                        geo?.id ?? null
+                    );
+                    const userDetail = await userService.getUserDetail(
+                        accessToken
+                    );
                     updateUserDetail(userDetail.data);
                     showToast("success", "거주지가 변경되었습니다.");
                     updateLoadingStatus(false);
@@ -108,8 +114,10 @@ function MyInfoScreen({
                 confirmGeoSelection={async (geo: GeoInfo | null) => {
                     setOfficeAddress(geo);
                     updateLoadingStatus(true);
-                    await updateOfficeAddress(userId, geo?.id);
-                    const userDetail = await getUserDetail(accessToken);
+                    await userService.updateOfficeAddress(userId, geo?.id);
+                    const userDetail = await userService.getUserDetail(
+                        accessToken
+                    );
                     updateUserDetail(userDetail.data);
                     updateLoadingStatus(false);
                     showToast("success", "근무지가 변경되었습니다.");

@@ -15,7 +15,8 @@ import { screenWidth } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fontSizes } from "../../utils/sizes";
-import { autoSignin, getUserDetail, signin } from "../../API/UserAPI";
+// import { autoSignin, getUserDetail, signin } from "../../API/UserAPI";
+import { UserService } from "../../API/Services/UserService";
 import { UserState } from "../../interfaces/UserState";
 // import { loadUserState, saveUserState } from "../../utils/Storage";
 import { useEffect, useRef, useState } from "react";
@@ -35,6 +36,7 @@ export default function LoginScreen({
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.login>;
 }) {
+    const userService = new UserService();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -93,9 +95,8 @@ export default function LoginScreen({
             try {
                 const userState = await userDataManager.loadUserState();
                 if (userState !== null && userState.refreshToken) {
-                    const responseUserStateResult = await autoSignin(
-                        userState.refreshToken
-                    );
+                    const responseUserStateResult =
+                        await userService.autoSignin(userState.refreshToken);
                     const responseUserState = responseUserStateResult.data;
 
                     const updatedUserState =
@@ -106,7 +107,7 @@ export default function LoginScreen({
                     updateAccessToken(updatedUserState.accessToken);
                     updateUserId(updatedUserState.userId);
 
-                    const userDetailResult = await getUserDetail(
+                    const userDetailResult = await userService.getUserDetail(
                         updatedUserState.accessToken
                     );
 
@@ -136,11 +137,12 @@ export default function LoginScreen({
 
         updateLoadingStatus(true);
         let userState: UserState | null;
-        await signin(username, password)
+        await userService
+            .signin(username, password)
             .then(userResponse => {
                 const { userId, accessToken, refreshToken } = userResponse.data;
                 userState = { userId, accessToken, refreshToken };
-                return getUserDetail(userState.accessToken);
+                return userService.getUserDetail(userState.accessToken);
             })
             .then(userDetail => {
                 updateAccessToken(userState.accessToken);

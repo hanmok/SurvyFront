@@ -28,7 +28,8 @@ import { fetchAllGeoInfos } from "../API/GeoAPI";
 
 import { useCustomContext } from "../features/context/CustomContext";
 import { getSurveys } from "../API/SurveyAPI";
-import { getUserDetail } from "../API/UserAPI";
+// import { getUserDetail } from "../API/UserAPI";
+import { UserService } from "../API/Services/UserService";
 import { DefaultModal } from "../modals/DefaultModal";
 // import { loadPostingSurvey } from "../utils/PostingSurveyStorage";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
@@ -46,6 +47,7 @@ function HomeScreen({
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.home>;
 }) {
+    const userService = new UserService();
     const [refreshing, setRefreshing] = useState(false);
 
     const [surveys, setSurveys] = useState<Survey[]>([]);
@@ -97,7 +99,9 @@ function HomeScreen({
     useEffect(() => {
         const fetchUserDetail = async () => {
             try {
-                const detailInfoResult = await getUserDetail(accessToken);
+                const detailInfoResult = await userService.getUserDetail(
+                    accessToken
+                );
                 logObject("userDetail", detailInfoResult);
                 updateUserDetail(detailInfoResult.data);
             } catch (error) {

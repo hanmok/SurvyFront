@@ -6,7 +6,7 @@ import { Genre } from "../../interfaces/Genre";
 import { getAllGenres } from "../../API/GenreAPI";
 import { logObject } from "../../utils/Log";
 import { useCustomContext } from "../../features/context/CustomContext";
-import { getUserGenres, updateUserGenres } from "../../API/UserAPI";
+// import { getUserGenres, updateUserGenres } from "../../API/UserAPI";
 import { buttonColors, colors } from "../../utils/colors";
 import { fontSizes } from "../../utils/sizes";
 import { screenHeight } from "../../utils/ScreenSize";
@@ -16,6 +16,7 @@ import TextButton from "../../components/TextButton";
 import { areSetsEqual, setDifference } from "../../utils/Set";
 import { DefaultModal } from "../../modals/DefaultModal";
 import { commonStyles, genreStyles } from "../../utils/CommonStyles";
+import { UserService } from "../../API/Services/UserService";
 
 // 내 관심사
 function MyGenreScreen({
@@ -29,7 +30,7 @@ function MyGenreScreen({
     const [allGenres, setAllGenres] = useState<Genre[]>([]);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
     const [initialGenres, setInitialGenres] = useState<Genre[]>([]);
-
+    const userService = new UserService();
     const [userInput, setUserInput] = useState<string>("");
 
     const [showingGenres, setShowingGenres] = useState<Genre[]>([]);
@@ -49,13 +50,11 @@ function MyGenreScreen({
                 // deleteAll -> add All
                 const updatedGenresArr = selectedGenres.map(genre => genre.id);
                 updateLoadingStatus(true);
-                await updateUserGenres(
-                    userId,
-                    accessToken,
-                    updatedGenresArr
-                ).finally(() => {
-                    updateLoadingStatus(false);
-                });
+                await userService
+                    .updateUserGenres(userId, accessToken, updatedGenresArr)
+                    .finally(() => {
+                        updateLoadingStatus(false);
+                    });
                 navigation.pop();
             }
         };
@@ -101,7 +100,7 @@ function MyGenreScreen({
         };
 
         const getMyGenres = async () => {
-            getUserGenres(accessToken, userId).then(response => {
+            userService.getUserGenres(accessToken, userId).then(response => {
                 setInitialGenres(response.data);
                 setSelectedGenres(response.data);
             });

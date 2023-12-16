@@ -3,23 +3,8 @@ import { UserState } from "../../interfaces/UserState";
 import { AccessToken, UserId } from "../../types/types";
 import { GeoInfo } from "../../interfaces/GeoInfo";
 import showAdminToast from "../../components/common/toast/showAdminToast";
+import { UserDetail } from "../../interfaces/UserDetail";
 /** collectedReward, age, birthDate, isMale, reputation, fatigue, homeAddress, officeAddresss, occupation */
-export interface UserDetail {
-    collectedReward: number;
-    birthDate: string | null;
-    age: number | null;
-    isMale: number | null;
-    reputation: number;
-    fatigue: number;
-    homeAddress: GeoInfo | null;
-    officeAddress: GeoInfo | null;
-    occupation: Occupation | null;
-}
-
-export interface Occupation {
-    id: number;
-    name: string;
-}
 
 interface CustomContextProps {
     username: string;

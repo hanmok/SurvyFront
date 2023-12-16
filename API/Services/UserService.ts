@@ -1,4 +1,5 @@
-import { UserDetail } from "../../features/context/CustomContext";
+// import { UserDetail } from "../../features/context/CustomContext";
+import { UserDetail } from "../../interfaces/UserDetail";
 import { Genre } from "../../interfaces/Genre";
 import { UserState } from "../../interfaces/UserState";
 import { API_BASE_URL } from "../API";

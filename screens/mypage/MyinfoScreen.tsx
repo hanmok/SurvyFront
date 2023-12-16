@@ -23,6 +23,7 @@ import GeoSingleSelectionModal from "../../modals/GeoSingleSelectionModal";
 import showMessageAlert from "../../components/CustomAlert";
 import showToast from "../../components/common/toast/Toast";
 import { UserService } from "../../API/Services/UserService";
+import { convertBirthDate } from "../../utils/DateFormatter";
 
 // 내 정보
 function MyInfoScreen({
@@ -42,6 +43,24 @@ function MyInfoScreen({
         updateUserDetail,
         updateLoadingStatus,
     } = useCustomContext();
+
+    const gender = (): string => {
+        if (userDetail.isMale === 0) {
+            return "여성";
+        } else if (userDetail.isMale === 1) {
+            return "남성";
+        } else {
+            return "";
+        }
+    };
+
+    const birthDate = (): string => {
+        if (userDetail.birthDate) {
+            return convertBirthDate(userDetail.birthDate);
+        } else {
+            return "";
+        }
+    };
     const [isHomeModalVisible, setHomeModalVisible] = useState(false);
     const [isOfficeModalVisible, setOfficeModalVisible] = useState(false);
 
@@ -134,8 +153,11 @@ function MyInfoScreen({
                         paddingRight: 20,
                     }}
                 >
+                    {/* <Text></Text> */}
                     <Text style={{ fontSize: 18 }}>성별 · 생년월일</Text>
-                    <Text style={{ fontSize: 16 }}>남성 · 1992 07 21</Text>
+                    <Text style={{ fontSize: 16 }}>
+                        {gender()} · {birthDate()}
+                    </Text>
                 </View>
             </BlockView>
             <BlockView

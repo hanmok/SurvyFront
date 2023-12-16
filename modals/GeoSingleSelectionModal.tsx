@@ -126,10 +126,7 @@ const GeoSingleSelectionModal: React.FC<GeoSingleSelectionModalProps> = ({
                     borderRightWidth: 2,
                 }}
                 textStyle={{
-                    color:
-                        selectedState === item
-                            ? colors.black
-                            : colors.unselectedGeoText,
+                    color: selectedState === item ? colors.black : colors.gray2,
                     textAlign: "left",
                 }}
             />
@@ -152,10 +149,7 @@ const GeoSingleSelectionModal: React.FC<GeoSingleSelectionModalProps> = ({
                     paddingLeft: 10,
                 }}
                 textStyle={{
-                    color:
-                        selectedState === item
-                            ? colors.black
-                            : colors.unselectedGeoText,
+                    color: selectedState === item ? colors.black : colors.gray2,
                     textAlign: "left",
                 }}
                 hasShadow={false}

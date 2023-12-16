@@ -32,7 +32,8 @@ export const colors = {
     placeHolder: "#C5C5C5",
     buttonText: "#0074F9",
     unselectedGeoBG: "#E2E2E4",
-    unselectedGeoText: "B9B9BA",
+    // unselectedGeoText: "B9B9BA",
+    // unselectedGeoText: "#666",
     // unselected-geo: "#F2F2F4"
 };
 

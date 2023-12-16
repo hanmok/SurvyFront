@@ -13,6 +13,7 @@ import { GQLSurvey } from "../interfaces/GQLInterface";
 import { logObject } from "../utils/Log";
 import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { fontSizes } from "../utils/sizes";
+import showToast from "../components/common/toast/Toast";
 
 // 요청한 설문
 // TODO: 날짜 넣기.
@@ -62,15 +63,21 @@ function PostedSurveysScreen({
         <PostedSurveyItems
             postedSurveys={postedSurveys}
             handleTapAction={surveyId => {
-                navigation.navigate(NavigationTitle.response, {
-                    surveyId,
+                const tappedItem = postedSurveys.find(survey => {
+                    survey.id === parseInt(surveyId);
                 });
+                if (tappedItem && tappedItem.currentParticipation !== 0) {
+                    navigation.navigate(NavigationTitle.response, {
+                        surveyId,
+                    });
+                } else {
+                    showToast("error", "현재 참여 인원이 없습니다.");
+                }
             }}
         />
     ) : (
         <View
             style={{
-                // backgroundColor: "magenta",
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",

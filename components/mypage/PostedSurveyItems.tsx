@@ -50,7 +50,16 @@ const PostedSurveyItems = ({
                         handleTapAction(item.id);
                     }}
                 >
-                    <View style={[commonStyles.border, styles.container]}>
+                    <View
+                        style={[
+                            commonStyles.border,
+                            styles.container,
+                            item.currentParticipation === 0 && {
+                                borderColor: colors.gray4,
+                            },
+                        ]}
+                    >
+                        {/* <View> */}
                         <View>
                             <Text style={styles.surveyTitle}>{item.title}</Text>
                             <Spacer size={6} />

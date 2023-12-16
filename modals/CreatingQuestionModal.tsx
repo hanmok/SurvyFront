@@ -183,7 +183,8 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                             color: colors.gray3,
                                         }}
                                         onChangeText={setPlaceHolder}
-                                        value={placeHolder}
+                                        // value={placeHolder}
+                                        placeholder={placeHolder}
                                         autoComplete="off"
                                     />
                                     <View

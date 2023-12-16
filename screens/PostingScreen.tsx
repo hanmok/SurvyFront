@@ -423,8 +423,6 @@ export default function PostingScreen({
                     }}
                     backgroundStyle={{
                         height: 44,
-                        // marginRight: 12,
-
                         borderTopLeftRadius: 16,
                         borderTopRightRadius: 16,
                         borderBottomLeftRadius: 6,

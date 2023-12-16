@@ -24,11 +24,8 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
     question,
     onPress,
 }) => {
-    // const questionTypeIndex = getQuestionTypeIndex(question.questionType);
-
     return (
         <TouchableOpacity style={styles.questionContainer} onPress={onPress}>
-            {/* <Text style={{ fontSize: fontSizes.m20, paddingLeft: 10 }}> */}
             <Text style={{ fontSize: fontSizes.m20, paddingLeft: 4 }}>
                 {question.position + 1}. {question.text}
             </Text>

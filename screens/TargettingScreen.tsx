@@ -169,11 +169,16 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         logObject("[TargettingScreen] questions", questions);
 
         const cost = parseInt(costWithComma.replace(/,/g, ""), 10);
-        const reward = Math.floor(cost / 3 / parseInt(participationGoal));
+
+        const goal =
+            participationGoal !== "" ? parseInt(participationGoal) : 10;
+        const reward = Math.floor(cost / 3 / goal);
+
+        updateLoadingStatus(true);
 
         await surveyService.createSurvey(
             surveyTitle,
-            parseInt(participationGoal),
+            goal,
             targetMinAge,
             targetMaxAge,
             genreIds,
@@ -186,6 +191,8 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             userId,
             accessToken
         );
+
+        updateLoadingStatus(false);
 
         if (postingSurveyId) {
             postingSurveyDataManager.initialize();
@@ -421,9 +428,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                     {/* Next Button */}
                     <TextButton
                         backgroundStyle={{
-                            // backgroundColor: isSatisfied
-                            //     ? "#ffffff"
-                            //     : "#b3b3b3", // inactive
                             backgroundColor: isSatisfied
                                 ? buttonColors.enabledButtonBG
                                 : buttonColors.disabledButtonBG,
@@ -438,9 +442,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                         textStyle={[
                             styles.nextButtonText,
                             {
-                                // color: isSatisfied
-                                //     ? buttonColors.enabledButtonBG
-                                //     : buttonColors.disabledButtonBG,
                                 color: "white",
                             },
                         ]}

@@ -50,10 +50,8 @@ import { useCustomContext } from "../features/context/CustomContext";
 import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
 import { screenWidth } from "../utils/ScreenSize";
-import {
-    AnswerService,
-    ParticipatingService,
-} from "../API/Services/AnswerService";
+import { AnswerService } from "../API/Services/AnswerService";
+import { ParticipatingService } from "../API/Services/ParticipatingService";
 
 export interface TextAnswerForm {
     customAnswer: CustomAnswer;
@@ -206,7 +204,7 @@ function ParticipatingScreen({
             await Promise.all(ps)
                 .then(() => {
                     participatingService
-                        .createParticipate(surveyId, userId, accessToken)
+                        .create(surveyId, userId, accessToken)
                         .then(() => {
                             updateLoadingStatus(false);
                             moveToNextScreen();

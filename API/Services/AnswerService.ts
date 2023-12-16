@@ -45,18 +45,3 @@ export class AnswerService extends BaseApi {
         return this.fetchData<SheetData>(url, "GET", undefined, accessToken);
     }
 }
-
-export class ParticipatingService extends BaseApi {
-    async createParticipate(
-        surveyId: number,
-        userId: number,
-        accessToken: string
-    ): Promise<ApiResponse<any>> {
-        const url = `${API_BASE_URL}/participating`;
-        const data = { surveyId, userId };
-
-        const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
-
-        return this.fetchData(url, "POST", snakeData, accessToken);
-    }
-}

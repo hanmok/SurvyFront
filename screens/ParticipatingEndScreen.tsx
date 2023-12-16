@@ -6,10 +6,11 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { fontSizes } from "../utils/sizes";
 import Spacer from "../components/common/Spacer";
 import TextButton from "../components/TextButton";
-import { patchParticipating } from "../API/ParticipatingAPI";
+// import { patchParticipating } from "../API/ParticipatingAPI";
 import { useCustomContext } from "../features/context/CustomContext";
 import { useEffect, useState } from "react";
 import showToast from "../components/common/toast/Toast";
+import { ParticipatingService } from "../API/Services/ParticipatingService";
 
 // Update participating-honest
 
@@ -23,31 +24,29 @@ function ParticipatingEndScreen({
         NavigationTitle.endParticipation
     >;
 }) {
+    const participatingService = new ParticipatingService();
     // type HonestType = true | false
     const [shoulGoMain, setShouldGoHome] = useState<boolean | null>(null);
 
     useEffect(() => {
         const patch = async (shouldGoMain: boolean) => {
-            await patchParticipating(
-                accessToken,
-                userId,
-                participatingSurveyId,
-                shoulGoMain
-            ).finally(() => {
-                updateLoadingStatus(false);
-                showToast(
-                    "success",
-                    "설문에 참여해주셔서 감사합니다",
-                    "포인트는 검수 후 지급됩니다"
-                );
-                if (shouldGoMain) {
-                    navigation.pop(2);
-                } else {
-                    navigation.navigate(NavigationTitle.response, {
-                        surveyId: participatingSurveyId,
-                    });
-                }
-            });
+            await participatingService
+                .patch(accessToken, userId, participatingSurveyId, shoulGoMain)
+                .finally(() => {
+                    updateLoadingStatus(false);
+                    showToast(
+                        "success",
+                        "설문에 참여해주셔서 감사합니다",
+                        "포인트는 검수 후 지급됩니다"
+                    );
+                    if (shouldGoMain) {
+                        navigation.pop(2);
+                    } else {
+                        navigation.navigate(NavigationTitle.response, {
+                            surveyId: participatingSurveyId,
+                        });
+                    }
+                });
 
             if (shouldGoMain === true) {
             } else {

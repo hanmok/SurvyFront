@@ -29,7 +29,7 @@ import { CustomAnswer } from "../interfaces/CustomAnswer";
 import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "../store";
-import { createParticipate, postAnswer } from "../API/AnswerAPI";
+// import { createParticipate, postAnswer } from "../API/AnswerAPI";
 import { NavigationTitle } from "../utils/NavHelper";
 import {
     convertKeysToCamelCaseRecursive,
@@ -50,6 +50,10 @@ import { useCustomContext } from "../features/context/CustomContext";
 import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
 import { screenWidth } from "../utils/ScreenSize";
+import {
+    AnswerService,
+    ParticipatingService,
+} from "../API/Services/AnswerService";
 
 export interface TextAnswerForm {
     customAnswer: CustomAnswer;
@@ -112,7 +116,8 @@ function ParticipatingScreen({
     >;
 }) {
     const client = useApollo();
-
+    const answerService = new AnswerService();
+    const participatingService = new ParticipatingService();
     const { sectionId, surveyId } = route.params;
 
     // Reducers
@@ -168,7 +173,7 @@ function ParticipatingScreen({
     );
 
     const postAnswerPromise = async (ingre: NormalAnswerForm) => {
-        return await postAnswer(
+        return await answerService.postAnswer(
             ingre.surveyId,
             ingre.questionId,
             ingre.selectableOptionId,
@@ -200,12 +205,12 @@ function ParticipatingScreen({
 
             await Promise.all(ps)
                 .then(() => {
-                    createParticipate(surveyId, userId, accessToken).then(
-                        () => {
+                    participatingService
+                        .createParticipate(surveyId, userId, accessToken)
+                        .then(() => {
                             updateLoadingStatus(false);
                             moveToNextScreen();
-                        }
-                    );
+                        });
                 })
                 .catch(error => {
                     showToast("error", `${error.message}`);

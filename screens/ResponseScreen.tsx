@@ -42,9 +42,10 @@ import * as XLSX from "xlsx";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 
-import { SheetData, getResultSheet } from "../API/AnswerAPI";
+// import { SheetData, getResultSheet } from "../API/AnswerAPI";
 import { useCustomContext } from "../features/context/CustomContext";
 import { QuestionTypeId } from "../QuestionType";
+import { AnswerService, SheetData } from "../API/Services/AnswerService";
 
 class ResponseSection {
     responseProp: QuestionResponseContainerProps[] | undefined;
@@ -75,6 +76,7 @@ export default function ResponseScreen({
     >;
     route: RouteProp<RootStackParamList, NavigationTitle.response>;
 }) {
+    const answerService = new AnswerService();
     const { accessToken, updateLoadingStatus } = useCustomContext();
     const { surveyId } = route.params;
 
@@ -193,13 +195,15 @@ export default function ResponseScreen({
 
     useEffect(() => {
         const getExcelSheet = async () => {
-            getResultSheet(surveyId, accessToken).then(response => {
-                logObject("sheet data:", response);
-                if (response) {
-                    const sheetResponse = response;
-                    generateExcel(sheetResponse.data, survey.title);
-                }
-            });
+            answerService
+                .getResultSheet(surveyId, accessToken)
+                .then(response => {
+                    logObject("sheet data:", response);
+                    if (response) {
+                        const sheetResponse = response;
+                        generateExcel(sheetResponse.data, survey.title);
+                    }
+                });
         };
         if (generateTapped && survey) {
             getExcelSheet();

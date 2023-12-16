@@ -120,42 +120,32 @@ function HomeScreen({
         return unsubscribeFocus;
     }, [navigation]);
 
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <View style={{ marginRight: 20, flexDirection: "row" }}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            console.log("search tapped");
-                        }}
-                    >
-                        <MaterialCommunityIcons
-                            name="magnify-expand"
-                            size={24}
-                            color="black"
-                            onPress={() => {
-                                // console.log("hi");
-                                toggleSearchingModalVisibility();
-                                setIsSearchingModalVisible(true);
-                            }}
-                        />
-                    </TouchableOpacity>
-                </View>
-            ),
-            // headerLeft: () => (
-            //     <View style={{ marginBottom: 15 }}>
-            //         <CollectedMoney
-            //             amount={
-            //                 // userDetail !== null ? userDetail.collectedReward : 0
-            //                 userDetail?.collectedReward ?? 0
-            //             }
-            //         />
-            //     </View>
-            // ),
-        });
-        logObject("userDetail flag", userDetail);
-        // log(`collected money ${userDetail.collectedReward}`);
-    }, [navigation, userDetail]);
+    // React.useLayoutEffect(() => {
+    //     navigation.setOptions({
+    //         headerRight: () => (
+    //             <View style={{ marginRight: 20, flexDirection: "row" }}>
+    //                 <TouchableOpacity
+    //                     onPress={() => {
+    //                         console.log("search tapped");
+    //                     }}
+    //                 >
+    //                     <MaterialCommunityIcons
+    //                         name="magnify-expand"
+    //                         size={24}
+    //                         color="black"
+    //                         onPress={() => {
+    //                             // console.log("hi");
+    //                             toggleSearchingModalVisibility();
+    //                             setIsSearchingModalVisible(true);
+    //                         }}
+    //                     />
+    //                 </TouchableOpacity>
+    //             </View>
+    //         ),
+    //     });
+    //     logObject("userDetail flag", userDetail);
+    //     // log(`collected money ${userDetail.collectedReward}`);
+    // }, [navigation, userDetail]);
 
     // Component 가 Rendering 될 때 API 호출
     useEffect(() => {

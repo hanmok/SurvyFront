@@ -28,7 +28,7 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                 style={{
                     marginRight: 10,
                     borderRadius: 6,
-                    backgroundColor: colors.gray3,
+                    backgroundColor: colors.gray35,
                     padding: 6,
                 }}
             >

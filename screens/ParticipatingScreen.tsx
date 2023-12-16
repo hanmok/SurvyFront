@@ -194,8 +194,6 @@ function ParticipatingScreen({
         const callAPI = async () => {
             updateLoadingStatus(true);
 
-            showAdminToast("success", "posting apis called");
-
             const ps = Array.from(myAnswerIngres).map(async body => {
                 logObject("posting api", body);
                 await postAnswerPromise(body);

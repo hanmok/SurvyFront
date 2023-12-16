@@ -3,7 +3,7 @@ import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Genre } from "../../interfaces/Genre";
-import { getAllGenres } from "../../API/GenreAPI";
+// import { getAllGenres } from "../../API/GenreAPI";
 import { logObject } from "../../utils/Log";
 import { useCustomContext } from "../../features/context/CustomContext";
 // import { getUserGenres, updateUserGenres } from "../../API/UserAPI";
@@ -17,6 +17,7 @@ import { areSetsEqual, setDifference } from "../../utils/Set";
 import { DefaultModal } from "../../modals/DefaultModal";
 import { commonStyles, genreStyles } from "../../utils/CommonStyles";
 import { UserService } from "../../API/Services/UserService";
+import { GenreService } from "../../API/Services/GenreService";
 
 // 내 관심사
 function MyGenreScreen({
@@ -27,6 +28,7 @@ function MyGenreScreen({
         NavigationTitle.myGenre
     >;
 }) {
+    const genreService = new GenreService();
     const [allGenres, setAllGenres] = useState<Genre[]>([]);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
     const [initialGenres, setInitialGenres] = useState<Genre[]>([]);
@@ -90,7 +92,7 @@ function MyGenreScreen({
 
     useEffect(() => {
         const getGenres = async () => {
-            getAllGenres(accessToken).then(response => {
+            genreService.getAllGenres(accessToken).then(response => {
                 logObject("fetched genres: ", response);
                 if (response.statusCode < 300) {
                     setAllGenres(response.data);

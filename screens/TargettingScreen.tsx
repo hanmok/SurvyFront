@@ -3,13 +3,15 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
-import CostGuideModal from "../modals/CostGuideModal";
+// import CostGuideModal from "../modals/CostGuideModal";
+// import FreeCostGuideModal from "../modals/FreeCostGuideModal";
+
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import BlockView from "../components/BlockView";
 import { Genre } from "../interfaces/Genre";
 import { ReactNode } from "react";
 import TextButton from "../components/TextButton";
-import { colors } from "../utils/colors";
+import { buttonColors, colors } from "../utils/colors";
 import { fontSizes, marginSizes } from "../utils/sizes";
 import React from "react";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -32,7 +34,7 @@ import Spacer from "../components/common/Spacer";
 
 import { log, logObject } from "../utils/Log";
 // import { CustomLocation } from "../utils/Geo";
-import { createSurvey } from "../API/SurveyAPI";
+// import { createSurvey } from "../API/SurveyAPI";
 import { RouteProp } from "@react-navigation/native";
 import GenreSelectionModal from "../modals/GenreSelectionModal";
 import { screenWidth } from "../utils/ScreenSize";
@@ -41,6 +43,9 @@ import { GeoInfo } from "../interfaces/GeoInfo";
 import { useCustomContext } from "../features/context/CustomContext";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showToast from "../components/common/toast/Toast";
+// import { SurveyService } from "../API/Services/SurveyService";
+import { SurveyService } from "../API/Services/SurveyService";
+import FreeCostGuideModal from "../modals/FreeCostGuideModal";
 // import { initializePostingSurvey } from "../utils/PostingSurveyStorage";
 // import { deletePostingSurvey } from "../utils/Storage";
 
@@ -67,7 +72,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         // console.log("send button tapped");
         toggleCostGuideModal();
     };
-
+    const surveyService = new SurveyService();
     // 여기에서 모두 처리해버리기.
     const [participationGoal, setParticipationGoal] = useState("10");
     const { surveyTitle, sections, questions } = route.params;
@@ -170,7 +175,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         const cost = parseInt(costWithComma.replace(/,/g, ""), 10);
         const reward = Math.floor(cost / 3 / parseInt(participationGoal));
 
-        await createSurvey(
+        await surveyService.createSurvey(
             surveyTitle,
             parseInt(participationGoal),
             targetMinAge,
@@ -213,7 +218,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
 
     return (
         <>
-            <CostGuideModal
+            {/* <CostGuideModal
                 onClose={toggleCostGuideModal}
                 onConfirm={finalConfirmAction}
                 isFree={isFree}
@@ -223,6 +228,14 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                 setParticipationGoal={setParticipationGoal}
                 price={price}
                 setPrice={setPrice}
+                participationGoal={participationGoal}
+            /> */}
+
+            <FreeCostGuideModal
+                onClose={toggleCostGuideModal}
+                onConfirm={finalConfirmAction}
+                isCostGuideModalVisible={isCostModalVisible}
+                setParticipationGoal={setParticipationGoal}
                 participationGoal={participationGoal}
             />
 
@@ -420,19 +433,28 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                     {/* Next Button */}
                     <TextButton
                         backgroundStyle={{
+                            // backgroundColor: isSatisfied
+                            //     ? "#ffffff"
+                            //     : "#b3b3b3", // inactive
                             backgroundColor: isSatisfied
-                                ? colors.deeperMainColor
-                                : "#b3b3b3", // inactive
+                                ? buttonColors.enabledButtonBG
+                                : buttonColors.disabledButtonBG,
                             height: 46,
                             marginBottom: 30,
                             marginHorizontal: 20,
                             borderRadius: 10,
                             marginTop: 30,
                         }}
+                        hasShadow={false}
                         title="다음"
                         textStyle={[
                             styles.nextButtonText,
-                            { color: isSatisfied ? colors.white : "#cbcbcb" },
+                            {
+                                // color: isSatisfied
+                                //     ? buttonColors.enabledButtonBG
+                                //     : buttonColors.disabledButtonBG,
+                                color: "white",
+                            },
                         ]}
                         onPress={() => {
                             // setIsNextButtonTapped(true);

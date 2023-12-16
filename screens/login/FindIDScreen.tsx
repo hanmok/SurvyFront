@@ -5,14 +5,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { fontSizes } from "../../utils/sizes";
 import TextButton from "../../components/TextButton";
 import { useEffect, useState } from "react";
-import { colors } from "../../utils/colors";
+import { buttonColors, colors } from "../../utils/colors";
 import { screenWidth } from "../../utils/ScreenSize";
 import showToast from "../../components/common/toast/Toast";
 import { isValidPhone } from "../../utils/validation";
 import { useCustomContext } from "../../features/context/CustomContext";
-import { checkPhoneDuplicate } from "../../API/UserAPI";
+// import { checkPhoneDuplicate } from "../../API/UserAPI";
 import { logObject } from "../../utils/Log";
 import showAdminToast from "../../components/common/toast/showAdminToast";
+import { UserService } from "../../API/Services/UserService";
 
 export default function FindIDScreen({
     navigation,
@@ -24,7 +25,7 @@ export default function FindIDScreen({
 
     const [phoneInput, setPhoneInput] = useState("");
     const [authInput, setAuthInput] = useState("");
-
+    const userService = new UserService();
     useEffect(() => {
         setAuthSatisfied(authInput.length === 6);
     }, [authInput]);
@@ -39,7 +40,8 @@ export default function FindIDScreen({
         if (isValidPhone(phone)) {
             updateLoadingStatus(true);
 
-            await checkPhoneDuplicate(phoneInput)
+            await userService
+                .checkPhoneDuplicate(phoneInput)
                 .then(ret => {
                     if (ret.statusCode >= 400) {
                         // some has this phone number
@@ -144,22 +146,20 @@ export default function FindIDScreen({
                     <TextButton
                         title="인증번호 받기"
                         onPress={() => {
-                            // navigation.navigate(NavigationTitle.foundID);
-                            // showToast("success", "인증번호는 xxx 입니다");
                             handlePhoneDuplicate(phoneInput);
                         }}
                         backgroundStyle={[
                             styles.authButtonBackground,
                             phoneNumberSatisfied
                                 ? styles.activatedBackground
-                                : styles.inactivatedBackground,
+                                : styles.inactivatedBorder,
                         ]}
                         hasShadow={false}
                         textStyle={[
                             { fontSize: 14 },
                             phoneNumberSatisfied
                                 ? { color: colors.white }
-                                : { color: colors.black },
+                                : { color: colors.gray2 },
                         ]}
                     />
                 </View>
@@ -197,13 +197,12 @@ export default function FindIDScreen({
                     <TextButton
                         title="재발송"
                         onPress={() => {
-                            navigation.navigate(NavigationTitle.foundID);
+                            handlePhoneDuplicate(phoneInput);
                         }}
                         backgroundStyle={[
                             styles.authButtonBackground,
-                            styles.inactivatedBackground,
+                            styles.inactivatedBorder,
                         ]}
-                        // hasShadow={isSatisfied}
                         hasShadow={false}
                         textStyle={{ color: "black", fontSize: 14 }}
                     />
@@ -216,17 +215,21 @@ export default function FindIDScreen({
                         }}
                         backgroundStyle={[
                             styles.authButtonBackground,
-                            { marginTop: 20, width: screenWidth - 36 },
-                            authSatisfied
-                                ? { backgroundColor: colors.deeperMainColor }
-                                : styles.inactivatedBackground,
+                            {
+                                marginTop: 20,
+                                width: screenWidth - 36,
+                                backgroundColor: authSatisfied
+                                    ? buttonColors.enabledButtonBG
+                                    : buttonColors.disabledButtonBG,
+                            },
+                            authSatisfied ? {} : styles.inactivatedBorder,
                         ]}
                         hasShadow={false}
                         textStyle={[
-                            { fontSize: 14 },
-                            authSatisfied
-                                ? { color: "white" }
-                                : { color: "black" },
+                            { fontSize: 14, color: "white" },
+                            // authSatisfied
+                            //     ? { color: "white" }
+                            //     : { color: "black" },
                         ]}
                     />
                 </View>
@@ -270,13 +273,12 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         marginHorizontal: 18,
     },
-    inactivatedBackground: {
-        // backgroundColor: "#ddd",
+    inactivatedBorder: {
         borderWidth: 1,
         borderColor: colors.gray4,
     },
     activatedBackground: {
-        backgroundColor: colors.deepMainColor,
+        backgroundColor: buttonColors.enabledButtonBG,
     },
     authButtonBackground: {
         // height: 50,

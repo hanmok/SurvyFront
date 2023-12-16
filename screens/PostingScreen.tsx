@@ -7,7 +7,7 @@ import {
     TouchableNativeFeedback,
 } from "react-native";
 import { StyleSheet } from "react-native";
-import { colors } from "../utils/colors";
+import { buttonColors, colors } from "../utils/colors";
 import {
     fontSizes,
     marginSizes,
@@ -32,17 +32,16 @@ import { NavigationTitle } from "../utils/NavHelper";
 
 import { log, logObject } from "../utils/Log";
 import ModifyingQuestionModal from "../modals/ModifyingQuestionModal";
-import * as Location from "expo-location";
 
 import { Section, makeSection } from "../interfaces/Section";
 
 // import { loadSavedPostingSurveys, savePostingSurvey } from "../utils/Storage";
+
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import {
     PostingSurveyState,
     makePostingSurveyState,
 } from "../interfaces/PostingSurveyState";
-import { getAddress } from "../API/GeoAPI";
 
 import SectionModal from "../modals/SectionModal";
 import { RouteProp } from "@react-navigation/native";
@@ -589,8 +588,8 @@ export default function PostingScreen({
                 <TextButton
                     backgroundStyle={{
                         backgroundColor: isSatisfied
-                            ? colors.deeperMainColor
-                            : "#b3b3b3", // inactive
+                            ? buttonColors.enabledButtonBG
+                            : buttonColors.disabledButtonBG,
                         height: 46,
                         marginBottom: 30,
                         marginHorizontal: 20,
@@ -600,7 +599,7 @@ export default function PostingScreen({
                     textStyle={[
                         styles.nextButtonText,
                         {
-                            color: isSatisfied ? colors.white : "#cbcbcb",
+                            color: "white",
                         },
                     ]}
                     // hasShadow={false}
@@ -665,7 +664,7 @@ const styles = StyleSheet.create({
         marginLeft: marginSizes.xs8,
         fontWeight: "500",
         marginBottom: marginSizes.xs8,
-        backgroundColor: colors.selectedQuestionBoxBG,
+        backgroundColor: "#5094FD",
         borderRadius: 5,
         overflow: "hidden",
         paddingHorizontal: 10,

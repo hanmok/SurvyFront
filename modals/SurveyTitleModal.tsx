@@ -103,23 +103,29 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                         {/* Title */}
                         <View>
                             <Text style={styles.infoTextContainer}>
-                                제목을 입력해주세요.
+                                설문 제목
                             </Text>
                         </View>
                         {/* Title Input */}
                         <View
-                            style={
-                                {
-                                    // paddingHorizontal: 40,
-                                    // backgroundColor: "cyan",
-                                }
-                            }
+                            style={{
+                                marginHorizontal: 12,
+                                alignSelf: "stretch",
+                            }}
                         >
                             <TextInput
-                                style={styles.textInput}
+                                style={{
+                                    borderColor: "gray",
+                                    borderWidth: 1,
+                                    borderRadius: 10,
+                                    overflow: "hidden",
+                                    height: 40,
+                                    paddingLeft: 12,
+                                    marginHorizontal: 12,
+                                }}
                                 onChangeText={setTitle}
                                 value={title}
-                                placeholder="텍스트를 입력하세요"
+                                placeholder="무엇에 대한 설문인가요?"
                                 autoCorrect={false}
                                 autoComplete="off"
                             />
@@ -175,7 +181,6 @@ const styles = StyleSheet.create({
     infoTextContainer: {
         margin: 10,
         marginTop: 20,
-        // paddingHorizontal: 20,
         fontWeight: "bold",
         fontSize: fontSizes.m20,
         textAlign: "center",
@@ -186,7 +191,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         overflow: "hidden",
-        width: 240,
+        width: 300,
         paddingLeft: 10,
         marginVertical: 20,
         marginHorizontal: 20,

@@ -3,10 +3,11 @@ import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import { useEffect, useState } from "react";
 import { fontSizes } from "../../utils/sizes";
-import { colors } from "../../utils/colors";
+import { buttonColors, colors } from "../../utils/colors";
 import TextButton from "../../components/TextButton";
 import Spacer from "../../components/common/Spacer";
-import { updatePassword } from "../../API/UserAPI";
+// import { updatePassword } from "../../API/UserAPI";
+import { UserService } from "../../API/Services/UserService";
 import { RouteProp } from "@react-navigation/native";
 import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
@@ -26,7 +27,7 @@ export default function PasswordSettingScreen({
     const [passwordInput2, setPasswordInput2] = useState("");
     const [isSatisfied, setIsSatisfied] = useState(false);
     const [confirmTapped, setConfirmTapped] = useState(false);
-
+    const userService = new UserService();
     const { username, shouldPopAll } = route.params;
 
     const { updateLoadingStatus } = useCustomContext();
@@ -34,7 +35,8 @@ export default function PasswordSettingScreen({
     useEffect(() => {
         const update = async () => {
             updateLoadingStatus(true);
-            await updatePassword(username, passwordInput1)
+            await userService
+                .updatePassword(username, passwordInput1)
                 .then(() => {
                     showToast("success", "비밀번호가 변경되었습니다.");
                 })
@@ -117,9 +119,11 @@ export default function PasswordSettingScreen({
                 }}
                 backgroundStyle={[
                     styles.authButtonBackground,
-                    isSatisfied
-                        ? styles.activatedBackground
-                        : styles.inactivatedBackground,
+                    {
+                        backgroundColor: isSatisfied
+                            ? buttonColors.enabledButtonBG
+                            : buttonColors.disabledButtonBG,
+                    },
                 ]}
                 hasShadow={isSatisfied}
                 textStyle={{ color: "white", fontSize: fontSizes.m20 }}
@@ -160,16 +164,9 @@ const styles = StyleSheet.create({
     nameContainer: {
         marginTop: 30,
         marginHorizontal: 18,
-        backgroundColor: "magenta",
     },
     descriptionContainer: {
         marginHorizontal: 20,
-    },
-    inactivatedBackground: {
-        backgroundColor: "#ddd",
-    },
-    activatedBackground: {
-        backgroundColor: colors.deepMainColor,
     },
     authButtonBackground: {
         height: 50,

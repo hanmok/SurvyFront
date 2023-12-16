@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { modalStyles } from "../../utils/CommonStyles";
 import TextButton from "../TextButton";
 import { colors } from "../../utils/colors";
@@ -37,11 +37,26 @@ export const BottomButtonContainer: React.FC<BottomButtonContainerProps> = ({
                 }}
                 isEnabled={satisfied}
                 backgroundStyle={[
-                    modalStyles.confirmBtnBG,
-                    !satisfied && { backgroundColor: colors.gray4 },
+                    styles.confirmBtnBG,
+                    {
+                        backgroundColor: satisfied
+                            ? colors.deeperMainColor
+                            : colors.gray4,
+                    },
                 ]}
                 textStyle={modalStyles.confirmBtnText}
             />
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    confirmBtnBG: {
+        backgroundColor: colors.deeperMainColor,
+        flex: 0.5,
+        marginHorizontal: 9,
+        marginTop: 12,
+        marginBottom: 6,
+        borderRadius: 6,
+    },
+});

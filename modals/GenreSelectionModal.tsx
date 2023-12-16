@@ -13,13 +13,14 @@ import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
 import { useEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
-import { getAllGenres } from "../API/GenreAPI";
+// import { getAllGenres } from "../API/GenreAPI";
 import { log, logObject } from "../utils/Log";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { Genre } from "../interfaces/Genre";
 import Spacer from "../components/common/Spacer";
 import { useCustomContext } from "../features/context/CustomContext";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import { GenreService } from "../API/Services/GenreService";
 
 interface GenreSelectionModalProps {
     onClose: () => void;
@@ -37,6 +38,7 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
+    const genreService = new GenreService();
     const [satisfied, setSatisfied] = useState(false);
     const [allGenres, setAllGenres] = useState<Genre[]>([]);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
@@ -50,9 +52,11 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
     const { accessToken } = useCustomContext();
 
     const getGenres = async () => {
-        getAllGenres(accessToken).then(response => {
+        genreService.getAllGenres(accessToken).then(response => {
             logObject("fetched genres: ", response);
-            setAllGenres(response);
+            if (response.statusCode < 300) {
+                setAllGenres(response.data);
+            }
         });
     };
 
@@ -258,9 +262,8 @@ const styles = StyleSheet.create({
 
     genreListWrapper: {
         borderBottomColor: colors.gray4,
-        borderBottomWidth: 1,
-        borderTopColor: colors.gray4,
-        borderTopWidth: 1,
+        borderBottomWidth: 2,
+        paddingBottom: 10,
         flex: 0,
         flexDirection: "row",
         flexWrap: "wrap",

@@ -1,11 +1,17 @@
 import { useEffect } from "react";
-import ParticipatedSurveyItems from "../components/mypage/ParticipatedSurveyItems";
+// import ParticipatedSurveyItems from "../components/mypage/ParticipatedSurveyItems";
 import { useCustomContext } from "../features/context/CustomContext";
 import { useApollo } from "../ApolloProvider";
 import { useQuery } from "@apollo/client";
 import { participatedSurveyQuery } from "../API/gqlQuery";
 import { convertKeysToCamelCase } from "../utils/SnakeToCamel";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { commonStyles } from "../utils/CommonStyles";
+import { fontSizes, marginSizes } from "../utils/sizes";
+import accounting from "accounting";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 
 export interface ParticipatedSurveyItem {
     title: string;
@@ -21,9 +27,12 @@ interface ParticipatedSurveyResponse {
 }
 
 // 참여한 설문
-function ParticipatedSurveysScreen() {
-    const { userId } = useCustomContext();
-    const { updateLoadingStatus } = useCustomContext();
+function ParticipatedSurveysScreen({
+    navigation,
+}: {
+    navigation: StackNavigationProp<RootStackParamList, NavigationTitle.home>;
+}) {
+    const { userId, updateLoadingStatus } = useCustomContext();
 
     const client = useApollo();
 
@@ -47,8 +56,52 @@ function ParticipatedSurveysScreen() {
 
     return participatedSurveys.length !== 0 ? (
         <View style={{ marginTop: 20 }}>
-            <ParticipatedSurveyItems
-                participatedSurveys={participatedSurveys}
+            <FlatList
+                data={participatedSurveys}
+                renderItem={({ item }) => (
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate(NavigationTitle.response, {
+                                surveyId: item.id,
+                            });
+                        }}
+                        style={[
+                            commonStyles.border,
+                            {
+                                marginHorizontal: marginSizes.m16,
+                                borderRadius: 10,
+                                marginBottom: 12,
+                                padding: 8,
+                                gap: 6,
+                            },
+                        ]}
+                    >
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: fontSizes.m20,
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                {item.title}
+                            </Text>
+                            <Text>
+                                +{accounting.formatNumber(item.reward)} P
+                            </Text>
+                        </View>
+                        {/* <Text>{convertTime(item.createdAt)}</Text> */}
+                    </TouchableOpacity>
+                )}
+                // 참여한 날짜가 아니야.
+                // keyExtractor={item => `${item.code}${item.created_at}`}
+
+                keyExtractor={item => `${item.id}${item.title}`}
             />
         </View>
     ) : (

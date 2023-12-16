@@ -11,8 +11,9 @@ import { screenHeight } from "../utils/ScreenSize";
 import { log, logObject } from "../utils/Log";
 import Spacer from "../components/common/Spacer";
 // import { geoDataManager } from "../utils/Storage";
-import { fetchAllGeoInfos } from "../API/GeoAPI";
+// import { fetchAllGeoInfos } from "../API/GeoAPI";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import { GeoService } from "../API/Services/GeoService";
 
 interface GeoMultipleSelectionModalProps {
     onClose: () => void;
@@ -27,6 +28,7 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
     isGeoModalVisible,
     selectedGeos,
 }) => {
+    const geoService = new GeoService();
     const [selectedState, setSelectedState] = useState<GeoInfo>(null);
     const [selectedCity, setSelectedCity] = useState<GeoInfo>(null);
     const [selectedCities, setSelectedCities] = useState<GeoInfo[]>([]);
@@ -162,7 +164,8 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
             // const allGeos = await loadWholeGeo();
             // const allGeos = await geoDataManager.loadWholeGeo();
 
-            const allGeos = await fetchAllGeoInfos();
+            const geoResponse = await geoService.fetchAllGeoInfos();
+            const allGeos = geoResponse.data;
             setGeos(allGeos);
 
             const sortedStates = allGeos.filter(
@@ -222,19 +225,20 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                 title={item.state}
                 backgroundStyle={{
                     height: 50,
-                    backgroundColor: selectedStates.includes(item)
-                        ? colors.gray1
-                        : colors.white,
-                    borderColor:
+                    backgroundColor:
                         selectedState === item
-                            ? colors.gray
-                            : colors.transparent,
-                    borderWidth: selectedState === item ? 2 : 0,
+                            ? colors.white
+                            : colors.unselectedGeoBG,
+                    paddingLeft: 10,
+                    borderColor: colors.unselectedGeoBG,
+                    borderRightWidth: 2,
                 }}
                 textStyle={{
-                    color: selectedStates.includes(item)
-                        ? colors.white
-                        : colors.black,
+                    color:
+                        selectedState === item
+                            ? colors.black
+                            : colors.unselectedGeoText,
+                    textAlign: "left",
                 }}
             />
         );
@@ -250,13 +254,13 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                 backgroundStyle={{
                     height: 50,
                     backgroundColor: selectedCities.includes(item)
-                        ? colors.gray2
-                        : colors.gray4,
+                        ? colors.white
+                        : colors.unselectedGeoBG,
                 }}
                 textStyle={{
                     color: selectedCities.includes(item)
-                        ? colors.white
-                        : colors.black,
+                        ? colors.black
+                        : colors.unselectedGeoText,
                 }}
                 hasShadow={false}
             />

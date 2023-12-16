@@ -7,39 +7,30 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
-
 import { fontSizes } from "../utils/sizes";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
 import { useEffect, useState } from "react";
 import { screenWidth } from "../utils/ScreenSize";
 import { commonStyles } from "../utils/CommonStyles";
-import CostSelectionContainer from "../CostSelectionContainer";
+// import CostSelectionContainer from "../CostSelectionContainer";
 import * as accounting from "accounting";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import Spacer from "../components/common/Spacer";
+import showToast from "../components/common/toast/Toast";
 
-interface CostGuideModalProps {
+interface FreeCostGuideModalProps {
     onClose: () => void;
     onConfirm: () => void;
     isCostGuideModalVisible: boolean;
-    expectedTimeInMin: number;
     participationGoal: string;
     setParticipationGoal: (string) => void;
-    setIsFree: (boolean) => void;
-    isFree: boolean;
-    price: string;
-    setPrice: (string) => void;
 }
 
-const CostGuideModal: React.FC<CostGuideModalProps> = ({
+const FreeCostGuideModal: React.FC<FreeCostGuideModalProps> = ({
     onClose,
     onConfirm,
     isCostGuideModalVisible,
-    expectedTimeInMin,
-    setIsFree,
-    isFree,
-    price,
-    setPrice,
     setParticipationGoal,
     participationGoal,
 }) => {
@@ -48,20 +39,12 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
     };
 
     useEffect(() => {
-        console.log(`[CostGuideModal], isFree: ${isFree}, price: ${price}`);
-        if (isFree) {
-            setPrice("0");
-        } else {
-            const value = parseInt(participationGoal) * 300 * expectedTimeInMin;
-            const numWithComma = accounting.formatMoney(value, {
-                symbol: "",
-                precision: 0,
-                thousand: ",",
-            });
-
-            setPrice(`${numWithComma}`);
+        if (parseInt(participationGoal) > 100) {
+            setParticipationGoal("100");
+        } else if (parseInt(participationGoal) === 0) {
+            setParticipationGoal("1");
         }
-    }, [price, isFree, isCostGuideModalVisible, participationGoal]);
+    }, [participationGoal]);
 
     return (
         <Modal transparent={true} visible={isCostGuideModalVisible}>
@@ -71,62 +54,50 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                         <Text
                             style={{
                                 fontSize: fontSizes.m20,
-                                backgroundColor: colors.gray4,
-                                width: screenWidth - 40 * 2,
                                 textAlign: "center",
                                 paddingVertical: 10,
                             }}
                         >
                             설문 제출
                         </Text>
-
-                        {/* <View style={{ height: 300, width: 300 }}> */}
-                        <View style={{ height: 200, width: 300 }}>
+                        <View>
                             <View style={styles.mainContent}>
-                                <View style={styles.rowContainer}>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
-                                        설문 인원
+                                <View style={{ marginTop: 20 }}>
+                                    <Text style={{ fontSize: 16 }}>
+                                        설문은 몇명에게서 받을까요?
                                     </Text>
-                                    <TextInput
-                                        value={participationGoal}
-                                        onChangeText={setParticipationGoal}
-                                        keyboardType="number-pad"
-                                        placeholder="10"
-                                        style={[
-                                            {
-                                                fontSize: fontSizes.m20,
-                                                color: colors.gray2,
-                                                // borderColor: "black",
-                                                borderColor: colors.gray3,
-                                                borderWidth: 1,
-                                                borderRadius: 6,
-                                                minWidth: 50,
-                                                textAlign: "right",
-                                                paddingRight: 6,
-                                                // backgroundColor: "#fff",
-                                                backgroundColor: "white",
-                                            },
-                                        ]}
-                                    />
+                                    <Spacer size={10} />
+                                    <View
+                                        style={{
+                                            // backgroundColor: "magenta",
+                                            backgroundColor: colors.gray4,
+                                            borderRadius: 6,
+                                            overflow: "hidden",
+                                            paddingHorizontal: 12,
+                                            paddingVertical: 6,
+                                        }}
+                                    >
+                                        <TextInput
+                                            value={participationGoal}
+                                            onChangeText={setParticipationGoal}
+                                            keyboardType="number-pad"
+                                            placeholder="10"
+                                            textAlign="right"
+                                        />
+                                    </View>
+                                    <Text
+                                        style={{
+                                            color: "red",
+                                            fontSize: 10,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        {" "}
+                                        1~100 명의 설문 참여 인원을 설정할 수
+                                        있습니다.
+                                    </Text>
                                 </View>
 
-                                <View style={styles.rowContainer}>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
-                                        예상 소요 시간
-                                    </Text>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
-                                        {" "}
-                                        {expectedTimeInMin} 분{" "}
-                                    </Text>
-                                </View>
-                                <View style={styles.rowContainer}>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
-                                        가격
-                                    </Text>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
-                                        {price} 원
-                                    </Text>
-                                </View>
                                 <View
                                     style={[
                                         {
@@ -134,14 +105,11 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                             flexDirection: "column",
                                         },
                                     ]}
-                                >
-                                    {/* <CostSelectionContainer
-                                        initialIndex={isFree ? 0 : 1}
-                                        // toggleFreeState={setIsFree}
-                                    /> */}
-                                </View>
+                                ></View>
                             </View>
                         </View>
+
+                        {/* <BottomButtonContainer */}
                         <BottomButtonContainer
                             leftAction={onClose}
                             rightAction={onConfirm}
@@ -152,7 +120,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
         </Modal>
     );
 };
-export default CostGuideModal;
+export default FreeCostGuideModal;
 
 const styles = StyleSheet.create({
     modalContainer: {
@@ -162,13 +130,18 @@ const styles = StyleSheet.create({
         borderColor: "black",
         borderRadius: 20,
         overflow: "hidden",
+        justifyContent: "center",
+        alignItems: "center",
     },
     modalContent: {
-        flexGrow: 1,
-        marginVertical: 240, // 전체 화면 관리
-        marginHorizontal: 40,
+        height: 240,
+        width: 300,
+        // marginHorizontal: 40,
+        // marginHorizontal: 20,
         backgroundColor: colors.background,
+        // backgroundColor: "cyan",
         borderRadius: 10,
+        borderWidth: 1,
         overflow: "hidden",
         justifyContent: "space-between",
         alignItems: "center",
@@ -181,6 +154,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: fontSizes.s16,
     },
+
     bottomLeftButtonTextContainer: {
         flexGrow: 1,
         flexDirection: "row",
@@ -215,7 +189,7 @@ const styles = StyleSheet.create({
     mainContent: {
         flexDirection: "column",
         justifyContent: "center",
-        flex: 1,
+        // flex: 1,
         gap: 30,
         marginHorizontal: 20,
     },

@@ -10,7 +10,7 @@ import {
     TouchableNativeFeedback,
 } from "react-native";
 
-import { colors } from "../utils/colors";
+import { buttonColors, colors } from "../utils/colors";
 import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 
 import { RouteProp } from "@react-navigation/native";
@@ -29,7 +29,7 @@ import { CustomAnswer } from "../interfaces/CustomAnswer";
 import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "../store";
-import { createParticipate, postAnswer } from "../API/AnswerAPI";
+// import { createParticipate, postAnswer } from "../API/AnswerAPI";
 import { NavigationTitle } from "../utils/NavHelper";
 import {
     convertKeysToCamelCaseRecursive,
@@ -50,6 +50,8 @@ import { useCustomContext } from "../features/context/CustomContext";
 import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
 import { screenWidth } from "../utils/ScreenSize";
+import { AnswerService } from "../API/Services/AnswerService";
+import { ParticipatingService } from "../API/Services/ParticipatingService";
 
 export interface TextAnswerForm {
     customAnswer: CustomAnswer;
@@ -112,7 +114,8 @@ function ParticipatingScreen({
     >;
 }) {
     const client = useApollo();
-
+    const answerService = new AnswerService();
+    const participatingService = new ParticipatingService();
     const { sectionId, surveyId } = route.params;
 
     // Reducers
@@ -168,7 +171,7 @@ function ParticipatingScreen({
     );
 
     const postAnswerPromise = async (ingre: NormalAnswerForm) => {
-        return await postAnswer(
+        return await answerService.postAnswer(
             ingre.surveyId,
             ingre.questionId,
             ingre.selectableOptionId,
@@ -200,12 +203,12 @@ function ParticipatingScreen({
 
             await Promise.all(ps)
                 .then(() => {
-                    createParticipate(surveyId, userId, accessToken).then(
-                        () => {
+                    participatingService
+                        .create(surveyId, userId, accessToken)
+                        .then(() => {
                             updateLoadingStatus(false);
                             moveToNextScreen();
-                        }
-                    );
+                        });
                 })
                 .catch(error => {
                     showToast("error", `${error.message}`);
@@ -348,16 +351,16 @@ function ParticipatingScreen({
                         }
                         onPress={toggleNextTapped}
                         textStyle={[
-                            { letterSpacing: 10 },
+                            { letterSpacing: 10, color: "white" },
                             isSatisfied
                                 ? styles.activatedButtonText
                                 : styles.inactivatedButtonText,
                         ]}
-                        backgroundStyle={
+                        backgroundStyle={[
                             isSatisfied
                                 ? styles.activatedFinishButtonBackground
-                                : styles.inactivatedFinishButtonBackground
-                        }
+                                : styles.inactivatedFinishButtonBackground,
+                        ]}
                         hasShadow={false}
                         isEnabled={isSatisfied}
                     />
@@ -415,16 +418,15 @@ const styles = StyleSheet.create({
     activatedButtonText: {
         textAlign: "center",
         fontSize: fontSizes.m20,
-        color: "#fff",
     },
     inactivatedButtonText: {
         textAlign: "center",
         fontSize: fontSizes.m20,
-        color: "#DDD",
     },
     activatedFinishButtonBackground: {
         marginTop: 20,
-        backgroundColor: "#666",
+        // backgroundColor: "#666",
+        backgroundColor: buttonColors.enabledButtonBG,
         alignSelf: "stretch",
         padding: 10,
         borderRadius: borderSizes.m10,
@@ -432,7 +434,8 @@ const styles = StyleSheet.create({
     },
     inactivatedFinishButtonBackground: {
         marginTop: 20,
-        backgroundColor: "#BBB",
+        // backgroundColor: "#BBB",
+        backgroundColor: buttonColors.disabledButtonBG,
         alignSelf: "stretch",
         padding: 10,
         borderRadius: borderSizes.m10,

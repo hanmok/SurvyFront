@@ -23,7 +23,7 @@ const toastConfig = {
             {...props}
             text1Style={{
                 fontSize: 18,
-                color: "orange",
+                color: "#FF6B00",
             }}
             text2Style={{
                 fontSize: 15,

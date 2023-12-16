@@ -5,29 +5,32 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native";
 import { fontSizes } from "../../utils/sizes";
 import TextButton from "../../components/TextButton";
 import { isValidElement, useEffect, useState } from "react";
-import { colors } from "../../utils/colors";
+import { buttonColors, colors } from "../../utils/colors";
 // import isValidEmail from "../../utils/EmailValidation";
 import { isValidEmail } from "../../utils/validation";
 import showToast from "../../components/common/toast/Toast";
 import { screenWidth } from "../../utils/ScreenSize";
-import {
-    hasDuplicateUsername,
-    checkValidationOfUsernamePhoneNumber,
-    sendEmailAuthCode,
-    sendSMSAuthCode,
-    verifyEmailAuth,
-    verifySMSAuth,
-} from "../../API/UserAPI";
+// import {
+//     hasDuplicateUsername,
+//     checkValidationOfUsernamePhoneNumber,
+//     sendEmailAuthCode,
+//     sendSMSAuthCode,
+//     verifyEmailAuth,
+//     verifySMSAuth,
+// } from "../../API/UserAPI";
+
 import { useCustomContext } from "../../features/context/CustomContext";
 import { logObject } from "../../utils/Log";
 import showAdminToast from "../../components/common/toast/showAdminToast";
 import TextInputContainerView from "../../components/TextInputContainer";
+import { UserService } from "../../API/Services/UserService";
 
 export default function FindPasswordScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.findID>;
 }) {
+    const userService = new UserService();
     const [usingPhone, setUsingPhone] = useState(true);
 
     const [phoneSendingCodeButtonTapped, setPhoneSendingCodeButtonTapped] =
@@ -109,12 +112,19 @@ export default function FindPasswordScreen({
         setMailSendingCodeButtonTapped(true);
         updateLoadingStatus(true);
         console.log("mail input", username);
+
         try {
-            const ret = await hasDuplicateUsername(username);
+            const ret = await userService.hasDuplicateUsername(username);
             if (ret.statusCode >= 400) {
                 logObject("result", ret);
-                await sendEmailAuthCode(username);
+                await userService.sendEmailAuthCode(username);
                 showToast("success", "인증 메일을 확인해주세요.");
+            } else {
+                showToast(
+                    "error",
+                    "존재하지 않는 아이디입니다.",
+                    "아이디를 다시 확인해주세요."
+                );
             }
         } catch (error) {
             showAdminToast("error", error.message);
@@ -134,7 +144,7 @@ export default function FindPasswordScreen({
                 phone
             );
             if (validationCheck) {
-                const ret = await sendSMSAuthCode(username, phone);
+                const ret = await userService.sendSMSAuthCode(username, phone);
                 if (ret.statusCode < 300) {
                     showToast("success", "SMS 가 전송되었습니다.");
                 } else {
@@ -152,7 +162,10 @@ export default function FindPasswordScreen({
         username: string,
         phone: string
     ) => {
-        const ret = await checkValidationOfUsernamePhoneNumber(username, phone);
+        const ret = await userService.checkValidationOfUsernamePhoneNumber(
+            username,
+            phone
+        );
         console.log(
             `handleUsernamePhoneValidation, username: ${username}, phone: ${phone}`
         );
@@ -166,7 +179,7 @@ export default function FindPasswordScreen({
 
     const handleVerifyingSMSAuth = async (username: string, code: string) => {
         updateLoadingStatus(true);
-        const res = await verifySMSAuth(username, code);
+        const res = await userService.verifySMSAuth(username, code);
         if (res.statusCode < 300) {
             // 비밀번호 재설정
             navigation.navigate(NavigationTitle.settingPassword, {
@@ -181,7 +194,7 @@ export default function FindPasswordScreen({
 
     const handleVerifyingEmailAuth = async (username: string, code: string) => {
         updateLoadingStatus(true);
-        const res = await verifyEmailAuth(username, code);
+        const res = await userService.verifyEmailAuth(username, code);
         if (res.statusCode < 300) {
             // 비밀번호 재설정
             navigation.navigate(NavigationTitle.settingPassword, {
@@ -373,9 +386,14 @@ export default function FindPasswordScreen({
                             }}
                             backgroundStyle={[
                                 styles.confirmButtonBG,
-                                allPhoneConditionSatisfied
-                                    ? styles.activatedBackground
-                                    : styles.inactivatedBackground,
+                                // allPhoneConditionSatisfied
+                                //     ? styles.activatedBackground
+                                //     : styles.inactivatedBackground,
+                                {
+                                    backgroundColor: allPhoneConditionSatisfied
+                                        ? buttonColors.enabledButtonBG
+                                        : buttonColors.disabledButtonBG,
+                                },
                             ]}
                             isEnabled={allPhoneConditionSatisfied}
                             hasShadow={false}
@@ -447,9 +465,14 @@ export default function FindPasswordScreen({
                             }}
                             backgroundStyle={[
                                 styles.confirmButtonBG,
-                                allMailConditionSatisfied
-                                    ? styles.activatedBackground
-                                    : styles.inactivatedBackground,
+                                {
+                                    backgroundColor: allMailConditionSatisfied
+                                        ? buttonColors.enabledButtonBG
+                                        : buttonColors.disabledButtonBG,
+                                },
+                                // allMailConditionSatisfied
+                                //     ? styles.activatedBackground
+                                //     : styles.inactivatedBackground,
                             ]}
                             isEnabled={allMailConditionSatisfied}
                             hasShadow={false}
@@ -504,7 +527,7 @@ const styles = StyleSheet.create({
         borderColor: colors.gray4,
     },
     activatedBackground: {
-        backgroundColor: colors.deeperMainColor,
+        backgroundColor: buttonColors.enabledButtonBG,
     },
     authButtonBackground: {
         height: 42,

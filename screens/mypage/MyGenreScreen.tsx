@@ -3,11 +3,11 @@ import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Genre } from "../../interfaces/Genre";
-import { getAllGenres } from "../../API/GenreAPI";
+// import { getAllGenres } from "../../API/GenreAPI";
 import { logObject } from "../../utils/Log";
 import { useCustomContext } from "../../features/context/CustomContext";
-import { getUserGenres, updateUserGenres } from "../../API/UserAPI";
-import { colors } from "../../utils/colors";
+// import { getUserGenres, updateUserGenres } from "../../API/UserAPI";
+import { buttonColors, colors } from "../../utils/colors";
 import { fontSizes } from "../../utils/sizes";
 import { screenHeight } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
@@ -15,7 +15,9 @@ import { Entypo } from "@expo/vector-icons";
 import TextButton from "../../components/TextButton";
 import { areSetsEqual, setDifference } from "../../utils/Set";
 import { DefaultModal } from "../../modals/DefaultModal";
-import { commonStyles } from "../../utils/CommonStyles";
+import { commonStyles, genreStyles } from "../../utils/CommonStyles";
+import { UserService } from "../../API/Services/UserService";
+import { GenreService } from "../../API/Services/GenreService";
 
 // 내 관심사
 function MyGenreScreen({
@@ -26,16 +28,20 @@ function MyGenreScreen({
         NavigationTitle.myGenre
     >;
 }) {
+    const genreService = new GenreService();
     const [allGenres, setAllGenres] = useState<Genre[]>([]);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
     const [initialGenres, setInitialGenres] = useState<Genre[]>([]);
-    const { accessToken, userId, updateLoadingStatus } = useCustomContext();
+    const userService = new UserService();
     const [userInput, setUserInput] = useState<string>("");
+
     const [showingGenres, setShowingGenres] = useState<Genre[]>([]);
 
     const maxGenreSelection = 5;
 
     const [confirmTapped, setConfirmTapped] = useState(false);
+
+    const { accessToken, userId, updateLoadingStatus } = useCustomContext();
 
     useEffect(() => {
         const updateGenres = async () => {
@@ -46,13 +52,11 @@ function MyGenreScreen({
                 // deleteAll -> add All
                 const updatedGenresArr = selectedGenres.map(genre => genre.id);
                 updateLoadingStatus(true);
-                await updateUserGenres(
-                    userId,
-                    accessToken,
-                    updatedGenresArr
-                ).finally(() => {
-                    updateLoadingStatus(false);
-                });
+                await userService
+                    .updateUserGenres(userId, accessToken, updatedGenresArr)
+                    .finally(() => {
+                        updateLoadingStatus(false);
+                    });
                 navigation.pop();
             }
         };
@@ -88,15 +92,17 @@ function MyGenreScreen({
 
     useEffect(() => {
         const getGenres = async () => {
-            getAllGenres(accessToken).then(response => {
+            genreService.getAllGenres(accessToken).then(response => {
                 logObject("fetched genres: ", response);
-                setAllGenres(response);
-                setShowingGenres(response);
+                if (response.statusCode < 300) {
+                    setAllGenres(response.data);
+                    setShowingGenres(response.data);
+                }
             });
         };
 
         const getMyGenres = async () => {
-            getUserGenres(accessToken, userId).then(response => {
+            userService.getUserGenres(accessToken, userId).then(response => {
                 setInitialGenres(response.data);
                 setSelectedGenres(response.data);
             });
@@ -167,29 +173,31 @@ function MyGenreScreen({
             </View>
 
             <View style={styles.selectableGenreListWrapper}>
-                {showingGenres.map(genre => (
-                    <TextButton
-                        title={genre.name}
-                        onPress={() => {
-                            toggleGenreSelection(genre);
-                        }}
-                        backgroundStyle={
-                            selectedGenres
-                                .map(genre => genre.id)
-                                .includes(genre.id)
-                                ? commonStyles.selectedGenreButtonBG
-                                : commonStyles.unselectedGenreButtonBG
-                        }
-                        textStyle={
-                            selectedGenres
-                                .map(genre => genre.id)
-                                .includes(genre.id)
-                                ? commonStyles.selectedGenreText
-                                : commonStyles.unselectedGenreText
-                        }
-                        key={`showing${genre.name}`}
-                    />
-                ))}
+                {showingGenres &&
+                    showingGenres.length !== 0 &&
+                    showingGenres.map(genre => (
+                        <TextButton
+                            title={genre.name}
+                            onPress={() => {
+                                toggleGenreSelection(genre);
+                            }}
+                            backgroundStyle={
+                                selectedGenres
+                                    .map(genre => genre.id)
+                                    .includes(genre.id)
+                                    ? genreStyles.selectedGenreButtonBG
+                                    : genreStyles.unselectedGenreButtonBG
+                            }
+                            textStyle={
+                                selectedGenres
+                                    .map(genre => genre.id)
+                                    .includes(genre.id)
+                                    ? genreStyles.selectedGenreText
+                                    : genreStyles.unselectedGenreText
+                            }
+                            key={`showing${genre.name}`}
+                        />
+                    ))}
             </View>
             <View>
                 <TextButton
@@ -197,10 +205,14 @@ function MyGenreScreen({
                     onPress={() => {
                         setConfirmTapped(true);
                     }}
-                    textStyle={{ color: "white" }}
+                    textStyle={{
+                        color: "white",
+                        fontWeight: "800",
+                        letterSpacing: 2,
+                        fontSize: 16,
+                    }}
                     backgroundStyle={{
-                        // activated, inactivated
-                        backgroundColor: colors.deeperMainColor,
+                        backgroundColor: buttonColors.enabledButtonBG,
                         borderRadius: 8,
                         height: 45,
                     }}
@@ -260,19 +272,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingLeft: 10,
     },
-
     selectedGenreListWrapper: {
         borderBottomColor: colors.gray4,
-        borderBottomWidth: 1,
-        borderTopColor: colors.gray4,
-        borderTopWidth: 1,
+        borderBottomWidth: 2,
+        paddingBottom: 10,
         flex: 0,
         flexDirection: "row",
         flexWrap: "wrap",
         marginTop: 20,
         minHeight: 40,
     },
-
     selectableGenreListWrapper: {
         flex: 0.9,
         flexDirection: "row",

@@ -7,14 +7,16 @@ import {
     TextInput,
     TouchableWithoutFeedback,
     Keyboard,
+    Image,
 } from "react-native";
-import { colors } from "../../utils/colors";
+import { buttonColors, colors } from "../../utils/colors";
 import TextButton from "../../components/TextButton";
 import { screenWidth } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fontSizes } from "../../utils/sizes";
-import { autoSignin, getUserDetail, signin } from "../../API/UserAPI";
+// import { autoSignin, getUserDetail, signin } from "../../API/UserAPI";
+import { UserService } from "../../API/Services/UserService";
 import { UserState } from "../../interfaces/UserState";
 // import { loadUserState, saveUserState } from "../../utils/Storage";
 import { useEffect, useRef, useState } from "react";
@@ -34,8 +36,12 @@ export default function LoginScreen({
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.login>;
 }) {
+    const userService = new UserService();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const [satisfied, setSatisfied] = useState(false);
+
     const {
         updateUserDetail,
         updateAccessToken,
@@ -50,6 +56,11 @@ export default function LoginScreen({
             ref.current.focus();
         }
     };
+
+    useEffect(() => {
+        const isValid = isValidEmail(username) && password.length >= 8;
+        setSatisfied(isValid);
+    }, [username, password]);
 
     const handleDismissKeyboard = () => {
         console.log("dismiss keyboard called");
@@ -84,9 +95,8 @@ export default function LoginScreen({
             try {
                 const userState = await userDataManager.loadUserState();
                 if (userState !== null && userState.refreshToken) {
-                    const responseUserStateResult = await autoSignin(
-                        userState.refreshToken
-                    );
+                    const responseUserStateResult =
+                        await userService.autoSignin(userState.refreshToken);
                     const responseUserState = responseUserStateResult.data;
 
                     const updatedUserState =
@@ -97,7 +107,7 @@ export default function LoginScreen({
                     updateAccessToken(updatedUserState.accessToken);
                     updateUserId(updatedUserState.userId);
 
-                    const userDetailResult = await getUserDetail(
+                    const userDetailResult = await userService.getUserDetail(
                         updatedUserState.accessToken
                     );
 
@@ -127,11 +137,12 @@ export default function LoginScreen({
 
         updateLoadingStatus(true);
         let userState: UserState | null;
-        await signin(username, password)
+        await userService
+            .signin(username, password)
             .then(userResponse => {
                 const { userId, accessToken, refreshToken } = userResponse.data;
                 userState = { userId, accessToken, refreshToken };
-                return getUserDetail(userState.accessToken);
+                return userService.getUserDetail(userState.accessToken);
             })
             .then(userDetail => {
                 updateAccessToken(userState.accessToken);
@@ -156,7 +167,17 @@ export default function LoginScreen({
         <SafeAreaView style={styles.mainContainer}>
             <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
                 <View style={[styles.mainContainer]}>
-                    <Spacer size={40} />
+                    <View>
+                        <Spacer size={150} />
+                        <Image
+                            source={require("../../assets/logo_gugi.png")}
+                            style={{
+                                aspectRatio: 2.74,
+                                height: (screenWidth - 150) / 2.74,
+                                width: screenWidth - 150,
+                            }}
+                        />
+                    </View>
                     <View>
                         <View style={styles.loginInfoContainer}>
                             <TextInput
@@ -171,7 +192,7 @@ export default function LoginScreen({
                                 }}
                             />
                         </View>
-                        <View style={{ height: 4 }} />
+                        <View style={{ height: 8 }} />
                         <View style={styles.loginInfoContainer}>
                             <TextInput
                                 ref={passwordRef}
@@ -187,7 +208,7 @@ export default function LoginScreen({
                             />
                         </View>
 
-                        <View style={{ height: 30 }} />
+                        <View style={{ height: 25 }} />
 
                         <TextButton
                             title="로그인"
@@ -199,8 +220,14 @@ export default function LoginScreen({
                                 styles.loginInfoContainer,
                                 styles.bottomButtonContainer,
                                 styles.loginBackgroundStyle,
-                                { marginBottom: 10, marginTop: 30 },
+                                {
+                                    backgroundColor: satisfied
+                                        ? buttonColors.enabledButtonBG
+                                        : buttonColors.disabledButtonBG,
+                                },
                             ]}
+                            hasShadow={false}
+                            isEnabled={satisfied}
                         />
                         <Spacer size={10} />
                         <TextButton
@@ -211,7 +238,9 @@ export default function LoginScreen({
                                 styles.loginInfoContainer,
                                 styles.bottomButtonContainer,
                                 styles.loginBackgroundStyle,
+                                { backgroundColor: colors.deeperMainColor },
                             ]}
+                            hasShadow={false}
                         />
 
                         <Spacer size={20} />
@@ -266,11 +295,11 @@ const styles = StyleSheet.create({
         width: screenWidth - 40,
         marginLeft: 20,
         alignSelf: "center",
-        backgroundColor: colors.deepMainColor,
+        // backgroundColor: colors.deepMainColor,
         borderWidth: 0,
     },
     loginTextStyle: {
-        fontSize: 20,
+        fontSize: 18,
         justifyContent: "center",
         color: "white",
     },

@@ -38,6 +38,10 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
                                 fontSize: 14,
                                 fontWeight: "bold",
                                 letterSpacing: 2,
+                                color:
+                                    selectedIndex === index
+                                        ? colors.white
+                                        : colors.gray3,
                             }}
                         >
                             {option}
@@ -64,7 +68,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#e4e4e4",
     },
     selectedOptionButton: {
-        backgroundColor: "white",
+        // backgroundColor: "white",
+        backgroundColor: colors.deeperMainColor,
     },
 });
 

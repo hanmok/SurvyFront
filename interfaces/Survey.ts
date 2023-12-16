@@ -23,43 +23,47 @@ export interface Survey {
     createdAt: string;
 }
 
-export const makeSurvey = (
-    userId: number,
-    title: string,
-    participationGoal: number,
-    // geoCode: number,
-    targetMinAge: number,
-    targetMaxAge: number,
-    genreIds: number[],
-    geoIds: number[],
-    isTargetMale: number | undefined,
-    reward: number,
-    cost: number,
-    numOfSections: number
-) => {
-    const survey: Survey = {
-        id: undefined,
-        userId: userId,
-        title: title,
-        participationGoal: participationGoal,
-        // rewardRange: undefined,
-        currentParticipation: 0,
-        initialSectionId: undefined,
-        // geoCode: geoCode,
-        targetMinAge: targetMinAge,
-        targetMaxAge: targetMaxAge,
-        genreIds: genreIds,
-        geoIds: geoIds,
-        isTargetMale: isTargetMale,
-        reward: reward,
-        cost: cost,
-        numOfSections,
-        sections: [],
-        genres: [],
-        createdAt: "",
-    };
-    return survey;
-};
+export class SurveyBuilder {
+    private survey: Survey;
+
+    constructor(
+        public userId: number,
+        public title: string,
+        public participationGoal: number,
+        public targetMinAge: number,
+        public targetMaxAge: number,
+        public genreIds: number[],
+        public geoIds: number[],
+        public isTargetMale: number | undefined,
+        public reward: number,
+        public cost: number,
+        public numOfSections: number
+    ) {
+        this.survey = {
+            userId,
+            title,
+            participationGoal,
+            targetMinAge,
+            targetMaxAge,
+            genreIds,
+            geoIds,
+            isTargetMale,
+            reward,
+            cost,
+            initialSectionId: undefined,
+            currentParticipation: 0,
+            createdAt: "",
+            id: undefined,
+            numOfSections,
+            sections: [],
+            genres: [],
+        };
+    }
+
+    build(): Survey {
+        return this.survey;
+    }
+}
 
 export interface SurveyProps {
     surveyTitle: string;

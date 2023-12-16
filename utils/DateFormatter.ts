@@ -23,3 +23,11 @@ export function convertUnixTimestampToDateTime(timestamp: number) {
 
     return ret;
 }
+
+export function convertBirthDate(dateString: string): string {
+    const newDate = new Date(dateString);
+    const options = { timeZone: "Asia/Seoul" };
+    const koreanTime = newDate.toLocaleString("ko-KR", options);
+    // "1992. 7. 21. 오전 12:00:00" -> 1992 7 21
+    return koreanTime.split("오")[0].replaceAll(".", "");
+}

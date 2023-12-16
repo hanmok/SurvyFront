@@ -11,11 +11,12 @@ import { screenHeight } from "../utils/ScreenSize";
 import { log, logObject } from "../utils/Log";
 import Spacer from "../components/common/Spacer";
 // import { geoDataManager } from "../utils/Storage";
-import { fetchAllGeoInfos } from "../API/GeoAPI";
+// import { fetchAllGeoInfos } from "../API/GeoAPI";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 // import { updateOfficeAddress } from "../API/UserAPI";
 import { UserService } from "../API/Services/UserService";
 import { useCustomContext } from "../features/context/CustomContext";
+import { GeoService } from "../API/Services/GeoService";
 
 interface GeoSingleSelectionModalProps {
     onClose: () => void;
@@ -32,6 +33,7 @@ const GeoSingleSelectionModal: React.FC<GeoSingleSelectionModalProps> = ({
     initialGeo,
     isHome,
 }) => {
+    const geoService = new GeoService();
     const [isNullTapped, setNullTapped] = useState(false);
     const [selectedState, setSelectedState] = useState<GeoInfo>(null);
     const [selectedCity, setSelectedCity] = useState<GeoInfo>(null);
@@ -62,7 +64,8 @@ const GeoSingleSelectionModal: React.FC<GeoSingleSelectionModalProps> = ({
 
     useEffect(() => {
         const getAllGeos = async () => {
-            const allGeos = await fetchAllGeoInfos();
+            const geoResponse = await geoService.fetchAllGeoInfos();
+            const allGeos = geoResponse.data;
             setGeos(allGeos);
 
             const uniqueStates = allGeos.filter(geo => {

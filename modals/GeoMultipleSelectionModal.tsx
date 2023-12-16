@@ -11,8 +11,9 @@ import { screenHeight } from "../utils/ScreenSize";
 import { log, logObject } from "../utils/Log";
 import Spacer from "../components/common/Spacer";
 // import { geoDataManager } from "../utils/Storage";
-import { fetchAllGeoInfos } from "../API/GeoAPI";
+// import { fetchAllGeoInfos } from "../API/GeoAPI";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import { GeoService } from "../API/Services/GeoService";
 
 interface GeoMultipleSelectionModalProps {
     onClose: () => void;
@@ -27,6 +28,7 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
     isGeoModalVisible,
     selectedGeos,
 }) => {
+    const geoService = new GeoService();
     const [selectedState, setSelectedState] = useState<GeoInfo>(null);
     const [selectedCity, setSelectedCity] = useState<GeoInfo>(null);
     const [selectedCities, setSelectedCities] = useState<GeoInfo[]>([]);
@@ -162,7 +164,8 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
             // const allGeos = await loadWholeGeo();
             // const allGeos = await geoDataManager.loadWholeGeo();
 
-            const allGeos = await fetchAllGeoInfos();
+            const geoResponse = await geoService.fetchAllGeoInfos();
+            const allGeos = geoResponse.data;
             setGeos(allGeos);
 
             const sortedStates = allGeos.filter(

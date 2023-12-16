@@ -24,8 +24,6 @@ import {
 
 import { getSurveyQuery } from "../API/gqlQuery";
 import { RefreshControl } from "react-native-gesture-handler";
-import { fetchAllGeoInfos } from "../API/GeoAPI";
-
 import { useCustomContext } from "../features/context/CustomContext";
 // import { getSurveys } from "../API/SurveyAPI";
 // import { getUserDetail } from "../API/UserAPI";
@@ -39,6 +37,7 @@ import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
 import { SearchingModal } from "../modals/SearchingModal";
 import { SurveyService } from "../API/Services/SurveyService";
+import { GeoService } from "../API/Services/GeoService";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -50,7 +49,7 @@ function HomeScreen({
 }) {
     const userService = new UserService();
     const surveyService = new SurveyService();
-
+    const geoService = new GeoService();
     const [refreshing, setRefreshing] = useState(false);
 
     const [surveys, setSurveys] = useState<Survey[]>([]);

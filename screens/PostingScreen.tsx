@@ -42,7 +42,6 @@ import {
     PostingSurveyState,
     makePostingSurveyState,
 } from "../interfaces/PostingSurveyState";
-import { getAddress } from "../API/GeoAPI";
 
 import SectionModal from "../modals/SectionModal";
 import { RouteProp } from "@react-navigation/native";

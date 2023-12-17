@@ -11,6 +11,7 @@ import { Feather } from "@expo/vector-icons";
 import React from "react";
 import Separator from "../components/common/Separator";
 import { log } from "../utils/Log";
+import TextButton from "../components/TextButton";
 
 interface SectionModalProps {
     onClose: () => void;
@@ -32,14 +33,32 @@ const SectionModal: React.FC<SectionModalProps> = ({
     }, [numOfSections]);
 
     const sections = Array.from({ length: numOfSections }, (_, index) => (
-        <View style={{ alignItems: "center" }} key={index}>
-            <Button
+        // <View style={{ alignItems: "center" }} key={index}>
+        <View key={index}>
+            {/* <Button
                 // key={index}
                 title={`Section ${index + 1}`} // 보이는 인덱스 : 1,2,3
                 onPress={() => {
                     onSelection(index); // 실제 인덱스: 0, 1, 2
                     onClose();
                 }}
+            /> */}
+            <TextButton
+                title={`Section ${index + 1}`}
+                onPress={() => {
+                    onSelection(index);
+                    onClose();
+                }}
+                backgroundStyle={{
+                    height: 50,
+                }}
+                textStyle={{
+                    fontSize: 18,
+                    textAlign: "left",
+                    paddingLeft: 12,
+                    color: "#007AFF",
+                }}
+                hasShadow={false}
             />
             <Separator />
         </View>
@@ -60,21 +79,31 @@ const SectionModal: React.FC<SectionModalProps> = ({
             >
                 <View style={styles.wholeContainer}>
                     <View style={styles.mainContainer}>
-                        <Feather
-                            name="x"
-                            size={30}
-                            color="black"
-                            style={{ alignSelf: "flex-end", marginRight: 10 }}
-                            onPress={onClose}
-                        />
                         {sections}
                         <Separator />
-                        <Button
+                        {/* <Button
                             title="Add Section"
                             onPress={() => {
                                 onAdd();
                                 onClose();
                             }}
+                        /> */}
+                        <TextButton
+                            title={"Add Section"}
+                            onPress={() => {
+                                onAdd();
+                                onClose();
+                            }}
+                            backgroundStyle={{
+                                height: 50,
+                            }}
+                            textStyle={{
+                                fontSize: 18,
+                                textAlign: "left",
+                                paddingLeft: 12,
+                                color: "#007AFF",
+                            }}
+                            hasShadow={false}
                         />
                     </View>
                 </View>

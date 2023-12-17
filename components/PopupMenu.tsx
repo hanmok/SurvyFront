@@ -1,5 +1,5 @@
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import { Modal, StyleSheet, Animated, Easing } from "react-native";
 import { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -35,13 +35,23 @@ const PopupMenu: React.FC<PopupProps> = ({ options }) => {
                     resizeBox(1);
                 }}
             >
-                <Entypo
-                    name="dots-three-horizontal"
+                {/* <Entypo
+                    // name="dots-three-horizontal"
+
                     size={24}
                     color="black"
                     onPress={() => {
                         setVisible(true);
                         console.log("entypo called");
+                    }}
+                /> */}
+
+                <Ionicons
+                    name="reorder-three-sharp"
+                    size={28}
+                    color="black"
+                    onPress={() => {
+                        setVisible(true);
                     }}
                 />
             </TouchableOpacity>

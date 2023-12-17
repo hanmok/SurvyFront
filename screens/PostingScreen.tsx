@@ -15,44 +15,32 @@ import {
     paddingSizes,
 } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import TextButton from "../components/TextButton";
-// import PostingQuestionBox from "../components/PostingQuestionBox";
 import { useState } from "react";
-
 import { Question } from "../interfaces/Question";
-
 import PostingQuestionBox from "../components/posting/PostingQuestionBox";
 import CreatingQuestionModal from "../modals/CreatingQuestionModal";
-
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
 // import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
-
 import { log, logObject } from "../utils/Log";
 import ModifyingQuestionModal from "../modals/ModifyingQuestionModal";
 
 import { Section, makeSection } from "../interfaces/Section";
-
-// import { loadSavedPostingSurveys, savePostingSurvey } from "../utils/Storage";
-
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import {
     PostingSurveyState,
     makePostingSurveyState,
 } from "../interfaces/PostingSurveyState";
-
 import SectionModal from "../modals/SectionModal";
 import { RouteProp } from "@react-navigation/native";
 import PopupMenu from "../components/PopupMenu";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showAdminToast from "../components/common/toast/showAdminToast";
-// import {
-//     initializePostingSurvey,
-//     loadPostingSurvey,
-//     savePostingSurvey,
-// } from "../utils/PostingSurveyStorage";
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { PostingMenuModal } from "../modals/PostingMenuModal";
 
 export default function PostingScreen({
     navigation,
@@ -76,6 +64,7 @@ export default function PostingScreen({
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 
     const [isTitleModalVisible, setIsTitleModalVisible] = useState(false);
+    const [isMenuModalVisible, setIsMenuModalVisible] = useState(false);
     const [creatingQuestionModalVisible, setCreatingQuestionModalVisible] =
         useState(false);
     const [isSectionModalVisible, setSectionModalVisible] = useState(false);
@@ -87,6 +76,10 @@ export default function PostingScreen({
     const [postingSurvey, setPostingSurvey] = useState<
         PostingSurveyState | undefined
     >(undefined);
+
+    const toggleMenuModal = () => {
+        setIsMenuModalVisible(!isMenuModalVisible);
+    };
 
     useEffect(() => {
         const prevSurvey = route.params.postingSurveyState;
@@ -131,19 +124,6 @@ export default function PostingScreen({
         setIsNextButtonTapped(false);
     });
 
-    useEffect(() => {
-        console.log(
-            `section changed, current number of sections: ${sections.length}`
-        );
-    }, [sections]);
-
-    const handleMenuOptionSelect = (sectionIndex: number) => {
-        console.log(
-            "[PostingScreen] section menu tapped, idx:  " + sectionIndex
-        );
-        setCurrentSectionIndex(sectionIndex);
-    };
-
     const toggleCreateModal = () => {
         setCreatingQuestionModalVisible(!creatingQuestionModalVisible);
     };
@@ -176,27 +156,21 @@ export default function PostingScreen({
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <View style={styles.rightNavContainer}>
-                    <PopupMenu
-                        options={[
-                            {
-                                title: "순서 바꾸기",
-                                action: handleFirstOptionTapped,
-                            },
-                            {
-                                title: "초기화",
-                                action: initializeAll,
-                            },
-                            {
-                                title: "현재 Section 초기화",
-                                action: toggleInitializeCurrentSection,
-                            },
-                            {
-                                title: "저장",
-                                action: toggleSave,
-                            },
-                        ]}
-                    />
+                <View style={{ marginRight: 20, flexDirection: "row" }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            toggleMenuModal();
+                        }}
+                    >
+                        <Ionicons
+                            name="reorder-three-sharp"
+                            size={36}
+                            color="black"
+                            onPress={() => {
+                                toggleMenuModal();
+                            }}
+                        />
+                    </TouchableOpacity>
                 </View>
             ),
         });
@@ -561,6 +535,18 @@ export default function PostingScreen({
                 numOfSections={sections.length}
                 onAdd={addSection}
                 onSelection={selectSection}
+            />
+
+            <PostingMenuModal
+                onClose={toggleMenuModal}
+                onInitialize={initializeAll}
+                onInitializeCurrent={() => {
+                    setShouldInitializeCurrentSection(true);
+                }}
+                onSave={() => {
+                    toggleSave;
+                }}
+                isMenuModalVisible={isMenuModalVisible}
             />
 
             <View style={styles.subContainer}>

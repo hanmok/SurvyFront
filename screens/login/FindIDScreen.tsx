@@ -20,12 +20,28 @@ export default function FindIDScreen({
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.findID>;
 }) {
+    const userService = new UserService();
+
     const [phoneNumberSatisfied, setPhoneNumberSatisfied] = useState(false);
     const [authSatisfied, setAuthSatisfied] = useState(false);
 
     const [phoneInput, setPhoneInput] = useState("");
     const [authInput, setAuthInput] = useState("");
-    const userService = new UserService();
+
+    const [phoneSendingCodeButtonTapped, setPhoneSendingCodeButtonTapped] =
+        useState(false);
+
+    const [phoneSendingAuthButtonText, setPhoneSendingAuthButtonText] =
+        useState("인증번호 받기");
+
+    useEffect(() => {
+        if (phoneSendingCodeButtonTapped) {
+            setPhoneSendingAuthButtonText("재발송");
+        } else {
+            setPhoneSendingAuthButtonText("인증번호 받기");
+        }
+    }, [phoneSendingCodeButtonTapped]);
+
     useEffect(() => {
         setAuthSatisfied(authInput.length === 6);
     }, [authInput]);
@@ -144,8 +160,9 @@ export default function FindIDScreen({
                     </View>
 
                     <TextButton
-                        title="인증번호 받기"
+                        title={phoneSendingAuthButtonText}
                         onPress={() => {
+                            setPhoneSendingCodeButtonTapped(true);
                             handlePhoneDuplicate(phoneInput);
                         }}
                         backgroundStyle={[
@@ -181,7 +198,7 @@ export default function FindIDScreen({
                     <View // Text Input Box
                         style={[
                             styles.textInputBox,
-                            { marginTop: 10, flex: 0.9 },
+                            { marginTop: 10, flex: 1.0 },
                         ]}
                     >
                         <TextInput
@@ -194,8 +211,8 @@ export default function FindIDScreen({
                             autoCorrect={false}
                         />
                     </View>
-                    <TextButton
-                        title="재발송"
+                    {/* <TextButton
+                        title=""
                         onPress={() => {
                             handlePhoneDuplicate(phoneInput);
                         }}
@@ -205,7 +222,7 @@ export default function FindIDScreen({
                         ]}
                         hasShadow={false}
                         textStyle={{ color: "black", fontSize: 14 }}
-                    />
+                    /> */}
                 </View>
                 <View>
                     <TextButton

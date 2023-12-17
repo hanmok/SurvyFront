@@ -144,7 +144,10 @@ export default function FindPasswordScreen({
                 phone
             );
             if (validationCheck) {
-                const ret = await userService.sendSMSAuthCode(username, phone);
+                const ret = await userService.sendSMSAuthCodeForPassword(
+                    username,
+                    phone
+                );
                 if (ret.statusCode < 300) {
                     showToast("success", "SMS 가 전송되었습니다.");
                 } else {

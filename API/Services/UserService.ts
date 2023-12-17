@@ -152,19 +152,31 @@ export class UserService extends BaseApi {
     }
 
     async verifyEmailAuth(username: string, code: string) {
-        const url = `${API_BASE_URL}/user/verify-email`;
+        const url = `${API_BASE_URL}/user/find-password/verify-email`;
         const body = { username, code };
         return this.fetchData(url, "POST", body);
     }
-
-    async sendSMSAuthCode(username: string, phone: string) {
-        const url = `${API_BASE_URL}/user/send-sms`;
+    // 아이디 찾기 API 가 없다
+    async sendSMSAuthCodeForPassword(username: string, phone: string) {
+        const url = `${API_BASE_URL}/user/find-password/send-sms`;
         const body = { username, phone };
         return this.fetchData(url, "POST", body);
     }
 
+    async sendSMSAuthCodeForId(phone: string) {
+        const url = `${API_BASE_URL}/user/find-id/send-sms`;
+        const body = { phone };
+        return this.fetchData(url, "POST", body);
+    }
+
+    async verifyAuthCodeForId(phone: string, code: string) {
+        const url = `${API_BASE_URL}/user/find-id/verify-sms`;
+        const body = { phone, code };
+        return this.fetchData<string>(url, "POST", body);
+    }
+
     async verifySMSAuth(username: string, code: string) {
-        const url = `${API_BASE_URL}/user/verify-sms`;
+        const url = `${API_BASE_URL}/user/find-password/verify-sms`;
         const body = { username, code };
 
         return this.fetchData(url, "POST", body);

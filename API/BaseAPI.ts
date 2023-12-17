@@ -49,12 +49,12 @@ class BaseApi {
             }
             const apiResponse: ApiResponse<T> = await response.json();
             const statusCode = apiResponse.statusCode;
-
+            logObject("response", apiResponse);
             if (statusCode >= 200 && statusCode < 300) {
                 logObject("response data:", apiResponse.data);
             } else {
-                console.error(apiResponse.message);
-                showAdminToast("error", apiResponse.message);
+                // console.error(apiResponse.message);
+                // showAdminToast("error", apiResponse.message);
             }
             return apiResponse;
         } catch (error) {

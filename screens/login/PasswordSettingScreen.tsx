@@ -88,7 +88,9 @@ export default function PasswordSettingScreen({
             </View>
 
             <View style={styles.descriptionContainer}>
-                <Text style={{ fontSize: 12, color: colors.gray3 }}>
+                <Text
+                    style={{ fontSize: 12, color: colors.gray3, marginTop: 4 }}
+                >
                     8자 이상, 공백 사용 불가
                 </Text>
             </View>

@@ -18,7 +18,7 @@ export type RootStackParamList = {
     EndParticipation: undefined;
     PostingBase: undefined;
     FindID: undefined;
-    FoundID: undefined;
+    FoundID: { username: string };
     FindPassword: undefined;
     SettingPassword: { username: string; shouldPopAll: boolean };
     SignUp: undefined;

@@ -4,20 +4,24 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { StyleSheet, View, Text } from "react-native";
 import TextButton from "../../components/TextButton";
 import { colors } from "../../utils/colors";
+import { RouteProp } from "@react-navigation/native";
 
 export default function FoundIDScreen({
     navigation,
+    route,
 }: {
     navigation: StackNavigationProp<
         RootStackParamList,
         NavigationTitle.foundID
     >;
+    route: RouteProp<RootStackParamList, NavigationTitle.foundID>;
 }) {
+    const { username } = route.params;
     return (
         <View style={{ flex: 1, justifyContent: "space-between" }}>
             <View style={{ marginTop: 60, marginHorizontal: 18 }}>
                 <Text style={{ fontSize: 18 }}>고객님의 계정을 찾았습니다</Text>
-                <Text style={{ marginTop: 10 }}>dmammmm@naver.com</Text>
+                <Text style={{ marginTop: 10 }}>{username}</Text>
             </View>
             <View>
                 <TextButton

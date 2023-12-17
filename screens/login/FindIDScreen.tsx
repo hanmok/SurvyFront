@@ -52,30 +52,37 @@ export default function FindIDScreen({
 
     const { updateLoadingStatus } = useCustomContext();
 
+    const handleVerifyingSMSAuth = async (phone: string, code: string) => {
+        updateLoadingStatus(true);
+        const ret = await userService.verifyAuthCodeForId(phone, code);
+        if (ret.statusCode >= 200 && ret.statusCode < 300) {
+            // navigation.navigate(NavigationTitle.foundID, {username: ret.data})
+            navigation.navigate(NavigationTitle.foundID, {
+                username: ret.data,
+            });
+        } else {
+            showToast("error", "인증번호를 다시 확인해주세요.");
+        }
+        updateLoadingStatus(false);
+    };
+
     const handlePhoneDuplicate = async (phone: string) => {
         if (isValidPhone(phone)) {
             updateLoadingStatus(true);
 
-            await userService
-                .checkPhoneDuplicate(phoneInput)
-                .then(ret => {
-                    if (ret.statusCode >= 400) {
-                        // some has this phone number
-                        logObject("result", ret);
-                        showToast("success", "인증번호가 전송되었습니다.");
-                    } else {
-                        showToast(
-                            "error",
-                            "해당 번호로 가입된 계정이 없습니다."
-                        );
-                    }
-                })
-                .catch(error => {
-                    showAdminToast("error", error.message);
-                })
-                .finally(() => {
-                    updateLoadingStatus(false);
-                });
+            try {
+                const ret = await userService.checkPhoneDuplicate(phoneInput);
+                if (ret.statusCode >= 400) {
+                    showToast("success", "인증번호가 전송되었습니다.");
+                    await userService.sendSMSAuthCodeForId(phoneInput);
+                } else {
+                    showToast("error", "해당 번호로 가입된 계정이 없습니다.");
+                }
+            } catch (error) {
+                showAdminToast("error", error.message);
+            } finally {
+                updateLoadingStatus(false);
+            }
         } else {
             showAdminToast("error", "Phone Error .");
         }
@@ -192,7 +199,6 @@ export default function FindIDScreen({
                         flexDirection: "row",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        // backgroundColor: "magenta",
                     }}
                 >
                     <View // Text Input Box
@@ -211,24 +217,14 @@ export default function FindIDScreen({
                             autoCorrect={false}
                         />
                     </View>
-                    {/* <TextButton
-                        title=""
-                        onPress={() => {
-                            handlePhoneDuplicate(phoneInput);
-                        }}
-                        backgroundStyle={[
-                            styles.authButtonBackground,
-                            styles.inactivatedBorder,
-                        ]}
-                        hasShadow={false}
-                        textStyle={{ color: "black", fontSize: 14 }}
-                    /> */}
                 </View>
                 <View>
                     <TextButton
                         title="확인"
                         onPress={() => {
-                            navigation.navigate(NavigationTitle.foundID);
+                            // navigation.navigate(NavigationTitle.foundID);
+                            // TODO: Implement verification
+                            handleVerifyingSMSAuth(phoneInput, authInput);
                         }}
                         backgroundStyle={[
                             styles.authButtonBackground,

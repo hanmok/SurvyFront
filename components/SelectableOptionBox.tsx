@@ -22,6 +22,7 @@ import { QuestionTypeIdStrings } from "../QuestionType";
 import CompleteAccessoryView from "./CompleteAccessoryView";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { SelectionImage } from "./common/ImageNameType";
+import { screenHeight } from "../utils/ScreenSize";
 
 interface SelectableOptionProps {
     id: number;
@@ -53,6 +54,9 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         console.log("question type id:", questionTypeId);
     }, []);
 
+    const scrollViewRef = useRef(null);
+    //   const inputRef = useRef(null);
+
     const textInputRef = useRef(null);
 
     const [userInput, setUserInput] = useState("");
@@ -77,6 +81,44 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         Keyboard.dismiss();
     };
 
+    // const handleFocus = () => {
+    //     const keyboardDidShowListener = Keyboard.addListener(
+    //         "keyboardDidShow",
+    //         event => {
+    //             const keyboardHeight = event.endCoordinates.height;
+    //             // const screenHeight = Dimensions.get('window').height;
+    //             if (textInputRef && textInputRef.current) {
+    //                 const inputPosition = textInputRef.current.measure(
+    //                     (fx, fy, width, height, px, py) => py
+    //                 );
+
+    //                 console.log(`inputPosition: ${inputPosition}`);
+    //                 if (inputPosition < screenHeight / 2) {
+    //                     // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
+    //                     scrollViewRef.current.scrollTo({
+    //                         y: inputPosition - keyboardHeight,
+    //                         animated: true,
+    //                     });
+    //                     console.log("scrolled");
+    //                 }
+    //                 console.log("not scrolled");
+    //             }
+    //         }
+    //     );
+
+    //     const keyboardDidHideListener = Keyboard.addListener(
+    //         "keyboardDidHide",
+    //         () => {}
+    //     );
+
+    //     return () => {
+    //         keyboardDidShowListener.remove();
+    //         keyboardDidHideListener.remove();
+    //     };
+    // };
+
+    const handleFocus = () => {};
+
     const inputAccessoryViewId = "accessoryViewId";
 
     {
@@ -97,6 +139,8 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             <View style={styles.textContainer}>
                                 <TextInput
                                     placeholder="기타"
+                                    ref={textInputRef}
+                                    onFocus={handleFocus}
                                     value={userInput}
                                     onChangeText={setUserInput}
                                     style={styles.extraInput}
@@ -149,6 +193,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                         );
                                     }}
                                     onFocus={() => {
+                                        handleFocus();
                                         onPress();
                                         console.log("기타 tapped");
                                     }}
@@ -192,6 +237,11 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         {isExtra === 1 ? (
                             <View style={styles.textContainer}>
                                 <TextInput
+                                    ref={textInputRef}
+                                    onFocus={() => {
+                                        handleFocus();
+                                        onPress();
+                                    }}
                                     placeholder="기타"
                                     value={userInput}
                                     onChangeText={setUserInput}
@@ -249,6 +299,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                         );
                                     }}
                                     onFocus={() => {
+                                        handleFocus();
                                         onPress();
                                         console.log("기타 tapped");
                                     }}
@@ -280,6 +331,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                     <View style={styles.textContainer}>
                         {/* <KeyboardAwareScrollView> */}
                         <TextInput
+                            onFocus={handleFocus}
                             ref={textInputRef}
                             placeholder="답변을 입력해주세요."
                             multiline
@@ -341,7 +393,11 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         }
     }
 
-    return <View style={styles.container}>{selectableOptionComponent}</View>;
+    return (
+        <View style={styles.container} ref={scrollViewRef}>
+            {selectableOptionComponent}
+        </View>
+    );
 };
 
 export default SelectableOptionBox;

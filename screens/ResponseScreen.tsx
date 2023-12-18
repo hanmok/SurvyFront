@@ -217,8 +217,10 @@ export default function ResponseScreen({
                 "[ResponseScreen] currentSequence changed, participatings ",
                 participatings
             );
+
             // candidate 1
             log("currentSequence: " + currentSequence);
+
             const correspondingUserId = participatings.find(
                 participating => participating.sequence === currentSequence
             ).user.id;
@@ -268,11 +270,12 @@ export default function ResponseScreen({
         if (
             answers &&
             answers.length !== 0 &&
-            survey !== null &&
-            participatings
+            survey !== null
+            // && participatings
         ) {
             let tempQuestionResponseContainerProps: QuestionResponseContainerProps[] =
                 [];
+            console.log("sth called");
             logObject("survey:", survey);
             logObject("answers:", answers);
 
@@ -289,7 +292,7 @@ export default function ResponseScreen({
                     const selectableOptions = question.selectableOptions;
                     // question.section.sequence
                     // q id 가 같은 질문들
-                    logObject("all answers: ", answers);
+                    logObject("all answers: ", answers); // ccc, ddd
                     logObject("question: ", question);
                     const correspondingAnswers = answers.filter(
                         ans => ans.question.id === question.id
@@ -411,88 +414,94 @@ export default function ResponseScreen({
 
     return (
         <View style={styles.container}>
-            <View
-                style={{
-                    height: 30,
-                    flex: 1,
-                    justifyContent: "space-between",
-                }}
-            >
-                <>
-                    <SectionList
-                        sections={sectionData.map(
-                            (response: ResponseSection) => ({
-                                title: `Section ${response.index}`,
-                                data: response.responseProp,
-                            })
-                        )}
-                        renderItem={
-                            isShowingOverall
-                                ? overallQuestionResponseBoxItem
-                                : indivisualQuestionResponseBoxItem
-                        }
-                        keyExtractor={item => `${item.questionTitle}`}
-                        ItemSeparatorComponent={() => {
-                            return <View style={{ height: 10 }} />;
-                        }}
-                        ListHeaderComponent={listHeader} // Survey Title
-                        ListFooterComponent={listFooter}
-                        stickySectionHeadersEnabled={false}
-                        renderSectionHeader={({ section }) => (
-                            <View
-                                style={{
-                                    marginTop: 60,
-                                    marginBottom: 10,
-                                    paddingLeft: 20,
-                                }}
-                            >
-                                <Text style={{ fontSize: 28 }}>
-                                    {section.title}
-                                </Text>
+            {participatings && participatings.length === 0 ? (
+                <View>
+                    <Text>참여 인원이 없습니다</Text>
+                </View>
+            ) : (
+                <View
+                    style={{
+                        height: 30,
+                        flex: 1,
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <>
+                        <SectionList
+                            sections={sectionData.map(
+                                (response: ResponseSection) => ({
+                                    title: `Section ${response.index}`,
+                                    data: response.responseProp,
+                                })
+                            )}
+                            renderItem={
+                                isShowingOverall
+                                    ? overallQuestionResponseBoxItem
+                                    : indivisualQuestionResponseBoxItem
+                            }
+                            keyExtractor={item => `${item.questionTitle}`}
+                            ItemSeparatorComponent={() => {
+                                return <View style={{ height: 10 }} />;
+                            }}
+                            ListHeaderComponent={listHeader} // Survey Title
+                            ListFooterComponent={listFooter}
+                            stickySectionHeadersEnabled={false}
+                            renderSectionHeader={({ section }) => (
+                                <View
+                                    style={{
+                                        marginTop: 60,
+                                        marginBottom: 10,
+                                        paddingLeft: 20,
+                                    }}
+                                >
+                                    <Text style={{ fontSize: 28 }}>
+                                        {section.title}
+                                    </Text>
+                                </View>
+                            )}
+                        />
+                    </>
+
+                    <View style={styles.bottomLayout}>
+                        {isShowingOverall ? (
+                            <Text style={styles.bottom}>
+                                총 설문 인원 {participatings?.length ?? 0}
+                            </Text>
+                        ) : (
+                            // Separate
+                            <View style={styles.userIndexContainer}>
+                                <Entypo
+                                    name="chevron-left"
+                                    onPress={countDown}
+                                    size={24}
+                                />
+                                <TextButton
+                                    title={`${currentSequence}`}
+                                    textStyle={{ textAlign: "center" }}
+                                    backgroundStyle={
+                                        styles.currentUserIndexContainerBG
+                                    }
+                                    onPress={() => {}}
+                                    isEnabled={false}
+                                />
+                                <Entypo
+                                    name="chevron-right"
+                                    onPress={countUp}
+                                    size={24}
+                                />
                             </View>
                         )}
-                    />
-                </>
-
-                <View style={styles.bottomLayout}>
-                    {isShowingOverall ? (
-                        <Text style={styles.bottom}>
-                            총 설문 인원 {survey?.currentParticipation ?? 0}
-                        </Text>
-                    ) : (
-                        // Separate
-                        <View style={styles.userIndexContainer}>
-                            <Entypo
-                                name="chevron-left"
-                                onPress={countDown}
-                                size={24}
-                            />
-                            <TextButton
-                                title={`${currentSequence}`}
-                                textStyle={{ textAlign: "center" }}
-                                backgroundStyle={
-                                    styles.currentUserIndexContainerBG
-                                }
-                                onPress={() => {}}
-                                isEnabled={false}
-                            />
-                            <Entypo
-                                name="chevron-right"
-                                onPress={countUp}
-                                size={24}
+                        <View style={styles.bottomSegment}>
+                            <CustomSegmentedControl
+                                options={options}
+                                handlePress={idx => {
+                                    setIsShowingOverall(idx === 0);
+                                }}
                             />
                         </View>
-                    )}
-                    <View style={styles.bottomSegment}>
-                        <CustomSegmentedControl
-                            options={options}
-                            handlePress={idx => {
-                                setIsShowingOverall(idx === 0);
-                            }}
-                        />
                     </View>
                 </View>
-            </View>
+            )}
         </View>
     );
 }

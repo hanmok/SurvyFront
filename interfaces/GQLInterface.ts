@@ -37,7 +37,7 @@ export interface GQLQuestion {
     survey: GQLSurvey;
     selectableOptions: [GQLSelectableOption];
 }
-
+/** value, section, isExtra, question, id, position */
 export interface GQLSelectableOption {
     id: number;
     question: GQLQuestion;
@@ -45,6 +45,7 @@ export interface GQLSelectableOption {
     value: string;
     section: GQLSection;
     isExtra: number;
+    // answerText?: string;
 }
 
 /** id, username, collectedReward, ... */

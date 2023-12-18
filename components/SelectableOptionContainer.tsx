@@ -1,6 +1,5 @@
 import { View } from "react-native";
-import SelectableOptionBox from // QuestionTypeIdStrings,
-"./SelectableOptionBox";
+import SelectableOptionBox from "./SelectableOptionBox"; // QuestionTypeIdStrings,
 import { QuestionTypeIdStrings } from "../QuestionType";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -17,6 +16,7 @@ import {
     GQLSelectableOption,
 } from "../interfaces/GQLInterface";
 import { QuestionTypeId } from "../QuestionType";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface SelectablContainerProps {
     selectableOptions: GQLSelectableOption[];
@@ -105,7 +105,8 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     );
 
     return (
-        <View>
+        // <View>
+        <ScrollView>
             {selectableOptions.map((selectableOption, soIndex) => {
                 return (
                     <SelectableOptionBox
@@ -129,7 +130,8 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     />
                 );
             })}
-        </View>
+            {/* </View> */}
+        </ScrollView>
     );
 };
 

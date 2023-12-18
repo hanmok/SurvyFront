@@ -49,7 +49,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useCustomContext } from "../features/context/CustomContext";
 import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
-import { screenWidth } from "../utils/ScreenSize";
+import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { AnswerService } from "../API/Services/AnswerService";
 import { ParticipatingService } from "../API/Services/ParticipatingService";
 
@@ -158,6 +158,40 @@ function ParticipatingScreen({
 
         navigation.navigate(NavigationTitle.endParticipation);
     };
+
+    const inputRef = useRef(null);
+    const scrollViewRef = useRef(null);
+
+    // const handleFocus = () => {
+    //     const keyboardDidShowListener = Keyboard.addListener(
+    //         "keyboardDidShow",
+    //         event => {
+    //             const keyboardHeight = event.endCoordinates.height;
+    //             // const screenHeight = Dimensions.get('window').height;
+    //             const inputPosition = inputRef.current.measure(
+    //                 (fx, fy, width, height, px, py) => py
+    //             );
+
+    //             if (inputPosition < screenHeight / 2) {
+    //                 // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
+    //                 scrollViewRef.current.scrollTo({
+    //                     y: inputPosition - keyboardHeight,
+    //                     animated: true,
+    //                 });
+    //             }
+    //         }
+    //     );
+
+    //     const keyboardDidHideListener = Keyboard.addListener(
+    //         "keyboardDidHide",
+    //         () => {}
+    //     );
+
+    //     return () => {
+    //         keyboardDidShowListener.remove();
+    //         keyboardDidHideListener.remove();
+    //     };
+    // };
 
     const dismissKeyboard = () => {
         console.log("keyboard dismissed");

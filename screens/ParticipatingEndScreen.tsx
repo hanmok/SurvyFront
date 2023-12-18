@@ -26,7 +26,7 @@ function ParticipatingEndScreen({
 }) {
     const participatingService = new ParticipatingService();
     // type HonestType = true | false
-    const [shoulGoMain, setShouldGoHome] = useState<boolean | null>(null);
+    const [shoulGoMain, setShouldGoMain] = useState<boolean | null>(null);
 
     useEffect(() => {
         const patch = async (shouldGoMain: boolean) => {
@@ -34,11 +34,11 @@ function ParticipatingEndScreen({
                 .patch(accessToken, userId, participatingSurveyId, shoulGoMain)
                 .finally(() => {
                     updateLoadingStatus(false);
-                    showToast(
-                        "success",
-                        "설문에 참여해주셔서 감사합니다",
-                        "포인트는 검수 후 지급됩니다"
-                    );
+                    // showToast(
+                    //     "success",
+                    //     "설문에 참여해주셔서 감사합니다",
+                    //     "포인트는 검수 후 지급됩니다"
+                    // );
                     if (shouldGoMain) {
                         navigation.pop(2);
                     } else {
@@ -100,7 +100,7 @@ function ParticipatingEndScreen({
                 <TextButton
                     title={"메인으로 돌아가기"}
                     onPress={() => {
-                        setShouldGoHome(true);
+                        setShouldGoMain(true);
                     }}
                     backgroundStyle={{
                         borderRadius: 12,
@@ -115,7 +115,7 @@ function ParticipatingEndScreen({
                 <TextButton
                     title={"설문 전체 결과 보기"}
                     onPress={() => {
-                        setShouldGoHome(false);
+                        setShouldGoMain(false);
                     }}
                     backgroundStyle={{
                         borderRadius: 12,

@@ -48,7 +48,7 @@ export const PostingMenuModal: React.FC<PostingMenuModalProps> = ({
                                 height: 50,
                             }}
                             textStyle={{
-                                fontSize: 16,
+                                fontSize: 18,
                                 textAlign: "left",
                                 paddingLeft: 12,
                             }}
@@ -66,7 +66,7 @@ export const PostingMenuModal: React.FC<PostingMenuModalProps> = ({
                                 height: 50,
                             }}
                             textStyle={{
-                                fontSize: 16,
+                                fontSize: 18,
                                 textAlign: "left",
                                 paddingLeft: 12,
                             }}
@@ -95,7 +95,7 @@ export const PostingMenuModal: React.FC<PostingMenuModalProps> = ({
                                 height: 50,
                             }}
                             textStyle={{
-                                fontSize: 16,
+                                fontSize: 18,
                                 textAlign: "left",
                                 paddingLeft: 12,
                             }}

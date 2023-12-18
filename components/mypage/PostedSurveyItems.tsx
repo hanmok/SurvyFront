@@ -74,7 +74,7 @@ const PostedSurveyItems = ({
                                 {convertUnixTimestampToDateTime(item.createdAt)}
                             </Text> */}
                         </View>
-                        <View>
+                        {/* <View>
                             <TextButton
                                 title={item.code}
                                 onPress={() => {
@@ -88,7 +88,7 @@ const PostedSurveyItems = ({
                                     width: 80,
                                 }}
                             />
-                        </View>
+                        </View> */}
                     </View>
                 </TouchableNativeFeedback>
             )}

@@ -18,7 +18,7 @@ const GenderSelection: React.FC<GenderSelectionProps> = ({
             <View style={styles.buttonContainer}>
                 {selectionOptions.map((option, index) => (
                     <TouchableOpacity
-                        key={index}
+                        key={`gender-${index}`}
                         style={[
                             styles.optionButton,
                             ,

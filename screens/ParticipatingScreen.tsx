@@ -161,6 +161,7 @@ function ParticipatingScreen({
 
     const inputRef = useRef(null);
     const scrollViewRef = useRef(null);
+    const flatListRef = useRef(null);
 
     // const handleFocus = () => {
     //     const keyboardDidShowListener = Keyboard.addListener(
@@ -171,7 +172,6 @@ function ParticipatingScreen({
     //             const inputPosition = inputRef.current.measure(
     //                 (fx, fy, width, height, px, py) => py
     //             );
-
     //             if (inputPosition < screenHeight / 2) {
     //                 // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
     //                 scrollViewRef.current.scrollTo({
@@ -192,6 +192,41 @@ function ParticipatingScreen({
     //         keyboardDidHideListener.remove();
     //     };
     // };
+
+    const focusedTextInputRef = useRef(null);
+
+    // useEffect(() => {
+    //     const keyboardDidShowListener = Keyboard.addListener(
+    //         "keyboardDidShow",
+    //         event => {
+    //             // Get the position of the focused TextInput
+    //             if (focusedTextInputRef && focusedTextInputRef.current) {
+    //                 const keyboardHeight = event.endCoordinates.height;
+
+    //                 const inputPosition = focusedTextInputRef.current.measure(
+    //                     (x, y, width, height, pageX, pageY) => {
+    //                         // If the TextInput is below the center of the screen, lift the view
+    //                         if (pageY > screenHeight / 2) {
+    //                             // flatListRef.current.scrollTo({
+    //                                 flatListRef.current
+    //                                 y: inputPosition - keyboardHeight,
+    //                                 animated: true,
+    //                             });
+    //                             // You can set the position here or dispatch an action to handle the state accordingly
+    //                             // For simplicity, let's just log for now
+    //                             console.log("Lift the view");
+    //                         } else {
+    //                             console.log("Do not lift the view");
+    //                         }
+    //                     }
+    //                 );
+    //             }
+    //         }
+    //     );
+    //     return () => {
+    //         keyboardDidShowListener.remove();
+    //     };
+    // }, []);
 
     const dismissKeyboard = () => {
         console.log("keyboard dismissed");
@@ -409,7 +444,9 @@ function ParticipatingScreen({
     };
 
     return (
-        <KeyboardAvoidingView style={styles.container} behavior="position">
+        // <KeyboardAvoidingView style={styles.container} behavior="position">
+        // <View></View>
+        <View style={styles.container}>
             <TouchableNativeFeedback onPress={dismissKeyboard}>
                 <View
                     style={{
@@ -418,9 +455,18 @@ function ParticipatingScreen({
                     }}
                 >
                     <FlatList
+                        ref={flatListRef}
                         style={styles.flatListStyle} // alignSelf: stretch
                         data={questions}
                         renderItem={renderItem}
+                        // renderItem={(item) => {
+                        //     if (item.index === 0) {
+                        //         return React.cloneElement(item, {
+                        //             ref: inputRef
+                        //         })
+                        //     }
+                        //     return item.renderItem
+                        // }}
                         keyExtractor={item => `${item.id}${item.text} `}
                         ItemSeparatorComponent={() => (
                             <View style={{ height: 10 }} />
@@ -429,7 +475,8 @@ function ParticipatingScreen({
                     />
                 </View>
             </TouchableNativeFeedback>
-        </KeyboardAvoidingView>
+        </View>
+        // </KeyboardAvoidingView>
     );
 }
 

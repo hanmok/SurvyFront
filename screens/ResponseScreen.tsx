@@ -415,8 +415,13 @@ export default function ResponseScreen({
     return (
         <View style={styles.container}>
             {participatings && participatings.length === 0 ? (
-                <View>
-                    <Text>참여 인원이 없습니다</Text>
+                <View
+                    style={{
+                        alignItems: "center",
+                        marginTop: 100,
+                    }}
+                >
+                    <Text style={{ fontSize: 20 }}>참여 인원이 없습니다</Text>
                 </View>
             ) : (
                 <View

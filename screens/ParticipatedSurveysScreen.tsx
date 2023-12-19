@@ -12,12 +12,13 @@ import { fontSizes, marginSizes } from "../utils/sizes";
 import accounting from "accounting";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
+import { logObject } from "../utils/Log";
 
 export interface ParticipatedSurveyItem {
     title: string;
     reward: number;
     id: number;
-    createdAt: number;
+    createdAt: string;
 }
 
 interface ParticipatedSurveyResponse {
@@ -42,9 +43,11 @@ function ParticipatedSurveysScreen({
     );
 
     const participatedSurveys: ParticipatedSurveyItem[] =
-        data?.user.participated_surveys.map(item =>
-            convertKeysToCamelCase(item)
-        ) || [];
+        data?.user.participated_surveys.map(item => {
+            const ret = convertKeysToCamelCase(item);
+            logObject("participatedSurveys", ret);
+            return ret;
+        }) || [];
 
     useEffect(() => {
         updateLoadingStatus(loading);
@@ -53,6 +56,24 @@ function ParticipatedSurveysScreen({
     if (error) {
         return <Text>Error: {error.message}</Text>;
     }
+
+    const convertTime = (dateNumberString: string) => {
+        console.log(`input number: ${dateNumberString}`);
+        console.log(`${typeof dateNumberString}`);
+        const date = new Date(parseInt(dateNumberString));
+        logObject("converted Date", date);
+
+        if (!isNaN(date.getTime())) {
+            // return date.toLocaleDateString().split("/").reverse().join(".");
+            const fullDate = date.toLocaleDateString(); // 10/30/2023
+            const splitted = fullDate.split("/");
+            return splitted[2] + "-" + splitted[0] + "-" + splitted[1];
+            // return date.toLocaleDateString();
+        }
+        return "";
+
+        return date.toLocaleDateString().split("/").reverse().join(".");
+    };
 
     return participatedSurveys.length !== 0 ? (
         <View style={{ marginTop: 20 }}>
@@ -91,11 +112,13 @@ function ParticipatedSurveysScreen({
                             >
                                 {item.title}
                             </Text>
-                            <Text>
+                            {/* <Text>
                                 +{accounting.formatNumber(item.reward)} P
-                            </Text>
+                            </Text> */}
                         </View>
-                        {/* <Text>{convertTime(item.createdAt)}</Text> */}
+                        <View style={{ alignItems: "flex-end" }}>
+                            <Text>{convertTime(item.createdAt)}</Text>
+                        </View>
                     </TouchableOpacity>
                 )}
                 // 참여한 날짜가 아니야.

@@ -98,11 +98,6 @@ const PostedSurveyItems = ({
     );
 };
 
-const convertTime = (number: number) => {
-    const date = new Date(number);
-    return date.toLocaleDateString().split("/").reverse().join(".");
-};
-
 export default PostedSurveyItems;
 
 const styles = StyleSheet.create({

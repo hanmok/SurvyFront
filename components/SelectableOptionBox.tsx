@@ -89,19 +89,36 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     //             // const screenHeight = Dimensions.get('window').height;
     //             if (textInputRef && textInputRef.current) {
     //                 const inputPosition = textInputRef.current.measure(
-    //                     (fx, fy, width, height, px, py) => py
+    //                     (fx, fy, width, height, px, py) => {
+    //                         console.log(
+    //                             `fx: ${fx}, fy: ${fy}, width: ${width}, height: ${height}, px: ${px}, py: ${py}, keyboardHeight: ${keyboardHeight}, screenHeight: ${screenHeight}`
+    //                         );
+
+    //                         if (py < screenHeight / 2) {
+    //                             // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
+    //                             scrollViewRef.current.scrollTo({
+    //                                 y: inputPosition - keyboardHeight,
+    //                                 animated: true,
+    //                             });
+    //                             console.log("scrolled");
+    //                         }
+    //                         console.log("not scrolle");
+
+    //                         return py;
+    //                     }
     //                 );
 
     //                 console.log(`inputPosition: ${inputPosition}`);
-    //                 if (inputPosition < screenHeight / 2) {
-    //                     // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
-    //                     scrollViewRef.current.scrollTo({
-    //                         y: inputPosition - keyboardHeight,
-    //                         animated: true,
-    //                     });
-    //                     console.log("scrolled");
-    //                 }
-    //                 console.log("not scrolled");
+
+    //                 // if (inputPosition < screenHeight / 2) {
+    //                 //     // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
+    //                 //     scrollViewRef.current.scrollTo({
+    //                 //         y: inputPosition - keyboardHeight,
+    //                 //         animated: true,
+    //                 //     });
+    //                 //     console.log("scrolled");
+    //                 // }
+    //                 // console.log("not scrolle");
     //             }
     //         }
     //     );

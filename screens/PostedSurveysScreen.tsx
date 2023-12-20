@@ -69,14 +69,6 @@ function PostedSurveysScreen({
                     survey.id === parseInt(surveyId);
                 });
 
-                // if (tappedItem && tappedItem.currentParticipation !== 0) {
-                //     navigation.navigate(NavigationTitle.response, {
-                //         surveyId,
-                //     });
-                // } else {
-                //     showToast("error", "현재 참여 인원이 없습니다.");
-                // }
-
                 navigation.navigate(NavigationTitle.response, {
                     surveyId,
                 });

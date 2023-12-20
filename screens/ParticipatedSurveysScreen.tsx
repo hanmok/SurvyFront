@@ -59,8 +59,9 @@ function ParticipatedSurveysScreen({
     }
 
     return participatedSurveys.length !== 0 ? (
-        <View style={{ marginTop: 20 }}>
+        <View style={{ flex: 1 }}>
             <FlatList
+                style={{ paddingVertical: 20 }}
                 data={participatedSurveys}
                 renderItem={({ item }) => (
                     <TouchableOpacity
@@ -104,9 +105,6 @@ function ParticipatedSurveysScreen({
                         </View>
                     </TouchableOpacity>
                 )}
-                // 참여한 날짜가 아니야.
-                // keyExtractor={item => `${item.code}${item.created_at}`}
-
                 keyExtractor={item => `${item.id}${item.title}`}
             />
         </View>

@@ -47,10 +47,10 @@ export default function FoundIDScreen({
                         styles.buttonBackground,
                         {
                             marginBottom: 60,
-                            backgroundColor: colors.deepMainColor,
+                            backgroundColor: colors.deeperMainColor,
                         },
                     ]}
-                    textStyle={{ fontSize: 16 }}
+                    textStyle={{ fontSize: 16, color: "white" }}
                 />
             </View>
         </View>

@@ -13,6 +13,7 @@ import accounting from "accounting";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 import { logObject } from "../utils/Log";
+import { convertTime } from "../utils/DateFormatter";
 
 export interface ParticipatedSurveyItem {
     title: string;
@@ -56,24 +57,6 @@ function ParticipatedSurveysScreen({
     if (error) {
         return <Text>Error: {error.message}</Text>;
     }
-
-    const convertTime = (dateNumberString: string) => {
-        console.log(`input number: ${dateNumberString}`);
-        console.log(`${typeof dateNumberString}`);
-        const date = new Date(parseInt(dateNumberString));
-        logObject("converted Date", date);
-
-        if (!isNaN(date.getTime())) {
-            // return date.toLocaleDateString().split("/").reverse().join(".");
-            const fullDate = date.toLocaleDateString(); // 10/30/2023
-            const splitted = fullDate.split("/");
-            return splitted[2] + "-" + splitted[0] + "-" + splitted[1];
-            // return date.toLocaleDateString();
-        }
-        return "";
-
-        return date.toLocaleDateString().split("/").reverse().join(".");
-    };
 
     return participatedSurveys.length !== 0 ? (
         <View style={{ marginTop: 20 }}>

@@ -2,6 +2,24 @@ export function getDatePart(dateString: string): string {
     return dateString.split("T")[0];
 }
 
+export const convertTime = (dateNumberString: string) => {
+    console.log(`input number: ${dateNumberString}`);
+    console.log(`${typeof dateNumberString}`);
+    const date = new Date(parseInt(dateNumberString));
+    // logObject("converted Date", date);
+
+    if (!isNaN(date.getTime())) {
+        // return date.toLocaleDateString().split("/").reverse().join(".");
+        const fullDate = date.toLocaleDateString(); // 10/30/2023
+        const splitted = fullDate.split("/");
+        return splitted[2] + "-" + splitted[0] + "-" + splitted[1];
+        // return date.toLocaleDateString();
+    }
+    return "";
+
+    return date.toLocaleDateString().split("/").reverse().join(".");
+};
+
 export function convertUnixTimestampToDateTime(timestamp: number) {
     const seconds = timestamp / 1000;
     const convertedDate = new Date(seconds * 1000);

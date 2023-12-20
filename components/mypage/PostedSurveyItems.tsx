@@ -12,12 +12,15 @@ import { colors } from "../../utils/colors";
 // import Clipboard from "@react-native-clipboard/clipboard";
 
 import * as Clipboard from "expo-clipboard";
-import { convertUnixTimestampToDateTime } from "../../utils/DateFormatter";
+import {
+    convertTime,
+    convertUnixTimestampToDateTime,
+} from "../../utils/DateFormatter";
 import Spacer from "../common/Spacer";
 
-interface PostedSurveyItem {
+export interface PostedSurveyItem {
     title: string;
-    createdAt: number;
+    createdAt: string;
     code: string;
     currentParticipation: number;
     participationGoal: number;
@@ -60,14 +63,22 @@ const PostedSurveyItems = ({
                         ]}
                     >
                         {/* <View> */}
-                        <View>
+                        <View style={{ flex: 1 }}>
                             <Text style={styles.surveyTitle}>{item.title}</Text>
                             <Spacer size={6} />
                             {/* <Text>{convertTime(parseInt(item.createdAt))}</Text> */}
-                            <Text>
-                                {item.currentParticipation} /{" "}
-                                {item.participationGoal}
-                            </Text>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <Text>
+                                    {item.currentParticipation} /{" "}
+                                    {item.participationGoal}
+                                </Text>
+                                <Text>{convertTime(item.createdAt)}</Text>
+                            </View>
                             <Spacer size={6} />
                             {/* FIXME: Date value out of bounds */}
                             {/* <Text>

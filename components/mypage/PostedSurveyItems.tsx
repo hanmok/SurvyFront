@@ -44,48 +44,54 @@ const PostedSurveyItems = ({
             });
     };
 
-    return (
-        <FlatList
-            data={postedSurveys}
-            renderItem={({ item }) => (
-                <TouchableNativeFeedback
-                    onPress={() => {
-                        handleTapAction(item.id);
-                    }}
-                >
-                    <View
-                        style={[
-                            commonStyles.border,
-                            styles.container,
-                            item.currentParticipation === 0 && {
-                                borderColor: colors.gray4,
-                            },
-                        ]}
+    return postedSurveys.length !== 0 ? (
+        <View style={{ flex: 1 }}>
+            <FlatList
+                style={{
+                    paddingVertical: 20,
+                }}
+                data={postedSurveys}
+                renderItem={({ item }) => (
+                    <TouchableNativeFeedback
+                        onPress={() => {
+                            handleTapAction(item.id);
+                        }}
                     >
-                        {/* <View> */}
-                        <View style={{ flex: 1 }}>
-                            <Text style={styles.surveyTitle}>{item.title}</Text>
-                            <Spacer size={6} />
-                            {/* <Text>{convertTime(parseInt(item.createdAt))}</Text> */}
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Text>
-                                    {item.currentParticipation} /{" "}
-                                    {item.participationGoal}
+                        <View
+                            style={[
+                                commonStyles.border,
+                                styles.container,
+                                item.currentParticipation === 0 && {
+                                    borderColor: colors.gray4,
+                                },
+                            ]}
+                        >
+                            {/* <View> */}
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.surveyTitle}>
+                                    {item.title}
                                 </Text>
-                                <Text>{convertTime(item.createdAt)}</Text>
-                            </View>
-                            <Spacer size={6} />
-                            {/* FIXME: Date value out of bounds */}
-                            {/* <Text>
+                                <Spacer size={6} />
+                                {/* <Text>{convertTime(parseInt(item.createdAt))}</Text> */}
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <Text>
+                                        {item.currentParticipation} /{" "}
+                                        {item.participationGoal}
+                                    </Text>
+                                    <Text>{convertTime(item.createdAt)}</Text>
+                                </View>
+                                <Spacer size={6} />
+                                {/* FIXME: Date value out of bounds */}
+                                {/* <Text>
                                 {convertUnixTimestampToDateTime(item.createdAt)}
                             </Text> */}
-                        </View>
-                        {/* <View>
+                            </View>
+                            {/* <View>
                             <TextButton
                                 title={item.code}
                                 onPress={() => {
@@ -100,12 +106,19 @@ const PostedSurveyItems = ({
                                 }}
                             />
                         </View> */}
-                    </View>
-                </TouchableNativeFeedback>
-            )}
-            // keyExtractor={item => `${item.code}${item.createdAt}`}
-            keyExtractor={item => `${item.code}`}
-        />
+                        </View>
+                    </TouchableNativeFeedback>
+                )}
+                keyExtractor={item => `${item.code}`}
+                // style={{ marginVertical: 20 }}
+            />
+        </View>
+    ) : (
+        <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+            <Text>요청한 설문이 없습니다</Text>
+        </View>
     );
 };
 

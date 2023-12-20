@@ -1,9 +1,4 @@
-import { View, Text } from "react-native";
-import Toast, {
-    BaseToast,
-    BaseToastProps,
-    ErrorToast,
-} from "react-native-toast-message";
+import { BaseToast, ErrorToast } from "react-native-toast-message";
 
 const toastConfig = {
     success: props => (
@@ -27,7 +22,6 @@ const toastConfig = {
             }}
             text2Style={{
                 fontSize: 15,
-                // color: "",
             }}
         />
     ),

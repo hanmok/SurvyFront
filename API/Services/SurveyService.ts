@@ -1,7 +1,6 @@
 import { Question } from "../../interfaces/Question";
 import { Section } from "../../interfaces/Section";
 import { SelectableOption } from "../../interfaces/SelectableOption";
-// import { Survey, SurveyBuilder, makeSurvey } from "../../interfaces/Survey";
 import { Survey, SurveyBuilder } from "../../interfaces/Survey";
 import { convertToSnakeCase } from "../../utils/SnakeToCamel";
 import { API_BASE_URL } from "../API";

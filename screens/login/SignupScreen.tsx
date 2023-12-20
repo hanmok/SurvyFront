@@ -8,17 +8,11 @@ import { buttonColors, colors } from "../../utils/colors";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import TextButton from "../../components/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
-// import {
-//     checkPhoneDuplicate,
-//     hasDuplicateUsername,
-//     signup,
-// } from "../../API/UserAPI";
-import { log, logObject } from "../../utils/Log";
+import { logObject } from "../../utils/Log";
 import { isValidEmail, isValidPhone } from "../../utils/validation";
 import { useCustomContext } from "../../features/context/CustomContext";
 import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
-import showMessageAlert from "../../components/CustomAlert";
 import Spacer from "../../components/common/Spacer";
 import { UserService } from "../../API/Services/UserService";
 
@@ -39,7 +33,6 @@ export default function SignUpScreen({
     const [passwordInput1, setPasswordInput1] = useState("");
     const [passwordInput2, setPasswordInput2] = useState("");
 
-    // 휴대폰번호 확인해야함..
     const [phoneInput, setPhoneInput] = useState("");
     const [phoneConfirmed, setPhoneConfirmed] = useState(false);
     const [phoneSatisfied, setPhoneSatisfied] = useState(false);
@@ -131,19 +124,6 @@ export default function SignUpScreen({
             });
     };
 
-    // const validatePhoneNumber = () => {
-    //     handlePhoneDuplicate();
-    //     const ret = true;
-    //     setPhoneConfirmed(ret);
-
-    //     // alert("인증되었습니다.");
-    //     return ret;
-    // };
-
-    // const isPublishingAuthCodeTapped () => {
-
-    // }
-
     useEffect(() => {
         const ret = birthDate.length === 8;
         setBirthDateValidated(ret);
@@ -152,9 +132,7 @@ export default function SignUpScreen({
     useEffect(() => {
         const ret =
             usernameConfirmed &&
-            // usernameConfirmed &&
             passwordInput1 === passwordInput2 &&
-            // mailConfirmed &&
             phoneConfirmed &&
             birthDateValidated &&
             genderIndex !== null;
@@ -164,7 +142,6 @@ export default function SignUpScreen({
         usernameConfirmed,
         passwordInput1,
         passwordInput2,
-        // mailConfirmed,
         phoneConfirmed,
         birthDateValidated,
         genderIndex,
@@ -247,7 +224,6 @@ export default function SignUpScreen({
                                     ? styles.activatedBackground
                                     : styles.inactivatedBorder,
                             ]}
-                            // textStyle={{ color: colors.deeperMainColor }}
                             textStyle={{
                                 color: usernameSatisfied
                                     ? colors.white
@@ -422,12 +398,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
     },
-
     textInput: {
         fontSize: fontSizes.s16,
         paddingLeft: 8,
     },
-
     duplicateCheckBoxBackground: {
         borderColor: colors.deeperMainColor,
         backgroundColor: colors.background,

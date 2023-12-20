@@ -10,7 +10,6 @@ export class ParticipatingService extends BaseApi {
     ): Promise<ApiResponse<any>> {
         const url = `${API_BASE_URL}/participating`;
         const data = { surveyId, userId };
-
         const snakeData = _.mapKeys(data, (value, key) => _.snakeCase(key));
 
         return this.fetchData(url, "POST", snakeData, accessToken);

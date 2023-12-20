@@ -6,7 +6,6 @@ import { fontSizes } from "../../utils/sizes";
 import { buttonColors, colors } from "../../utils/colors";
 import TextButton from "../../components/TextButton";
 import Spacer from "../../components/common/Spacer";
-// import { updatePassword } from "../../API/UserAPI";
 import { UserService } from "../../API/Services/UserService";
 import { RouteProp } from "@react-navigation/native";
 import showToast from "../../components/common/toast/Toast";

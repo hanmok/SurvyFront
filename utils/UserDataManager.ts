@@ -1,10 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Storage from "react-native-storage";
 import { UserState } from "../interfaces/UserState";
-import { GeoInfo } from "../interfaces/GeoInfo";
 import { logObject } from "./Log";
 import showAdminToast from "../components/common/toast/showAdminToast";
-import showToast from "../components/common/toast/Toast";
 
 class UserDataManager {
     private storage: Storage;
@@ -20,14 +18,6 @@ class UserDataManager {
     }
 
     public async saveUserState(data: UserState): Promise<UserState> {
-        // logObject("savedUserState", data);
-        // return await this.storage
-        //     .save({ key: "userInfo", data, expires: null })
-        //     .then(() => {
-        //         return data;
-        //     })
-        //     .catch(error => showToast("error", `${error}`));
-
         try {
             await this.storage.save({ key: "userInfo", data, expires: null });
             return data;

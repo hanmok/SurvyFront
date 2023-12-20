@@ -12,23 +12,6 @@ const OverallEssayResponseContainer: React.FC<
     questionTypeId, // 어차피 300
     answers,
 }) => {
-    const getNumberOfSameAnswer = (
-        sos: GQLSelectableOption, // selectable Options
-        anss: GQLAnswer[]
-    ) => {
-        return anss.filter(ans => ans.selectableOption.id === sos.id).length;
-    };
-
-    const totalNumberOfAnswer = answers.length;
-    const wholeLength = screenWidth - 100;
-
-    const getPercentage = (num: number) =>
-        num > 0 ? ` (${(num * 100).toFixed(1)} %) ` : "";
-
-    const applyMinimumLength = (len: number) => {
-        return len > 0 ? len : 100;
-    };
-
     return (
         <View>
             <View style={styles.whole}>

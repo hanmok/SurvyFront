@@ -63,12 +63,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         borderWidth: 1,
         borderRadius: 5,
-        // borderColor: "#ccc",
         borderColor: "#fff",
         backgroundColor: "#e4e4e4",
     },
     selectedOptionButton: {
-        // backgroundColor: "white",
         backgroundColor: colors.deeperMainColor,
     },
 });

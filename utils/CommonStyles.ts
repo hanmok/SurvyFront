@@ -28,7 +28,6 @@ export const genreStyles = StyleSheet.create({
         marginVertical: 4,
         backgroundColor: colors.white,
     },
-
     selectedGenreText: {
         color: colors.white,
     },

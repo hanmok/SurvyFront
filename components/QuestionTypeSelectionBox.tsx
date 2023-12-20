@@ -28,17 +28,12 @@ const QuestionTypeSelectionBox: React.FC<QuestionTypeProps> = ({
                     ? [styles.commonText, styles.selectedText]
                     : [styles.commonText, styles.unselectedText]
             }
-            backgroundStyle={
-                [
-                    styles.commonBackground,
-                    isSelected
-                        ? styles.selectedBackground
-                        : styles.unselectedBackground,
-                ]
-                // isSelected
-                //     ? [styles.commonBackground, styles.selectedBackground]
-                //     : [styles.commonBackground, styles.unselectedBackground]
-            }
+            backgroundStyle={[
+                styles.commonBackground,
+                isSelected
+                    ? styles.selectedBackground
+                    : styles.unselectedBackground,
+            ]}
         />
     );
 };

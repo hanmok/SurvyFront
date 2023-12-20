@@ -35,17 +35,6 @@ const PopupMenu: React.FC<PopupProps> = ({ options }) => {
                     resizeBox(1);
                 }}
             >
-                {/* <Entypo
-                    // name="dots-three-horizontal"
-
-                    size={24}
-                    color="black"
-                    onPress={() => {
-                        setVisible(true);
-                        console.log("entypo called");
-                    }}
-                /> */}
-
                 <Ionicons
                     name="reorder-three-sharp"
                     size={28}
@@ -87,7 +76,6 @@ const PopupMenu: React.FC<PopupProps> = ({ options }) => {
                                 ]}
                                 key={i}
                                 onPress={() => {
-                                    // console.log(`op ${i} tapped`);
                                     op.action();
                                 }}
                             >

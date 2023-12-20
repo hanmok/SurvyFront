@@ -8,16 +8,10 @@ import {
     View,
 } from "react-native";
 import { fontSizes } from "../utils/sizes";
-import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
-import { useEffect, useState } from "react";
-import { screenWidth } from "../utils/ScreenSize";
-import { commonStyles } from "../utils/CommonStyles";
-// import CostSelectionContainer from "../CostSelectionContainer";
-import * as accounting from "accounting";
+import { useEffect } from "react";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 import Spacer from "../components/common/Spacer";
-import showToast from "../components/common/toast/Toast";
 
 interface FreeCostGuideModalProps {
     onClose: () => void;
@@ -69,7 +63,6 @@ const FreeCostGuideModal: React.FC<FreeCostGuideModalProps> = ({
                                     <Spacer size={10} />
                                     <View
                                         style={{
-                                            // backgroundColor: "magenta",
                                             backgroundColor: colors.gray4,
                                             borderRadius: 6,
                                             overflow: "hidden",
@@ -111,7 +104,6 @@ const FreeCostGuideModal: React.FC<FreeCostGuideModalProps> = ({
                             </View>
                         </View>
 
-                        {/* <BottomButtonContainer */}
                         <BottomButtonContainer
                             leftAction={onClose}
                             rightAction={onConfirm}
@@ -138,10 +130,7 @@ const styles = StyleSheet.create({
     modalContent: {
         height: 240,
         width: 300,
-        // marginHorizontal: 40,
-        // marginHorizontal: 20,
         backgroundColor: colors.background,
-        // backgroundColor: "cyan",
         borderRadius: 10,
         borderWidth: 1,
         overflow: "hidden",
@@ -191,7 +180,6 @@ const styles = StyleSheet.create({
     mainContent: {
         flexDirection: "column",
         justifyContent: "center",
-        // flex: 1,
         gap: 30,
         marginHorizontal: 20,
     },

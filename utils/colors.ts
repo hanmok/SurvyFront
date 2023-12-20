@@ -7,7 +7,6 @@ export const colors = {
     deepMainColor: "#66A1FF",
     deeperMainColor: "#226DE5",
     lightMainColor: "#B8D4FF",
-    // lightMainTrans: "rgba(184, 212, 255, 0.7)",
     lightMainTrans: "rgba(150, 180, 220, 0.7)",
     blurredGray: "#E5E5E5",
     sliderBlue: "#007AFF",
@@ -28,13 +27,9 @@ export const colors = {
     bottomModalBackground: "rgba(0, 0, 0, 0.5)",
     unselectedQuestionBoxBG: "#DCEAFF",
     selectedQuestionBoxBG: "#5094FD",
-
     placeHolder: "#C5C5C5",
     buttonText: "#0074F9",
     unselectedGeoBG: "#E2E2E4",
-    // unselectedGeoText: "B9B9BA",
-    // unselectedGeoText: "#666",
-    // unselected-geo: "#F2F2F4"
 };
 
 export const buttonColors = {

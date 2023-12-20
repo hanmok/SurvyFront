@@ -75,7 +75,6 @@ const CustomSegmentedControl: React.FC<CustomSegmentedControlProps> = ({
                 renderItem={renderItem}
                 keyExtractor={item => `${item.index}`}
                 horizontal={true}
-                // style={{ flex: 1 }}
                 contentContainerStyle={{ justifyContent: "space-around" }}
             />
         </View>
@@ -87,8 +86,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        // backgroundColor: "#eee",
-        // backgroundColor: "magenta",
         borderRadius: 8,
         overflow: "hidden",
         height: 40,

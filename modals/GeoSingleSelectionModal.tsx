@@ -1,4 +1,3 @@
-// import { GeoInfo } from "../interfaces/Survey";
 import React, { useEffect, useState } from "react";
 import { GeoInfo } from "../interfaces/GeoInfo";
 import { Modal, StyleSheet, Text, View } from "react-native";
@@ -6,16 +5,9 @@ import { FlatList } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import TextButton from "../components/TextButton";
-// import { loadWholeGeo } from "../utils/Storage";
 import { screenHeight } from "../utils/ScreenSize";
-import { log, logObject } from "../utils/Log";
-import Spacer from "../components/common/Spacer";
-// import { geoDataManager } from "../utils/Storage";
-// import { fetchAllGeoInfos } from "../API/GeoAPI";
+import { logObject } from "../utils/Log";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
-// import { updateOfficeAddress } from "../API/UserAPI";
-import { UserService } from "../API/Services/UserService";
-import { useCustomContext } from "../features/context/CustomContext";
 import { GeoService } from "../API/Services/GeoService";
 
 interface GeoSingleSelectionModalProps {
@@ -280,7 +272,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: fontSizes.s16,
     },
-
     bottomLeftButtonTextContainer: {
         flexGrow: 1,
         flexDirection: "row",

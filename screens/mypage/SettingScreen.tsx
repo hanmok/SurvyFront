@@ -1,14 +1,12 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../utils/NavHelper";
-// import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../../utils/NavHelper";
 import { View, Text, StyleSheet } from "react-native";
 import BlockView from "../../components/BlockView";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TextButton from "../../components/TextButton";
 import { colors } from "../../utils/colors";
 import { fontSizes } from "../../utils/sizes";
-// import { removeUser } from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
 import { UserService } from "../../API/Services/UserService";
 
@@ -54,9 +52,6 @@ function SettingScreen({
                 >
                     <BlockView
                         onPress={() => {
-                            // navigation.navigate(
-                            //     NavigationTitle.participatedSurveys
-                            // );
                             console.log("이용약관 tapped");
                         }}
                     >
@@ -82,7 +77,8 @@ function SettingScreen({
                         </Text>
                     </BlockView>
 
-                    {/* {blockContainer({ text: "로그아웃" })} */}
+                    {/* 로그아웃 */}
+                    {/* TODO: 회원 정보, Token 초기화 */}
                     <BlockView
                         onPress={() => {
                             navigation.navigate(NavigationTitle.login);
@@ -94,14 +90,6 @@ function SettingScreen({
                             로그아웃
                         </Text>
                     </BlockView>
-
-                    {/* <TextButton
-                        title="로그아웃"
-                        onPress={() => {
-                            // Todo: 회원 정보, Token 초기화
-                            navigation.navigate(NavigationTitle.login);
-                        }}
-                    /> */}
                 </View>
                 <View style={{ height: 500 }}></View>
                 <View style={{ alignItems: "center" }}>

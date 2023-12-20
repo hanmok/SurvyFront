@@ -1,7 +1,6 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import {
     Text,
-    TouchableOpacity,
     ViewStyle,
     StyleProp,
     StyleSheet,
@@ -13,7 +12,6 @@ import { fontSizes } from "../utils/sizes";
 import TextButton from "./TextButton";
 
 interface PointBlockProps {
-    // onPress?: () => void;
     onPressHistory: () => void;
     onPressWithdrawal: () => void;
     textStyle?: StyleProp<TextStyle>;
@@ -22,7 +20,6 @@ interface PointBlockProps {
 }
 
 const PointBlockView: React.FC<PointBlockProps> = ({
-    // onPress,
     onPressHistory,
     onPressWithdrawal,
     backgroundStyle,
@@ -49,9 +46,7 @@ const PointBlockView: React.FC<PointBlockProps> = ({
                         justifyContent: "space-between",
                         flexDirection: "row",
                         marginHorizontal: 20,
-                        // paddingRight: 30,
                         paddingHorizontal: 20,
-                        // borderRadius: 8,
                     }}
                 >
                     <TextButton
@@ -81,8 +76,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
     },
     topContainer: {
-        // paddingLeft: 10,
-        // paddingLeft: 20,
         justifyContent: "space-between",
         flexDirection: "row",
         alignItems: "center",

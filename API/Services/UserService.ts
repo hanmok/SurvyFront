@@ -1,10 +1,8 @@
-// import { UserDetail } from "../../features/context/CustomContext";
 import { UserDetail } from "../../interfaces/UserDetail";
 import { Genre } from "../../interfaces/Genre";
 import { UserState } from "../../interfaces/UserState";
 import { API_BASE_URL } from "../API";
 import BaseApi from "../BaseAPI";
-// import { UserResponse } from "../UserAPI";
 
 export type UserResponse = ApiResponse<UserState>;
 
@@ -88,7 +86,6 @@ export class UserService extends BaseApi {
     ) {
         const url = `${API_BASE_URL}/user-genre/user/${userId}/genres`;
 
-        // const data = { userId, genreIds };
         const body = {
             user_id: userId,
             genre_ids: genreIds,
@@ -156,7 +153,7 @@ export class UserService extends BaseApi {
         const body = { username, code };
         return this.fetchData(url, "POST", body);
     }
-    // 아이디 찾기 API 가 없다
+
     async sendSMSAuthCodeForPassword(username: string, phone: string) {
         const url = `${API_BASE_URL}/user/find-password/send-sms`;
         const body = { username, phone };

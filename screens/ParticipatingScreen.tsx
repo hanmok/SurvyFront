@@ -29,26 +29,18 @@ import { CustomAnswer } from "../interfaces/CustomAnswer";
 import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "../store";
-// import { createParticipate, postAnswer } from "../API/AnswerAPI";
 import { NavigationTitle } from "../utils/NavHelper";
-import {
-    convertKeysToCamelCaseRecursive,
-    removeTypenameAndConvertToCamelCase,
-} from "../utils/SnakeToCamel";
+import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { useApollo } from "../ApolloProvider";
 import { useQuery } from "@apollo/client";
 
 import { getSurveyQuery } from "../API/gqlQuery";
-import { log, logObject } from "../utils/Log";
-import {
-    GQLSurveyResponse,
-    SurveyResponse,
-} from "../interfaces/SurveyResponse";
+import { logObject } from "../utils/Log";
+import { GQLSurveyResponse } from "../interfaces/SurveyResponse";
 import { GQLQuestion, GQLSurvey } from "../interfaces/GQLInterface";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useCustomContext } from "../features/context/CustomContext";
 import showToast from "../components/common/toast/Toast";
-import showAdminToast from "../components/common/toast/showAdminToast";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { AnswerService } from "../API/Services/AnswerService";
 import { ParticipatingService } from "../API/Services/ParticipatingService";
@@ -511,7 +503,6 @@ const styles = StyleSheet.create({
     },
     activatedFinishButtonBackground: {
         marginTop: 20,
-        // backgroundColor: "#666",
         backgroundColor: buttonColors.enabledButtonBG,
         alignSelf: "stretch",
         padding: 10,
@@ -520,7 +511,6 @@ const styles = StyleSheet.create({
     },
     inactivatedFinishButtonBackground: {
         marginTop: 20,
-        // backgroundColor: "#BBB",
         backgroundColor: buttonColors.disabledButtonBG,
         alignSelf: "stretch",
         padding: 10,

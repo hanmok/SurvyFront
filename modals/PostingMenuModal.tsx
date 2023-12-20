@@ -72,18 +72,6 @@ export const PostingMenuModal: React.FC<PostingMenuModalProps> = ({
                             }}
                             hasShadow={false}
                         />
-                        {/* <Button
-                            title="현재 섹션 초기화"
-                            onPress={() => {
-                                // onAdd();
-                                // onClose();
-                                // onInitialize()
-                                onInitializeCurrent();
-								onClose()
-								
-                            }}
-							
-                        /> */}
                         <Separator />
                         <TextButton
                             title={"저장"}
@@ -101,12 +89,6 @@ export const PostingMenuModal: React.FC<PostingMenuModalProps> = ({
                             }}
                             hasShadow={false}
                         />
-                        {/* <Button
-                            title="저장"
-                            onPress={() => {
-                                onSave();
-                            }}
-                        /> */}
                     </View>
                 </View>
             </TouchableNativeFeedback>

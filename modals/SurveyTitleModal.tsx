@@ -9,12 +9,8 @@ import {
     Keyboard,
 } from "react-native";
 import { colors } from "../utils/colors";
-import TextButton from "../components/TextButton";
 import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { log, logObject } from "../utils/Log";
-import { modalStyles } from "../utils/CommonStyles";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface SurveyTitleModalProps {
@@ -83,22 +79,7 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
             }}
         >
             <Animated.View style={{ transform: [{ translateY: translateY }] }}>
-                {/* <TouchableOpacity
-                    style={styles.modalContainer}
-                    // onPress={() => {
-                    //     Keyboard.dismiss();
-                    //     console.log("keyboard dismiss");
-                    // }}
-                    activeOpacity={1}
-                > */}
-                <View
-                    style={styles.modalContainer}
-                    // onPress={() => {
-                    //     Keyboard.dismiss();
-                    //     console.log("keyboard dismiss");
-                    // }}
-                    // activeOpacity={1}
-                >
+                <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         {/* Title */}
                         <View>
@@ -144,7 +125,6 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                         />
                     </View>
                 </View>
-                {/* </TouchableOpacity> */}
             </Animated.View>
         </Modal>
     );

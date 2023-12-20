@@ -1,13 +1,6 @@
-import {
-    Button,
-    Modal,
-    StyleSheet,
-    TouchableNativeFeedback,
-    View,
-} from "react-native";
+import { Modal, StyleSheet, TouchableNativeFeedback, View } from "react-native";
 import { colors } from "../utils/colors";
 import { useEffect } from "react";
-import { Feather } from "@expo/vector-icons";
 import React from "react";
 import Separator from "../components/common/Separator";
 import { log } from "../utils/Log";
@@ -33,16 +26,7 @@ const SectionModal: React.FC<SectionModalProps> = ({
     }, [numOfSections]);
 
     const sections = Array.from({ length: numOfSections }, (_, index) => (
-        // <View style={{ alignItems: "center" }} key={index}>
         <View key={index}>
-            {/* <Button
-                // key={index}
-                title={`Section ${index + 1}`} // 보이는 인덱스 : 1,2,3
-                onPress={() => {
-                    onSelection(index); // 실제 인덱스: 0, 1, 2
-                    onClose();
-                }}
-            /> */}
             <TextButton
                 title={`Section ${index + 1}`}
                 onPress={() => {
@@ -81,13 +65,6 @@ const SectionModal: React.FC<SectionModalProps> = ({
                     <View style={styles.mainContainer}>
                         {sections}
                         <Separator />
-                        {/* <Button
-                            title="Add Section"
-                            onPress={() => {
-                                onAdd();
-                                onClose();
-                            }}
-                        /> */}
                         <TextButton
                             title={"Add Section"}
                             onPress={() => {

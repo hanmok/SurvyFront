@@ -80,7 +80,6 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                             설문 제출
                         </Text>
 
-                        {/* <View style={{ height: 300, width: 300 }}> */}
                         <View style={{ height: 200, width: 300 }}>
                             <View style={styles.mainContent}>
                                 <View style={styles.rowContainer}>
@@ -96,14 +95,12 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                             {
                                                 fontSize: fontSizes.m20,
                                                 color: colors.gray2,
-                                                // borderColor: "black",
                                                 borderColor: colors.gray3,
                                                 borderWidth: 1,
                                                 borderRadius: 6,
                                                 minWidth: 50,
                                                 textAlign: "right",
                                                 paddingRight: 6,
-                                                // backgroundColor: "#fff",
                                                 backgroundColor: "white",
                                             },
                                         ]}

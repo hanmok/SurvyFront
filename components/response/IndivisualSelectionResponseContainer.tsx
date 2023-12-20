@@ -63,15 +63,12 @@ const IndivisualSelectionResponseContainer: React.FC<
                 <Text style={{ fontSize: fontSizes.l24 }}>{questionTitle}</Text>
                 <View style={{ height: 10 }} />
                 <FlatList
-                    // data={selectedSelectableOptions}
                     data={selectedAnswers}
                     renderItem={({ item }) => (
-                        // <Text style={{ marginLeft: 10 }}>{item.value}</Text>
                         <Text>
                             {item.answerText !== ""
                                 ? item.answerText
                                 : item.selectableOption.value}
-                            {/* {item.answerText} {item.selectableOption.value} */}
                         </Text>
                     )}
                     keyExtractor={item => `${item.id}`}

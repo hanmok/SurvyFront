@@ -1,14 +1,8 @@
 import React from "react";
 import { Question } from "../../interfaces/Question";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import ImageButton from "../ImageButton";
 import { colors } from "../../utils/colors";
-import {
-    QuestionTypeKorean,
-    QuestionTypeId,
-    getQuestionType,
-    // getQuestionTypeIndex,
-} from "../../QuestionType";
+import { QuestionTypeId } from "../../QuestionType";
 import { fontSizes } from "../../utils/sizes";
 import { Feather } from "@expo/vector-icons";
 import { SelectionImage } from "../common/ImageNameType";

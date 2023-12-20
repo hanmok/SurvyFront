@@ -86,8 +86,6 @@ export default AvailableSurvey;
 const styles = StyleSheet.create({
     container: {
         paddingTop: 6,
-        // paddingBottom: 30,
-        // paddingBottom: 80,
         paddingBottom: 6,
         paddingLeft: 20,
         backgroundColor: colors.surveyBoxBackground,

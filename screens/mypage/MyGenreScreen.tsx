@@ -3,19 +3,16 @@ import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Genre } from "../../interfaces/Genre";
-// import { getAllGenres } from "../../API/GenreAPI";
 import { logObject } from "../../utils/Log";
 import { useCustomContext } from "../../features/context/CustomContext";
-// import { getUserGenres, updateUserGenres } from "../../API/UserAPI";
 import { buttonColors, colors } from "../../utils/colors";
 import { fontSizes } from "../../utils/sizes";
 import { screenHeight } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
 import { Entypo } from "@expo/vector-icons";
 import TextButton from "../../components/TextButton";
-import { areSetsEqual, setDifference } from "../../utils/Set";
-import { DefaultModal } from "../../modals/DefaultModal";
-import { commonStyles, genreStyles } from "../../utils/CommonStyles";
+import { areSetsEqual } from "../../utils/Set";
+import { genreStyles } from "../../utils/CommonStyles";
 import { UserService } from "../../API/Services/UserService";
 import { GenreService } from "../../API/Services/GenreService";
 
@@ -65,11 +62,6 @@ function MyGenreScreen({
             updateGenres();
         }
     }, [confirmTapped]);
-
-    useEffect(() => {
-        logObject("selectedGenres", selectedGenres);
-        logObject("shoiwngGenres", showingGenres);
-    }, [selectedGenres, showingGenres]);
 
     const toggleGenreSelection = (genre: Genre) => {
         const index = selectedGenres.map(genre => genre.id).indexOf(genre.id);
@@ -288,19 +280,16 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         marginTop: 20,
     },
-
     rowContainer: {
         flexDirection: "row",
         justifyContent: "center",
     },
-
     genreContainer: {
         margin: 8,
         padding: 8,
         backgroundColor: colors.gray3,
         borderRadius: 6,
     },
-
     genreButtonBG: {
         backgroundColor: colors.gray14,
         padding: 4,
@@ -310,17 +299,6 @@ const styles = StyleSheet.create({
         height: 32,
         marginVertical: 4,
     },
-
-    // genreButtonBG: {
-    //     backgroundColor: colors.gray1,
-    //     padding: 6,
-    //     paddingHorizontal: 10,
-    //     marginHorizontal: 8,
-    //     borderRadius: 8,
-    //     height: 36,
-    //     marginVertical: 6,
-    // },
-
     bottomContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -329,7 +307,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: fontSizes.s16,
     },
-
     bottomLeftButtonTextContainer: {
         flexGrow: 1,
         flexDirection: "row",

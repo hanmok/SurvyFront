@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import MypageScreen from "./mypage/MypageScreen";
 import HomeScreen from "./HomeScreen";
-// import PostingBaseScreen from "./PostingBaseScreen";
+
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 import ImageButton from "../components/ImageButton";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -62,7 +62,6 @@ export default function MainTabs({
                                     );
                                 }}
                                 backgroundStyle={{ paddingRight: 20 }}
-                                // navigateToSetting
                             />
                         );
                     },

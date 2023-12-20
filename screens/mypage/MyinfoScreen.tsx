@@ -1,18 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../utils/NavHelper";
 import { NavigationTitle } from "../../utils/NavHelper";
-
 import { View, Text } from "react-native";
 import BlockView from "../../components/BlockView";
-import { fontSizes, marginSizes } from "../../utils/sizes";
+import { marginSizes } from "../../utils/sizes";
 import { screenWidth } from "../../utils/ScreenSize";
 import { useEffect, useState } from "react";
-// import {
-//     getUserDetail,
-//     getUserGenres,
-//     updateHomeAddress,
-//     updateOfficeAddress,
-// } from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
 import { Genre } from "../../interfaces/Genre";
 import { colors } from "../../utils/colors";
@@ -20,7 +13,6 @@ import { GeoInfo } from "../../interfaces/GeoInfo";
 import Spacer from "../../components/common/Spacer";
 import TextButton from "../../components/TextButton";
 import GeoSingleSelectionModal from "../../modals/GeoSingleSelectionModal";
-import showMessageAlert from "../../components/CustomAlert";
 import showToast from "../../components/common/toast/Toast";
 import { UserService } from "../../API/Services/UserService";
 import { convertBirthDate } from "../../utils/DateFormatter";
@@ -31,7 +23,6 @@ function MyInfoScreen({
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.myinfo>;
 }) {
-    // single.. dma... 거주지, 근무지 나눠야함.
     const userService = new UserService();
     const [myGenres, setMyGenres] = useState<Genre[]>([]);
     const [homeAddress, setHomeAddress] = useState<GeoInfo | null>(null);
@@ -67,14 +58,6 @@ function MyInfoScreen({
     const moveToCategory = () => {
         navigation.navigate(NavigationTitle.myGenre);
     };
-
-    // 처음 로딩 시, 호출되면 안됨 (null, userDetail?.homeAddress 와 같은 값일 때. )
-    // 지우고 싶으면?
-
-    // useEffect(() => {
-    //     if (homeAddress && homeAddress !== userDetail?.homeAddress) {
-    //     }
-    // }, [homeAddress]);
 
     useEffect(() => {}, [officeAddress]);
 
@@ -164,7 +147,6 @@ function MyInfoScreen({
                 size={50}
                 onPress={() => {
                     console.log("hi");
-                    // navigation.navigate(NavigationTitle.myGenre);
                     moveToCategory();
                 }}
             >
@@ -177,21 +159,10 @@ function MyInfoScreen({
                     }}
                 >
                     <Text style={{ fontSize: 18 }}>관심사</Text>
-                    {/* {myGenres.map(genre => {
-                        <Text>{genre.name}</Text>;
-                    })} */}
-
                     <View
                         style={{
-                            // width: screenWidth - 80,
-                            // alignItems: "flex-start",
                             flexDirection: "row",
-                            // justifyContent: "flex-start",
-                            // justifyContent: "flex-end",
-                            // backgroundColor: "magenta",
                             flexWrap: "wrap",
-                            // marginTop: 10,
-                            // alignSelf: "flex-start",
                         }}
                     >
                         {myGenres.map(genre => (
@@ -199,14 +170,12 @@ function MyInfoScreen({
                                 title={genre.name}
                                 onPress={() => {}}
                                 backgroundStyle={{
-                                    // backgroundColor: colors.gray1,
                                     backgroundColor: colors.gray5,
                                     padding: 4,
                                     paddingHorizontal: 6,
                                     marginLeft: 8,
                                     borderRadius: 6,
                                     height: 30,
-                                    // marginVertical: 4,
                                 }}
                                 hasShadow={false}
                                 key={`${genre.id}`}
@@ -216,11 +185,6 @@ function MyInfoScreen({
                             />
                         ))}
                     </View>
-
-                    {/* <Text style={{ fontSize: 16 }}> */}
-                    {/* {myGenres.map(genre => genre.name).join(", ")} */}
-
-                    {/* </Text> */}
                 </View>
             </BlockView>
 
@@ -334,5 +298,3 @@ function MyInfoScreen({
 }
 
 export default MyInfoScreen;
-
-// 'user', 'CREATE TABLE `user` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `password` varchar(200) DEFAULT NULL,\n  `collected_reward` int(11) DEFAULT \'0\',\n  `fatigue` int(11) NOT NULL DEFAULT \'0\',\n  `birth_date` date DEFAULT NULL,\n  `nickname` varchar(100) DEFAULT NULL,\n  `is_male` tinyint(4) DEFAULT NULL,\n  `registered_at` datetime DEFAULT CURRENT_TIMESTAMP,\n  `device_token` text,\n  `username` varchar(30) DEFAULT NULL,\n  `reputation` int(11) DEFAULT \'0\',\n  `age` int(11) DEFAULT NULL,\n  `home_address` int(11) DEFAULT NULL,\n  `office_address` int(11) DEFAULT NULL,\n  `occupation` int(11) DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `nickname` (`nickname`),\n  UNIQUE KEY `username` (`username`)\n) ENGINE=InnoDB AUTO_INCREMENT=854 DEFAULT CHARSET=utf8'

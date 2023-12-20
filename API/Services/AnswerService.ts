@@ -1,4 +1,3 @@
-// import { QuestionInOrder } from "../AnswerAPI";
 import { API_BASE_URL } from "../API";
 import BaseApi from "../BaseAPI";
 import _ from "lodash";

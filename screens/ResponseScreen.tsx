@@ -16,13 +16,11 @@ import {
 } from "../API/gqlQuery";
 import { useApollo } from "../ApolloProvider";
 import React, { useEffect, useState } from "react";
-
 import {
     GQLAnswer,
     GQLParticipating,
     GQLSurvey,
 } from "../interfaces/GQLInterface";
-
 import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { log, logObject } from "../utils/Log";
 import OverallSelectionResponseContainer from "../components/response/OverallSelectionResponseContainer";
@@ -37,15 +35,12 @@ import IndivisualSelectionResponseContainer from "../components/response/Indivis
 import IndivisualEssayResponseContainer from "../components/response/IndivisualEssayResponseContainer";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import TextButton from "../components/TextButton";
-
-import * as XLSX from "xlsx";
-import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
-
-// import { SheetData, getResultSheet } from "../API/AnswerAPI";
 import { useCustomContext } from "../features/context/CustomContext";
 import { QuestionTypeId } from "../QuestionType";
 import { AnswerService, SheetData } from "../API/Services/AnswerService";
+import * as XLSX from "xlsx";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 
 class ResponseSection {
     responseProp: QuestionResponseContainerProps[] | undefined;
@@ -267,12 +262,7 @@ export default function ResponseScreen({
     }, [participatingData]);
 
     useEffect(() => {
-        if (
-            answers &&
-            answers.length !== 0 &&
-            survey !== null
-            // && participatings
-        ) {
+        if (answers && answers.length !== 0 && survey !== null) {
             let tempQuestionResponseContainerProps: QuestionResponseContainerProps[] =
                 [];
             console.log("sth called");
@@ -284,9 +274,9 @@ export default function ResponseScreen({
 
             survey.sections.forEach(section => {
                 const newSection = new SectionDataBuilder(section.sequence);
-                // Section 별로 담아야함. Props[] 를 Section 별로 만들어야함. 만든 후
+
                 const newProps: QuestionResponseContainerProps[] = [];
-                // question sorted 된거 사용하기.
+
                 section.questions.sort();
                 section.questions.forEach((question, index) => {
                     const selectableOptions = question.selectableOptions;
@@ -299,7 +289,7 @@ export default function ResponseScreen({
                     );
                     // candidate 2
                     const userId = correspondingAnswers[0].user.id;
-                    // section 에 대한 정보가 없음.
+                    // section 에 대한 정보 없음.
                     const questionTitle = ` ${question.position + 1}. ${
                         question.text
                     }`;

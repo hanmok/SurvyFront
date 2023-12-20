@@ -1,5 +1,3 @@
-// type SelectionImage =
-
 export enum SelectionImage {
     unselectedSingleSelection = "circle",
     unselectedMultipleSelection = "square",

@@ -3,7 +3,7 @@ import { API_BASE_URL } from "../API";
 import BaseApi from "../BaseAPI";
 
 export class WithdrawalService extends BaseApi {
-    async createWithdrawal(
+    async create(
         accessToken: string,
         user_id: number,
         amount: number

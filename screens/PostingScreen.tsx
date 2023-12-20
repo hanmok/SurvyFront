@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-    View,
-    Text,
-    FlatList,
-    ListRenderItem,
-    TouchableNativeFeedback,
-} from "react-native";
+import { View, FlatList, ListRenderItem } from "react-native";
 import { StyleSheet } from "react-native";
 import { buttonColors, colors } from "../utils/colors";
 import {
@@ -22,11 +16,9 @@ import PostingQuestionBox from "../components/posting/PostingQuestionBox";
 import CreatingQuestionModal from "../modals/CreatingQuestionModal";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
-// import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
 import { log, logObject } from "../utils/Log";
 import ModifyingQuestionModal from "../modals/ModifyingQuestionModal";
-
 import { Section, makeSection } from "../interfaces/Section";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import {
@@ -35,7 +27,6 @@ import {
 } from "../interfaces/PostingSurveyState";
 import SectionModal from "../modals/SectionModal";
 import { RouteProp } from "@react-navigation/native";
-import PopupMenu from "../components/PopupMenu";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showAdminToast from "../components/common/toast/showAdminToast";
 import { Ionicons } from "@expo/vector-icons";
@@ -92,8 +83,7 @@ export default function PostingScreen({
             const prevSurveyTitle = prevSurvey.title;
             logObject("set sections to", prevSections);
             logObject("set questions to", prevQuestions);
-            // 어.. 이거.. Questions 설정한 다음에, QuestionsToShow 설정해줘야 하는거 아니야?
-            logObject("set surveyTitle to", prevSurveyTitle); // 이건 정상이야.
+            logObject("set surveyTitle to", prevSurveyTitle);
             setSections(prevSections);
             setQuestions(prevQuestions);
             setSurveyTitle(prevSurveyTitle);
@@ -134,7 +124,6 @@ export default function PostingScreen({
     ] = useState(false);
 
     // Section 존재하지 않을 시, sequence 0 으로 추가 후 sections 등록.
-
     useEffect(() => {
         if (sections.length === 0 && !route.params.postingSurveyState) {
             const newSection = makeSection(0);
@@ -226,9 +215,6 @@ export default function PostingScreen({
         }
     }, [shouldSave]);
 
-    // Survey Object 하나를 Pass 시키면 안돼?
-    // 아직 설정되지 않은 값들은 undefined 로 하고...
-
     useEffect(() => {
         logObject("[PostingScreen] navigating value:", {
             surveyTitle,
@@ -243,20 +229,13 @@ export default function PostingScreen({
                 questions,
             });
         }
-        // Sections 에 SelectableOption 까지 모두 들어가는데 ? 굳이 Questions 도 따로 넣어야해?
     }, [isNextButtonTapped, surveyTitle, sections, questions]);
 
     useEffect(() => {
         setCurrentSectionIndex(currentSectionIndex);
     }, [currentSectionIndex]);
 
-    // Options
-    // 1. 순서바꾸기
-    const handleFirstOptionTapped = () => {
-        log("first option tapped");
-    };
-
-    // 2. 초기화
+    // 1. 전체 초기화
     const initializeAll = async () => {
         log("first option tapped");
         setQuestions([]);
@@ -266,18 +245,16 @@ export default function PostingScreen({
         await postingSurveyDataManager.initialize();
     };
 
-    // 3. 현재 Section 만 초기화
+    // 2. 현재 Section 만 초기화
     useEffect(() => {
         if (shouldInitializeCurrentSection) {
             console.log("initializeCurrentSection called");
             const currentSectionId = sections[currentSectionIndex].id;
-            // questions 에서 questionsToShow 지우기.
             // Random Id 가 주어짐.
             logObject("currentSectionId", currentSectionId);
             logObject("currentQuestions", questions);
             const prevQuestions = [...questions];
 
-            // const filteredQuestions = questions.filter(
             const filteredQuestions = prevQuestions.filter(
                 q => q.sectionId !== currentSectionId
             );
@@ -288,11 +265,6 @@ export default function PostingScreen({
         }
     }, [shouldInitializeCurrentSection]);
 
-    const toggleInitializeCurrentSection = () => {
-        const shouldInitialize = shouldInitializeCurrentSection;
-        setShouldInitializeCurrentSection(!shouldInitialize);
-    };
-
     const addQuestion = async (newQuestion: Question) => {
         logObject("add Question!", newQuestion);
 
@@ -301,9 +273,6 @@ export default function PostingScreen({
         newQuestions.push(newQuestion);
         setQuestions(newQuestions);
         setCreatingQuestionModalVisible(false);
-
-        // Section 수정하기.
-        // Side Effect 는 ? questions 를 따로 하는게?
     };
 
     const modifyQuestion = (question: Question) => {
@@ -320,35 +289,12 @@ export default function PostingScreen({
         setIsModifyingQuestionModalVisible(!isModifyingQuestionModalVisible);
     };
 
-    // TODO: 나중에 처리하기.
-    // useEffect(() => {
-    //     if (surveyTitle === "") {
-    //         setTitleModalVisible(true);
-    //     }
-    //     console.log("PostingSurvey loaded");
-
-    //     loadPostingSurvey().then(result => {
-    //         setSections(result.sections);
-    //         setSurveyTitle(result.surveyTitle);
-
-    //         const sections = result.sections;
-    //         const firstSectionQuestions = sections[0].questions;
-    //         setQuestions(firstSectionQuestions);
-    //     });
-    // }, []);
-
-    // TODO: Unique Question 의 Index 정리하기.
-
     useEffect(() => {
         console.log("useEffect flag 1");
         logObject("questions updated!", questions);
         logObject("currentSectionIndex", currentSectionIndex);
 
         if (questions.length !== 0) {
-            // const toShow = questions.filter(
-            //     q => q.sectionId === sections[currentSectionIndex].id
-            // );
-
             const toShow = questions.filter(q => {
                 const ret = q.sectionId === sections[currentSectionIndex].id;
                 log(
@@ -364,23 +310,6 @@ export default function PostingScreen({
             setQuestionsToShow([]);
         }
     }, [questions, currentSectionIndex]);
-
-    // const updateQuestions = () => {
-
-    //     if (questions.length !== 0) {
-    //         const toShow = questions.filter(
-    //             q => q.sectionId === sections[currentSectionIndex].id
-    //         );
-
-    //         setQuestionsToShow(toShow);
-    //     } else {
-    //         setQuestionsToShow([]);
-    //     }
-    // };
-
-    useEffect(() => {
-        console.log(`[PostingScreen] surveyTitle changed to ${surveyTitle}`);
-    }, [surveyTitle]);
 
     const listHeader = () => {
         return (
@@ -432,14 +361,12 @@ export default function PostingScreen({
                     ]}
                 />
             </View>
-            // </View>
         );
     };
 
     const listFooter = () => {
         return (
             <View style={styles.listFooterStyle}>
-                {/* <PopupMenu /> */}
                 <TextButton
                     title="질문 추가"
                     onPress={toggleCreateModal}
@@ -588,7 +515,6 @@ export default function PostingScreen({
                             color: "white",
                         },
                     ]}
-                    // hasShadow={false}
                     onPress={() => {
                         setIsNextButtonTapped(true);
                     }}
@@ -657,7 +583,6 @@ const styles = StyleSheet.create({
         width: 90,
         textAlign: "center",
     },
-
     plusButtonBG: {
         backgroundColor: colors.white,
         borderRadius: 10,
@@ -673,9 +598,7 @@ const styles = StyleSheet.create({
     nextButtonText: {
         color: colors.black,
         textAlign: "center",
-        // fontSize: fontSizes.m20,
         fontSize: 18,
-        // fontWeight: "bold",
         fontWeight: "900",
         letterSpacing: 2,
     },
@@ -685,7 +608,6 @@ const styles = StyleSheet.create({
         marginRight: marginSizes.l20,
         textAlign: "right",
     },
-
     bottomContainer: {
         backgroundColor: colors.deepMainColor,
         color: colors.white,
@@ -703,7 +625,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 20,
     },
-
     modalContainer: {
         flex: 1,
         justifyContent: "center",

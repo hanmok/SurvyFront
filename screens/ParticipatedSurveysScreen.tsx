@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-// import ParticipatedSurveyItems from "../components/mypage/ParticipatedSurveyItems";
 import { useCustomContext } from "../features/context/CustomContext";
 import { useApollo } from "../ApolloProvider";
 import { useQuery } from "@apollo/client";

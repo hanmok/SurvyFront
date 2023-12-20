@@ -8,14 +8,11 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
 } from "react-native";
-import TextButton from "../components/TextButton";
 import { fontSizes } from "../utils/sizes";
-import QuestionTypeSelectionBox from "../components/QuestionTypeSelectionBox";
 import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
-import { Switch } from "react-native";
 import DynamicTextInputsForCreation from "../components/posting/DynamicTextInputsForCreation";
 import { Question, makeQuestion } from "../interfaces/Question";
-import { QuestionTypeKorean, QuestionTypeId } from "../QuestionType";
+import { QuestionTypeId } from "../QuestionType";
 import {
     SelectableOption,
     makeSelectableOption,
@@ -132,7 +129,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
     useEffect(() => {
         setDynamicInputValues([""]);
         setQuestionTitle("");
-        // setPlaceHolder("");
         setPlaceHolder("답변을 입력해주세요");
         SetQuestionTypeId(undefined);
     }, [isCreatingQuestionModalVisible]);

@@ -9,7 +9,6 @@ export interface Survey {
     participationGoal: number;
     currentParticipation: number | undefined;
     initialSectionId: number | undefined;
-    // geoCode: number;
     targetMinAge: number;
     targetMaxAge: number;
     genreIds: number[];
@@ -70,5 +69,3 @@ export interface SurveyProps {
     sections: Section[];
     questions: Question[];
 }
-
-// 'survey', 'CREATE TABLE `survey` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `title` text,\n  `current_participation` int(11) DEFAULT \'0\',\n  `participation_goal` int(11) NOT NULL DEFAULT \'10\',\n  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,\n  `ended_at` datetime DEFAULT NULL,\n  `reward` int(11) DEFAULT \'0\',\n  `code` varchar(8) NOT NULL,\n  `is_public` tinyint(4) DEFAULT \'1\',\n  `is_completed` tinyint(4) DEFAULT \'0\',\n  `num_of_sections` int(11) DEFAULT \'1\',\n  `target_min_age` int(11) DEFAULT \'16\',\n  `target_max_age` int(11) DEFAULT \'100\',\n  `expected_time_in_sec` int(11) DEFAULT NULL,\n  `cost` int(11) NOT NULL,\n  `is_target_male` tinyint(4) DEFAULT NULL,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB AUTO_INCREMENT=1064 DEFAULT CHARSET=utf8'

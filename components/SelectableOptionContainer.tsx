@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import SelectableOptionBox from "./SelectableOptionBox"; // QuestionTypeIdStrings,
 import { QuestionTypeIdStrings } from "../QuestionType";
 import { useCallback, useEffect, useState } from "react";
@@ -9,7 +8,6 @@ import {
 } from "../features/selector/selectorSlice";
 import { CustomAnswer, makeCustomAnswer } from "../interfaces/CustomAnswer";
 import { useDispatch } from "react-redux";
-// import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
 import { logArray, logObject } from "../utils/Log";
 import {
     GQLQuestionType,
@@ -105,7 +103,6 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
     );
 
     return (
-        // <View>
         <ScrollView>
             {selectableOptions.map((selectableOption, soIndex) => {
                 return (
@@ -130,7 +127,6 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     />
                 );
             })}
-            {/* </View> */}
         </ScrollView>
     );
 };

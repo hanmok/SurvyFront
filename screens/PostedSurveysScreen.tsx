@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-// import { loadUserState } from "../utils/Storage";
 import PostedSurveyItems, {
     PostedSurveyItem,
 } from "../components/mypage/PostedSurveyItems";
@@ -9,16 +8,19 @@ import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 import { useCustomContext } from "../features/context/CustomContext";
 import { useApollo } from "../ApolloProvider";
 import { useQuery } from "@apollo/client";
-import { PostedSurveyResponse } from "../API/gqlResponses";
 import { postedSurveyQuery } from "../API/gqlQuery";
 import { GQLSurvey } from "../interfaces/GQLInterface";
 import { logObject } from "../utils/Log";
 import { removeTypenameAndConvertToCamelCase } from "../utils/SnakeToCamel";
 import { fontSizes } from "../utils/sizes";
-import showToast from "../components/common/toast/Toast";
+
+interface PostedSurveyResponse {
+    user: {
+        posted_surveys: GQLSurvey[];
+    };
+}
 
 // 요청한 설문
-// TODO: 날짜 넣기.
 function PostedSurveysScreen({
     navigation,
 }: {
@@ -58,8 +60,6 @@ function PostedSurveysScreen({
     if (error) {
         return <Text>Error: {error.message}</Text>;
     }
-
-    // 최신이 위로 가도록.
 
     return postedSurveys.length !== 0 ? (
         <PostedSurveyItems

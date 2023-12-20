@@ -13,9 +13,8 @@ import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
 import { useEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
-// import { getAllGenres } from "../API/GenreAPI";
 import { log, logObject } from "../utils/Log";
-import { screenHeight, screenWidth } from "../utils/ScreenSize";
+import { screenHeight } from "../utils/ScreenSize";
 import { Genre } from "../interfaces/Genre";
 import Spacer from "../components/common/Spacer";
 import { useCustomContext } from "../features/context/CustomContext";
@@ -259,7 +258,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingLeft: 10,
     },
-
     genreListWrapper: {
         borderBottomColor: colors.gray4,
         borderBottomWidth: 2,
@@ -270,19 +268,16 @@ const styles = StyleSheet.create({
         marginTop: 20,
         minHeight: 40,
     },
-
     rowContainer: {
         flexDirection: "row",
         justifyContent: "center",
     },
-
     genreContainer: {
         margin: 8,
         padding: 8,
         backgroundColor: colors.gray3,
         borderRadius: 6,
     },
-
     genreButtonBG: {
         backgroundColor: colors.gray1,
         padding: 4,
@@ -300,7 +295,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: fontSizes.s16,
     },
-
     bottomLeftButtonTextContainer: {
         flexGrow: 1,
         flexDirection: "row",

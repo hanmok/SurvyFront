@@ -70,7 +70,6 @@ const DynamicTextInputsForCreation = ({
                                 }
                             }}
                         />
-
                         <ImageButton
                             img={require("../../assets/minusIcon.png")}
                             onPress={() => handleRemoveInput(index)}
@@ -90,7 +89,6 @@ const DynamicTextInputsForCreation = ({
                             marginBottom: 10,
                         }}
                         hasShadow={false}
-                        // hasShadow: false
                         textStyle={{
                             color: colors.gray3,
                             fontSize: fontSizes.s16,

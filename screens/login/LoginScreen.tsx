@@ -15,18 +15,11 @@ import { screenWidth } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fontSizes } from "../../utils/sizes";
-// import { autoSignin, getUserDetail, signin } from "../../API/UserAPI";
 import { UserService } from "../../API/Services/UserService";
 import { UserState } from "../../interfaces/UserState";
-// import { loadUserState, saveUserState } from "../../utils/Storage";
 import { useEffect, useRef, useState } from "react";
-import showMessageAlert from "../../components/CustomAlert";
-import { log, logObject } from "../../utils/Log";
-import { API_BASE_URL } from "../../API/API";
 import { useCustomContext } from "../../features/context/CustomContext";
 import { userDataManager } from "../../utils/UserDataManager";
-import Toast from "react-native-toast-message";
-import ShowToast from "../../components/common/toast/Toast";
 import showToast from "../../components/common/toast/Toast";
 import showAdminToast from "../../components/common/toast/showAdminToast";
 import { isValidEmail } from "../../utils/validation";
@@ -39,7 +32,6 @@ export default function LoginScreen({
     const userService = new UserService();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
     const [satisfied, setSatisfied] = useState(false);
 
     const {
@@ -155,8 +147,11 @@ export default function LoginScreen({
                 showToast("success", "로그인되었습니다.");
             })
             .catch(error => {
-                // handled from API Call
-                // showToast("error", error.message);
+                showToast(
+                    "error",
+                    "아이디, 비밀번호 오류",
+                    "다시 확인해주세요"
+                );
             })
             .finally(() => {
                 updateLoadingStatus(false);
@@ -295,7 +290,6 @@ const styles = StyleSheet.create({
         width: screenWidth - 40,
         marginLeft: 20,
         alignSelf: "center",
-        // backgroundColor: colors.deepMainColor,
         borderWidth: 0,
     },
     loginTextStyle: {

@@ -1,24 +1,13 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native";
-
 import { fontSizes } from "../../utils/sizes";
 import TextButton from "../../components/TextButton";
-import { isValidElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { buttonColors, colors } from "../../utils/colors";
-// import isValidEmail from "../../utils/EmailValidation";
 import { isValidEmail } from "../../utils/validation";
 import showToast from "../../components/common/toast/Toast";
 import { screenWidth } from "../../utils/ScreenSize";
-// import {
-//     hasDuplicateUsername,
-//     checkValidationOfUsernamePhoneNumber,
-//     sendEmailAuthCode,
-//     sendSMSAuthCode,
-//     verifyEmailAuth,
-//     verifySMSAuth,
-// } from "../../API/UserAPI";
-
 import { useCustomContext } from "../../features/context/CustomContext";
 import { logObject } from "../../utils/Log";
 import showAdminToast from "../../components/common/toast/showAdminToast";
@@ -389,9 +378,6 @@ export default function FindPasswordScreen({
                             }}
                             backgroundStyle={[
                                 styles.confirmButtonBG,
-                                // allPhoneConditionSatisfied
-                                //     ? styles.activatedBackground
-                                //     : styles.inactivatedBackground,
                                 {
                                     backgroundColor: allPhoneConditionSatisfied
                                         ? buttonColors.enabledButtonBG
@@ -473,9 +459,6 @@ export default function FindPasswordScreen({
                                         ? buttonColors.enabledButtonBG
                                         : buttonColors.disabledButtonBG,
                                 },
-                                // allMailConditionSatisfied
-                                //     ? styles.activatedBackground
-                                //     : styles.inactivatedBackground,
                             ]}
                             isEnabled={allMailConditionSatisfied}
                             hasShadow={false}

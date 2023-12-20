@@ -1,7 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
 import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { fontSizes } from "../../utils/sizes";
 import TextButton from "../../components/TextButton";
 import { useEffect, useState } from "react";
@@ -10,8 +9,6 @@ import { screenWidth } from "../../utils/ScreenSize";
 import showToast from "../../components/common/toast/Toast";
 import { isValidPhone } from "../../utils/validation";
 import { useCustomContext } from "../../features/context/CustomContext";
-// import { checkPhoneDuplicate } from "../../API/UserAPI";
-import { logObject } from "../../utils/Log";
 import showAdminToast from "../../components/common/toast/showAdminToast";
 import { UserService } from "../../API/Services/UserService";
 
@@ -56,7 +53,6 @@ export default function FindIDScreen({
         updateLoadingStatus(true);
         const ret = await userService.verifyAuthCodeForId(phone, code);
         if (ret.statusCode >= 200 && ret.statusCode < 300) {
-            // navigation.navigate(NavigationTitle.foundID, {username: ret.data})
             navigation.navigate(NavigationTitle.foundID, {
                 username: ret.data,
             });
@@ -132,7 +128,7 @@ export default function FindIDScreen({
                     flexDirection: "row",
                     justifyContent: "space-between",
                 }}
-            ></View>
+            />
 
             <View
                 style={{
@@ -149,12 +145,10 @@ export default function FindIDScreen({
                         flexDirection: "row",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        // backgroundColor: "magenta",
                     }}
                 >
-                    <View // Text Input Box
-                        style={[styles.textInputBox, { flex: 0.9 }]}
-                    >
+                    {/* Text Input Box */}
+                    <View style={[styles.textInputBox, { flex: 0.9 }]}>
                         <TextInput
                             placeholder="휴대폰번호를 입력해주세요"
                             style={[styles.guideText, { paddingLeft: 8 }]}
@@ -165,7 +159,6 @@ export default function FindIDScreen({
                             autoCorrect={false}
                         />
                     </View>
-
                     <TextButton
                         title={phoneSendingAuthButtonText}
                         onPress={() => {
@@ -187,13 +180,7 @@ export default function FindIDScreen({
                         ]}
                     />
                 </View>
-                {/* <View
-                    style={{
-                        backgroundColor: "magenta",
-                        width: 10,
-                        height: 10,
-                    }}
-                ></View> */}
+
                 <View
                     style={{
                         flexDirection: "row",
@@ -222,8 +209,6 @@ export default function FindIDScreen({
                     <TextButton
                         title="확인"
                         onPress={() => {
-                            // navigation.navigate(NavigationTitle.foundID);
-                            // TODO: Implement verification
                             handleVerifyingSMSAuth(phoneInput, authInput);
                         }}
                         backgroundStyle={[
@@ -238,12 +223,7 @@ export default function FindIDScreen({
                             authSatisfied ? {} : styles.inactivatedBorder,
                         ]}
                         hasShadow={false}
-                        textStyle={[
-                            { fontSize: 14, color: "white" },
-                            // authSatisfied
-                            //     ? { color: "white" }
-                            //     : { color: "black" },
-                        ]}
+                        textStyle={[{ fontSize: 14, color: "white" }]}
                     />
                 </View>
             </View>
@@ -269,7 +249,6 @@ const styles = StyleSheet.create({
         height: 2,
         alignSelf: "stretch",
     },
-
     guideText: {
         fontSize: fontSizes.s16,
     },
@@ -294,10 +273,7 @@ const styles = StyleSheet.create({
         backgroundColor: buttonColors.enabledButtonBG,
     },
     authButtonBackground: {
-        // height: 50,
         height: 42,
-        // marginHorizontal: 18,
-        // marginRight: 12,
         borderRadius: 6,
         paddingHorizontal: 12,
         width: 110,

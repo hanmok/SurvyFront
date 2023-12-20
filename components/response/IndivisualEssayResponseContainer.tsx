@@ -5,15 +5,11 @@ import { useEffect, useState } from "react";
 import { getQuestionType } from "../../QuestionType";
 import { QuestionResponseContainerProps } from "./OverallSelectionResponseContainer";
 import { log, logObject } from "../../utils/Log";
-/** questionTitle, selectableOptions, answers */
 
+/** questionTitle, selectableOptions, answers */
 const IndivisualEssayResponseContainer: React.FC<
     QuestionResponseContainerProps
-> = ({
-    questionTitle,
-    answers, // 한개.
-    selectedUserId,
-}) => {
+> = ({ questionTitle, answers, selectedUserId }) => {
     const [oneAnswer, setOneAnswer] = useState<string>(undefined);
 
     useEffect(() => {

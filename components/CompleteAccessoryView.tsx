@@ -3,15 +3,12 @@ import { InputAccessoryView, StyleSheet, View, Button } from "react-native";
 
 interface CompleteAccessoryViewProps {
     id: string;
-    // onPress: (string) => void;
     onPress: () => void;
-    // userInput: string;
 }
 
 const CompleteAccessoryView: React.FC<CompleteAccessoryViewProps> = ({
     id,
     onPress,
-    // userInput,
 }) => {
     return (
         <InputAccessoryView nativeID={id} style={styles.accessoryView}>
@@ -20,8 +17,6 @@ const CompleteAccessoryView: React.FC<CompleteAccessoryViewProps> = ({
                     title="완료"
                     onPress={() => {
                         onPress();
-                        // completeInput(userInput);
-                        // onPress(userInput);
                     }}
                 />
             </View>

@@ -72,7 +72,6 @@ const PostedSurveyItems = ({
                                     {item.title}
                                 </Text>
                                 <Spacer size={6} />
-                                {/* <Text>{convertTime(parseInt(item.createdAt))}</Text> */}
                                 <View
                                     style={{
                                         flexDirection: "row",
@@ -86,10 +85,6 @@ const PostedSurveyItems = ({
                                     <Text>{convertTime(item.createdAt)}</Text>
                                 </View>
                                 <Spacer size={6} />
-                                {/* FIXME: Date value out of bounds */}
-                                {/* <Text>
-                                {convertUnixTimestampToDateTime(item.createdAt)}
-                            </Text> */}
                             </View>
                             {/* <View>
                             <TextButton
@@ -110,7 +105,6 @@ const PostedSurveyItems = ({
                     </TouchableNativeFeedback>
                 )}
                 keyExtractor={item => `${item.code}`}
-                // style={{ marginVertical: 20 }}
             />
         </View>
     ) : (

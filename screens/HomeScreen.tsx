@@ -5,14 +5,9 @@ import { colors } from "../utils/colors";
 import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvailableSurvey from "./AvailableSurvey";
-import CollectedMoney from "../components/CollectedMoney";
-
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
 import { Survey } from "../interfaces/Survey";
-
-import { UserState } from "../interfaces/UserState";
-import { API_BASE_URL, GQL_URL } from "../API/API";
 import { NavigationTitle } from "../utils/NavHelper";
 import { log, logObject } from "../utils/Log";
 import {
@@ -25,19 +20,15 @@ import {
 import { getSurveyQuery } from "../API/gqlQuery";
 import { RefreshControl } from "react-native-gesture-handler";
 import { useCustomContext } from "../features/context/CustomContext";
-// import { getSurveys } from "../API/SurveyAPI";
-// import { getUserDetail } from "../API/UserAPI";
 import { UserService } from "../API/Services/UserService";
 import { DefaultModal } from "../modals/DefaultModal";
-// import { loadPostingSurvey } from "../utils/PostingSurveyStorage";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
-// import { geoDataManager } from "../utils/Storage";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
-import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
 import { SearchingModal } from "../modals/SearchingModal";
 import { SurveyService } from "../API/Services/SurveyService";
 import { GeoService } from "../API/Services/GeoService";
+import CollectedMoney from "../components/CollectedMoney";
 
 // TODO:
 const screenWidth = Dimensions.get("window").width;
@@ -49,7 +40,6 @@ function HomeScreen({
 }) {
     const userService = new UserService();
     const surveyService = new SurveyService();
-    const geoService = new GeoService();
     const [refreshing, setRefreshing] = useState(false);
 
     const [surveys, setSurveys] = useState<Survey[]>([]);
@@ -60,6 +50,10 @@ function HomeScreen({
         useState(false);
 
     const [searchingCode, setSearchingCode] = useState("");
+
+    const toggleSearchingModalVisibility = () => {
+        setIsSearchingModalVisible(!isSearchingModalVisible);
+    };
 
     const {
         userDetail,
@@ -74,10 +68,6 @@ function HomeScreen({
 
     const togglePostingModalVisibility = () => {
         setIsPostingModalVisible(!isPostingModalVisible);
-    };
-
-    const toggleSearchingModalVisibility = () => {
-        setIsSearchingModalVisible(!isSearchingModalVisible);
     };
 
     const moveToPostingScreen = () => {
@@ -182,7 +172,6 @@ function HomeScreen({
 
     useEffect(() => {
         const postingSurvey = async () => {
-            // const result = await loadPostingSurvey();
             const result = await postingSurveyDataManager.load();
             if (result) {
                 setPostingSurvey(result);
@@ -215,7 +204,6 @@ function HomeScreen({
 
     useEffect(() => {
         const fetchPostingSurvey = async () => {
-            // const ret = await loadPostingSurvey();
             const ret = await postingSurveyDataManager.load();
             if (ret) {
                 setPostingSurvey(ret);
@@ -304,7 +292,6 @@ function HomeScreen({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
         justifyContent: "flex-start",
         backgroundColor: colors.background,
     },
@@ -329,7 +316,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         width: screenWidth,
     },
-
     collectedMoney: {
         width: 120,
         justifyContent: "flex-end",
@@ -343,11 +329,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignSelf: "stretch",
         flexBasis: 40,
-
         paddingTop: 10,
         paddingBottom: 16,
     },
-
     requestText: {
         textAlign: "center",
         color: "white",

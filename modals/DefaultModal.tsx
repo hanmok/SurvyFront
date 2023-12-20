@@ -28,7 +28,6 @@ export const DefaultModal: React.FC<DefaultModalProps> = ({
     isModalVisible,
     secondSelectionText,
     firstSelectionText,
-    onClose,
 }) => {
     return (
         <Modal transparent={true} visible={isModalVisible}>
@@ -115,7 +114,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: fontSizes.s16,
     },
-
     bottomLeftButtonTextContainer: {
         flexGrow: 1,
         flexDirection: "row",

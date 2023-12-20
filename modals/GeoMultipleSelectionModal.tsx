@@ -1,4 +1,3 @@
-// import { GeoInfo } from "../interfaces/Survey";
 import React, { useEffect, useState } from "react";
 import { GeoInfo } from "../interfaces/GeoInfo";
 import { Modal, StyleSheet, Text, View } from "react-native";
@@ -6,12 +5,8 @@ import { FlatList } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import TextButton from "../components/TextButton";
-// import { loadWholeGeo } from "../utils/Storage";
 import { screenHeight } from "../utils/ScreenSize";
-import { log, logObject } from "../utils/Log";
-import Spacer from "../components/common/Spacer";
-// import { geoDataManager } from "../utils/Storage";
-// import { fetchAllGeoInfos } from "../API/GeoAPI";
+import { logObject } from "../utils/Log";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 import { GeoService } from "../API/Services/GeoService";
 
@@ -49,8 +44,7 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
     }, [selectedCities, selectedStates]);
 
     useEffect(() => {
-        setSelectedCities(selectedGeos); // 이거.. 나눠야 하는거 아니야 ? State, 도시로 나뉘잖아.
-
+        setSelectedCities(selectedGeos);
         const statesOnly = selectedGeos.map(geo => geo.state);
         const uniqueStates = new Set(statesOnly);
         const preselectedStates = allStates.filter(state => {
@@ -67,11 +61,10 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
 
             logObject("selectedCity: ", selectedCity);
             logObject("preselevedCities:", preSelectedCities);
-            // 전체가 눌려있는 상태에서 뭔가 다른것을 누른 경우, 전체는 해제시켜줘야함. ㅅㅂ.
+            // 전체가 눌려있는 상태에서 뭔가 다른것을 누른 경우, 전체는 해제시켜줘야함.
 
             // 어떤 경우든지, 이미 선택되어있는 것이 다시 눌린 경우에는 바로 없애줘야한다.
             if (preSelectedCities.includes(selectedCity)) {
-                // logObject('sele')
                 const thatIndex = preSelectedCities.findIndex(
                     city => city.code === selectedCity.code
                 );
@@ -91,7 +84,7 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                 preSelectedCities = preSelectedCities.filter(
                     city => city.state !== "전국"
                 );
-                // 전국은 있는경우 빼기..
+                // 전국은 있는경우 빼기.
                 const updatedSelectedStates = selectedStates.filter(
                     state => state.state !== "전국"
                 );
@@ -161,9 +154,6 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
 
     useEffect(() => {
         const getAllGeos = async () => {
-            // const allGeos = await loadWholeGeo();
-            // const allGeos = await geoDataManager.loadWholeGeo();
-
             const geoResponse = await geoService.fetchAllGeoInfos();
             const allGeos = geoResponse.data;
             setGeos(allGeos);
@@ -384,7 +374,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: fontSizes.s16,
     },
-
     bottomLeftButtonTextContainer: {
         flexGrow: 1,
         flexDirection: "row",

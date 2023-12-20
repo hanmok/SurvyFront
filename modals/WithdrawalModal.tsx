@@ -16,11 +16,12 @@ import { useEffect, useRef, useState } from "react";
 import { modalStyles } from "../utils/CommonStyles";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 import Spacer from "../components/common/Spacer";
-import { createWithdrawal, patchWithdrawal } from "../API/WithdrawalAPI";
+// import { createWithdrawal, patchWithdrawal } from "../API/WithdrawalAPI";
 import { useCustomContext } from "../features/context/CustomContext";
 import { Withdrawal } from "../interfaces/Withdrawal";
 import showToast from "../components/common/toast/Toast";
 import showAdminToast from "../components/common/toast/showAdminToast";
+import { WithdrawalService } from "../API/Services/WithdrawalService";
 
 interface WithdrawalModalProps {
     isModalVisible: boolean;
@@ -35,6 +36,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     onConfirm,
     totalPoint,
 }) => {
+    const withdrawalService = new WithdrawalService();
     const [bankAccount, setBankAccount] = useState("");
     const [username, setUserName] = useState("");
     const [bankName, setBankName] = useState("");
@@ -94,12 +96,9 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
         updateLoadingStatus(true);
 
         try {
-            const withdrawal: ApiResponse<Withdrawal> = await createWithdrawal(
-                accessToken,
-                userId,
-                amount
-            );
-            await patchWithdrawal(accessToken, withdrawal.data.id);
+            const withdrawal: ApiResponse<Withdrawal> =
+                await withdrawalService.create(accessToken, userId, amount);
+            await withdrawalService.patch(accessToken, withdrawal.data.id);
             showToast("success", `${amount} 원이 출금되었습니다.`);
             onConfirm();
         } catch (error) {
@@ -238,7 +237,6 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                             leftAction={onClose}
                             rightTitle="출금"
                             rightAction={() => {
-                                // setConfirmTapped(true);
                                 handleConfirm();
                             }}
                             satisfied={satisfied}
@@ -323,10 +321,5 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         width: 200,
         height: 40,
-
-        // justifyContent: "center",
-        // alignItems: "center",
-        // alignItems: "center",
-        // alignSelf: "center",
     },
 });

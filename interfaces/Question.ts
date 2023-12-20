@@ -1,5 +1,4 @@
-import { QuestionTypeKorean } from "../QuestionType";
-import { makeRandomNumber, randomNumber } from "../utils/GetRandomNumber";
+import { makeRandomNumber } from "../utils/GetRandomNumber";
 import { SelectableOption } from "./SelectableOption";
 
 export interface Question {
@@ -24,9 +23,7 @@ export const makeQuestion = (
         expectedTimeInSec: undefined,
         sectionId: undefined,
         position: position,
-        // sectionId: sectionId || undefined,
         text: text,
-        // questionType: questionType,
         questionType: undefined,
         questionTypeId: questionTypeId,
         selectableOptions: selectableOptions,

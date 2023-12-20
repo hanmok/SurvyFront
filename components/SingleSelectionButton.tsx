@@ -36,8 +36,6 @@ const SingleSelectionButton: React.FC<SingleSelectionButtonProps> = ({
     selectedIndex,
     index,
 }) => {
-    const [isSelected, setIsSelected] = useState(false);
-
     return (
         <TouchableOpacity
             style={

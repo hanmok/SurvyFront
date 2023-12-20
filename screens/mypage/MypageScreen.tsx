@@ -1,27 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import BlockView from "../../components/BlockView";
 import { fontSizes, marginSizes, paddingSizes } from "../../utils/sizes";
-import ImageButton from "../../components/ImageButton";
-
 import { screenHeight, screenWidth } from "../../utils/ScreenSize";
-import { log, logObject } from "../../utils/Log";
+import { logObject } from "../../utils/Log";
 import { RootStackParamList } from "../../utils/NavHelper";
-
 import { NavigationTitle } from "../../utils/NavHelper";
 import { StackNavigationProp } from "@react-navigation/stack";
-// import { loadUserState } from "../utils/Storage";
-import { API_BASE_URL } from "../../API/API";
-// import {
-//     getParticipatedSurveyIds,
-//     getPostedSurveyIds,
-//     getUserDetail,
-// } from "../../API/UserAPI";
 import { useCustomContext } from "../../features/context/CustomContext";
-import TextButton from "../../components/TextButton";
-import PointBlockView from "../../components/PointBlockView";
-import ReputationBlockView from "../../components/ReputationBlockView";
-import showToast from "../../components/common/toast/Toast";
 import { WithdrawalModal } from "../../modals/WithdrawalModal";
 import showAdminToast from "../../components/common/toast/showAdminToast";
 import { SurveyService } from "../../API/Services/SurveyService";
@@ -84,8 +70,6 @@ function MypageScreen({
 
     useEffect(() => {
         getNumbers();
-        console.log("[MypageScreen] screenWidth: ", screenWidth);
-        console.log("[MypageScreen] screenHeight: ", screenHeight);
     }, [numOfParticipatedSurveys, numOfPostedSurveys]);
 
     return (

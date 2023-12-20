@@ -47,12 +47,6 @@ function ParticipatingEndScreen({
                         });
                     }
                 });
-
-            if (shouldGoMain === true) {
-            } else {
-                navigation;
-            }
-            // navigation.pop(2);
         };
 
         if (shoulGoMain !== null) {

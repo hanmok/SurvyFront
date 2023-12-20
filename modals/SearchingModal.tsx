@@ -11,9 +11,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
-import TextButton from "../components/TextButton";
 import { useEffect, useRef, useState } from "react";
-import { modalStyles } from "../utils/CommonStyles";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
 interface SearhchingModalProps {

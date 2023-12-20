@@ -1,43 +1,30 @@
 import GeoMultipleSelectionModal from "../modals/GeoMultipleSelectionModal";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../utils/NavHelper";
-// import { NavigationTitle } from "../utils/NavigationTitle";
 import { NavigationTitle } from "../utils/NavHelper";
 import CostGuideModal from "../modals/CostGuideModal";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import BlockView from "../components/BlockView";
 import { Genre } from "../interfaces/Genre";
-import { ReactNode } from "react";
 import TextButton from "../components/TextButton";
 import { buttonColors, colors } from "../utils/colors";
-import { fontSizes, marginSizes } from "../utils/sizes";
+import { fontSizes } from "../utils/sizes";
 import React from "react";
-import { SimpleLineIcons } from "@expo/vector-icons";
 import {
-    Button,
     Keyboard,
-    Modal,
-    TextInput,
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from "react-native";
-
-import SelectableTextButton from "../components/SelectableTextButton";
-
 import { useEffect, useState } from "react";
 import AgeSlider from "../components/posting/AgeSlider";
 import GenderSelection from "../components/posting/GenderSelection";
 import { Entypo } from "@expo/vector-icons";
 import Spacer from "../components/common/Spacer";
 
-import { log, logObject } from "../utils/Log";
-// import { CustomLocation } from "../utils/Geo";
-// import { createSurvey } from "../API/SurveyAPI";
+import { logObject } from "../utils/Log";
 import { RouteProp } from "@react-navigation/native";
 import GenreSelectionModal from "../modals/GenreSelectionModal";
 import { screenWidth } from "../utils/ScreenSize";
 import { GeoInfo } from "../interfaces/GeoInfo";
-// import { useCustomContext } from "./MyContext";
 import { useCustomContext } from "../features/context/CustomContext";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showToast from "../components/common/toast/Toast";
@@ -65,11 +52,10 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     route,
 }) => {
     const handleSendButtonTapped = () => {
-        // console.log("send button tapped");
         toggleCostGuideModal();
     };
     const surveyService = new SurveyService();
-    // 여기에서 모두 처리해버리기.
+
     const [participationGoal, setParticipationGoal] = useState("10");
     const { surveyTitle, sections, questions } = route.params;
 
@@ -87,7 +73,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     const [isFree, setIsFree] = useState(true);
     const [selectedGenderIndex, setSelectedGender] = useState<number>(2);
     const [isSatisfied, setIsSatisfied] = useState(false);
-    const [isNextButtonTapped, setIsNextButtonTapped] = useState(false);
 
     const {
         updateLoadingStatus,
@@ -197,12 +182,13 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         if (postingSurveyId) {
             postingSurveyDataManager.initialize();
         }
-        // navigate to home
+
         showToast(
             "success",
             "설문이 요청되었습니다. ",
             "마이페이지-요청한 설문 에서 확인하실 수 있습니다."
         );
+        // navigate to home
         navigation.pop(2);
     };
 
@@ -368,8 +354,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                         <View
                             style={{
                                 flex: 1,
-                                // backgroundColor: "cyan",
-                                // marginHorizontal: 60,
                             }}
                         >
                             <View style={styles.sectionUpperContainer}>
@@ -446,13 +430,11 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                             },
                         ]}
                         onPress={() => {
-                            // setIsNextButtonTapped(true);
                             handleSendButtonTapped();
                         }}
                     />
                 </View>
             </TouchableWithoutFeedback>
-            {/* </ScrollView> */}
         </>
     );
 };
@@ -476,7 +458,6 @@ const styles = StyleSheet.create({
     },
     sectionUpperContainer: {
         width: screenWidth - 80,
-        // backgroundColor: "magenta"
     },
     geoGuideText: {
         fontSize: fontSizes.m20,
@@ -500,22 +481,18 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
     },
-
     bottomTextStyle: {
         textAlign: "center",
         fontSize: fontSizes.s16,
     },
-
     bottomLeftButtonTextContainer: {
         flexGrow: 1,
         flexDirection: "row",
         justifyContent: "center",
-        // borderWidth: 1,
         borderTopWidth: 1,
         borderRightWidth: 1,
         height: 40,
         alignItems: "center",
-        // margin: 0,
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,
@@ -524,7 +501,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         height: 40,
         alignItems: "center",
-        // margin: 0,
     },
     locationContainer: {
         width: 60,
@@ -538,7 +514,6 @@ const styles = StyleSheet.create({
     },
     locationTitle: {
         fontSize: fontSizes.m20,
-        // marginLeft: 50,
     },
     nextButtonText: {
         color: colors.black,

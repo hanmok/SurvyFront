@@ -9,27 +9,20 @@ import {
     Button,
 } from "react-native";
 import { fontSizes, marginSizes } from "../utils/sizes";
-import ImageButton from "./ImageButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { logObject } from "../utils/Log";
-// import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
 import { QuestionTypeId } from "../QuestionType";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import TextButton from "./TextButton";
-// import SelectionButton from "./SelectionButton";
 import { QuestionTypeIdStrings } from "../QuestionType";
-import CompleteAccessoryView from "./CompleteAccessoryView";
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { SelectionImage } from "./common/ImageNameType";
-import { screenHeight } from "../utils/ScreenSize";
 
 interface SelectableOptionProps {
     id: number;
     questionId: number;
     position: number;
     value: string;
-    // questionTypeId: string;
     questionTypeId: QuestionTypeIdStrings;
     onPress?: () => void;
     handleUserInput?: (text: string) => void;
@@ -42,7 +35,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     questionId,
     position,
     value,
-    // questionTypeId,
     questionTypeId,
     onPress,
     handleUserInput,
@@ -55,8 +47,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
     }, []);
 
     const scrollViewRef = useRef(null);
-    //   const inputRef = useRef(null);
-
     const textInputRef = useRef(null);
 
     const [userInput, setUserInput] = useState("");

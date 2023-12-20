@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import QuestionTypeSelectionBox from "./QuestionTypeSelectionBox";
 import { QuestionTypeId, getQuestionType } from "../QuestionType";
-// import { QuestionTypeIdEnum } from "../enums/QuestionTypeEnum";
-// import { QuestionTypeId } from "../QuestionType";
 
 interface QuestionTypeSelectionContainerProps {
     preselectedIndex?: number;

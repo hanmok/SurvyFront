@@ -1,7 +1,6 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import {
     Text,
-    TouchableOpacity,
     ViewStyle,
     StyleProp,
     StyleSheet,
@@ -10,7 +9,6 @@ import {
 } from "react-native";
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
-import TextButton from "./TextButton";
 import { screenWidth } from "../utils/ScreenSize";
 
 interface ReputationBlockProps {
@@ -77,7 +75,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
     },
     topContainer: {
-        // paddingLeft: 20,
         justifyContent: "space-between",
         flexDirection: "row",
         alignItems: "center",

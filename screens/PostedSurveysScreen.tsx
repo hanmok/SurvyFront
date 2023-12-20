@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 // import { loadUserState } from "../utils/Storage";
-import PostedSurveyItems from "../components/mypage/PostedSurveyItems";
+import PostedSurveyItems, {
+    PostedSurveyItem,
+} from "../components/mypage/PostedSurveyItems";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 import { useCustomContext } from "../features/context/CustomContext";
@@ -34,12 +36,12 @@ function PostedSurveysScreen({
         { client, variables: { userId: userId }, fetchPolicy: "no-cache" }
     );
 
-    const [postedSurveys, setPostedSurveys] = useState<GQLSurvey[]>([]);
+    const [postedSurveys, setPostedSurveys] = useState<PostedSurveyItem[]>([]);
 
     useEffect(() => {
         if (data?.user.posted_surveys) {
             logObject("get postedSurveyObj using user", data.user);
-            const updatedPostedSurveys: GQLSurvey[] =
+            const updatedPostedSurveys: PostedSurveyItem[] =
                 removeTypenameAndConvertToCamelCase(data.user.posted_surveys);
             logObject("get postedSurveyObj", updatedPostedSurveys);
             updatedPostedSurveys.sort((a, b) => {

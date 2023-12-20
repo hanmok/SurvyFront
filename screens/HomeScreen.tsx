@@ -162,6 +162,7 @@ function HomeScreen({
             await surveyService
                 .getSurveys(accessToken)
                 .then(surveysResult => {
+                    logObject("surveyResult", surveysResult);
                     setIsLoading(false);
                     setSurveys(surveysResult.data);
                 })

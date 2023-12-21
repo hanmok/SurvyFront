@@ -214,12 +214,7 @@ export default function SignUpScreen({
                             }}
                             hasShadow={false}
                             backgroundStyle={[
-                                {
-                                    alignSelf: "stretch",
-                                    flex: 0.2,
-                                    borderRadius: 6,
-                                    paddingHorizontal: 12,
-                                },
+                                styles.checkDuplicateBtnBG,
                                 usernameSatisfied
                                     ? styles.activatedBackground
                                     : styles.inactivatedBorder,
@@ -305,7 +300,9 @@ export default function SignUpScreen({
                             ]}
                             hasShadow={false}
                             textStyle={{
-                                color: phoneSatisfied ? "white" : colors.gray2,
+                                color: phoneSatisfied
+                                    ? colors.white
+                                    : colors.gray2,
                             }}
                         />
                     </View>
@@ -367,7 +364,7 @@ export default function SignUpScreen({
                 textStyle={[
                     {
                         fontSize: 16,
-                        color: "white",
+                        color: colors.white,
                     },
                 ]}
                 isEnabled={satisfied}
@@ -421,5 +418,11 @@ const styles = StyleSheet.create({
     },
     activatedBackground: {
         backgroundColor: buttonColors.enabledButtonBG,
+    },
+    checkDuplicateBtnBG: {
+        alignSelf: "stretch",
+        flex: 0.2,
+        borderRadius: 6,
+        paddingHorizontal: 12,
     },
 });

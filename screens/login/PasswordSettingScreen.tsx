@@ -87,9 +87,7 @@ export default function PasswordSettingScreen({
             </View>
 
             <View style={styles.descriptionContainer}>
-                <Text
-                    style={{ fontSize: 12, color: colors.gray3, marginTop: 4 }}
-                >
+                <Text style={styles.passwordGuideText}>
                     8자 이상, 공백 사용 불가
                 </Text>
             </View>
@@ -127,7 +125,7 @@ export default function PasswordSettingScreen({
                     },
                 ]}
                 hasShadow={isSatisfied}
-                textStyle={{ color: "white", fontSize: fontSizes.m20 }}
+                textStyle={styles.confirmBtnText}
             />
         </View>
     );
@@ -147,7 +145,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     selectedBar: {
-        backgroundColor: "black",
+        backgroundColor: colors.black,
         height: 2,
         alignSelf: "stretch",
     },
@@ -173,5 +171,14 @@ const styles = StyleSheet.create({
         height: 50,
         marginHorizontal: 18,
         borderRadius: 6,
+    },
+    passwordGuideText: {
+        fontSize: 12,
+        color: colors.gray3,
+        marginTop: 4,
+    },
+    confirmBtnText: {
+        color: colors.white,
+        fontSize: fontSizes.m20,
     },
 });

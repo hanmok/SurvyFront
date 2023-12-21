@@ -154,7 +154,7 @@ export default function PostingScreen({
                         <Ionicons
                             name="reorder-three-sharp"
                             size={36}
-                            color="black"
+                            color={colors.black}
                             onPress={() => {
                                 toggleMenuModal();
                             }}
@@ -322,43 +322,17 @@ export default function PostingScreen({
                     textStyle={{
                         fontSize: 22,
                         fontWeight: "bold",
-                        color: surveyTitle !== "" ? "black" : "gray",
+                        color: surveyTitle !== "" ? colors.black : "gray",
                     }}
-                    backgroundStyle={{
-                        height: 44,
-                        // marginRight: 12,
-
-                        borderTopLeftRadius: 16,
-                        borderTopRightRadius: 16,
-                        borderBottomLeftRadius: 6,
-                        borderBottomRightRadius: 6,
-                        backgroundColor: colors.gray4,
-                        marginBottom: 8,
-                    }}
+                    backgroundStyle={styles.surveyTitleBG}
                 />
                 <TextButton
                     title={`Section ${currentSectionIndex + 1}`}
                     onPress={() => {
                         toggleSectionVisible();
                     }}
-                    textStyle={{
-                        textAlignVertical: "center",
-                        fontWeight: "600",
-                        // color: "blue",
-                        color: colors.gray3,
-                    }}
-                    backgroundStyle={[
-                        styles.shadow,
-                        {
-                            justifyContent: "center",
-                            backgroundColor: "white",
-                            borderBottomLeftRadius: 16,
-                            borderBottomRightRadius: 16,
-                            borderTopLeftRadius: 6,
-                            borderTopRightRadius: 6,
-                            height: 34,
-                        },
-                    ]}
+                    textStyle={styles.sectionText}
+                    backgroundStyle={[styles.shadow, styles.sectionBG]}
                 />
             </View>
         );
@@ -499,20 +473,19 @@ export default function PostingScreen({
                 </>
 
                 <TextButton
-                    backgroundStyle={{
-                        backgroundColor: isSatisfied
-                            ? buttonColors.enabledButtonBG
-                            : buttonColors.disabledButtonBG,
-                        height: 46,
-                        marginBottom: 30,
-                        marginHorizontal: 20,
-                        borderRadius: 10,
-                    }}
+                    backgroundStyle={[
+                        styles.nextBtnBG,
+                        {
+                            backgroundColor: isSatisfied
+                                ? buttonColors.enabledButtonBG
+                                : buttonColors.disabledButtonBG,
+                        },
+                    ]}
                     title="다음"
                     textStyle={[
                         styles.nextButtonText,
                         {
-                            color: "white",
+                            color: colors.white,
                         },
                     ]}
                     onPress={() => {
@@ -554,8 +527,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     addButton: {
-        backgroundColor: "black",
-        color: "white",
+        backgroundColor: colors.black,
+        color: colors.white,
     },
     moduleContainer: {
         flexDirection: "row",
@@ -692,5 +665,34 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 2,
+    },
+    surveyTitleBG: {
+        height: 44,
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16,
+        borderBottomLeftRadius: 6,
+        borderBottomRightRadius: 6,
+        backgroundColor: colors.gray4,
+        marginBottom: 8,
+    },
+    sectionText: {
+        textAlignVertical: "center",
+        fontWeight: "600",
+        color: colors.gray3,
+    },
+    sectionBG: {
+        justifyContent: "center",
+        backgroundColor: colors.white,
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        borderTopLeftRadius: 6,
+        borderTopRightRadius: 6,
+        height: 34,
+    },
+    nextBtnBG: {
+        height: 46,
+        marginBottom: 30,
+        marginHorizontal: 20,
+        borderRadius: 10,
     },
 });

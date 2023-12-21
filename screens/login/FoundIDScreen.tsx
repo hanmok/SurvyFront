@@ -17,6 +17,7 @@ export default function FoundIDScreen({
     route: RouteProp<RootStackParamList, NavigationTitle.foundID>;
 }) {
     const { username } = route.params;
+
     return (
         <View style={{ flex: 1, justifyContent: "space-between" }}>
             <View style={{ marginTop: 60, marginHorizontal: 18 }}>
@@ -33,7 +34,7 @@ export default function FoundIDScreen({
                         styles.buttonBackground,
                         {
                             marginBottom: 20,
-                            backgroundColor: "white",
+                            backgroundColor: colors.white,
                         },
                     ]}
                     textStyle={{ fontSize: 16 }}
@@ -50,7 +51,7 @@ export default function FoundIDScreen({
                             backgroundColor: colors.deeperMainColor,
                         },
                     ]}
-                    textStyle={{ fontSize: 16, color: "white" }}
+                    textStyle={styles.loginBtnText}
                 />
             </View>
         </View>
@@ -62,5 +63,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 18,
         borderRadius: 6,
         height: 45,
+    },
+    loginBtnText: {
+        fontSize: 16,
+        color: colors.white,
     },
 });

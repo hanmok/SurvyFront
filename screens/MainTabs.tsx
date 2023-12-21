@@ -8,6 +8,7 @@ import HomeScreen from "./HomeScreen";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
 import ImageButton from "../components/ImageButton";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { colors } from "../utils/colors";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +32,7 @@ export default function MainTabs({
                             <Foundation
                                 name="home"
                                 size={24}
-                                color={focused ? "black" : "gray"}
+                                color={focused ? colors.black : "gray"}
                             />
                         );
                     },
@@ -47,7 +48,7 @@ export default function MainTabs({
                             <Ionicons
                                 name="person"
                                 size={24}
-                                color={focused ? "black" : "gray"}
+                                color={focused ? colors.black : "gray"}
                             />
                         );
                     },

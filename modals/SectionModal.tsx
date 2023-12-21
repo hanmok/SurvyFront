@@ -36,12 +36,7 @@ const SectionModal: React.FC<SectionModalProps> = ({
                 backgroundStyle={{
                     height: 50,
                 }}
-                textStyle={{
-                    fontSize: 18,
-                    textAlign: "left",
-                    paddingLeft: 12,
-                    color: "#007AFF",
-                }}
+                textStyle={styles.optionText}
                 hasShadow={false}
             />
             <Separator />
@@ -74,12 +69,7 @@ const SectionModal: React.FC<SectionModalProps> = ({
                             backgroundStyle={{
                                 height: 50,
                             }}
-                            textStyle={{
-                                fontSize: 18,
-                                textAlign: "left",
-                                paddingLeft: 12,
-                                color: "#007AFF",
-                            }}
+                            textStyle={styles.optionText}
                             hasShadow={false}
                         />
                     </View>
@@ -98,11 +88,17 @@ const styles = StyleSheet.create({
         backgroundColor: colors.bottomModalBackground,
     },
     mainContainer: {
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
         paddingBottom: 50,
         paddingTop: 20,
         paddingHorizontal: 12,
+    },
+    optionText: {
+        fontSize: 18,
+        textAlign: "left",
+        paddingLeft: 12,
+        color: "#007AFF",
     },
 });

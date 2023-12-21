@@ -15,6 +15,8 @@ import {
 } from "../interfaces/GQLInterface";
 import { QuestionTypeId } from "../QuestionType";
 import { ScrollView } from "react-native-gesture-handler";
+import showToast from "./common/toast/Toast";
+import showAdminToast from "./common/toast/showAdminToast";
 
 interface SelectablContainerProps {
     selectableOptions: GQLSelectableOption[];
@@ -121,6 +123,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                         handleUserInput={text => {
                             handleUserInput(text, soIndex, questionIndex);
                             setUserInput(text);
+                            showAdminToast("error", "asd");
                         }}
                         questionIndex={questionIndex}
                         key={`${selectableOption.id}`}

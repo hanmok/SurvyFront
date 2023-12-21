@@ -1,6 +1,6 @@
 import { makeRandomNumber } from "../utils/GetRandomNumber";
 import { SelectableOption } from "./SelectableOption";
-
+/** id, position, text, questionTypeId, questionType, selectableOptions */
 export interface Question {
     id: number | undefined;
     expectedTimeInSec: number | undefined;

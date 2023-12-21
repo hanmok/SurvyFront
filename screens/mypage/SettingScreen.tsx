@@ -35,21 +35,8 @@ function SettingScreen({
 
     return (
         <View>
-            <View
-                style={{
-                    justifyContent: "space-around",
-                    marginVertical: 30,
-                    alignItems: "center",
-                    alignContent: "stretch",
-                }}
-            >
-                <View
-                    style={{
-                        alignSelf: "stretch",
-                        marginHorizontal: 20,
-                        gap: 15,
-                    }}
-                >
+            <View style={styles.overall}>
+                <View style={styles.upperContainer}>
                     <BlockView
                         onPress={() => {
                             console.log("이용약관 tapped");
@@ -91,6 +78,7 @@ function SettingScreen({
                         </Text>
                     </BlockView>
                 </View>
+
                 <View style={{ height: 500 }}></View>
                 <View style={{ alignItems: "center" }}>
                     <TextButton
@@ -100,13 +88,7 @@ function SettingScreen({
                         }}
                         textStyle={{ color: colors.gray3 }}
                     />
-                    <View
-                        style={{
-                            backgroundColor: colors.gray3,
-                            height: 1,
-                            width: 80,
-                        }}
-                    ></View>
+                    <View style={styles.bottomLine} />
                 </View>
             </View>
         </View>
@@ -117,4 +99,20 @@ export default SettingScreen;
 
 const styles = StyleSheet.create({
     eachBoxTextStyle: { fontSize: fontSizes.m20 },
+    overall: {
+        justifyContent: "space-around",
+        marginVertical: 30,
+        alignItems: "center",
+        alignContent: "stretch",
+    },
+    upperContainer: {
+        alignSelf: "stretch",
+        marginHorizontal: 20,
+        gap: 15,
+    },
+    bottomLine: {
+        backgroundColor: colors.gray3,
+        height: 1,
+        width: 80,
+    },
 });

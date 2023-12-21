@@ -1,5 +1,4 @@
 import {
-    FlatList,
     Keyboard,
     Modal,
     StyleSheet,
@@ -79,8 +78,6 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
 
     useEffect(() => {
         setSatisfied(selectedGenres.length !== 0);
-        logObject("selectedGenres: ", selectedGenres);
-        log("num of selectedGenres: " + selectedGenres.length);
     }, [selectedGenres]);
 
     useEffect(() => {
@@ -134,7 +131,7 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                                     <Entypo
                                         name="magnifying-glass"
                                         size={24}
-                                        color="black"
+                                        color={colors.black}
                                     />
                                 </View>
                                 {/* selected Genres */}
@@ -157,32 +154,25 @@ const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                                 </View>
                             </View>
 
-                            <View
-                                style={{
-                                    flex: 0.9,
-                                    flexDirection: "row",
-                                    flexWrap: "wrap",
-                                    marginTop: 20,
-                                }}
-                            >
+                            <View style={styles.showingGenreContainer}>
                                 {showingGenres.map(genre => (
                                     <TextButton
+                                        key={genre.name}
                                         title={genre.name}
                                         onPress={() => {
                                             toggleGenreSelection(genre);
                                         }}
-                                        backgroundStyle={{
-                                            backgroundColor:
-                                                selectedGenres.includes(genre)
-                                                    ? colors.gray1
-                                                    : colors.white,
-                                            padding: 4,
-                                            paddingHorizontal: 6,
-                                            marginHorizontal: 6,
-                                            borderRadius: 6,
-                                            height: 30,
-                                            marginVertical: 4,
-                                        }}
+                                        backgroundStyle={[
+                                            styles.genreButtonBG,
+                                            {
+                                                backgroundColor:
+                                                    selectedGenres.includes(
+                                                        genre
+                                                    )
+                                                        ? colors.gray1
+                                                        : colors.white,
+                                            },
+                                        ]}
                                         textStyle={{
                                             color: selectedGenres.includes(
                                                 genre
@@ -216,7 +206,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         borderRadius: 20,
         overflow: "hidden",
     },
@@ -249,9 +239,9 @@ const styles = StyleSheet.create({
     },
     searchTextBox: {
         borderRadius: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         overflow: "hidden",
-        borderColor: "black",
+        borderColor: colors.black,
         borderWidth: 1,
         width: 240,
         height: 35,
@@ -304,7 +294,7 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         borderBottomLeftRadius: 10,
     },
     bottomRightButtonTextContainer: {
@@ -327,7 +317,7 @@ const styles = StyleSheet.create({
         height: 30,
         borderRadius: 5,
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         overflow: "hidden",
         margin: 5,
         justifyContent: "center",
@@ -335,5 +325,11 @@ const styles = StyleSheet.create({
     locationTitle: {
         fontSize: fontSizes.m20,
         marginLeft: 50,
+    },
+    showingGenreContainer: {
+        flex: 0.9,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginTop: 20,
     },
 });

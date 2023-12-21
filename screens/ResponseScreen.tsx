@@ -176,7 +176,7 @@ export default function ResponseScreen({
                         <Ionicons
                             name="ios-share-outline"
                             size={30}
-                            color="black"
+                            color={colors.black}
                             onPress={() => {
                                 console.log("hi");
                                 setGenerateTapped(true);
@@ -442,13 +442,7 @@ export default function ResponseScreen({
                             ListFooterComponent={listFooter}
                             stickySectionHeadersEnabled={false}
                             renderSectionHeader={({ section }) => (
-                                <View
-                                    style={{
-                                        marginTop: 60,
-                                        marginBottom: 10,
-                                        paddingLeft: 20,
-                                    }}
-                                >
+                                <View style={styles.sectionHeaderBG}>
                                     <Text style={{ fontSize: 28 }}>
                                         {section.title}
                                     </Text>
@@ -542,5 +536,10 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start",
         alignContent: "center",
         marginHorizontal: 12,
+    },
+    sectionHeaderBG: {
+        marginTop: 60,
+        marginBottom: 10,
+        paddingLeft: 20,
     },
 });

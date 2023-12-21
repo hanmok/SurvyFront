@@ -46,14 +46,14 @@ export const modalStyles = StyleSheet.create({
     },
     cancelBtnBG: {
         flex: 0.5,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         marginHorizontal: 9,
         marginTop: 12,
         marginBottom: 6,
         borderRadius: 6,
     },
     cancelBtnText: {
-        color: "black",
+        color: colors.black,
         letterSpacing: 2,
         fontSize: 16,
     },
@@ -66,7 +66,7 @@ export const modalStyles = StyleSheet.create({
         borderRadius: 6,
     },
     confirmBtnText: {
-        color: "white",
+        color: colors.white,
         letterSpacing: 2,
         fontSize: 16,
     },

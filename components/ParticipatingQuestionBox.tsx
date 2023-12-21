@@ -1,8 +1,5 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
-import { colors } from "../utils/colors";
-import { fontSizes } from "../utils/sizes";
 
 interface ParticipatingQuestionProps {
     position: number;

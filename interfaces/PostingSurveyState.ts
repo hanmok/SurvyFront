@@ -1,4 +1,4 @@
-import { makeRandomNumber, randomNumber } from "../utils/GetRandomNumber";
+import { makeRandomNumber } from "../utils/GetRandomNumber";
 import { log, logObject } from "../utils/Log";
 import { Question } from "./Question";
 import { Section } from "./Section";

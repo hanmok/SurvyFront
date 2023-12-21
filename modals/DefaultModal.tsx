@@ -36,47 +36,27 @@ export const DefaultModal: React.FC<DefaultModalProps> = ({
                     <View style={styles.modalContent}>
                         {/* Title, Description */}
                         <View style={{ marginTop: 30, alignItems: "center" }}>
-                            <Text style={{ fontSize: 22, fontWeight: "800" }}>
-                                {title}
-                            </Text>
+                            <Text style={styles.titleText}>{title}</Text>
                             <Spacer size={12} />
-                            <Text style={{ fontSize: 18, fontWeight: "500" }}>
+                            <Text style={styles.descriptionText}>
                                 {description}
                             </Text>
                         </View>
 
-                        <View
-                            style={{
-                                flexDirection: "column",
-                                height: 120,
-                                alignSelf: "stretch",
-                                marginBottom: 10,
-                                marginHorizontal: 10,
-                            }}
-                        >
+                        <View style={styles.buttonsContainer}>
                             <TextButton
                                 title={firstSelectionText}
                                 onPress={() => {
                                     onFirstSelection();
                                 }}
-                                backgroundStyle={{
-                                    flex: 0.5,
-                                    backgroundColor: "yellow",
-                                    margin: 6,
-                                    borderRadius: 6,
-                                }}
+                                backgroundStyle={styles.buttonBG}
                             />
                             <TextButton
                                 title={secondSelectionText}
                                 onPress={() => {
                                     onSecondSelection();
                                 }}
-                                backgroundStyle={{
-                                    backgroundColor: "white",
-                                    flex: 0.5,
-                                    margin: 6,
-                                    borderRadius: 6,
-                                }}
+                                backgroundStyle={styles.buttonBG}
                             />
                         </View>
                     </View>
@@ -92,7 +72,7 @@ const styles = StyleSheet.create({
         height: screenHeight,
         backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         borderRadius: 20,
         overflow: "hidden",
         justifyContent: "center",
@@ -124,7 +104,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         margin: 0,
         borderBottomLeftRadius: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,
@@ -134,9 +114,6 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
-    },
-    inactivatedStyle: {
-        backgroundColor: colors.gray2,
     },
     activatedStyle: {
         backgroundColor: colors.white,
@@ -151,5 +128,20 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 30,
         marginHorizontal: 20,
+    },
+    titleText: { fontSize: 22, fontWeight: "800" },
+    descriptionText: { fontSize: 18, fontWeight: "500" },
+    buttonsContainer: {
+        flexDirection: "column",
+        height: 120,
+        alignSelf: "stretch",
+        marginBottom: 10,
+        marginHorizontal: 10,
+    },
+    buttonBG: {
+        backgroundColor: colors.white,
+        flex: 0.5,
+        margin: 6,
+        borderRadius: 6,
     },
 });

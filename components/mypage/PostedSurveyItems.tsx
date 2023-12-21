@@ -12,10 +12,7 @@ import { colors } from "../../utils/colors";
 // import Clipboard from "@react-native-clipboard/clipboard";
 
 import * as Clipboard from "expo-clipboard";
-import {
-    convertTime,
-    convertUnixTimestampToDateTime,
-} from "../../utils/DateFormatter";
+import { convertTime } from "../../utils/DateFormatter";
 import Spacer from "../common/Spacer";
 
 export interface PostedSurveyItem {
@@ -47,9 +44,7 @@ const PostedSurveyItems = ({
     return postedSurveys.length !== 0 ? (
         <View style={{ flex: 1 }}>
             <FlatList
-                style={{
-                    paddingVertical: 20,
-                }}
+                style={{ paddingVertical: 20 }}
                 data={postedSurveys}
                 renderItem={({ item }) => (
                     <TouchableNativeFeedback

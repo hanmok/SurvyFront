@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { fontSizes } from "../../utils/sizes";
 import { colors } from "../../utils/colors";
@@ -39,24 +39,26 @@ const AgeSlider: React.FC<AgeSliderProps> = ({ setAgeRange }) => {
                 allowOverlap
                 snapped
                 selectedStyle={{ backgroundColor: colors.sliderBlue }}
-                containerStyle={{
-                    marginBottom: 20,
-                }}
+                containerStyle={{ marginBottom: 20 }}
                 enableLabel={true}
                 isMarkersSeparated={true}
                 customLabel={labelProps => {
                     return <Text></Text>;
                 }}
-                markerStyle={{
-                    height: 16,
-                    width: 16,
-                    backgroundColor: colors.sliderBlue,
-                    overflow: "hidden",
-                    borderColor: colors.transparent,
-                }}
+                markerStyle={styles.marker}
             />
         </View>
     );
 };
 
 export default AgeSlider;
+
+const styles = StyleSheet.create({
+    marker: {
+        height: 16,
+        width: 16,
+        backgroundColor: colors.sliderBlue,
+        overflow: "hidden",
+        borderColor: colors.transparent,
+    },
+});

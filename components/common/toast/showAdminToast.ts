@@ -1,7 +1,8 @@
 import Toast, { ToastType } from "react-native-toast-message";
+import { MessageType } from "./MessageType";
 
 const showAdminToast = (
-    messageType: ToastType,
+    messageType: MessageType,
     message: string,
     message2?: string
 ) => {

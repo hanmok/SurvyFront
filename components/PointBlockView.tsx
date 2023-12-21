@@ -41,14 +41,7 @@ const PointBlockView: React.FC<PointBlockProps> = ({
                     </Text>
                 </View>
 
-                <View
-                    style={{
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                        marginHorizontal: 20,
-                        paddingHorizontal: 20,
-                    }}
-                >
+                <View style={styles.middleSpacer}>
                     <TextButton
                         title="내역"
                         onPress={onPressHistory}
@@ -89,9 +82,15 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     buttonText: {
-        color: "white",
+        color: colors.white,
         fontSize: 18,
         letterSpacing: 2,
+    },
+    middleSpacer: {
+        justifyContent: "space-between",
+        flexDirection: "row",
+        marginHorizontal: 20,
+        paddingHorizontal: 20,
     },
 });
 

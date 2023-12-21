@@ -11,6 +11,7 @@ import { useCustomContext } from "../features/context/CustomContext";
 import { useEffect, useState } from "react";
 import showToast from "../components/common/toast/Toast";
 import { ParticipatingService } from "../API/Services/ParticipatingService";
+import { colors } from "../utils/colors";
 
 // Update participating-honest
 
@@ -88,7 +89,7 @@ function ParticipatingEndScreen({
                     backgroundStyle={{
                         borderRadius: 12,
                         padding: 10,
-                        backgroundColor: "white",
+                        backgroundColor: colors.white,
                     }}
                 /> */}
                 <TextButton
@@ -96,11 +97,7 @@ function ParticipatingEndScreen({
                     onPress={() => {
                         setShouldGoMain(true);
                     }}
-                    backgroundStyle={{
-                        borderRadius: 12,
-                        padding: 16,
-                        backgroundColor: "white",
-                    }}
+                    backgroundStyle={styles.btnBG}
                     textStyle={{ fontSize: 18 }}
                 />
 
@@ -111,11 +108,7 @@ function ParticipatingEndScreen({
                     onPress={() => {
                         setShouldGoMain(false);
                     }}
-                    backgroundStyle={{
-                        borderRadius: 12,
-                        padding: 16,
-                        backgroundColor: "white",
-                    }}
+                    backgroundStyle={styles.btnBG}
                     textStyle={{ fontSize: 18 }}
                 />
 
@@ -130,7 +123,7 @@ function ParticipatingEndScreen({
                     backgroundStyle={{
                         borderRadius: 12,
                         padding: 10,
-                        backgroundColor: "white",
+                        backgroundColor: colors.white,
                     }}
                 /> */}
 
@@ -145,7 +138,7 @@ function ParticipatingEndScreen({
                     backgroundStyle={{
                         borderRadius: 12,
                         padding: 10,
-                        backgroundColor: "white",
+                        backgroundColor: colors.white,
                     }}
                 /> */}
 
@@ -160,7 +153,7 @@ function ParticipatingEndScreen({
                      backgroundStyle={{
                          borderRadius: 12,
                          padding: 10,
-                         backgroundColor: "white",
+                         backgroundColor: colors.white,
                      }}
                  /> */}
             </View>
@@ -176,5 +169,10 @@ const styles = StyleSheet.create({
         marginBottom: 70,
         justifyContent: "space-between",
         flex: 1,
+    },
+    btnBG: {
+        borderRadius: 12,
+        padding: 16,
+        backgroundColor: colors.white,
     },
 });

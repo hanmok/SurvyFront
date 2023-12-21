@@ -24,7 +24,7 @@ const CollectedMoney: React.FC<CollectedMoneyProps> = React.memo(
                         <FontAwesome5
                             name="copyright"
                             size={24}
-                            color="black"
+                            color={colors.black}
                         />
 
                         <Text style={styles.collectedMoney} numberOfLines={1}>

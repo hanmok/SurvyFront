@@ -1,7 +1,7 @@
 import { Genre } from "./Genre";
 import { Question } from "./Question";
 import { Section } from "./Section";
-
+/** id, title, createdAt, ... */
 export interface Survey {
     id: number | undefined;
     userId: number | undefined;

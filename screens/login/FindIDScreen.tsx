@@ -123,109 +123,79 @@ export default function FindIDScreen({
     return (
         <View style={styles.overall}>
             {/* Auth Method Bar*/}
-            <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                }}
-            />
-
-            <View
-                style={{
-                    marginHorizontal: 18,
-                    marginBottom: 26,
-                    marginTop: 12,
-                }}
-            >
-                <Text style={[styles.guideText, { marginBottom: 14 }]}>
-                    휴대폰 번호
-                </Text>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    {/* Text Input Box */}
-                    <View style={[styles.textInputBox, { flex: 0.9 }]}>
-                        <TextInput
-                            placeholder="휴대폰번호를 입력해주세요"
-                            style={[styles.guideText, { paddingLeft: 8 }]}
-                            value={phoneInput}
-                            onChangeText={setPhoneInput}
-                            keyboardType="phone-pad"
-                            autoComplete="off"
-                            autoCorrect={false}
-                        />
-                    </View>
-                    <TextButton
-                        title={phoneSendingAuthButtonText}
-                        onPress={() => {
-                            setPhoneSendingCodeButtonTapped(true);
-                            handlePhoneDuplicate(phoneInput);
-                        }}
-                        backgroundStyle={[
-                            styles.authButtonBackground,
-                            phoneNumberSatisfied
-                                ? styles.activatedBackground
-                                : styles.inactivatedBorder,
-                        ]}
-                        hasShadow={false}
-                        textStyle={[
-                            { fontSize: 14 },
-                            phoneNumberSatisfied
-                                ? { color: colors.white }
-                                : { color: colors.gray2 },
-                        ]}
+            <Text style={[styles.guideText, { marginBottom: 14 }]}>
+                휴대폰 번호
+            </Text>
+            <View style={styles.phoneInputRowContainer}>
+                {/* Text Input Box */}
+                <View style={[styles.textInputBox, { flex: 0.9 }]}>
+                    <TextInput
+                        placeholder="휴대폰번호를 입력해주세요"
+                        style={[styles.guideText, { paddingLeft: 8 }]}
+                        value={phoneInput}
+                        onChangeText={setPhoneInput}
+                        keyboardType="phone-pad"
+                        autoComplete="off"
+                        autoCorrect={false}
                     />
                 </View>
-
-                <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
+                <TextButton
+                    title={phoneSendingAuthButtonText}
+                    onPress={() => {
+                        setPhoneSendingCodeButtonTapped(true);
+                        handlePhoneDuplicate(phoneInput);
                     }}
+                    backgroundStyle={[
+                        styles.authButtonBackground,
+                        phoneNumberSatisfied
+                            ? styles.activatedBackground
+                            : styles.inactivatedBorder,
+                    ]}
+                    hasShadow={false}
+                    textStyle={[
+                        { fontSize: 14 },
+                        phoneNumberSatisfied
+                            ? { color: colors.white }
+                            : { color: colors.gray2 },
+                    ]}
+                />
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+                <View // Text Input Box
+                    style={[styles.textInputBox, { marginTop: 10, flex: 1.0 }]}
                 >
-                    <View // Text Input Box
-                        style={[
-                            styles.textInputBox,
-                            { marginTop: 10, flex: 1.0 },
-                        ]}
-                    >
-                        <TextInput
-                            placeholder="인증번호를 입력해주세요"
-                            style={[styles.guideText, { paddingLeft: 8 }]}
-                            value={authInput}
-                            onChangeText={setAuthInput}
-                            keyboardType="phone-pad"
-                            autoComplete="off"
-                            autoCorrect={false}
-                        />
-                    </View>
-                </View>
-                <View>
-                    <TextButton
-                        title="확인"
-                        onPress={() => {
-                            handleVerifyingSMSAuth(phoneInput, authInput);
-                        }}
-                        backgroundStyle={[
-                            styles.authButtonBackground,
-                            {
-                                marginTop: 20,
-                                width: screenWidth - 36,
-                                backgroundColor: authSatisfied
-                                    ? buttonColors.enabledButtonBG
-                                    : buttonColors.disabledButtonBG,
-                            },
-                            authSatisfied ? {} : styles.inactivatedBorder,
-                        ]}
-                        hasShadow={false}
-                        textStyle={[{ fontSize: 14, color: "white" }]}
+                    <TextInput
+                        placeholder="인증번호를 입력해주세요"
+                        style={[styles.guideText, { paddingLeft: 8 }]}
+                        value={authInput}
+                        onChangeText={setAuthInput}
+                        keyboardType="phone-pad"
+                        autoComplete="off"
+                        autoCorrect={false}
                     />
                 </View>
+            </View>
+            <View>
+                <TextButton
+                    title="확인"
+                    onPress={() => {
+                        handleVerifyingSMSAuth(phoneInput, authInput);
+                    }}
+                    backgroundStyle={[
+                        styles.authButtonBackground,
+                        {
+                            marginTop: 20,
+                            width: screenWidth - 36,
+                            backgroundColor: authSatisfied
+                                ? buttonColors.enabledButtonBG
+                                : buttonColors.disabledButtonBG,
+                        },
+                        authSatisfied ? {} : styles.inactivatedBorder,
+                    ]}
+                    hasShadow={false}
+                    textStyle={styles.confirmBtnText}
+                />
             </View>
         </View>
     );
@@ -243,9 +213,12 @@ const styles = StyleSheet.create({
     },
     overall: {
         flex: 1,
+        marginHorizontal: 18,
+        marginBottom: 26,
+        marginTop: 12,
     },
     selectedBar: {
-        backgroundColor: "black",
+        backgroundColor: colors.black,
         height: 2,
         alignSelf: "stretch",
     },
@@ -278,4 +251,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         width: 110,
     },
+    phoneInputRowContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    confirmBtnText: { fontSize: 14, color: colors.white },
 });

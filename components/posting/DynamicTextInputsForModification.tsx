@@ -73,37 +73,16 @@ const DynamicTextInputsForModification = ({
                 <TextButton
                     title="기타"
                     onPress={() => {}}
-                    backgroundStyle={{
-                        borderWidth: 1,
-                        borderColor: "#ccc",
-                        borderRadius: 5,
-                        padding: 10,
-                        marginBottom: 10,
-                    }}
+                    backgroundStyle={styles.extraBtnBG}
                     hasShadow={false}
-                    textStyle={{
-                        color: colors.gray3,
-                        fontSize: fontSizes.s16,
-                        fontWeight: "400",
-                        textAlign: "left",
-                    }}
+                    textStyle={styles.extraBtnText}
                     isEnabled={false}
                 />
             )}
             <TextButton
                 title="Add Input"
-                backgroundStyle={{
-                    borderRadius: 8,
-                    borderWidth: 1,
-                    borderColor: colors.gray4,
-                    overflow: "hidden",
-                    height: 30,
-                }}
-                textStyle={{
-                    color: colors.buttonText,
-                    textAlign: "center",
-                    fontSize: fontSizes.m20,
-                }}
+                backgroundStyle={styles.addInputBG}
+                textStyle={styles.addInputText}
                 onPress={handleAddInput}
                 isEnabled={false}
             />
@@ -128,6 +107,33 @@ const styles = StyleSheet.create({
         borderColor: "#ccc",
         borderRadius: 5,
         padding: 10,
+    },
+    extraBtnBG: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
+    },
+    extraBtnText: {
+        color: colors.gray3,
+        fontSize: fontSizes.s16,
+        fontWeight: "400",
+        textAlign: "left",
+    },
+    addInputBG: {
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: colors.gray4,
+        overflow: "hidden",
+        height: 30,
+        backgroundColor: colors.white,
+    },
+    addInputText: {
+        color: colors.buttonText,
+        textAlign: "center",
+        fontSize: fontSizes.m20,
+        overflow: "hidden",
     },
 });
 

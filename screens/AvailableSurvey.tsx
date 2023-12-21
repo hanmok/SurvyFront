@@ -24,15 +24,8 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
 }) => {
     const GenreBox: React.FC<{ name: string }> = ({ name }) => {
         return (
-            <View
-                style={{
-                    marginRight: 10,
-                    borderRadius: 6,
-                    backgroundColor: colors.gray35,
-                    padding: 6,
-                }}
-            >
-                <Text style={{ color: "white", fontWeight: "500" }}>
+            <View style={styles.genreBox}>
+                <Text style={{ color: colors.white, fontWeight: "500" }}>
                     {name}
                 </Text>
             </View>
@@ -60,20 +53,7 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                     {currentParticipation}/{participationGoal}
                 </Text> */}
 
-                <View
-                    style={{
-                        flexDirection: "row-reverse",
-                        alignItems: "flex-end",
-                    }}
-                ></View>
-                <View
-                    style={{
-                        alignItems: "flex-end",
-                        paddingRight: 12,
-                        paddingTop: 8,
-                        paddingBottom: 8,
-                    }}
-                >
+                <View style={styles.createdDateContainer}>
                     <Text>{createdAt}</Text>
                 </View>
             </View>
@@ -107,5 +87,18 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.s16,
         marginRight: marginSizes.m16,
         marginTop: marginSizes.l20,
+    },
+
+    genreBox: {
+        marginRight: 10,
+        borderRadius: 6,
+        backgroundColor: colors.gray35,
+        padding: 6,
+    },
+    createdDateContainer: {
+        alignItems: "flex-end",
+        paddingRight: 12,
+        paddingTop: 8,
+        paddingBottom: 8,
     },
 });

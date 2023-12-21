@@ -95,15 +95,7 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                             }}
                         >
                             <TextInput
-                                style={{
-                                    borderColor: "gray",
-                                    borderWidth: 1,
-                                    borderRadius: 10,
-                                    overflow: "hidden",
-                                    height: 40,
-                                    paddingLeft: 12,
-                                    marginHorizontal: 12,
-                                }}
+                                style={styles.surveyTitleText}
                                 onChangeText={setTitle}
                                 value={title}
                                 placeholder="무엇에 대한 설문인가요?"
@@ -144,7 +136,7 @@ const styles = StyleSheet.create({
         height: screenHeight,
         backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         borderRadius: 20,
         overflow: "hidden",
         justifyContent: "center",
@@ -180,7 +172,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         height: 40,
-        borderTopColor: "black",
+        borderTopColor: colors.black,
         borderTopWidth: 1,
     },
     bottomButtonBackground: {
@@ -214,14 +206,14 @@ const styles = StyleSheet.create({
     },
     cancelBtnBG: {
         flex: 0.5,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         marginHorizontal: 9,
         marginTop: 12,
         marginBottom: 6,
         borderRadius: 6,
     },
     cancelBtnText: {
-        color: "black",
+        color: colors.black,
         letterSpacing: 2,
         fontSize: 16,
     },
@@ -234,8 +226,17 @@ const styles = StyleSheet.create({
         borderRadius: 6,
     },
     confirmBtnText: {
-        color: "white",
+        color: colors.white,
         letterSpacing: 2,
         fontSize: 16,
+    },
+    surveyTitleText: {
+        borderColor: "gray",
+        borderWidth: 1,
+        borderRadius: 10,
+        overflow: "hidden",
+        height: 40,
+        paddingLeft: 12,
+        marginHorizontal: 12,
     },
 });

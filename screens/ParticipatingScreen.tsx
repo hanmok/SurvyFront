@@ -436,39 +436,30 @@ function ParticipatingScreen({
     };
 
     return (
-        // <KeyboardAvoidingView style={styles.container} behavior="position">
-        // <View></View>
-        <View style={styles.container}>
-            <TouchableNativeFeedback onPress={dismissKeyboard}>
-                <View
-                    style={{
-                        flex: 1,
-                        width: screenWidth - 40,
-                    }}
-                >
-                    <FlatList
-                        ref={flatListRef}
-                        style={styles.flatListStyle} // alignSelf: stretch
-                        data={questions}
-                        renderItem={renderItem}
-                        // renderItem={(item) => {
-                        //     if (item.index === 0) {
-                        //         return React.cloneElement(item, {
-                        //             ref: inputRef
-                        //         })
-                        //     }
-                        //     return item.renderItem
-                        // }}
-                        keyExtractor={item => `${item.id}${item.text} `}
-                        ItemSeparatorComponent={() => (
-                            <View style={{ height: 10 }} />
-                        )}
-                        ListFooterComponent={listFooter}
-                    />
-                </View>
-            </TouchableNativeFeedback>
-        </View>
-        // </KeyboardAvoidingView>
+        <KeyboardAvoidingView style={styles.container} behavior="position">
+            <View style={styles.container}>
+                <TouchableNativeFeedback onPress={dismissKeyboard}>
+                    <View
+                        style={{
+                            flex: 1,
+                            width: screenWidth - 40,
+                        }}
+                    >
+                        <FlatList
+                            ref={flatListRef}
+                            style={styles.flatListStyle}
+                            data={questions}
+                            renderItem={renderItem}
+                            keyExtractor={item => `${item.id}${item.text} `}
+                            ItemSeparatorComponent={() => (
+                                <View style={{ height: 10 }} />
+                            )}
+                            ListFooterComponent={listFooter}
+                        />
+                    </View>
+                </TouchableNativeFeedback>
+            </View>
+        </KeyboardAvoidingView>
     );
 }
 

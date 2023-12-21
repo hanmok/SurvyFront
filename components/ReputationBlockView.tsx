@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     buttonText: {
-        color: "white",
+        color: colors.white,
         fontSize: 18,
         letterSpacing: 2,
     },

@@ -213,16 +213,15 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                     setSelectedState(item);
                 }}
                 title={item.state}
-                backgroundStyle={{
-                    height: 50,
-                    backgroundColor:
-                        selectedState === item
-                            ? colors.white
-                            : colors.unselectedGeoBG,
-                    paddingLeft: 10,
-                    borderColor: colors.unselectedGeoBG,
-                    borderRightWidth: 2,
-                }}
+                backgroundStyle={[
+                    styles.stateBG,
+                    {
+                        backgroundColor:
+                            selectedState === item
+                                ? colors.white
+                                : colors.unselectedGeoBG,
+                    },
+                ]}
                 textStyle={{
                     color: selectedState === item ? colors.black : colors.gray2,
                     textAlign: "left",
@@ -260,13 +259,7 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                 <View style={styles.modalContent}>
                     <View style={{ alignSelf: "stretch" }}>
                         {/* Header */}
-                        <View
-                            style={{
-                                alignSelf: "stretch",
-                                height: 40,
-                                justifyContent: "center",
-                            }}
-                        >
+                        <View style={styles.headerContainer}>
                             <Text
                                 style={{
                                     fontSize: fontSizes.m20,
@@ -276,19 +269,9 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                                 지역 선택
                             </Text>
                         </View>
-                        {/* <Spacer size={14} /> */}
                         <View style={{ height: 14 }} />
                         {/* Horizontal  */}
-                        <View
-                            style={{
-                                // alignSelf: "stretch",
-                                height: screenHeight - 300,
-                                flexDirection: "row",
-                                borderColor: colors.gray4,
-                                borderTopWidth: 1,
-                                borderBottomWidth: 1,
-                            }}
-                        >
+                        <View style={styles.mainContainer}>
                             {/* Left */}
                             <View
                                 style={{
@@ -319,15 +302,8 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                     <TextButton
                         title="초기화"
                         onPress={initialize}
-                        backgroundStyle={{
-                            backgroundColor: colors.gray1,
-                            flexDirection: "column",
-                            alignSelf: "stretch",
-                            padding: 10,
-                            marginHorizontal: 10,
-                            borderRadius: 6,
-                        }}
-                        textStyle={{ color: "white" }}
+                        backgroundStyle={styles.initializeBtnBG}
+                        textStyle={{ color: colors.white }}
                     />
 
                     <BottomButtonContainer
@@ -351,7 +327,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         borderRadius: 20,
         overflow: "hidden",
     },
@@ -405,5 +381,31 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         flex: 1,
+    },
+    stateBG: {
+        height: 50,
+        paddingLeft: 10,
+        borderColor: colors.unselectedGeoBG,
+        borderRightWidth: 2,
+    },
+    headerContainer: {
+        alignSelf: "stretch",
+        height: 40,
+        justifyContent: "center",
+    },
+    mainContainer: {
+        height: screenHeight - 300,
+        flexDirection: "row",
+        borderColor: colors.gray4,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+    },
+    initializeBtnBG: {
+        backgroundColor: colors.gray1,
+        flexDirection: "column",
+        alignSelf: "stretch",
+        padding: 10,
+        marginHorizontal: 10,
+        borderRadius: 6,
     },
 });

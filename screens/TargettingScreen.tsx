@@ -42,6 +42,7 @@ import { useCustomContext } from "../features/context/CustomContext";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showToast from "../components/common/toast/Toast";
 import { SurveyService } from "../API/Services/SurveyService";
+import FreeCostGuideModal from "../modals/FreeCostGuideModal";
 // import { initializePostingSurvey } from "../utils/PostingSurveyStorage";
 // import { deletePostingSurvey } from "../utils/Storage";
 
@@ -214,7 +215,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
 
     return (
         <>
-            <CostGuideModal
+            {/* <CostGuideModal
                 onClose={toggleCostGuideModal}
                 onConfirm={finalConfirmAction}
                 isFree={isFree}
@@ -225,6 +226,13 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                 price={price}
                 setPrice={setPrice}
                 participationGoal={participationGoal}
+            /> */}
+            <FreeCostGuideModal
+                onClose={toggleCostGuideModal}
+                onConfirm={finalConfirmAction}
+                isCostGuideModalVisible={isCostModalVisible}
+                participationGoal={participationGoal}
+                setParticipationGoal={setParticipationGoal}
             />
 
             <GeoMultipleSelectionModal
@@ -248,14 +256,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                         {/* Age */}
                         <View style={styles.sectionUpperContainer}>
                             <AgeSlider setAgeRange={setAgeRange} />
-                            <View
-                                style={{
-                                    backgroundColor: colors.gray4,
-                                    height: 1,
-                                    width: screenWidth,
-                                    marginBottom: 20,
-                                }}
-                            ></View>
+                            <View style={styles.topDivider}></View>
                         </View>
                         {/* 성별 */}
                         <View>
@@ -275,14 +276,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                 />
                             </View>
                         </View>
-                        <View
-                            style={{
-                                backgroundColor: colors.gray4,
-                                height: 1,
-                                width: screenWidth,
-                                marginVertical: 20,
-                            }}
-                        ></View>
+                        <View style={styles.middleDivider}></View>
                         {/*  */}
                         {/* 지역 */}
                         <View
@@ -305,7 +299,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                         <Entypo
                                             name="magnifying-glass"
                                             size={32}
-                                            color="black"
+                                            color={colors.black}
                                         />
                                     </View>
                                 </View>
@@ -326,15 +320,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                     <TextButton
                                         title={`${geo.state} ${geo.city}`}
                                         onPress={() => {}}
-                                        backgroundStyle={{
-                                            backgroundColor: colors.gray1,
-                                            padding: 4,
-                                            paddingHorizontal: 6,
-                                            marginRight: 12,
-                                            borderRadius: 6,
-                                            height: 30,
-                                            marginVertical: 4,
-                                        }}
+                                        backgroundStyle={styles.geoGenreItemBG}
                                         key={`${geo.id} ${geo.city}`}
                                         textStyle={{
                                             color: colors.white,
@@ -343,28 +329,14 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                 ))}
                             </View>
                         </View>
-                        {/*  */}
+
                         {/* Separator */}
-                        <View
-                            style={{
-                                backgroundColor: colors.gray4,
-                                height: 1,
-                                width: screenWidth,
-                                // marginBottom: 20,
-                                marginVertical: 20,
-                            }}
-                        />
+                        <View style={styles.middleDivider} />
 
                         {/*  */}
                         {/* 카테고리 */}
 
-                        <View
-                            style={{
-                                flex: 1,
-                                // backgroundColor: "cyan",
-                                // marginHorizontal: 60,
-                            }}
-                        >
+                        <View style={{ flex: 1 }}>
                             <View style={styles.sectionUpperContainer}>
                                 <Text style={styles.geoGuideText}>
                                     카테고리
@@ -380,7 +352,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                         <Entypo
                                             name="magnifying-glass"
                                             size={32}
-                                            color="black"
+                                            color={colors.black}
                                         />
                                     </View>
                                 </View>
@@ -399,18 +371,8 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                                     <TextButton
                                         title={genre.name}
                                         onPress={() => {}}
-                                        backgroundStyle={{
-                                            backgroundColor: colors.gray1,
-                                            padding: 4,
-                                            paddingHorizontal: 6,
-                                            marginRight: 12,
-                                            borderRadius: 6,
-                                            height: 30,
-                                            marginVertical: 4,
-                                        }}
-                                        textStyle={{
-                                            color: colors.white,
-                                        }}
+                                        backgroundStyle={styles.geoGenreItemBG}
+                                        textStyle={{ color: colors.white }}
                                         key={`${genre.id}`}
                                     />
                                 ))}
@@ -420,32 +382,21 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
 
                     {/* Next Button */}
                     <TextButton
-                        backgroundStyle={{
-                            // backgroundColor: isSatisfied
-                            //     ? "#ffffff"
-                            //     : "#b3b3b3", // inactive
-                            backgroundColor: isSatisfied
-                                ? buttonColors.enabledButtonBG
-                                : buttonColors.disabledButtonBG,
-                            height: 46,
-                            marginBottom: 30,
-                            marginHorizontal: 20,
-                            borderRadius: 10,
-                            marginTop: 30,
-                        }}
+                        backgroundStyle={[
+                            styles.nextBtnBG,
+                            {
+                                backgroundColor: isSatisfied
+                                    ? buttonColors.enabledButtonBG
+                                    : buttonColors.disabledButtonBG,
+                            },
+                        ]}
                         hasShadow={false}
                         title="다음"
                         textStyle={[
                             styles.nextButtonText,
-                            {
-                                // color: isSatisfied
-                                //     ? buttonColors.enabledButtonBG
-                                //     : buttonColors.disabledButtonBG,
-                                color: "white",
-                            },
+                            { color: colors.white },
                         ]}
                         onPress={() => {
-                            // setIsNextButtonTapped(true);
                             handleSendButtonTapped();
                         }}
                     />
@@ -489,9 +440,9 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         borderRadius: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         overflow: "hidden",
-        borderColor: "black",
+        borderColor: colors.black,
         borderWidth: 1,
         flex: 1,
     },
@@ -530,7 +481,7 @@ const styles = StyleSheet.create({
         height: 30,
         borderRadius: 5,
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         overflow: "hidden",
         margin: 5,
         justifyContent: "center",
@@ -545,5 +496,33 @@ const styles = StyleSheet.create({
         fontSize: fontSizes.m20,
         fontWeight: "bold",
         letterSpacing: 1,
+    },
+    topDivider: {
+        backgroundColor: colors.gray4,
+        height: 1,
+        width: screenWidth,
+        marginBottom: 20,
+    },
+    middleDivider: {
+        backgroundColor: colors.gray4,
+        height: 1,
+        width: screenWidth,
+        marginVertical: 20,
+    },
+    geoGenreItemBG: {
+        backgroundColor: colors.gray1,
+        padding: 4,
+        paddingHorizontal: 6,
+        marginRight: 12,
+        borderRadius: 6,
+        height: 30,
+        marginVertical: 4,
+    },
+    nextBtnBG: {
+        height: 46,
+        marginBottom: 30,
+        marginHorizontal: 20,
+        borderRadius: 10,
+        marginTop: 30,
     },
 });

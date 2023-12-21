@@ -291,12 +291,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.7)",
     },
+    // 전체 화면
     modalContent: {
-        // 전체 화면 관리
         flexGrow: 1,
         marginVertical: 60,
         marginHorizontal: 20,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         borderRadius: 10,
         justifyContent: "space-between",
     },
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         borderBottomLeftRadius: 10,
     },
     bottomRightButtonTextContainer: {

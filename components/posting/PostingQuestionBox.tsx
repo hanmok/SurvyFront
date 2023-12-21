@@ -40,12 +40,13 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                                 SelectionImage.unselectedSingleSelection
                                             }
                                             size={20}
-                                            color="black"
+                                            color={colors.black}
                                         />
                                         <View style={{ width: 10 }}></View>
                                         <Text>{option.value}</Text>
                                     </View>
                                 );
+
                             case QuestionTypeId.MultipleSelection:
                                 return (
                                     <View
@@ -57,7 +58,7 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                                 SelectionImage.unselectedMultipleSelection
                                             }
                                             size={20}
-                                            color="black"
+                                            color={colors.black}
                                         />
                                         <View style={{ width: 10 }}></View>
                                         <Text>{option.value}</Text>
@@ -74,15 +75,6 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                         >
                                             {option.value}
                                         </Text>
-                                        <View
-                                            style={{
-                                                flex: 1,
-                                                marginTop: 5,
-                                                marginLeft: 10,
-                                                marginRight: 20,
-                                                height: 1,
-                                            }}
-                                        ></View>
                                     </View>
                                 );
                         }
@@ -99,7 +91,7 @@ const styles = StyleSheet.create({
     questionContainer: {
         padding: 10,
         paddingLeft: 20,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         borderRadius: 10,
         borderColor: colors.gray4,
         borderWidth: 1,

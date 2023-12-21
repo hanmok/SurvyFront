@@ -35,9 +35,7 @@ const CustomSegmentedControl: React.FC<CustomSegmentedControlProps> = ({
             <TouchableOpacity
                 style={[
                     {
-                        // width: (screenWidth - 60) / 2,
                         width: (screenWidth - 24) / 2,
-                        // borderRadius: 12,
                         borderTopLeftRadius: item.index === 0 ? 6 : 0,
                         borderBottomLeftRadius: item.index === 0 ? 6 : 0,
 

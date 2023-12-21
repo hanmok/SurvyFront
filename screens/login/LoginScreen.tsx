@@ -128,7 +128,9 @@ export default function LoginScreen({
         }
 
         updateLoadingStatus(true);
+
         let userState: UserState | null;
+
         await userService
             .signin(username, password)
             .then(userResponse => {
@@ -239,12 +241,7 @@ export default function LoginScreen({
                         />
 
                         <Spacer size={20} />
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "space-around",
-                            }}
-                        >
+                        <View style={styles.btnsContainer}>
                             <TextButton
                                 title="아이디 찾기"
                                 onPress={moveToFindId}
@@ -295,7 +292,7 @@ const styles = StyleSheet.create({
     loginTextStyle: {
         fontSize: 18,
         justifyContent: "center",
-        color: "white",
+        color: colors.white,
     },
     loginBackgroundStyle: {
         flexDirection: "column",
@@ -313,5 +310,9 @@ const styles = StyleSheet.create({
     },
     findButtonBG: {
         alignItems: "center",
+    },
+    btnsContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
     },
 });

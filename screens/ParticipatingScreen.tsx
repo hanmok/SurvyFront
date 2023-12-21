@@ -417,7 +417,7 @@ function ParticipatingScreen({
                         }
                         onPress={toggleNextTapped}
                         textStyle={[
-                            { letterSpacing: 10, color: "white" },
+                            { letterSpacing: 10, color: colors.white },
                             isSatisfied
                                 ? styles.activatedButtonText
                                 : styles.inactivatedButtonText,

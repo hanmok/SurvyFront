@@ -45,15 +45,7 @@ const FreeCostGuideModal: React.FC<FreeCostGuideModalProps> = ({
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
-                        <Text
-                            style={{
-                                fontSize: fontSizes.m20,
-                                textAlign: "center",
-                                paddingVertical: 10,
-                            }}
-                        >
-                            설문 제출
-                        </Text>
+                        <Text style={styles.title}>설문 제출</Text>
                         <View>
                             <View style={styles.mainContent}>
                                 <View style={{ marginTop: 20 }}>
@@ -62,13 +54,9 @@ const FreeCostGuideModal: React.FC<FreeCostGuideModalProps> = ({
                                     </Text>
                                     <Spacer size={10} />
                                     <View
-                                        style={{
-                                            backgroundColor: colors.gray4,
-                                            borderRadius: 6,
-                                            overflow: "hidden",
-                                            paddingHorizontal: 12,
-                                            paddingVertical: 6,
-                                        }}
+                                        style={
+                                            styles.participationGoalContainer
+                                        }
                                     >
                                         <TextInput
                                             value={participationGoal}
@@ -80,30 +68,14 @@ const FreeCostGuideModal: React.FC<FreeCostGuideModalProps> = ({
                                             style={{ fontSize: 16 }}
                                         />
                                     </View>
-                                    <Text
-                                        style={{
-                                            color: "red",
-                                            fontSize: 11,
-                                            marginTop: 10,
-                                        }}
-                                    >
+                                    <Text style={styles.additionalInfoText}>
                                         {" "}
                                         1~100 명의 설문 참여 인원을 설정할 수
                                         있습니다.
                                     </Text>
                                 </View>
-
-                                <View
-                                    style={[
-                                        {
-                                            alignItems: "center",
-                                            flexDirection: "column",
-                                        },
-                                    ]}
-                                ></View>
                             </View>
                         </View>
-
                         <BottomButtonContainer
                             leftAction={onClose}
                             rightAction={onConfirm}
@@ -121,7 +93,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         borderRadius: 20,
         overflow: "hidden",
         justifyContent: "center",
@@ -156,7 +128,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         margin: 0,
         borderBottomLeftRadius: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,
@@ -182,5 +154,23 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         gap: 30,
         marginHorizontal: 20,
+    },
+    title: {
+        fontSize: fontSizes.m20,
+        textAlign: "center",
+        paddingVertical: 10,
+    },
+
+    participationGoalContainer: {
+        backgroundColor: colors.gray4,
+        borderRadius: 6,
+        overflow: "hidden",
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+    },
+    additionalInfoText: {
+        color: "red",
+        fontSize: 11,
+        marginTop: 10,
     },
 });

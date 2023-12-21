@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../utils/NavHelper";
 import { NavigationTitle } from "../../utils/NavHelper";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import BlockView from "../../components/BlockView";
 import { marginSizes } from "../../utils/sizes";
 import { screenWidth } from "../../utils/ScreenSize";
@@ -78,13 +78,7 @@ function MyInfoScreen({
     }, []);
 
     return (
-        <View
-            style={{
-                marginHorizontal: marginSizes.l20,
-                gap: 20,
-                marginTop: marginSizes.xxl28,
-            }}
-        >
+        <View style={styles.overall}>
             <GeoSingleSelectionModal
                 onClose={() => {
                     setHomeModalVisible(false);
@@ -129,14 +123,7 @@ function MyInfoScreen({
             />
 
             <BlockView size={50}>
-                <View
-                    style={{
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                        paddingRight: 20,
-                    }}
-                >
-                    {/* <Text></Text> */}
+                <View style={styles.rowContainer}>
                     <Text style={{ fontSize: 18 }}>성별 · 생년월일</Text>
                     <Text style={{ fontSize: 16 }}>
                         {gender()} · {birthDate()}
@@ -150,14 +137,7 @@ function MyInfoScreen({
                     moveToCategory();
                 }}
             >
-                <View
-                    style={{
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                        paddingRight: 20,
-                        alignItems: "center",
-                    }}
-                >
+                <View style={styles.rowContainer}>
                     <Text style={{ fontSize: 18 }}>관심사</Text>
                     <View
                         style={{
@@ -198,14 +178,7 @@ function MyInfoScreen({
                 }}
             > */}
             <View style={{ marginTop: 20 }}>
-                <View
-                    style={{
-                        height: 2,
-                        backgroundColor: colors.gray4,
-                        width: screenWidth - 40,
-                        alignSelf: "center",
-                    }}
-                />
+                <View style={styles.divider} />
                 <Spacer size={5} />
             </View>
 
@@ -217,19 +190,13 @@ function MyInfoScreen({
                     setHomeModalVisible(true);
                 }}
             >
-                <View
-                    style={{
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                        paddingRight: 20,
-                    }}
-                >
+                <View style={styles.rowContainer}>
                     {/* home_address */}
                     <Text style={{ fontSize: 18 }}>거주지</Text>
                     <Text
                         style={{
                             fontSize: 16,
-                            color: homeAddress ? "black" : colors.gray3,
+                            color: homeAddress ? colors.black : colors.gray3,
                         }}
                     >
                         {homeAddress?.state} {homeAddress?.city ?? "선택 안함"}
@@ -244,20 +211,14 @@ function MyInfoScreen({
                     setOfficeModalVisible(true);
                 }}
             >
-                <View
-                    style={{
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                        paddingRight: 20,
-                    }}
-                >
+                <View style={styles.rowContainer}>
                     {/* home_address */}
                     {/* office_address */}
                     <Text style={{ fontSize: 18 }}>근무지</Text>
                     <Text
                         style={{
                             fontSize: 16,
-                            color: officeAddress ? "black" : colors.gray3,
+                            color: officeAddress ? colors.black : colors.gray3,
                         }}
                     >
                         {officeAddress?.state}{" "}
@@ -285,7 +246,7 @@ function MyInfoScreen({
                         style={{
                             fontSize: 16,
                             color: userDetail?.occupation
-                                ? "black"
+                                ? colors.black
                                 : colors.gray3,
                         }}
                     >
@@ -298,3 +259,22 @@ function MyInfoScreen({
 }
 
 export default MyInfoScreen;
+
+const styles = StyleSheet.create({
+    overall: {
+        marginHorizontal: marginSizes.l20,
+        gap: 20,
+        marginTop: marginSizes.xxl28,
+    },
+    rowContainer: {
+        justifyContent: "space-between",
+        flexDirection: "row",
+        paddingRight: 20,
+    },
+    divider: {
+        height: 2,
+        backgroundColor: colors.gray4,
+        width: screenWidth - 40,
+        alignSelf: "center",
+    },
+});

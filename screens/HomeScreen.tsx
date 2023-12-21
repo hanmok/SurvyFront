@@ -227,7 +227,7 @@ function HomeScreen({
                         }
                     }}
                 >
-                    <Feather name="plus" size={36} color="white" />
+                    <Feather name="plus" size={36} color={colors.white} />
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     },
     requestText: {
         textAlign: "center",
-        color: "white",
+        color: colors.white,
         fontWeight: "bold",
         fontSize: 16,
     },

@@ -26,10 +26,12 @@ function MyGenreScreen({
     >;
 }) {
     const genreService = new GenreService();
+    const userService = new UserService();
+
     const [allGenres, setAllGenres] = useState<Genre[]>([]);
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
     const [initialGenres, setInitialGenres] = useState<Genre[]>([]);
-    const userService = new UserService();
+
     const [userInput, setUserInput] = useState<string>("");
 
     const [showingGenres, setShowingGenres] = useState<Genre[]>([]);
@@ -143,7 +145,11 @@ function MyGenreScreen({
                         }}
                     ></View>
                     <Spacer size={10} />
-                    <Entypo name="magnifying-glass" size={24} color="black" />
+                    <Entypo
+                        name="magnifying-glass"
+                        size={24}
+                        color={colors.black}
+                    />
                 </View>
 
                 {/* selected Genres */}
@@ -198,7 +204,7 @@ function MyGenreScreen({
                         setConfirmTapped(true);
                     }}
                     textStyle={{
-                        color: "white",
+                        color: colors.white,
                         fontWeight: "800",
                         letterSpacing: 2,
                         fontSize: 16,
@@ -221,7 +227,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         borderRadius: 20,
         overflow: "hidden",
     },
@@ -255,9 +261,9 @@ const styles = StyleSheet.create({
     },
     searchTextBox: {
         borderRadius: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         overflow: "hidden",
-        borderColor: "black",
+        borderColor: colors.black,
         borderWidth: 1,
         width: 240,
         height: 35,
@@ -316,7 +322,7 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         borderBottomLeftRadius: 10,
     },
     bottomRightButtonTextContainer: {
@@ -339,7 +345,7 @@ const styles = StyleSheet.create({
         height: 30,
         borderRadius: 5,
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         overflow: "hidden",
         margin: 5,
         justifyContent: "center",

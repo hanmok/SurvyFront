@@ -85,14 +85,7 @@ function MypageScreen({
                 }}
                 totalPoint={userDetail?.collectedReward ?? 0}
             />
-            <View
-                style={{
-                    alignSelf: "stretch",
-                    marginHorizontal: marginSizes.l20,
-                    rowGap: 20,
-                    marginTop: marginSizes.xxl28,
-                }}
-            >
+            <View style={styles.overall}>
                 <BlockView
                     onPress={() => {
                         navigateToMyInfo();
@@ -110,13 +103,7 @@ function MypageScreen({
                         );
                     }}
                 >
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            padding: 20,
-                        }}
-                    >
+                    <View style={styles.rowContainer}>
                         <Text style={styles.eachBoxTextStyle}>참여한 설문</Text>
                         <Text style={styles.eachBoxTextStyle}>
                             {numOfParticipatedSurveys} 개
@@ -129,13 +116,7 @@ function MypageScreen({
                         navigation.navigate(NavigationTitle.postedSurveys);
                     }}
                 >
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            padding: 20,
-                        }}
-                    >
+                    <View style={styles.rowContainer}>
                         <Text style={styles.eachBoxTextStyle}>요청한 설문</Text>
                         <Text style={styles.eachBoxTextStyle}>
                             {numOfPostedSurveys} 개
@@ -164,4 +145,15 @@ export default MypageScreen;
 
 const styles = StyleSheet.create({
     eachBoxTextStyle: { fontSize: fontSizes.m20 },
+    overall: {
+        alignSelf: "stretch",
+        marginHorizontal: marginSizes.l20,
+        rowGap: 20,
+        marginTop: marginSizes.xxl28,
+    },
+    rowContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        padding: 20,
+    },
 });

@@ -71,11 +71,9 @@ export default function FindPasswordScreen({
     const { updateLoadingStatus } = useCustomContext();
 
     useEffect(() => {
-        if (phoneSendingCodeButtonTapped) {
-            setPhoneSendingAuthButtonText("재발송");
-        } else {
-            setPhoneSendingAuthButtonText("인증번호 받기");
-        }
+        setPhoneSendingAuthButtonText(
+            phoneSendingCodeButtonTapped ? "재발송" : "인증번호 받기"
+        );
     }, [phoneSendingCodeButtonTapped]);
 
     useEffect(() => {
@@ -344,7 +342,7 @@ export default function FindPasswordScreen({
                                     {
                                         fontSize: 14,
                                         color: phoneLengthSatisfied
-                                            ? "white"
+                                            ? colors.white
                                             : "gray",
                                     },
                                 ]}
@@ -390,7 +388,7 @@ export default function FindPasswordScreen({
                                 {
                                     fontSize: 14,
                                     color: allPhoneConditionSatisfied
-                                        ? "white"
+                                        ? colors.white
                                         : "gray",
                                 },
                             ]}
@@ -417,7 +415,7 @@ export default function FindPasswordScreen({
                             textStyle={{
                                 fontSize: 14,
                                 color: mailValidationSatisfied
-                                    ? "white"
+                                    ? colors.white
                                     : "gray",
                             }}
                         />
@@ -466,7 +464,7 @@ export default function FindPasswordScreen({
                                 {
                                     fontSize: 14,
                                     color: allMailConditionSatisfied
-                                        ? "white"
+                                        ? colors.white
                                         : "gray",
                                 },
                             ]}
@@ -492,7 +490,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     selectedBar: {
-        backgroundColor: "black",
+        backgroundColor: colors.black,
         height: 2,
         alignSelf: "stretch",
     },

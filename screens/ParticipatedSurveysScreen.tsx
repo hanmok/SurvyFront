@@ -4,7 +4,7 @@ import { useApollo } from "../ApolloProvider";
 import { useQuery } from "@apollo/client";
 import { participatedSurveyQuery } from "../API/gqlQuery";
 import { convertKeysToCamelCase } from "../utils/SnakeToCamel";
-import { Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { commonStyles } from "../utils/CommonStyles";
 import { fontSizes, marginSizes } from "../utils/sizes";
@@ -69,16 +69,7 @@ function ParticipatedSurveysScreen({
                                 surveyId: item.id,
                             });
                         }}
-                        style={[
-                            commonStyles.border,
-                            {
-                                marginHorizontal: marginSizes.m16,
-                                borderRadius: 10,
-                                marginBottom: 12,
-                                padding: 8,
-                                gap: 6,
-                            },
-                        ]}
+                        style={[commonStyles.border, styles.itemBorder]}
                     >
                         <View
                             style={{
@@ -95,6 +86,7 @@ function ParticipatedSurveysScreen({
                             >
                                 {item.title}
                             </Text>
+
                             {/* <Text>
                                 +{accounting.formatNumber(item.reward)} P
                             </Text> */}
@@ -117,3 +109,13 @@ function ParticipatedSurveysScreen({
 }
 
 export default ParticipatedSurveysScreen;
+
+const styles = StyleSheet.create({
+    itemBorder: {
+        marginHorizontal: marginSizes.m16,
+        borderRadius: 10,
+        marginBottom: 12,
+        padding: 8,
+        gap: 6,
+    },
+});

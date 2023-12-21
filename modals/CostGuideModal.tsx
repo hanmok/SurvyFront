@@ -68,17 +68,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
-                        <Text
-                            style={{
-                                fontSize: fontSizes.m20,
-                                backgroundColor: colors.gray4,
-                                width: screenWidth - 40 * 2,
-                                textAlign: "center",
-                                paddingVertical: 10,
-                            }}
-                        >
-                            설문 제출
-                        </Text>
+                        <Text style={styles.titleText}>설문 제출</Text>
 
                         <View style={{ height: 200, width: 300 }}>
                             <View style={styles.mainContent}>
@@ -91,19 +81,9 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                         onChangeText={setParticipationGoal}
                                         keyboardType="number-pad"
                                         placeholder="10"
-                                        style={[
-                                            {
-                                                fontSize: fontSizes.m20,
-                                                color: colors.gray2,
-                                                borderColor: colors.gray3,
-                                                borderWidth: 1,
-                                                borderRadius: 6,
-                                                minWidth: 50,
-                                                textAlign: "right",
-                                                paddingRight: 6,
-                                                backgroundColor: "white",
-                                            },
-                                        ]}
+                                        style={
+                                            styles.participationGoalTextInput
+                                        }
                                     />
                                 </View>
 
@@ -156,7 +136,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         borderRadius: 20,
         overflow: "hidden",
     },
@@ -169,6 +149,24 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         justifyContent: "space-between",
         alignItems: "center",
+    },
+    titleText: {
+        fontSize: fontSizes.m20,
+        backgroundColor: colors.gray4,
+        width: screenWidth - 40 * 2,
+        textAlign: "center",
+        paddingVertical: 10,
+    },
+    participationGoalTextInput: {
+        fontSize: fontSizes.m20,
+        color: colors.gray2,
+        borderColor: colors.gray3,
+        borderWidth: 1,
+        borderRadius: 6,
+        minWidth: 50,
+        textAlign: "right",
+        paddingRight: 6,
+        backgroundColor: colors.white,
     },
     bottomContainer: {
         flexDirection: "row",
@@ -188,7 +186,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         margin: 0,
         borderBottomLeftRadius: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,

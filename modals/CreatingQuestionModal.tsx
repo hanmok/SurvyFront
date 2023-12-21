@@ -214,13 +214,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 {questionTypeId === QuestionTypeId.Essay ? (
                                     <View />
                                 ) : (
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                        }}
-                                    >
+                                    <View style={styles.extraOptionContainer}>
                                         <Text
                                             style={{ fontSize: fontSizes.m20 }}
                                         >
@@ -279,7 +273,7 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: "center",
         margin: 0,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         borderBottomLeftRadius: 10,
     },
     bottomRightButtonTextContainer: {
@@ -302,6 +296,11 @@ const styles = StyleSheet.create({
     activatedStyle: {
         backgroundColor: colors.white,
         borderBottomRightRadius: 10,
+    },
+    extraOptionContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
 });
 

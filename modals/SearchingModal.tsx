@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         height: screenHeight,
         backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: colors.black,
         borderRadius: 20,
         overflow: "hidden",
         justifyContent: "center",
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         margin: 0,
         borderBottomLeftRadius: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
     },
     bottomRightButtonTextContainer: {
         flexGrow: 1,

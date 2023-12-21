@@ -17,6 +17,7 @@ import TextButton from "./TextButton";
 import { QuestionTypeIdStrings } from "../QuestionType";
 import { Feather } from "@expo/vector-icons";
 import { SelectionImage } from "./common/ImageNameType";
+import { colors } from "../utils/colors";
 
 interface SelectableOptionProps {
     id: number;
@@ -71,59 +72,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
         Keyboard.dismiss();
     };
 
-    // const handleFocus = () => {
-    //     const keyboardDidShowListener = Keyboard.addListener(
-    //         "keyboardDidShow",
-    //         event => {
-    //             const keyboardHeight = event.endCoordinates.height;
-    //             // const screenHeight = Dimensions.get('window').height;
-    //             if (textInputRef && textInputRef.current) {
-    //                 const inputPosition = textInputRef.current.measure(
-    //                     (fx, fy, width, height, px, py) => {
-    //                         console.log(
-    //                             `fx: ${fx}, fy: ${fy}, width: ${width}, height: ${height}, px: ${px}, py: ${py}, keyboardHeight: ${keyboardHeight}, screenHeight: ${screenHeight}`
-    //                         );
-
-    //                         if (py < screenHeight / 2) {
-    //                             // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
-    //                             scrollViewRef.current.scrollTo({
-    //                                 y: inputPosition - keyboardHeight,
-    //                                 animated: true,
-    //                             });
-    //                             console.log("scrolled");
-    //                         }
-    //                         console.log("not scrolle");
-
-    //                         return py;
-    //                     }
-    //                 );
-
-    //                 console.log(`inputPosition: ${inputPosition}`);
-
-    //                 // if (inputPosition < screenHeight / 2) {
-    //                 //     // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
-    //                 //     scrollViewRef.current.scrollTo({
-    //                 //         y: inputPosition - keyboardHeight,
-    //                 //         animated: true,
-    //                 //     });
-    //                 //     console.log("scrolled");
-    //                 // }
-    //                 // console.log("not scrolle");
-    //             }
-    //         }
-    //     );
-
-    //     const keyboardDidHideListener = Keyboard.addListener(
-    //         "keyboardDidHide",
-    //         () => {}
-    //     );
-
-    //     return () => {
-    //         keyboardDidShowListener.remove();
-    //         keyboardDidHideListener.remove();
-    //     };
-    // };
-
     const handleFocus = () => {};
 
     const inputAccessoryViewId = "accessoryViewId";
@@ -139,7 +87,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         <Feather
                             name={SelectionImage.selectedSingleSelection}
                             size={24}
-                            color="black"
+                            color={colors.black}
                             onPress={onPress}
                         />
                         {isExtra === 1 ? (
@@ -182,7 +130,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         <Feather
                             name={SelectionImage.unselectedSingleSelection}
                             size={24}
-                            color="black"
+                            color={colors.black}
                             onPress={onPress}
                         />
                         {isExtra === 1 ? (
@@ -237,7 +185,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         <Feather
                             name={SelectionImage.selectedMultipleSelection}
                             size={24}
-                            color="black"
+                            color={colors.black}
                             onPress={onPress}
                         />
 
@@ -288,7 +236,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                         <Feather
                             name={SelectionImage.unselectedMultipleSelection}
                             size={24}
-                            color="black"
+                            color={colors.black}
                             onPress={onPress}
                         />
                         {isExtra === 1 ? (
@@ -343,10 +291,7 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                             placeholder="답변을 입력해주세요."
                             multiline
                             numberOfLines={2} // Initial number of line
-                            style={[
-                                styles.textInput,
-                                // { height: Math.max(35, userInput.length * 10) },
-                            ]}
+                            style={[styles.textInput]}
                             autoCorrect={false}
                             value={userInput}
                             onChangeText={setUserInput}
@@ -388,12 +333,6 @@ const SelectableOptionBox: React.FC<SelectableOptionProps> = ({
                                 />
                             </View>
                         </InputAccessoryView>
-                        {/* <CompleteAccessoryView
-                            id={inputAccessoryViewId}
-                            onPress={() => {
-                                completeInput(userInput);
-                            }}
-                        /> */}
                     </View>
                 );
                 break;

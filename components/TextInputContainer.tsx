@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
 
 interface TextInputInsideProps {

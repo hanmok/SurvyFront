@@ -20,6 +20,7 @@ export interface Survey {
     sections: Section[];
     genres: Genre[];
     createdAt: string;
+    expectedTimeInSec: number;
 }
 
 export class SurveyBuilder {
@@ -56,6 +57,7 @@ export class SurveyBuilder {
             numOfSections,
             sections: [],
             genres: [],
+            expectedTimeInSec: 0,
         };
     }
 

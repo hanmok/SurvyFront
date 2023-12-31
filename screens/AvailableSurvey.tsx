@@ -13,6 +13,7 @@ interface MyCustomComponentProps {
     onPress: () => void;
     createdAt: string;
     expectedTimeInSec: number;
+    reward: number;
 }
 
 const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
@@ -23,6 +24,7 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
     onPress,
     createdAt,
     expectedTimeInSec,
+    reward,
 }) => {
     const GenreBox: React.FC<{ name: string }> = ({ name }) => {
         return (
@@ -36,6 +38,15 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
 
     const convertToMin = (expectedTimeInSec: number) => {
         return Math.ceil(expectedTimeInSec / 60.0);
+    };
+
+    const convertReward = (reward: number): string | null => {
+        if (reward === 0) {
+            // return "무료";
+            return null;
+        } else {
+            return `${reward} 원`;
+        }
     };
 
     return (
@@ -65,24 +76,47 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                     </View>
                 )}
 
-                {/* <Text style={styles.participationText}>
-                    {currentParticipation}/{participationGoal}
-                </Text> */}
+                {/* <View
+                    style={{
+                        // backgroundColor: "magenta",
+                        height: 1,
+                        marginVertical: 3,
+                        // paddingBottom: 10,
+                    }}
+                /> */}
 
                 <View style={styles.createdDateContainer}>
-                    <View
-                        style={{
-                            borderRadius: 8,
-                            backgroundColor: colors.gray4,
-                            overflow: "hidden",
-                            paddingHorizontal: 10,
-                            paddingVertical: 3,
-                        }}
-                    >
-                        <Text style={{ fontSize: 18 }}>
-                            {convertToMin(expectedTimeInSec)}분
-                        </Text>
+                    <View style={{ flexDirection: "row", gap: 10 }}>
+                        <View
+                            style={{
+                                borderRadius: 8,
+                                backgroundColor: colors.gray4,
+                                overflow: "hidden",
+                                paddingHorizontal: 10,
+                                paddingVertical: 3,
+                            }}
+                        >
+                            <Text style={{ fontSize: 18 }}>
+                                {convertToMin(expectedTimeInSec)}분
+                            </Text>
+                        </View>
+                        {convertReward(reward) !== null && (
+                            <View
+                                style={{
+                                    borderRadius: 8,
+                                    backgroundColor: colors.gray4,
+                                    overflow: "hidden",
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 3,
+                                }}
+                            >
+                                <Text style={{ fontSize: 18 }}>
+                                    {convertReward(reward)}
+                                </Text>
+                            </View>
+                        )}
                     </View>
+
                     <Text>{createdAt}</Text>
                 </View>
             </View>

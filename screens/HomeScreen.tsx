@@ -30,7 +30,6 @@ import { SurveyService } from "../API/Services/SurveyService";
 import { GeoService } from "../API/Services/GeoService";
 import CollectedMoney from "../components/CollectedMoney";
 
-// TODO:
 const screenWidth = Dimensions.get("window").width;
 
 function HomeScreen({
@@ -188,6 +187,7 @@ function HomeScreen({
             genres={item.genres}
             createdAt={item?.createdAt}
             expectedTimeInSec={item.expectedTimeInSec}
+            reward={item.reward}
             onPress={() => {
                 updateParticipatingSurveyId(item.id);
                 navigation.navigate(NavigationTitle.participate, {

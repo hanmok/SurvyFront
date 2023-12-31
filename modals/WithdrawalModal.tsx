@@ -138,8 +138,8 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                             </Text>
                             <Spacer size={10} />
                             <Text>
-                                계좌와 이름이 일치하지 않을 시 출금이 정상적으로
-                                되지 않습니다.
+                                계좌 정보가 정상적으로 확인되지 않을 시 출금되지
+                                않습니다.
                             </Text>
                             <Spacer size={10} />
                         </View>

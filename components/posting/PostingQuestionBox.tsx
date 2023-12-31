@@ -22,22 +22,18 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
 
     return (
         <TouchableOpacity style={styles.questionContainer} onPress={onPress}>
-            {/* <Text style={{ fontSize: fontSizes.m20, paddingLeft: 10 }}> */}
             <Text style={{ fontSize: fontSizes.m20, paddingLeft: 4 }}>
                 {question.position + 1}. {question.text}
             </Text>
             <View style={{ height: 10 }} />
 
             {question.selectableOptions.map(option => (
-                <>
+                <React.Fragment key={option.id}>
                     {(() => {
                         switch (question.questionTypeId) {
                             case QuestionTypeId.SingleSelection:
                                 return (
-                                    <View
-                                        style={styles.rowContainer}
-                                        key={option.id}
-                                    >
+                                    <View style={styles.rowContainer}>
                                         <Feather
                                             name={
                                                 SelectionImage.unselectedSingleSelection
@@ -52,10 +48,7 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
 
                             case QuestionTypeId.MultipleSelection:
                                 return (
-                                    <View
-                                        style={styles.rowContainer}
-                                        key={option.id}
-                                    >
+                                    <View style={styles.rowContainer}>
                                         <Feather
                                             name={
                                                 SelectionImage.unselectedMultipleSelection
@@ -69,7 +62,7 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                 );
                             case QuestionTypeId.Essay:
                                 return (
-                                    <View key={option.id}>
+                                    <View>
                                         <Text
                                             style={{
                                                 marginHorizontal: 8,
@@ -82,7 +75,7 @@ const PostingQuestionBox: React.FC<QuestionButtonProps> = ({
                                 );
                         }
                     })()}
-                </>
+                </React.Fragment>
             ))}
         </TouchableOpacity>
     );

@@ -33,8 +33,7 @@ import MyGenreScreen from "./screens/mypage/MyGenreScreen";
 import Toast from "react-native-toast-message";
 import toastConfig from "./components/common/toast/ToastConfig";
 import PointHistoryScreen from "./screens/mypage/PointHistoryScreen";
-// import PointHistoryScreen from "./screens/PointHistoryScreen";
-// export default function App() {
+
 const App: React.FC = () => {
     return (
         <CustomProvider>

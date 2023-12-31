@@ -42,7 +42,6 @@ import { useCustomContext } from "../features/context/CustomContext";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showToast from "../components/common/toast/Toast";
 import { SurveyService } from "../API/Services/SurveyService";
-import FreeCostGuideModal from "../modals/FreeCostGuideModal";
 // import { initializePostingSurvey } from "../utils/PostingSurveyStorage";
 // import { deletePostingSurvey } from "../utils/Storage";
 
@@ -215,7 +214,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
 
     return (
         <>
-            {/* <CostGuideModal
+            <CostGuideModal
                 onClose={toggleCostGuideModal}
                 onConfirm={finalConfirmAction}
                 isFree={isFree}
@@ -226,13 +225,6 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                 price={price}
                 setPrice={setPrice}
                 participationGoal={participationGoal}
-            /> */}
-            <FreeCostGuideModal
-                onClose={toggleCostGuideModal}
-                onConfirm={finalConfirmAction}
-                isCostGuideModalVisible={isCostModalVisible}
-                participationGoal={participationGoal}
-                setParticipationGoal={setParticipationGoal}
             />
 
             <GeoMultipleSelectionModal

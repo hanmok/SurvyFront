@@ -12,6 +12,8 @@ import { WithdrawalModal } from "../../modals/WithdrawalModal";
 import showAdminToast from "../../components/common/toast/showAdminToast";
 import { SurveyService } from "../../API/Services/SurveyService";
 import { UserService } from "../../API/Services/UserService";
+import PointBlockView from "../../components/PointBlockView";
+import ReputationBlockView from "../../components/ReputationBlockView";
 
 function MypageScreen({
     navigation,

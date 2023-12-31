@@ -15,7 +15,7 @@ import { Question } from "../interfaces/Question";
 import { QuestionTypeId } from "../QuestionType";
 import {
     SelectableOption,
-    makeSelectableOption,
+    SelectableOptionBuilder,
 } from "../interfaces/SelectableOption";
 import { log, logObject } from "../utils/Log";
 import { colors } from "../utils/colors";
@@ -224,12 +224,13 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                         questionTypeId === QuestionTypeId.Essay
                                     ) {
                                         const selectableOption =
-                                            makeSelectableOption(
+                                            new SelectableOptionBuilder(
                                                 selectedQuestion.id,
                                                 0,
                                                 placeHolder,
                                                 0
-                                            );
+                                            ).build();
+
                                         selectableOptions.push(
                                             selectableOption
                                         );
@@ -237,14 +238,15 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                         secondTexts.map((optionText, index) => {
                                             if (optionText !== "") {
                                                 const selectableOption =
-                                                    makeSelectableOption(
+                                                    new SelectableOptionBuilder(
                                                         selectedQuestion.id,
                                                         index,
                                                         optionText,
                                                         isExtraOptionEnabled
                                                             ? 1
                                                             : 0
-                                                    );
+                                                    ).build();
+
                                                 selectableOptions.push(
                                                     selectableOption
                                                 );

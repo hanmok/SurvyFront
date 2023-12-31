@@ -15,7 +15,7 @@ import { Question, QuestionBuilder } from "../interfaces/Question";
 import { QuestionTypeId } from "../QuestionType";
 import {
     SelectableOption,
-    makeSelectableOption,
+    SelectableOptionBuilder,
 } from "../interfaces/SelectableOption";
 import { log, logObject } from "../utils/Log";
 import { colors } from "../utils/colors";
@@ -57,34 +57,36 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
         log(`question made: ${JSON.stringify(question)}`);
 
         if (questionTypeId === QuestionTypeId.Essay) {
-            const selectableOption = makeSelectableOption(
+            const selectableOption = new SelectableOptionBuilder(
                 question.id,
                 0,
                 placeHolder,
                 0
-            );
+            ).build();
             console.log("essay case, placeHolder", placeHolder);
             selectableOptions.push(selectableOption);
         } else {
             dynamicInputValues.map((optionText, index) => {
                 if (optionText !== "") {
-                    const selectableOption = makeSelectableOption(
+                    const selectableOption = new SelectableOptionBuilder(
                         question.id,
                         index,
                         optionText,
                         0
-                    );
+                    ).build();
+
                     selectableOptions.push(selectableOption);
                 }
             });
 
             if (isExtraOptionEnabled) {
-                const selectableOption = makeSelectableOption(
+                const selectableOption = new SelectableOptionBuilder(
                     question.id,
                     dynamicInputValues.length,
                     "기타",
                     1
-                );
+                ).build();
+
                 selectableOptions.push(selectableOption);
             }
         }

@@ -25,3 +25,25 @@ export const makeSelectableOption = (
     logObject("make selectableOption called, ", selectableOption);
     return selectableOption;
 };
+
+export class SelectableOptionBuilder {
+    private selectableOption: SelectableOption;
+
+    constructor(
+        questionId: number,
+        position: number,
+        value: string,
+        isExtra: number
+    ) {
+        this.selectableOption = {
+            id: makeRandomNumber(),
+            questionId,
+            position,
+            value,
+            isExtra,
+        };
+    }
+    build(): SelectableOption {
+        return this.selectableOption;
+    }
+}

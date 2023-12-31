@@ -285,9 +285,11 @@ const GeoMultipleSelectionModal: React.FC<GeoMultipleSelectionModalProps> = ({
                                     keyExtractor={item => `${item.id}`}
                                 />
                             </View>
+                            {/* Right */}
                             <View
                                 style={{
                                     flex: 0.7,
+                                    // backgroundColor: colors.gray3,
                                 }}
                             >
                                 <FlatList

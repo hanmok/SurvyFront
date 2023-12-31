@@ -12,6 +12,7 @@ interface MyCustomComponentProps {
     genres: Genre[];
     onPress: () => void;
     createdAt: string;
+    expectedTimeInSec: number;
 }
 
 const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
@@ -21,6 +22,7 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
     genres,
     onPress,
     createdAt,
+    expectedTimeInSec,
 }) => {
     const GenreBox: React.FC<{ name: string }> = ({ name }) => {
         return (
@@ -32,10 +34,24 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
         );
     };
 
+    const convertToMin = (expectedTimeInSec: number) => {
+        return Math.ceil(expectedTimeInSec / 60.0);
+    };
+
     return (
         <TouchableNativeFeedback onPress={onPress}>
             <View style={styles.container}>
-                <Text style={styles.titleText}>{title}</Text>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        paddingRight: 10,
+                    }}
+                >
+                    <Text style={styles.titleText}>{title}</Text>
+                    {/* <Text>{convertToMin(expectedTimeInSec)} 분</Text> */}
+                </View>
                 <Spacer size={10} />
                 {genres && genres.length !== 0 ? (
                     <View style={{ marginLeft: 8, flexDirection: "row" }}>
@@ -54,6 +70,19 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                 </Text> */}
 
                 <View style={styles.createdDateContainer}>
+                    <View
+                        style={{
+                            borderRadius: 8,
+                            backgroundColor: colors.gray4,
+                            overflow: "hidden",
+                            paddingHorizontal: 10,
+                            paddingVertical: 3,
+                        }}
+                    >
+                        <Text style={{ fontSize: 18 }}>
+                            {convertToMin(expectedTimeInSec)}분
+                        </Text>
+                    </View>
                     <Text>{createdAt}</Text>
                 </View>
             </View>
@@ -88,7 +117,6 @@ const styles = StyleSheet.create({
         marginRight: marginSizes.m16,
         marginTop: marginSizes.l20,
     },
-
     genreBox: {
         marginRight: 10,
         borderRadius: 6,
@@ -96,9 +124,11 @@ const styles = StyleSheet.create({
         padding: 6,
     },
     createdDateContainer: {
-        alignItems: "flex-end",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "baseline",
+        paddingLeft: 8,
         paddingRight: 12,
-        paddingTop: 8,
-        paddingBottom: 8,
+        paddingVertical: 8,
     },
 });

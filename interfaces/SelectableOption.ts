@@ -9,23 +9,6 @@ export interface SelectableOption {
     isExtra: number | undefined;
 }
 
-export const makeSelectableOption = (
-    questionId: number,
-    position: number,
-    value: string,
-    isExtra: number
-): SelectableOption => {
-    const selectableOption: SelectableOption = {
-        id: makeRandomNumber(),
-        questionId: questionId,
-        position: position,
-        value: value,
-        isExtra: isExtra,
-    };
-    logObject("make selectableOption called, ", selectableOption);
-    return selectableOption;
-};
-
 export class SelectableOptionBuilder {
     private selectableOption: SelectableOption;
 

@@ -123,7 +123,6 @@ function HomeScreen({
                             size={24}
                             color="black"
                             onPress={() => {
-                                // console.log("hi");
                                 toggleSearchingModalVisibility();
                                 setIsSearchingModalVisible(true);
                             }}
@@ -188,6 +187,7 @@ function HomeScreen({
             participationGoal={item.participationGoal}
             genres={item.genres}
             createdAt={item?.createdAt}
+            expectedTimeInSec={item.expectedTimeInSec}
             onPress={() => {
                 updateParticipatingSurveyId(item.id);
                 navigation.navigate(NavigationTitle.participate, {

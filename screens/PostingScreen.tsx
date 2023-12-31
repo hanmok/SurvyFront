@@ -19,7 +19,7 @@ import { RootStackParamList } from "../utils/NavHelper";
 import { NavigationTitle } from "../utils/NavHelper";
 import { log, logObject } from "../utils/Log";
 import ModifyingQuestionModal from "../modals/ModifyingQuestionModal";
-import { Section, makeSection } from "../interfaces/Section";
+import { Section, SectionBuilder } from "../interfaces/Section";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 import {
     PostingSurveyState,
@@ -94,7 +94,8 @@ export default function PostingScreen({
     const [isSatisfied, setIsSatisfied] = useState(false);
 
     const addSection = () => {
-        const newSection = makeSection(sections.length);
+        const newSection = new SectionBuilder(sections.length).build();
+        // const newSection = makeSection(sections.length);
         setSectionAdded(true);
         setSections(prev => [...prev, newSection]);
     };
@@ -127,7 +128,7 @@ export default function PostingScreen({
     // Section 존재하지 않을 시, sequence 0 으로 추가 후 sections 등록.
     useEffect(() => {
         if (sections.length === 0 && !route.params.postingSurveyState) {
-            const newSection = makeSection(0);
+            const newSection = new SectionBuilder(0).build();
             setSections([newSection]);
         }
     }, []);

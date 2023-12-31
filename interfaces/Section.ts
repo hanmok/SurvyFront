@@ -23,3 +23,21 @@ export const makeSection = (sequence: number): Section => {
     };
     return section;
 };
+
+export class SectionBuilder {
+    private section: Section;
+
+    constructor(sequence: number) {
+        this.section = {
+            id: makeRandomNumber(),
+            surveyId: undefined,
+            sequence,
+            reward: undefined,
+            questions: [],
+            expectedTimeInSec: undefined,
+        };
+    }
+    build(): Section {
+        return this.section;
+    }
+}

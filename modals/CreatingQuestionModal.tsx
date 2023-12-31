@@ -11,11 +11,7 @@ import {
 import { fontSizes } from "../utils/sizes";
 import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
 import DynamicTextInputsForCreation from "../components/posting/DynamicTextInputsForCreation";
-import {
-    Question,
-    QuestionBuilder,
-    makeQuestion,
-} from "../interfaces/Question";
+import { Question, QuestionBuilder } from "../interfaces/Question";
 import { QuestionTypeId } from "../QuestionType";
 import {
     SelectableOption,
@@ -57,13 +53,6 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
             questionTypeId,
             []
         ).build();
-
-        // let question = makeQuestion(
-        //     position,
-        //     questionTitle,
-        //     questionTypeId,
-        //     [] // selectableOptions
-        // );
 
         log(`question made: ${JSON.stringify(question)}`);
 

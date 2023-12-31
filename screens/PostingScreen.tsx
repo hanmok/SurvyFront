@@ -32,6 +32,7 @@ import showAdminToast from "../components/common/toast/showAdminToast";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { PostingMenuModal } from "../modals/PostingMenuModal";
+import showToast from "../components/common/toast/Toast";
 
 export default function PostingScreen({
     navigation,
@@ -174,6 +175,7 @@ export default function PostingScreen({
             if (shouldSave && surveyTitle === "") {
                 alert("설문 제목을 입력해주세요.");
             }
+
             setShouldSave(false);
         }
     }, [shouldSave]);
@@ -192,6 +194,7 @@ export default function PostingScreen({
                                 questions,
                             });
                         await postingSurveyDataManager.save(newSurvey);
+                        showToast("success", "저장되었습니다");
                     } else {
                         // 기존에 있었음. id 는 그대로 사용. 나머지는 지금까지 데이터.
                         const updatedSurvey: PostingSurveyState =
@@ -202,6 +205,7 @@ export default function PostingScreen({
                                 questions,
                             });
                         await postingSurveyDataManager.save(updatedSurvey);
+                        showToast("success", "저장되었습니다");
                     }
                 } catch (error) {
                     // alert(error);
@@ -210,7 +214,10 @@ export default function PostingScreen({
                 }
             };
 
-            saveSurvey();
+            if (surveyTitle !== "") {
+                saveSurvey();
+            }
+
             setShouldSave(false);
         }
     }, [shouldSave]);
@@ -445,7 +452,7 @@ export default function PostingScreen({
                     setShouldInitializeCurrentSection(true);
                 }}
                 onSave={() => {
-                    toggleSave;
+                    toggleSave();
                 }}
                 isMenuModalVisible={isMenuModalVisible}
             />

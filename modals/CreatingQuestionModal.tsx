@@ -149,7 +149,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                     <View style={styles.modalContent}>
                         <View>
                             <TextInput
-                                placeholder="질문을 입력해주세요 "
+                                placeholder="질문을 입력해주세요"
                                 style={styles.questionTextStyle}
                                 value={questionTitle}
                                 onChangeText={setQuestionTitle}

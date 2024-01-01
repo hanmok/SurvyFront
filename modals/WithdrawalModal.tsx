@@ -37,30 +37,41 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     totalPoint,
 }) => {
     const withdrawalService = new WithdrawalService();
-    const [bankAccount, setBankAccount] = useState("");
-    const [username, setUserName] = useState("");
+    // await withdrawalService.create(accessToken, userId, amount);
+    // 계좌번호
+    const [accountNumber, setAccountNumber] = useState("");
+    const [holderName, setHolderName] = useState("");
     const [bankName, setBankName] = useState("");
-
     const [amount, setAmount] = useState(0);
+
     const translateY = useRef(new Animated.Value(0)).current;
     const [satisfied, setSatisfied] = useState(false);
 
+    const { accessToken, userId, updateLoadingStatus } = useCustomContext();
+    const [confirmTapped, setConfirmTapped] = useState(false);
+
+    useEffect(() => {
+        setAccountNumber("");
+        setHolderName("");
+        setBankName("");
+        setAmount(0);
+    }, [isModalVisible]);
     useEffect(() => {
         setSatisfied(
-            bankAccount !== "" &&
-                username !== "" &&
+            accountNumber !== "" &&
+                holderName !== "" &&
                 amount !== 0 &&
                 amount <= totalPoint &&
                 bankName !== ""
         );
-    }, [bankAccount, username, amount, bankName]);
+    }, [accountNumber, holderName, amount, bankName]);
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
             "keyboardWillShow",
             () => {
                 Animated.timing(translateY, {
-                    toValue: -100,
+                    toValue: -150,
                     duration: 200,
                     useNativeDriver: true,
                 }).start();
@@ -85,9 +96,6 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
         };
     }, [translateY]);
 
-    const { accessToken, userId, updateLoadingStatus } = useCustomContext();
-    const [confirmTapped, setConfirmTapped] = useState(false);
-
     const handleConfirm = () => {
         setConfirmTapped(true);
     };
@@ -97,8 +105,16 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
         try {
             const withdrawal: ApiResponse<Withdrawal> =
-                await withdrawalService.create(accessToken, userId, amount);
+                await withdrawalService.create(
+                    accessToken,
+                    userId,
+                    amount,
+                    accountNumber,
+                    bankName,
+                    holderName
+                );
             await withdrawalService.patch(accessToken, withdrawal.data.id);
+
             showToast("success", `${amount} 원이 출금되었습니다.`);
             onConfirm();
         } catch (error) {
@@ -111,6 +127,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     useEffect(() => {
         if (confirmTapped) {
             handleWithdrawal();
+            setConfirmTapped(false);
         }
     }, [confirmTapped, amount]);
 
@@ -153,15 +170,15 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <Text>이름</Text>
+                                <Text>예금 주</Text>
                                 <Spacer size={10} />
                                 <View style={styles.rowContainer}>
                                     <Spacer size={10} />
                                     <TextInput
                                         style={styles.searchInput}
                                         keyboardType="default"
-                                        value={username}
-                                        onChangeText={setUserName}
+                                        value={holderName}
+                                        onChangeText={setHolderName}
                                     />
                                 </View>
                             </View>
@@ -180,8 +197,8 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                                     <TextInput
                                         style={styles.searchInput}
                                         keyboardType="number-pad"
-                                        value={bankAccount}
-                                        onChangeText={setBankAccount}
+                                        value={accountNumber}
+                                        onChangeText={setAccountNumber}
                                     />
                                 </View>
                             </View>
@@ -311,9 +328,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
     searchInput: {
-        fontSize: 20,
+        fontSize: 16,
         textAlignVertical: "center",
-
         paddingLeft: 10,
     },
     rowContainer: {

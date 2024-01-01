@@ -22,7 +22,7 @@ export class SurveyService extends BaseApi {
         const url = `${API_BASE_URL}/user/${userId}/participated-surveys`;
         return this.fetchData<number[]>(url, "GET", undefined, accessToken);
     }
-
+    // 'HCXQAOU'asd
     async getByCode(
         code: string,
         accessToken: string

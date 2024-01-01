@@ -6,10 +6,19 @@ export class WithdrawalService extends BaseApi {
     async create(
         accessToken: string,
         user_id: number,
-        amount: number
+        amount: number,
+        account_number,
+        bank_name,
+        holder_name
     ): Promise<ApiResponse<Withdrawal>> {
         const url = `${API_BASE_URL}/withdrawal`;
-        const body = { user_id, amount };
+        const body = {
+            user_id,
+            amount,
+            account_number,
+            bank_name,
+            holder_name,
+        };
         return this.fetchData<Withdrawal>(url, "POST", body, accessToken);
     }
 

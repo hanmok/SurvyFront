@@ -30,6 +30,7 @@ import { SurveyService } from "../API/Services/SurveyService";
 import { GeoService } from "../API/Services/GeoService";
 import CollectedMoney from "../components/CollectedMoney";
 import { SearhchedSurveyModal } from "../modals/SearchedSurveyModal";
+import showToast from "../components/common/toast/Toast";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -228,10 +229,12 @@ function HomeScreen({
     const searchAction = async () => {
         const ret = await surveyService.getByCode(searchingCode, accessToken);
         logObject("fetched survey:", ret.data);
-        if (ret.data !== null) {
+        if (ret.data !== null && ret.data !== undefined) {
             setSearchedSurvey(ret.data);
             setIsSearchingModalVisible(false);
             setIsSearchedSurveyModalVisible(true);
+        } else {
+            showToast("error", "유효하지 않은 설문코드입니다.");
         }
     };
 

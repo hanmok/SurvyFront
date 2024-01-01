@@ -33,6 +33,12 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
     searchingCode,
     setSearchingCode,
 }) => {
+    const [isSatisfied, setSatisfied] = useState(false);
+
+    useEffect(() => {
+        setSatisfied(searchingCode.length === 7);
+    }, [searchingCode]);
+
     const translateY = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -40,7 +46,7 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
             "keyboardWillShow",
             () => {
                 Animated.timing(translateY, {
-                    toValue: -200,
+                    toValue: -100,
                     duration: 200,
                     useNativeDriver: true,
                 }).start();
@@ -107,6 +113,7 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                                 onSecondSelection();
                                 onClose();
                             }}
+                            satisfied={isSatisfied}
                         />
                     </View>
                 </TouchableOpacity>

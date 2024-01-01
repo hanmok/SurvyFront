@@ -29,6 +29,7 @@ import { SearchingModal } from "../modals/SearchingModal";
 import { SurveyService } from "../API/Services/SurveyService";
 import { GeoService } from "../API/Services/GeoService";
 import CollectedMoney from "../components/CollectedMoney";
+import { SearhchedSurveyModal } from "../modals/SearchedSurveyModal";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -39,6 +40,8 @@ function HomeScreen({
 }) {
     const userService = new UserService();
     const surveyService = new SurveyService();
+
+    const [searchedSurvey, setSearchedSurvey] = useState<Survey>(null);
     const [refreshing, setRefreshing] = useState(false);
 
     const [surveys, setSurveys] = useState<Survey[]>([]);
@@ -46,6 +49,9 @@ function HomeScreen({
 
     const [isPostingModalVisible, setIsPostingModalVisible] = useState(false);
     const [isSearchingModalVisible, setIsSearchingModalVisible] =
+        useState(false);
+
+    const [isSearchedSurveyModalVisible, setIsSearchedSurveyModalVisible] =
         useState(false);
 
     const [searchingCode, setSearchingCode] = useState("");
@@ -209,10 +215,12 @@ function HomeScreen({
                 setPostingSurvey(ret);
             }
         };
+
         const unsubscribeFocus = navigation.addListener("focus", () => {
             setIsPostingModalVisible(false);
             fetchPostingSurvey();
         });
+
         return unsubscribeFocus;
     }, [navigation]);
 
@@ -247,7 +255,8 @@ function HomeScreen({
                 <SearchingModal
                     title="설문 코드 검색"
                     onSearchAction={() => {
-                        log("second selection tapped");
+                        // log("second selection tapped");
+                        // TODO: Search Survey By Code
                     }}
                     searchingCode={searchingCode}
                     setSearchingCode={setSearchingCode}
@@ -255,6 +264,23 @@ function HomeScreen({
                     isModalVisible={isSearchingModalVisible}
                     onClose={() => {
                         setIsSearchingModalVisible(false);
+                    }}
+                />
+
+                <SearhchedSurveyModal
+                    confirmText="참여"
+                    onConfirmAction={() => {
+                        updateParticipatingSurveyId(searchedSurvey.id);
+                        navigation.navigate(NavigationTitle.participate, {
+                            sectionId: searchedSurvey.initialSectionId,
+                            surveyId: searchedSurvey.id,
+                        });
+                    }}
+                    searchedSurvey={searchedSurvey}
+                    // title=""
+                    isModalVisible={isSearchedSurveyModalVisible}
+                    onClose={() => {
+                        setIsSearchedSurveyModalVisible(false);
                     }}
                 />
                 <FlatList

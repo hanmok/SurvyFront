@@ -4,6 +4,7 @@ import { colors } from "../utils/colors";
 import { fontSizes, marginSizes } from "../utils/sizes";
 import { Genre } from "../interfaces/Genre";
 import Spacer from "../components/common/Spacer";
+import { convertToMin, convertReward } from "../utils/numbers";
 
 interface MyCustomComponentProps {
     title: string;
@@ -34,19 +35,6 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
                 </Text>
             </View>
         );
-    };
-
-    const convertToMin = (expectedTimeInSec: number) => {
-        return Math.ceil(expectedTimeInSec / 60.0);
-    };
-
-    const convertReward = (reward: number): string | null => {
-        if (reward === 0) {
-            // return "무료";
-            return null;
-        } else {
-            return `${reward} 원`;
-        }
     };
 
     return (

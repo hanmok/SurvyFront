@@ -5,6 +5,7 @@ import { fontSizes, marginSizes } from "../utils/sizes";
 import { Genre } from "../interfaces/Genre";
 import Spacer from "../components/common/Spacer";
 import { convertToMin, convertReward } from "../utils/numbers";
+import { GenreBox } from "../components/common/GenreBox";
 
 interface MyCustomComponentProps {
     title: string;
@@ -27,16 +28,6 @@ const AvailableSurvey: React.FC<MyCustomComponentProps> = ({
     expectedTimeInSec,
     reward,
 }) => {
-    const GenreBox: React.FC<{ name: string }> = ({ name }) => {
-        return (
-            <View style={styles.genreBox}>
-                <Text style={{ color: colors.white, fontWeight: "500" }}>
-                    {name}
-                </Text>
-            </View>
-        );
-    };
-
     return (
         <TouchableNativeFeedback onPress={onPress}>
             <View style={styles.container}>

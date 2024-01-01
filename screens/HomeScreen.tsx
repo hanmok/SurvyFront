@@ -88,6 +88,7 @@ function HomeScreen({
             setRefreshing(false);
         });
     };
+
     // for printing.
     useEffect(() => {
         logObject("fetched surveys", surveys);
@@ -224,6 +225,17 @@ function HomeScreen({
         return unsubscribeFocus;
     }, [navigation]);
 
+    const searchAction = async () => {
+        const ret = await surveyService.getByCode(searchingCode, accessToken);
+        logObject("fetched survey:", ret.data);
+        if (ret.data !== null) {
+            setSearchedSurvey(ret.data);
+            setIsSearchingModalVisible(false);
+            setIsSearchedSurveyModalVisible(true);
+        }
+    };
+
+    // 'HCXQAOU'
     return (
         <SafeAreaView style={styles.container} edges={[]}>
             <View style={styles.subContainer}>
@@ -257,6 +269,7 @@ function HomeScreen({
                     onSearchAction={() => {
                         // log("second selection tapped");
                         // TODO: Search Survey By Code
+                        searchAction();
                     }}
                     searchingCode={searchingCode}
                     setSearchingCode={setSearchingCode}

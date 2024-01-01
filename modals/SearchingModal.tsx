@@ -25,7 +25,7 @@ interface SearhchingModalProps {
 }
 
 export const SearchingModal: React.FC<SearhchingModalProps> = ({
-    onSearchAction: onSecondSelection,
+    onSearchAction,
     title,
     isModalVisible,
     searchText: secondSelectionText,
@@ -110,7 +110,7 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
                                 onClose();
                             }}
                             rightAction={() => {
-                                onSecondSelection();
+                                onSearchAction();
                                 onClose();
                             }}
                             satisfied={isSatisfied}

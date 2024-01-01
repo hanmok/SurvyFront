@@ -23,6 +23,16 @@ export class SurveyService extends BaseApi {
         return this.fetchData<number[]>(url, "GET", undefined, accessToken);
     }
 
+    async getByCode(
+        code: string,
+        accessToken: string
+    ): Promise<ApiResponse<Survey>> {
+        let url = `${API_BASE_URL}/survey/bycode`;
+        const queryParams = new URLSearchParams({ code });
+        url = `${url}?${queryParams.toString()}`;
+        return this.fetchData<Survey>(url, "GET", undefined, accessToken);
+    }
+
     async getPostedSurveyIds(
         userId: number,
         accessToken: string

@@ -104,7 +104,7 @@ function ParticipatingEndScreen({
                 <Spacer size={20} />
 
                 <TextButton
-                    title={"설문 전체 결과 보기"}
+                    title={"설문 결과 보기"}
                     onPress={() => {
                         setShouldGoMain(false);
                     }}

@@ -384,6 +384,7 @@ function ParticipatingScreen({
                     }}
                 >
                     <KeyboardAwareFlatList
+                        extraScrollHeight={40}
                         ref={flatListRef}
                         style={styles.flatListStyle}
                         data={questions}

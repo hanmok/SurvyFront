@@ -128,3 +128,71 @@
 // }
 
 // // 참여한 설문
+
+// const inputRef = useRef(null);
+// const scrollViewRef = useRef(null);
+
+// const handleFocus = () => {
+//     const keyboardDidShowListener = Keyboard.addListener(
+//         "keyboardDidShow",
+//         event => {
+//             const keyboardHeight = event.endCoordinates.height;
+//             // const screenHeight = Dimensions.get('window').height;
+//             const inputPosition = inputRef.current.measure(
+//                 (fx, fy, width, height, px, py) => py
+//             );
+//             if (inputPosition < screenHeight / 2) {
+//                 // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
+//                 scrollViewRef.current.scrollTo({
+//                     y: inputPosition - keyboardHeight,
+//                     animated: true,
+//                 });
+//             }
+//         }
+//     );
+
+//     const keyboardDidHideListener = Keyboard.addListener(
+//         "keyboardDidHide",
+//         () => {}
+//     );
+
+//     return () => {
+//         keyboardDidShowListener.remove();
+//         keyboardDidHideListener.remove();
+//     };
+// };
+
+// const focusedTextInputRef = useRef(null);
+
+// useEffect(() => {
+//     const keyboardDidShowListener = Keyboard.addListener(
+//         "keyboardDidShow",
+//         event => {
+//             // Get the position of the focused TextInput
+//             if (focusedTextInputRef && focusedTextInputRef.current) {
+//                 const keyboardHeight = event.endCoordinates.height;
+
+//                 const inputPosition = focusedTextInputRef.current.measure(
+//                     (x, y, width, height, pageX, pageY) => {
+//                         // If the TextInput is below the center of the screen, lift the view
+//                         if (pageY > screenHeight / 2) {
+//                             // flatListRef.current.scrollTo({
+//                                 flatListRef.current
+//                                 y: inputPosition - keyboardHeight,
+//                                 animated: true,
+//                             });
+//                             // You can set the position here or dispatch an action to handle the state accordingly
+//                             // For simplicity, let's just log for now
+//                             console.log("Lift the view");
+//                         } else {
+//                             console.log("Do not lift the view");
+//                         }
+//                     }
+//                 );
+//             }
+//         }
+//     );
+//     return () => {
+//         keyboardDidShowListener.remove();
+//     };
+// }, []);

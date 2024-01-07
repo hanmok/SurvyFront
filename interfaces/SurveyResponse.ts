@@ -5,6 +5,7 @@ export interface SurveyResponse {
     survey: Survey;
 }
 
+// TODO: rename..
 export interface GQLSurveyResponse {
     survey: GQLSurvey;
 }

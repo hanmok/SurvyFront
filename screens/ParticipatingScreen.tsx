@@ -44,6 +44,7 @@ import showToast from "../components/common/toast/Toast";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { AnswerService } from "../API/Services/AnswerService";
 import { ParticipatingService } from "../API/Services/ParticipatingService";
+import { ScrollView } from "react-native-gesture-handler";
 
 export interface TextAnswerForm {
     customAnswer: CustomAnswer;
@@ -151,74 +152,7 @@ function ParticipatingScreen({
         navigation.navigate(NavigationTitle.endParticipation);
     };
 
-    const inputRef = useRef(null);
-    const scrollViewRef = useRef(null);
     const flatListRef = useRef(null);
-
-    // const handleFocus = () => {
-    //     const keyboardDidShowListener = Keyboard.addListener(
-    //         "keyboardDidShow",
-    //         event => {
-    //             const keyboardHeight = event.endCoordinates.height;
-    //             // const screenHeight = Dimensions.get('window').height;
-    //             const inputPosition = inputRef.current.measure(
-    //                 (fx, fy, width, height, px, py) => py
-    //             );
-    //             if (inputPosition < screenHeight / 2) {
-    //                 // TextInput이 화면의 절반 이하에 위치한 경우에만 스크롤 조절
-    //                 scrollViewRef.current.scrollTo({
-    //                     y: inputPosition - keyboardHeight,
-    //                     animated: true,
-    //                 });
-    //             }
-    //         }
-    //     );
-
-    //     const keyboardDidHideListener = Keyboard.addListener(
-    //         "keyboardDidHide",
-    //         () => {}
-    //     );
-
-    //     return () => {
-    //         keyboardDidShowListener.remove();
-    //         keyboardDidHideListener.remove();
-    //     };
-    // };
-
-    const focusedTextInputRef = useRef(null);
-
-    // useEffect(() => {
-    //     const keyboardDidShowListener = Keyboard.addListener(
-    //         "keyboardDidShow",
-    //         event => {
-    //             // Get the position of the focused TextInput
-    //             if (focusedTextInputRef && focusedTextInputRef.current) {
-    //                 const keyboardHeight = event.endCoordinates.height;
-
-    //                 const inputPosition = focusedTextInputRef.current.measure(
-    //                     (x, y, width, height, pageX, pageY) => {
-    //                         // If the TextInput is below the center of the screen, lift the view
-    //                         if (pageY > screenHeight / 2) {
-    //                             // flatListRef.current.scrollTo({
-    //                                 flatListRef.current
-    //                                 y: inputPosition - keyboardHeight,
-    //                                 animated: true,
-    //                             });
-    //                             // You can set the position here or dispatch an action to handle the state accordingly
-    //                             // For simplicity, let's just log for now
-    //                             console.log("Lift the view");
-    //                         } else {
-    //                             console.log("Do not lift the view");
-    //                         }
-    //                     }
-    //                 );
-    //             }
-    //         }
-    //     );
-    //     return () => {
-    //         keyboardDidShowListener.remove();
-    //     };
-    // }, []);
 
     const dismissKeyboard = () => {
         console.log("keyboard dismissed");
@@ -301,7 +235,9 @@ function ParticipatingScreen({
             const updatedSurvey: GQLSurvey =
                 removeTypenameAndConvertToCamelCase(data.survey);
             logObject("fetched survey", updatedSurvey);
+
             setCurrentSurvey(updatedSurvey);
+
             const currentSection = updatedSurvey.sections.find(
                 s => s.sequence === currentSectionIndex
             );

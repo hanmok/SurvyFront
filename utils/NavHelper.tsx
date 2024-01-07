@@ -21,6 +21,7 @@ export type RootStackParamList = {
 
     // participating
     Participate: { sectionId: number; surveyId: number };
+    OneParticipate: { surveyId: number };
     EndParticipation: undefined;
 
     // mypage
@@ -54,6 +55,7 @@ export enum NavigationTitle {
     // participating
     participate = "Participate",
     endParticipation = "EndParticipation",
+    oneParticipate = "OneParticipate",
 
     // mypage
     participatedSurveys = "ParticipatedSurveys",

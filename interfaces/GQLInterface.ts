@@ -19,6 +19,20 @@ export interface GQLParticipating {
     survey: GQLSurvey;
 }
 
+export interface GQLSurvey {
+    id: number;
+    title: string;
+    currentParticipation: number;
+    participationGoal: number;
+    createdAt: number;
+    endedAt: string;
+    reward: number;
+    code: string;
+    isPublic: number;
+    isCompleted: number;
+    sections: [GQLSection];
+}
+
 export interface GQLSection {
     id: number;
     survey: GQLSurvey;
@@ -59,20 +73,6 @@ export interface GQLUser {
     deviceToken: string;
     postedSurveys: [GQLSurvey];
     participatedSurveys: [GQLSurvey];
-}
-
-export interface GQLSurvey {
-    id: number;
-    title: string;
-    currentParticipation: number;
-    participationGoal: number;
-    createdAt: number;
-    endedAt: string;
-    reward: number;
-    code: string;
-    isPublic: number;
-    isCompleted: number;
-    sections: [GQLSection]; // FIXME: 이게 맞아? 일단.. 잘 되고 있으니까 놔두기.
 }
 
 // export function isGQLSurvey(item: any): item is GQLSurvey {

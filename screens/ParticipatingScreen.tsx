@@ -46,6 +46,8 @@ import { AnswerService } from "../API/Services/AnswerService";
 import { ParticipatingService } from "../API/Services/ParticipatingService";
 import { ScrollView } from "react-native-gesture-handler";
 
+import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
+
 export interface TextAnswerForm {
     customAnswer: CustomAnswer;
     surveyId: number;
@@ -372,30 +374,30 @@ function ParticipatingScreen({
     };
 
     return (
-        <KeyboardAvoidingView style={styles.container} behavior="position">
-            <View style={styles.container}>
-                <TouchableNativeFeedback onPress={dismissKeyboard}>
-                    <View
-                        style={{
-                            flex: 1,
-                            width: screenWidth - 40,
-                        }}
-                    >
-                        <FlatList
-                            ref={flatListRef}
-                            style={styles.flatListStyle}
-                            data={questions}
-                            renderItem={renderItem}
-                            keyExtractor={item => `${item.id}${item.text} `}
-                            ItemSeparatorComponent={() => (
-                                <View style={{ height: 10 }} />
-                            )}
-                            ListFooterComponent={listFooter}
-                        />
-                    </View>
-                </TouchableNativeFeedback>
-            </View>
-        </KeyboardAvoidingView>
+        // <KeyboardAvoidingView style={styles.container} behavior="position">
+        <View style={styles.container}>
+            <TouchableNativeFeedback onPress={dismissKeyboard}>
+                <View
+                    style={{
+                        flex: 1,
+                        width: screenWidth - 40,
+                    }}
+                >
+                    <KeyboardAwareFlatList
+                        ref={flatListRef}
+                        style={styles.flatListStyle}
+                        data={questions}
+                        renderItem={renderItem}
+                        keyExtractor={item => `${item.id}${item.text} `}
+                        ItemSeparatorComponent={() => (
+                            <View style={{ height: 10 }} />
+                        )}
+                        ListFooterComponent={listFooter}
+                    />
+                </View>
+            </TouchableNativeFeedback>
+        </View>
+        // </KeyboardAvoidingView>
     );
 }
 

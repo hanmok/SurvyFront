@@ -11,7 +11,7 @@ import {
 import { fontSizes } from "../utils/sizes";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { screenWidth } from "../utils/ScreenSize";
 import { commonStyles } from "../utils/CommonStyles";
 import CostSelectionContainer from "../CostSelectionContainer";
@@ -47,6 +47,14 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
         Keyboard.dismiss();
     };
 
+    const participationGoalRef = useRef(null);
+
+    // const handleFocus = () => {
+    //     if (participationGoalRef) {
+    //         participationGoalRef.current.;
+    //     }
+    // };
+
     useEffect(() => {
         console.log(`[CostGuideModal], isFree: ${isFree}, price: ${price}`);
         if (isFree) {
@@ -63,6 +71,10 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
         }
     }, [price, isFree, isCostGuideModalVisible, participationGoal]);
 
+    // const handleFocus = () => {
+    //     if
+    // }
+
     return (
         <Modal transparent={true} visible={isCostGuideModalVisible}>
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -76,15 +88,33 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                     <Text style={{ fontSize: fontSizes.s16 }}>
                                         설문 인원
                                     </Text>
-                                    <TextInput
-                                        value={participationGoal}
-                                        onChangeText={setParticipationGoal}
-                                        keyboardType="number-pad"
-                                        placeholder="10"
-                                        style={
-                                            styles.participationGoalTextInput
-                                        }
-                                    />
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <TextInput
+                                            // ref={participationGoalRef}
+                                            value={participationGoal}
+                                            onChangeText={setParticipationGoal}
+                                            keyboardType="number-pad"
+                                            placeholder="10"
+                                            // selectTextOnFocus={true}
+                                            clearTextOnFocus={true}
+                                            // selectTextOnFocus={true}
+                                            // onFocus={handleFocus}
+                                            style={
+                                                styles.participationGoalTextInput
+                                            }
+                                        />
+                                        <Text
+                                            style={{ fontSize: fontSizes.s16 }}
+                                        >
+                                            {" "}
+                                            명
+                                        </Text>
+                                    </View>
                                 </View>
 
                                 <View style={styles.rowContainer}>
@@ -93,7 +123,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                     </Text>
                                     <Text style={{ fontSize: fontSizes.s16 }}>
                                         {" "}
-                                        {expectedTimeInMin} 분{" "}
+                                        {expectedTimeInMin} 분
                                     </Text>
                                 </View>
                                 <View style={styles.rowContainer}>
@@ -159,7 +189,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     participationGoalTextInput: {
-        fontSize: fontSizes.m20,
+        fontSize: fontSizes.s16,
         color: colors.gray2,
         borderColor: colors.gray3,
         borderWidth: 1,

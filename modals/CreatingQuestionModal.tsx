@@ -159,6 +159,8 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 onChangeText={setQuestionTitle}
                                 autoComplete="off"
                                 autoCorrect={false}
+                                multiline={true}
+                                // numberOfLines={2}
                             />
                             <View style={{ height: 16 }} />
                             <QuestionTypeSelectionBoxContainer
@@ -254,7 +256,8 @@ const styles = StyleSheet.create({
     questionTextStyle: {
         marginTop: 60,
         textAlign: "center",
-        fontSize: fontSizes.l24,
+        fontSize: fontSizes.m20,
+        paddingHorizontal: 12,
     },
     modalContainer: {
         flex: 1,

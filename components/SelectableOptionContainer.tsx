@@ -91,6 +91,7 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                     break;
 
                 default:
+                    // Essay
                     const customAnswer = makeCustomAnswer(
                         selectableOptions[0].id,
                         questionId,
@@ -123,7 +124,6 @@ const SelectableOptionContainer: React.FC<SelectablContainerProps> = ({
                         handleUserInput={text => {
                             handleUserInput(text, soIndex, questionIndex);
                             setUserInput(text);
-                            showAdminToast("error", "asd");
                         }}
                         questionIndex={questionIndex}
                         key={`${selectableOption.id}`}

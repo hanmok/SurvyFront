@@ -49,7 +49,9 @@ export const DefaultModal: React.FC<DefaultModalProps> = ({
                                 onPress={() => {
                                     onFirstSelection();
                                 }}
-                                backgroundStyle={styles.buttonBG}
+                                // backgroundStyle={styles.buttonBG}
+                                backgroundStyle={styles.firstButtonBG}
+                                textStyle={{ color: "white" }}
                             />
                             <TextButton
                                 title={secondSelectionText}
@@ -140,6 +142,12 @@ const styles = StyleSheet.create({
     },
     buttonBG: {
         backgroundColor: colors.white,
+        flex: 0.5,
+        margin: 6,
+        borderRadius: 6,
+    },
+    firstButtonBG: {
+        backgroundColor: colors.deeperMainColor,
         flex: 0.5,
         margin: 6,
         borderRadius: 6,

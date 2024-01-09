@@ -109,6 +109,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                 style={styles.questionTextStyle}
                                 value={questionTitle}
                                 onChangeText={setQuestionTitle}
+                                multiline={true}
                                 autoComplete="off"
                                 autoCorrect={false}
                             />
@@ -288,6 +289,7 @@ const styles = StyleSheet.create({
         marginTop: 60,
         textAlign: "center",
         fontSize: fontSizes.l24,
+        paddingHorizontal: 12,
     },
     modalContainer: {
         flex: 1,

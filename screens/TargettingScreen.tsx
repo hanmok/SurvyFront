@@ -71,7 +71,8 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     const surveyService = new SurveyService();
     // 여기에서 모두 처리해버리기.
     const [participationGoal, setParticipationGoal] = useState("10");
-    const { surveyTitle, sections, questions } = route.params;
+    const { surveyTitle, sections, questions, expectedTimeInMin } =
+        route.params;
 
     const [isCostModalVisible, setCostModalVisible] = useState(false);
     const [isGenreModalVisible, setGenreModalVisible] = useState(false);
@@ -120,25 +121,25 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         logObject("participationGoal changed to ", participationGoal);
     }, [participationGoal]);
 
-    const expectedTimeInMin = Math.ceil(
-        questions
-            .map(q => {
-                switch (q.questionTypeId) {
-                    case 100:
-                        return 5;
-                    case 200:
-                        return 10;
-                    case 300:
-                        return 20;
-                    default:
-                        return 0;
-                }
-            })
-            .reduce(
-                (accumulator, currentValue) => accumulator + currentValue,
-                0
-            ) / 60
-    );
+    // const expectedTimeInMin = Math.ceil(
+    //     questions
+    //         .map(q => {
+    //             switch (q.questionTypeId) {
+    //                 case 100:
+    //                     return 5;
+    //                 case 200:
+    //                     return 10;
+    //                 case 300:
+    //                     return 20;
+    //                 default:
+    //                     return 0;
+    //             }
+    //         })
+    //         .reduce(
+    //             (accumulator, currentValue) => accumulator + currentValue,
+    //             0
+    //         ) / 60
+    // );
 
     const toggleCostGuideModal = () => {
         setCostModalVisible(!isCostModalVisible);

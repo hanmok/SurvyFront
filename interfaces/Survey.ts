@@ -70,4 +70,5 @@ export interface SurveyProps {
     surveyTitle: string;
     sections: Section[];
     questions: Question[];
+    expectedTimeInMin: number;
 }

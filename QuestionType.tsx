@@ -12,6 +12,19 @@ export enum QuestionTypeId {
     Essay = 300,
 }
 
+export const translateQuestionTypeIdToTime = (questionType: number) => {
+    if (questionType === 100) {
+        return 10;
+    } else if (questionType === 200) {
+        return 15;
+    } else if (questionType === 300) {
+        return 30;
+    } else {
+        console.error("invalid question Type Id");
+        return -100;
+    }
+};
+
 export enum QuestionTypeEnum {
     SingleSelection = "SINGLE_SELECTION",
     MultipleSelection = "MULTIPLE_SELECTION",

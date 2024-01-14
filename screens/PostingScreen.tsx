@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, FlatList, ListRenderItem } from "react-native";
+import { View, FlatList, ListRenderItem, Text } from "react-native";
 import { StyleSheet } from "react-native";
 import { buttonColors, colors } from "../utils/colors";
 import {
@@ -33,6 +33,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { PostingMenuModal } from "../modals/PostingMenuModal";
 import showToast from "../components/common/toast/Toast";
+import { translateQuestionTypeIdToTime } from "../QuestionType";
 
 export default function PostingScreen({
     navigation,
@@ -68,6 +69,8 @@ export default function PostingScreen({
     const [postingSurvey, setPostingSurvey] = useState<
         PostingSurveyState | undefined
     >(undefined);
+
+    const [expectedTimeInMin, setExpectedTimeInMin] = useState(0);
 
     const toggleMenuModal = () => {
         setIsMenuModalVisible(!isMenuModalVisible);
@@ -110,6 +113,14 @@ export default function PostingScreen({
 
     useEffect(() => {
         setIsSatisfied(questions.length !== 0 && surveyTitle !== ""); // 0 이 아니면 satisfied 는 true
+        const expectedTimeInSec = questions
+            .map(q => q.questionTypeId)
+            .reduce((acc, current) => {
+                // console.log(`current id: ${current}`);
+                logObject("current : ", current);
+                return acc + translateQuestionTypeIdToTime(current);
+            }, 0);
+        setExpectedTimeInMin(Math.ceil(expectedTimeInSec / 60));
     }, [questions, surveyTitle]);
 
     useEffect(() => {
@@ -235,6 +246,7 @@ export default function PostingScreen({
                 surveyTitle,
                 sections,
                 questions,
+                expectedTimeInMin,
             });
         }
     }, [isNextButtonTapped, surveyTitle, sections, questions]);
@@ -479,27 +491,39 @@ export default function PostingScreen({
                         />
                     )}
                 </>
-
-                <TextButton
-                    backgroundStyle={[
-                        styles.nextBtnBG,
-                        {
-                            backgroundColor: isSatisfied
-                                ? buttonColors.enabledButtonBG
-                                : buttonColors.disabledButtonBG,
-                        },
-                    ]}
-                    title="다음"
-                    textStyle={[
-                        styles.nextButtonText,
-                        {
-                            color: colors.white,
-                        },
-                    ]}
-                    onPress={() => {
-                        setIsNextButtonTapped(true);
-                    }}
-                />
+                <View>
+                    <View
+                        style={{
+                            marginLeft: 20,
+                            marginBottom: 12,
+                            flexDirection: "row",
+                            gap: 10,
+                        }}
+                    >
+                        <Text>총 예상 소요시간:</Text>
+                        <Text>{expectedTimeInMin} 분</Text>
+                    </View>
+                    <TextButton
+                        backgroundStyle={[
+                            styles.nextBtnBG,
+                            {
+                                backgroundColor: isSatisfied
+                                    ? buttonColors.enabledButtonBG
+                                    : buttonColors.disabledButtonBG,
+                            },
+                        ]}
+                        title="다음"
+                        textStyle={[
+                            styles.nextButtonText,
+                            {
+                                color: colors.white,
+                            },
+                        ]}
+                        onPress={() => {
+                            setIsNextButtonTapped(true);
+                        }}
+                    />
+                </View>
             </View>
         </SafeAreaView>
     );

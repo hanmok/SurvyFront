@@ -18,7 +18,7 @@ import { UserService } from "../../API/Services/UserService";
 import { convertBirthDate } from "../../utils/DateFormatter";
 
 // 내 정보
-function MyInfoScreen({
+function MyinfoScreen({
     navigation,
 }: {
     navigation: StackNavigationProp<RootStackParamList, NavigationTitle.myinfo>;
@@ -289,7 +289,7 @@ function MyInfoScreen({
     );
 }
 
-export default MyInfoScreen;
+export default MyinfoScreen;
 
 const styles = StyleSheet.create({
     overall: {

@@ -59,8 +59,8 @@ export class SurveyService extends BaseApi {
         return this.fetchData(url, "POST", body, accessToken);
     }
 
-    async getSurveys(accessToken: string) {
-        const url = `${API_BASE_URL}/survey`;
+    async getSurveys(accessToken: string, userId: number) {
+        const url = `${API_BASE_URL}/survey/available/user/${userId}`;
         return this.fetchData<Survey[]>(url, "GET", undefined, accessToken);
     }
 

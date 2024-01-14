@@ -16,7 +16,6 @@ import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 import SettingScreen from "./screens/mypage/SettingScreen";
 import LoginScreen from "./screens/login/LoginScreen";
-import MyInfoScreen from "./screens/mypage/MyinfoScreen";
 import { ApolloProvider } from "./ApolloProvider";
 import TargettingScreen from "./screens/TargettingScreen";
 import ResponseScreen from "./screens/ResponseScreen";
@@ -32,6 +31,7 @@ import MyGenreScreen from "./screens/mypage/MyGenreScreen";
 import Toast from "react-native-toast-message";
 import toastConfig from "./components/common/toast/ToastConfig";
 import PointHistoryScreen from "./screens/mypage/PointHistoryScreen";
+import MyinfoScreen from "./screens/mypage/MyinfoScreen";
 
 const App: React.FC = () => {
     return (
@@ -194,7 +194,7 @@ const App: React.FC = () => {
 
                                 <Stack.Screen
                                     name={NavigationTitle.myinfo}
-                                    component={MyInfoScreen}
+                                    component={MyinfoScreen}
                                     options={({ route }) => ({
                                         headerTitle: "내 정보",
                                         headerBackTitleVisible: false,

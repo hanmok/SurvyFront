@@ -66,6 +66,7 @@ function HomeScreen({
         updateUserDetail,
         updateLoadingStatus,
         accessToken,
+        userId,
         updateParticipatingSurveyId,
     } = useCustomContext();
 
@@ -84,7 +85,7 @@ function HomeScreen({
 
     const onRefresh = () => {
         setRefreshing(true);
-        surveyService.getSurveys(accessToken).then(surveysResult => {
+        surveyService.getSurveys(accessToken, userId).then(surveysResult => {
             setSurveys(surveysResult.data);
             setRefreshing(false);
         });
@@ -156,7 +157,7 @@ function HomeScreen({
     useEffect(() => {
         const updateSurveys = async () => {
             await surveyService
-                .getSurveys(accessToken)
+                .getSurveys(accessToken, userId)
                 .then(surveysResult => {
                     logObject("surveyResult", surveysResult);
                     setIsLoading(false);

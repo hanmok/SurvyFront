@@ -77,6 +77,7 @@ export class SurveyService extends BaseApi {
         reward: number,
         cost: number,
         userId: number,
+        expectedTimeInSec: number,
         accessToken: string
     ) {
         console.log(`createSurvey called`);
@@ -101,7 +102,8 @@ export class SurveyService extends BaseApi {
             isTargetMale,
             reward,
             cost,
-            numOfSections
+            numOfSections,
+            expectedTimeInSec
         ).build();
 
         return await this.postWholeSurvey(

@@ -71,7 +71,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     const surveyService = new SurveyService();
     // 여기에서 모두 처리해버리기.
     const [participationGoal, setParticipationGoal] = useState("10");
-    const { surveyTitle, sections, questions, expectedTimeInMin } =
+    const { surveyTitle, sections, questions, expectedTimeInSec } =
         route.params;
 
     const [isCostModalVisible, setCostModalVisible] = useState(false);
@@ -185,6 +185,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             reward,
             cost,
             userId,
+            expectedTimeInSec,
             accessToken
         );
 
@@ -221,7 +222,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
                 isFree={isFree}
                 setIsFree={setIsFree}
                 isCostGuideModalVisible={isCostModalVisible}
-                expectedTimeInMin={expectedTimeInMin} // 이거.. 구해야 할 것 같은데?
+                expectedTimeInMin={Math.ceil(expectedTimeInSec / 60)} // 이거.. 구해야 할 것 같은데?
                 setParticipationGoal={setParticipationGoal}
                 price={price}
                 setPrice={setPrice}

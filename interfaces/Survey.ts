@@ -37,7 +37,8 @@ export class SurveyBuilder {
         public isTargetMale: number | undefined,
         public reward: number,
         public cost: number,
-        public numOfSections: number
+        public numOfSections: number,
+        public expectedTimeInSec: number
     ) {
         this.survey = {
             userId,
@@ -57,7 +58,7 @@ export class SurveyBuilder {
             numOfSections,
             sections: [],
             genres: [],
-            expectedTimeInSec: 0,
+            expectedTimeInSec,
         };
     }
 
@@ -70,5 +71,5 @@ export interface SurveyProps {
     surveyTitle: string;
     sections: Section[];
     questions: Question[];
-    expectedTimeInMin: number;
+    expectedTimeInSec: number;
 }

@@ -245,6 +245,8 @@ function ParticipatingScreen({
             );
             logObject("currentSection:", currentSection);
             setQuestions(currentSection.questions);
+            // FIXME: currentSection 이 undefined 상태.
+            // 이게 뭔 개같은 에러여
             dispatch(initializeSelections(currentSection.questions.length));
         }
     }, [currentSectionIndex, data]);

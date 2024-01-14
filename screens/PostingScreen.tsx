@@ -71,6 +71,7 @@ export default function PostingScreen({
     >(undefined);
 
     const [expectedTimeInMin, setExpectedTimeInMin] = useState(0);
+    const [expectedTimeInSec, setExpectedTimeInSec] = useState(0);
 
     const toggleMenuModal = () => {
         setIsMenuModalVisible(!isMenuModalVisible);
@@ -121,6 +122,7 @@ export default function PostingScreen({
                 return acc + translateQuestionTypeIdToTime(current);
             }, 0);
         setExpectedTimeInMin(Math.ceil(expectedTimeInSec / 60));
+        setExpectedTimeInSec(expectedTimeInSec);
     }, [questions, surveyTitle]);
 
     useEffect(() => {
@@ -246,7 +248,7 @@ export default function PostingScreen({
                 surveyTitle,
                 sections,
                 questions,
-                expectedTimeInMin,
+                expectedTimeInSec,
             });
         }
     }, [isNextButtonTapped, surveyTitle, sections, questions]);

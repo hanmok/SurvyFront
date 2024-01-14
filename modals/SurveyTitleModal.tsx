@@ -40,11 +40,16 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
     }, [titleModalVisible]);
 
     useEffect(() => {
+        console.log("flaggg");
         const keyboardDidShowListener = Keyboard.addListener(
             "keyboardWillShow",
+            // "keyboardDidShow",
             () => {
+                console.log(`keyboardDidShow called`);
+
                 Animated.timing(translateY, {
                     toValue: -100,
+                    // toValue: -300,
                     duration: 200,
                     useNativeDriver: true,
                 }).start();
@@ -53,6 +58,7 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
 
         const keyboardDidHideListener = Keyboard.addListener(
             "keyboardWillHide",
+            // "keyboardDidHide",
             () => {
                 // Animate modal content when the keyboard hides
                 Animated.timing(translateY, {

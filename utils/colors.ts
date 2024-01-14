@@ -21,6 +21,7 @@ export const colors = {
     gray3: "#999",
     gray35: "#aaa",
     gray4: "#ccc",
+    gray45: "#ddd",
     gray5: "#eee",
     transparent: "rgba(0,0,0,0)",
     modalBackground: "rgba(0, 0, 0, 0.75)",

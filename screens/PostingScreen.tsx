@@ -342,9 +342,11 @@ export default function PostingScreen({
                     textStyle={{
                         fontSize: 22,
                         fontWeight: "bold",
-                        color: surveyTitle !== "" ? colors.black : "gray",
+                        color:
+                            surveyTitle !== "" ? colors.black : colors.gray35,
                     }}
                     backgroundStyle={styles.surveyTitleBG}
+                    // backgroundStyle={[styles.shadow, styles.sectionBG]}
                 />
                 <TextButton
                     title={`Section ${currentSectionIndex + 1}`}
@@ -589,13 +591,15 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     plusButtonBG: {
-        backgroundColor: colors.white,
+        // backgroundColor: colors.white,
+        backgroundColor: colors.gray3,
         borderRadius: 10,
         justifyContent: "center",
         height: 46,
     },
     addQuestionText: {
-        color: colors.black,
+        // color: colors.black,
+        color: colors.gray5,
         textAlign: "center",
         fontSize: fontSizes.m20,
         letterSpacing: 1,
@@ -704,7 +708,8 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 16,
         borderBottomLeftRadius: 6,
         borderBottomRightRadius: 6,
-        backgroundColor: colors.gray4,
+        // backgroundColor: colors.gray4,
+        backgroundColor: "white",
         marginBottom: 8,
     },
     sectionText: {

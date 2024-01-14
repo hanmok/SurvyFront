@@ -150,6 +150,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     };
 
     const finalConfirmAction = async () => {
+        updateLoadingStatus(true);
         setIsSendPressed(false);
         setCostModalVisible(!isCostModalVisible);
 
@@ -188,6 +189,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
             expectedTimeInSec,
             accessToken
         );
+        updateLoadingStatus(false);
 
         if (postingSurveyId) {
             postingSurveyDataManager.initialize();

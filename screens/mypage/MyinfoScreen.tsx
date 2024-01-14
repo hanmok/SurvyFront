@@ -123,6 +123,7 @@ function MyInfoScreen({
             />
 
             <BlockView size={50}>
+                {/* TODO: Pass 인증으로 넘어가기 */}
                 <View style={styles.rowContainer}>
                     <Text style={{ fontSize: 18 }}>성별 · 생년월일</Text>
                     <Text style={{ fontSize: 16 }}>
@@ -130,15 +131,24 @@ function MyInfoScreen({
                     </Text>
                 </View>
             </BlockView>
-            <BlockView
-                size={50}
-                onPress={() => {
-                    console.log("hi");
-                    moveToCategory();
-                }}
-            >
+
+            {/* 관심사 */}
+            <BlockView size={50} onPress={moveToCategory}>
                 <View style={styles.rowContainer}>
-                    <Text style={{ fontSize: 18 }}>관심사</Text>
+                    <View
+                        style={{
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                textAlignVertical: "center",
+                            }}
+                        >
+                            관심사
+                        </Text>
+                    </View>
                     <View
                         style={{
                             flexDirection: "row",

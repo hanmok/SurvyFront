@@ -16,7 +16,6 @@ import ParticipatedSurveysScreen from "./screens/ParticipatedSurveysScreen";
 import PostedSurveysScreen from "./screens/PostedSurveysScreen";
 import SettingScreen from "./screens/mypage/SettingScreen";
 import LoginScreen from "./screens/login/LoginScreen";
-// import MyinfoScreen from "./screens/mypage/MyInfoScreen";
 import MyInfoScreen from "./screens/mypage/MyinfoScreen";
 import { ApolloProvider } from "./ApolloProvider";
 import TargettingScreen from "./screens/TargettingScreen";

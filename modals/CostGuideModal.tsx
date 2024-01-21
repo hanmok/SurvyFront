@@ -1,6 +1,9 @@
 import {
+    Animated,
     Keyboard,
+    KeyboardAvoidingView,
     Modal,
+    Platform,
     StyleSheet,
     Text,
     TextInput,
@@ -43,6 +46,8 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
     setParticipationGoal,
     participationGoal,
 }) => {
+    const translateY = useRef(new Animated.Value(0)).current;
+
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
@@ -54,6 +59,12 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
     //         participationGoalRef.current.;
     //     }
     // };
+
+    useEffect(() => {
+        if (isCostGuideModalVisible && participationGoalRef.current) {
+            participationGoalRef.current.focus();
+        }
+    }, [isCostGuideModalVisible]);
 
     useEffect(() => {
         console.log(`[CostGuideModal], isFree: ${isFree}, price: ${price}`);
@@ -71,13 +82,53 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
         }
     }, [price, isFree, isCostGuideModalVisible, participationGoal]);
 
-    // const handleFocus = () => {
-    //     if
-    // }
+    useEffect(() => {
+        console.log("flaggg");
+
+        const keyboardDidShowListener = Keyboard.addListener(
+            Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
+            () => {
+                console.log(`keyboardDidShow called`);
+
+                Animated.timing(translateY, {
+                    toValue: -100,
+                    duration: 200,
+                    useNativeDriver: true,
+                }).start();
+            }
+        );
+
+        const keyboardDidHideListener = Keyboard.addListener(
+            Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+            () => {
+                // Animate modal content when the keyboard hides
+                Animated.timing(translateY, {
+                    toValue: 0,
+                    duration: 200,
+                    useNativeDriver: true,
+                }).start();
+            }
+        );
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, [translateY]);
 
     return (
         <Modal transparent={true} visible={isCostGuideModalVisible}>
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
+                {/* <TouchableWithoutFeedback> */}
+                {/* <View> */}
+                {/* <KeyboardAvoidingView
+                    style={{ flex: 1 }}
+                    behavior={Platform.OS === "ios" ? "padding" : undefined}
+                > */}
+                {/* 이거 쓰면 화면이 안나와. 왜 ??  */}
+                {/* <Animated.View
+                    style={{ transform: [{ translateY: translateY }] }}
+                > */}
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         <Text style={styles.titleText}>설문 제출</Text>
@@ -85,7 +136,11 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                         <View style={{ height: 200, width: 300 }}>
                             <View style={styles.mainContent}>
                                 <View style={styles.rowContainer}>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
+                                    <Text
+                                        style={{
+                                            fontSize: fontSizes.s16,
+                                        }}
+                                    >
                                         설문 인원
                                     </Text>
                                     <View
@@ -100,8 +155,9 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                             onChangeText={setParticipationGoal}
                                             keyboardType="number-pad"
                                             placeholder="10"
+                                            // ref={participationGoalRef}
                                             // selectTextOnFocus={true}
-                                            clearTextOnFocus={true}
+                                            // clearTextOnFocus={true}
                                             // selectTextOnFocus={true}
                                             // onFocus={handleFocus}
                                             style={
@@ -109,7 +165,9 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                             }
                                         />
                                         <Text
-                                            style={{ fontSize: fontSizes.s16 }}
+                                            style={{
+                                                fontSize: fontSizes.s16,
+                                            }}
                                         >
                                             {" "}
                                             명
@@ -118,19 +176,35 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                 </View>
 
                                 <View style={styles.rowContainer}>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
+                                    <Text
+                                        style={{
+                                            fontSize: fontSizes.s16,
+                                        }}
+                                    >
                                         예상 소요 시간
                                     </Text>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
+                                    <Text
+                                        style={{
+                                            fontSize: fontSizes.s16,
+                                        }}
+                                    >
                                         {" "}
                                         {expectedTimeInMin} 분
                                     </Text>
                                 </View>
                                 <View style={styles.rowContainer}>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
+                                    <Text
+                                        style={{
+                                            fontSize: fontSizes.s16,
+                                        }}
+                                    >
                                         가격
                                     </Text>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
+                                    <Text
+                                        style={{
+                                            fontSize: fontSizes.s16,
+                                        }}
+                                    >
                                         {price} 원
                                     </Text>
                                 </View>
@@ -155,7 +229,10 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                         />
                     </View>
                 </View>
+                {/* </Animated.View> */}
+                {/* </KeyboardAvoidingView> */}
             </TouchableWithoutFeedback>
+            {/* </View> */}
         </Modal>
     );
 };

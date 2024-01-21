@@ -1,6 +1,13 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigationTitle, RootStackParamList } from "../../utils/NavHelper";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+    Keyboard,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableWithoutFeedback,
+    View,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { Genre } from "../../interfaces/Genre";
 import { logObject } from "../../utils/Log";
@@ -42,6 +49,9 @@ function MyGenreScreen({
 
     const { accessToken, userId, updateLoadingStatus } = useCustomContext();
 
+    const dismissKeyboard = () => {
+        Keyboard.dismiss();
+    };
     useEffect(() => {
         const updateGenres = async () => {
             const updatedGenres = new Set(selectedGenres);
@@ -119,104 +129,106 @@ function MyGenreScreen({
     }, [userInput, allGenres]);
 
     return (
-        <View style={styles.coreContentsContainer}>
-            <View
-                style={{
-                    marginTop: 10,
-                }}
-            >
-                {/* Search */}
-                <View style={styles.searchContainer}>
-                    <View style={styles.searchTextBox}>
-                        <TextInput
-                            value={userInput}
-                            onChangeText={setUserInput}
-                            placeholder="관심 카테고리는?"
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+            <View style={styles.coreContentsContainer}>
+                <View
+                    style={{
+                        marginTop: 10,
+                    }}
+                >
+                    {/* Search */}
+                    <View style={styles.searchContainer}>
+                        <View style={styles.searchTextBox}>
+                            <TextInput
+                                value={userInput}
+                                onChangeText={setUserInput}
+                                placeholder="관심 카테고리는?"
+                                style={{
+                                    fontSize: 16,
+                                }}
+                            />
+                        </View>
+
+                        <View
                             style={{
-                                fontSize: 16,
+                                height: 30,
+                                flexDirection: "row",
                             }}
+                        ></View>
+                        <Spacer size={10} />
+                        <Entypo
+                            name="magnifying-glass"
+                            size={24}
+                            color={colors.black}
                         />
                     </View>
 
-                    <View
-                        style={{
-                            height: 30,
-                            flexDirection: "row",
+                    {/* selected Genres */}
+                    <View style={styles.selectedGenreListWrapper}>
+                        {selectedGenres.map(genre => (
+                            <TextButton
+                                title={genre.name}
+                                onPress={() => {
+                                    toggleGenreSelection(genre);
+                                }}
+                                key={`selected${genre.id}`}
+                                backgroundStyle={styles.genreButtonBG}
+                                textStyle={{
+                                    color: colors.white,
+                                }}
+                            />
+                        ))}
+                    </View>
+                </View>
+
+                <View style={styles.selectableGenreListWrapper}>
+                    {showingGenres &&
+                        showingGenres.length !== 0 &&
+                        showingGenres.map(genre => (
+                            <TextButton
+                                title={genre.name}
+                                onPress={() => {
+                                    toggleGenreSelection(genre);
+                                }}
+                                backgroundStyle={
+                                    selectedGenres
+                                        .map(genre => genre.id)
+                                        .includes(genre.id)
+                                        ? genreStyles.selectedGenreButtonBG
+                                        : genreStyles.unselectedGenreButtonBG
+                                }
+                                textStyle={
+                                    selectedGenres
+                                        .map(genre => genre.id)
+                                        .includes(genre.id)
+                                        ? genreStyles.selectedGenreText
+                                        : genreStyles.unselectedGenreText
+                                }
+                                key={`showing${genre.name}`}
+                            />
+                        ))}
+                </View>
+                <View>
+                    <TextButton
+                        title="확인"
+                        onPress={() => {
+                            setConfirmTapped(true);
                         }}
-                    ></View>
-                    <Spacer size={10} />
-                    <Entypo
-                        name="magnifying-glass"
-                        size={24}
-                        color={colors.black}
+                        textStyle={{
+                            color: colors.white,
+                            fontWeight: "800",
+                            letterSpacing: 2,
+                            fontSize: 16,
+                        }}
+                        backgroundStyle={{
+                            backgroundColor: buttonColors.enabledButtonBG,
+                            borderRadius: 8,
+                            height: 45,
+                        }}
                     />
                 </View>
-
-                {/* selected Genres */}
-                <View style={styles.selectedGenreListWrapper}>
-                    {selectedGenres.map(genre => (
-                        <TextButton
-                            title={genre.name}
-                            onPress={() => {
-                                toggleGenreSelection(genre);
-                            }}
-                            key={`selected${genre.id}`}
-                            backgroundStyle={styles.genreButtonBG}
-                            textStyle={{
-                                color: colors.white,
-                            }}
-                        />
-                    ))}
-                </View>
             </View>
-
-            <View style={styles.selectableGenreListWrapper}>
-                {showingGenres &&
-                    showingGenres.length !== 0 &&
-                    showingGenres.map(genre => (
-                        <TextButton
-                            title={genre.name}
-                            onPress={() => {
-                                toggleGenreSelection(genre);
-                            }}
-                            backgroundStyle={
-                                selectedGenres
-                                    .map(genre => genre.id)
-                                    .includes(genre.id)
-                                    ? genreStyles.selectedGenreButtonBG
-                                    : genreStyles.unselectedGenreButtonBG
-                            }
-                            textStyle={
-                                selectedGenres
-                                    .map(genre => genre.id)
-                                    .includes(genre.id)
-                                    ? genreStyles.selectedGenreText
-                                    : genreStyles.unselectedGenreText
-                            }
-                            key={`showing${genre.name}`}
-                        />
-                    ))}
-            </View>
-            <View>
-                <TextButton
-                    title="확인"
-                    onPress={() => {
-                        setConfirmTapped(true);
-                    }}
-                    textStyle={{
-                        color: colors.white,
-                        fontWeight: "800",
-                        letterSpacing: 2,
-                        fontSize: 16,
-                    }}
-                    backgroundStyle={{
-                        backgroundColor: buttonColors.enabledButtonBG,
-                        borderRadius: 8,
-                        height: 45,
-                    }}
-                />
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -251,8 +263,10 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         flex: 1,
         marginHorizontal: 20,
-        marginBottom: 15,
+        // marginBottom: 15,
+
         marginTop: 30,
+        minHeight: screenHeight * 0.85,
     },
     searchContainer: {
         flexDirection: "row",

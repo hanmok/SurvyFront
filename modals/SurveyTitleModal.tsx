@@ -7,6 +7,8 @@ import {
     Text,
     Animated,
     Keyboard,
+    Platform,
+    KeyboardAvoidingView,
 } from "react-native";
 import { colors } from "../utils/colors";
 import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
@@ -41,15 +43,14 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
 
     useEffect(() => {
         console.log("flaggg");
+
         const keyboardDidShowListener = Keyboard.addListener(
-            "keyboardWillShow",
-            // "keyboardDidShow",
+            Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
             () => {
                 console.log(`keyboardDidShow called`);
 
                 Animated.timing(translateY, {
                     toValue: -100,
-                    // toValue: -300,
                     duration: 200,
                     useNativeDriver: true,
                 }).start();
@@ -57,8 +58,7 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
         );
 
         const keyboardDidHideListener = Keyboard.addListener(
-            "keyboardWillHide",
-            // "keyboardDidHide",
+            Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
             () => {
                 // Animate modal content when the keyboard hides
                 Animated.timing(translateY, {
@@ -84,46 +84,53 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
                 setTitleModalVisible(false);
             }}
         >
-            <Animated.View style={{ transform: [{ translateY: translateY }] }}>
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        {/* Title */}
-                        <View>
-                            <Text style={styles.infoTextContainer}>
-                                설문 제목
-                            </Text>
-                        </View>
-                        {/* Title Input */}
-                        <View
-                            style={{
-                                marginHorizontal: 12,
-                                alignSelf: "stretch",
-                            }}
-                        >
-                            <TextInput
-                                style={styles.surveyTitleText}
-                                onChangeText={setTitle}
-                                value={title}
-                                placeholder="무엇에 대한 설문인가요?"
-                                autoCorrect={false}
-                                autoComplete="off"
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
+            >
+                <Animated.View
+                    style={{ transform: [{ translateY: translateY }] }}
+                >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalContent}>
+                            {/* Title */}
+                            <View>
+                                <Text style={styles.infoTextContainer}>
+                                    설문 제목
+                                </Text>
+                            </View>
+                            {/* Title Input */}
+                            <View
+                                style={{
+                                    marginHorizontal: 12,
+                                    alignSelf: "stretch",
+                                }}
+                            >
+                                <TextInput
+                                    style={styles.surveyTitleText}
+                                    onChangeText={setTitle}
+                                    value={title}
+                                    placeholder="무엇에 대한 설문인가요?"
+                                    autoCorrect={false}
+                                    autoComplete="off"
+                                />
+                            </View>
+                            <BottomButtonContainer
+                                leftTitle="닫기"
+                                leftAction={() => {
+                                    setTitleModalVisible(false);
+                                }}
+                                rightAction={() => {
+                                    setSurveyTitle(title);
+                                    setTitleModalVisible(false);
+                                    setConfirmTapped(true);
+                                }}
+                                satisfied={satisfied}
                             />
                         </View>
-                        <BottomButtonContainer
-                            leftTitle="닫기"
-                            leftAction={() => {
-                                setTitleModalVisible(false);
-                            }}
-                            rightAction={() => {
-                                setSurveyTitle(title);
-                                setTitleModalVisible(false);
-                                setConfirmTapped(true);
-                            }}
-                            satisfied={satisfied}
-                        />
                     </View>
-                </View>
-            </Animated.View>
+                </Animated.View>
+            </KeyboardAvoidingView>
         </Modal>
     );
 };

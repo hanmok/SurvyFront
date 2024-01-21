@@ -32,6 +32,7 @@ import Toast from "react-native-toast-message";
 import toastConfig from "./components/common/toast/ToastConfig";
 import PointHistoryScreen from "./screens/mypage/PointHistoryScreen";
 import MyinfoScreen from "./screens/mypage/MyinfoScreen";
+import { screenHeight } from "./utils/ScreenSize";
 
 const App: React.FC = () => {
     return (
@@ -208,7 +209,7 @@ const App: React.FC = () => {
                                     name={NavigationTitle.myGenre}
                                     component={MyGenreScreen}
                                     options={({ route }) => ({
-                                        headerTitle: "내 관심사",
+                                        headerTitle: "관심사",
                                         headerBackTitleVisible: false,
                                         headerStyle: {
                                             backgroundColor: colors.background,

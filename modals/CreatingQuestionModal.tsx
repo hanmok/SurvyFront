@@ -7,6 +7,8 @@ import {
     TextInput,
     TouchableWithoutFeedback,
     Keyboard,
+    KeyboardAvoidingView,
+    SafeAreaView,
 } from "react-native";
 import { fontSizes } from "../utils/sizes";
 import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
@@ -19,7 +21,7 @@ import {
 } from "../interfaces/SelectableOption";
 import { log, logObject } from "../utils/Log";
 import { colors } from "../utils/colors";
-import { screenWidth } from "../utils/ScreenSize";
+import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import DefaultSwitch from "../components/DefaultSwitch";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
 
@@ -147,10 +149,13 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
             transparent={true}
             visible={isCreatingQuestionModalVisible}
             onRequestClose={handleModalClose}
+            hardwareAccelerated={true}
         >
             <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
-                <View style={styles.modalContainer}>
+                {/* <View style={styles.modalContainer}> */}
+                <SafeAreaView style={styles.modalContainer}>
                     <View style={styles.modalContent}>
+                        {/* <KeyboardAvoidingView style={styles.modalContent}> */}
                         <View>
                             <TextInput
                                 placeholder="질문을 입력해주세요"
@@ -214,7 +219,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                             <View
                                 style={{
                                     marginHorizontal: 30,
-                                    marginBottom: 30,
+                                    // marginBottom: 10,
                                 }}
                             >
                                 {questionTypeId === QuestionTypeId.Essay ? (
@@ -246,7 +251,9 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                             satisfied={satisfied}
                         />
                     </View>
-                </View>
+                    {/* </KeyboardAvoidingView> */}
+                    {/* </View> */}
+                </SafeAreaView>
             </TouchableWithoutFeedback>
         </Modal>
     );
@@ -265,9 +272,18 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         flexGrow: 1,
-        marginVertical: 60, // 전체 화면 관리
+        // marginVertical: 60, // 전체 화면 관리
+        // marginTop: 60,
+        marginTop: 20,
+        // marginBottom: 20,
+        minHeight: screenHeight * 0.9,
+        maxHeight: screenHeight * 0.9,
+        // height: screenHeight * 0.85,
+        // height: screenHeight * 0.8,
+        // marginBottom: 60,
         marginHorizontal: 20,
         backgroundColor: colors.background,
+        // backgroundColor: colors.magenta,
         borderRadius: 10,
         justifyContent: "space-between",
     },

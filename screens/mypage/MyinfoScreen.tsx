@@ -36,9 +36,9 @@ function MyinfoScreen({
     } = useCustomContext();
 
     const gender = (): string => {
-        if (userDetail.isMale === 0) {
+        if (userDetail?.isMale === 0) {
             return "여성";
-        } else if (userDetail.isMale === 1) {
+        } else if (userDetail?.isMale === 1) {
             return "남성";
         } else {
             return "";
@@ -46,7 +46,7 @@ function MyinfoScreen({
     };
 
     const birthDate = (): string => {
-        if (userDetail.birthDate) {
+        if (userDetail?.birthDate) {
             return convertBirthDate(userDetail.birthDate);
         } else {
             return "";
@@ -94,6 +94,7 @@ function MyinfoScreen({
                     const userDetail = await userService.getUserDetail(
                         accessToken
                     );
+
                     updateUserDetail(userDetail.data);
                     showToast("success", "거주지가 변경되었습니다.");
                     updateLoadingStatus(false);

@@ -19,7 +19,7 @@ import { convertReward, convertToMin } from "../utils/numbers";
 import Spacer from "../components/common/Spacer";
 import { GenreBox } from "../components/common/GenreBox";
 
-interface SearhchedSurveyModalProps {
+interface SearchedSurveyModalProps {
     onConfirmAction: () => void;
     confirmText: string;
     onClose: () => void;
@@ -28,7 +28,7 @@ interface SearhchedSurveyModalProps {
     searchedSurvey: Survey | null;
 }
 
-export const SearhchedSurveyModal: React.FC<SearhchedSurveyModalProps> = ({
+export const SearchedSurveyModal: React.FC<SearchedSurveyModalProps> = ({
     onConfirmAction: onSecondSelection,
     // title,
     isModalVisible,

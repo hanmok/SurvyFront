@@ -102,6 +102,7 @@ function HomeScreen({
                 const detailInfoResult = await userService.getUserDetail(
                     accessToken
                 );
+                onRefresh();
                 logObject("userDetail", detailInfoResult);
                 updateUserDetail(detailInfoResult.data);
             } catch (error) {

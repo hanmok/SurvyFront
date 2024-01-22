@@ -16,6 +16,7 @@ import GeoSingleSelectionModal from "../../modals/GeoSingleSelectionModal";
 import showToast from "../../components/common/toast/Toast";
 import { UserService } from "../../API/Services/UserService";
 import { convertBirthDate } from "../../utils/DateFormatter";
+import showAdminToast from "../../components/common/toast/showAdminToast";
 
 // 내 정보
 function MyinfoScreen({
@@ -76,6 +77,29 @@ function MyinfoScreen({
         };
         getMyGenres();
     }, []);
+
+    useEffect(() => {
+        const fetchGenres = async () => {
+            try {
+                updateLoadingStatus(true);
+                await userService
+                    .getUserGenres(accessToken, userId)
+                    .then(response => {
+                        setMyGenres(response.data);
+                        updateLoadingStatus(false);
+                    });
+            } catch (error) {
+                showAdminToast("error", error.message);
+                console.error(error);
+            }
+        };
+
+        const unsubscribeFocus = navigation.addListener("focus", () => {
+            fetchGenres();
+        });
+
+        return unsubscribeFocus;
+    }, [navigation]);
 
     return (
         <View style={styles.overall}>

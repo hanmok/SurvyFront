@@ -341,6 +341,7 @@ const styles = StyleSheet.create({
     subContainer: {
         justifyContent: "flex-end",
         alignItems: "stretch",
+        flex: 1,
     },
     floatingButton: {
         bottom: 20,

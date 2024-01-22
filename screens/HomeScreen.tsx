@@ -29,7 +29,7 @@ import { SearchingModal } from "../modals/SearchingModal";
 import { SurveyService } from "../API/Services/SurveyService";
 import { GeoService } from "../API/Services/GeoService";
 import CollectedMoney from "../components/CollectedMoney";
-import { SearhchedSurveyModal } from "../modals/SearchedSurveyModal";
+import { SearchedSurveyModal } from "../modals/SearchedSurveyModal";
 import showToast from "../components/common/toast/Toast";
 
 const screenWidth = Dimensions.get("window").width;
@@ -284,7 +284,7 @@ function HomeScreen({
                     }}
                 />
 
-                <SearhchedSurveyModal
+                <SearchedSurveyModal
                     confirmText="참여"
                     onConfirmAction={() => {
                         updateParticipatingSurveyId(searchedSurvey.id);

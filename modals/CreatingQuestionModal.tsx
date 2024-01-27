@@ -143,6 +143,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
         Keyboard.dismiss();
     };
 
+    // 어떻게 해야하지? ->
     return (
         <Modal
             animationType="slide"
@@ -215,7 +216,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
                                 />
                             )}
 
-                            {/*  Two Switches */}
+                            {/* Extra Option Switch  */}
                             <View
                                 style={{
                                     marginHorizontal: 30,

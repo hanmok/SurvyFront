@@ -52,6 +52,7 @@ function MyGenreScreen({
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
+
     useEffect(() => {
         const updateGenres = async () => {
             const updatedGenres = new Set(selectedGenres);

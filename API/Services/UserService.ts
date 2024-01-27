@@ -3,6 +3,7 @@ import { Genre } from "../../interfaces/Genre";
 import { UserState } from "../../interfaces/UserState";
 import { API_BASE_URL } from "../API";
 import BaseApi from "../BaseAPI";
+import _ from "lodash";
 
 export type UserResponse = ApiResponse<UserState>;
 
@@ -26,13 +27,15 @@ export class UserService extends BaseApi {
         isMale: number
     ): Promise<ApiResponse<any>> {
         const url = `${API_BASE_URL}/user/signup`;
-        const body = {
+        const data = {
             username,
             password,
             phoneNumber,
             birthDate,
             isMale,
         };
+
+        const body = _.mapKeys(data, (value, key) => _.snakeCase(key));
 
         return this.fetchData(url, "POST", body, undefined);
     }
@@ -86,10 +89,11 @@ export class UserService extends BaseApi {
     ) {
         const url = `${API_BASE_URL}/user-genre/user/${userId}/genres`;
 
-        const body = {
+        const data = {
             user_id: userId,
             genre_ids: genreIds,
         };
+        const body = _.mapKeys(data, (value, key) => _.snakeCase(key));
 
         return this.fetchData(url, "POST", body, accessToken);
     }
@@ -123,10 +127,12 @@ export class UserService extends BaseApi {
 
     async checkValidationOfUsernamePhoneNumber(
         username: string,
-        phone: string
+        phoneNumber: string
     ) {
         const url = `${API_BASE_URL}/user/check-username-phone`;
-        const body = { username, phone };
+        const data = { username, phoneNumber };
+        const body = _.mapKeys(data, (value, key) => _.snakeCase(key));
+
         return this.fetchData(url, "POST", body);
     }
 
@@ -154,21 +160,24 @@ export class UserService extends BaseApi {
         return this.fetchData(url, "POST", body);
     }
 
-    async sendSMSAuthCodeForPassword(username: string, phone: string) {
+    async sendSMSAuthCodeForPassword(username: string, phoneNumber: string) {
         const url = `${API_BASE_URL}/user/find-password/send-sms`;
-        const body = { username, phone };
+        const data = { username, phoneNumber };
+        const body = _.mapKeys(data, (value, key) => _.snakeCase(key));
         return this.fetchData(url, "POST", body);
     }
 
-    async sendSMSAuthCodeForId(phone: string) {
+    async sendSMSAuthCodeForId(phoneNumber: string) {
         const url = `${API_BASE_URL}/user/find-id/send-sms`;
-        const body = { phone };
+        const data = { phoneNumber };
+        const body = _.mapKeys(data, (value, key) => _.snakeCase(key));
         return this.fetchData(url, "POST", body);
     }
 
-    async verifyAuthCodeForId(phone: string, code: string) {
+    async verifyAuthCodeForId(phoneNumber: string, code: string) {
         const url = `${API_BASE_URL}/user/find-id/verify-sms`;
-        const body = { phone, code };
+        const data = { phoneNumber, code };
+        const body = _.mapKeys(data, (value, key) => _.snakeCase(key));
         return this.fetchData<string>(url, "POST", body);
     }
 

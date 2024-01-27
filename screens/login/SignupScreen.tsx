@@ -125,7 +125,7 @@ export default function SignUpScreen({
     };
 
     useEffect(() => {
-        const ret = birthDate.length === 8;
+        const ret = birthDate.length === 10;
         setBirthDateValidated(ret);
     }, [birthDate]);
 
@@ -148,6 +148,7 @@ export default function SignUpScreen({
     ]);
 
     useEffect(() => {
+        // A 0109
         if (phoneInput.length === 4 && phoneInput.includes("-") === false) {
             const dashIndex = 3;
             const modified =
@@ -155,13 +156,14 @@ export default function SignUpScreen({
                 "-" +
                 phoneInput.slice(dashIndex);
             setPhoneInput(modified);
-            // dash 가 하나일 때 입력 하나 더 들어옴
+            // B dash 가 하나일 때 입력 하나 더 들어옴
         } else if (
             phoneInput.length === 4 &&
             phoneInput.includes("-") === true
         ) {
             const modified = phoneInput.slice(0, 3);
             setPhoneInput(modified);
+            // C 010-9041
         } else if (
             phoneInput.length === 9 &&
             phoneInput.lastIndexOf("-") === 3
@@ -172,16 +174,50 @@ export default function SignUpScreen({
                 "-" +
                 phoneInput.slice(newDashIndex);
             setPhoneInput(modified);
+            // D
         } else if (
             phoneInput.length === 9 &&
             phoneInput.lastIndexOf("-") === 8
         ) {
             const modified = phoneInput.slice(0, 8);
             setPhoneInput(modified);
+            // E
         } else if (phoneInput.length === 13) {
             Keyboard.dismiss();
         }
     }, [phoneInput]);
+
+    useEffect(() => {
+        // A 0109 , 1992
+        if (birthDate.length === 5 && birthDate.includes(" ") === false) {
+            const dashIndex = 4;
+            const modified =
+                birthDate.slice(0, dashIndex) +
+                " " +
+                birthDate.slice(dashIndex);
+            setBirthDate(modified);
+            // B dash 가 하나일 때 입력 하나 더 들어옴
+        } else if (birthDate.length === 5 && birthDate.includes(" ") === true) {
+            const modified = birthDate.slice(0, 4);
+            setBirthDate(modified);
+            // C 010-9041 , 1992 07
+        } else if (birthDate.length === 8 && birthDate.lastIndexOf(" ") === 4) {
+            console.log("case C");
+            const newDashIndex = 7;
+            const modified =
+                birthDate.slice(0, newDashIndex) +
+                " " +
+                birthDate.slice(newDashIndex);
+            setBirthDate(modified);
+            // D 010-9041- , 1992 07
+        } else if (birthDate.length === 8 && birthDate.lastIndexOf("-") === 7) {
+            const modified = birthDate.slice(0, 7);
+            setBirthDate(modified);
+            // E 1992 07 21
+        } else if (birthDate.length === 10) {
+            Keyboard.dismiss();
+        }
+    }, [birthDate]);
 
     return (
         <ScrollView
@@ -283,10 +319,16 @@ export default function SignUpScreen({
                                 autoCorrect={false}
                             />
                         </View>
+                        {/* 인증하는건 어디 갖다 팔아먹음? */}
+                        {/*  */}
                         <TextButton
                             title="인증번호 받기"
                             onPress={() => {
                                 handlePhoneDuplicate(phoneInput);
+                                setPhoneConfirmed(true);
+                                // await userService.sendSMSAuthCodeForId(
+                                //     phoneInput
+                                // );
                             }}
                             backgroundStyle={[
                                 {

@@ -42,6 +42,7 @@ import { useCustomContext } from "../features/context/CustomContext";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
 import showToast from "../components/common/toast/Toast";
 import { SurveyService } from "../API/Services/SurveyService";
+import SurveyTitleModal from "../modals/SurveyTitleModal";
 // import { initializePostingSurvey } from "../utils/PostingSurveyStorage";
 // import { deletePostingSurvey } from "../utils/Storage";
 
@@ -74,6 +75,7 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
     const { surveyTitle, sections, questions, expectedTimeInSec } =
         route.params;
 
+    const [testTitle, setTestTitle] = useState("Test");
     const [isCostModalVisible, setCostModalVisible] = useState(false);
     const [isGenreModalVisible, setGenreModalVisible] = useState(false);
     const [isGeoModalVisible, setIsGeoModalVisible] = useState(false);
@@ -216,8 +218,17 @@ const TargettingScreen: React.FC<TargettingScreenProps> = ({
         toggleGeoModal();
     };
 
+    const [confirmTapped, setConfirmTapped] = useState(false);
+
     return (
         <>
+            {/* <SurveyTitleModal
+                setSurveyTitle={setTestTitle}
+                surveyTitle={testTitle}
+                titleModalVisible={isCostModalVisible}
+                setTitleModalVisible={setCostModalVisible}
+                setConfirmTapped={setConfirmTapped}
+            /> */}
             <CostGuideModal
                 onClose={toggleCostGuideModal}
                 onConfirm={finalConfirmAction}

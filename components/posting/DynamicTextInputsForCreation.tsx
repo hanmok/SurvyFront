@@ -105,6 +105,7 @@ const DynamicTextInputsForCreation = ({
     };
 
     return (
+        //TODO: FlatList 로 만들기 ??
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
             <View style={styles.container}>
                 {inputValues.map((value, index) => (

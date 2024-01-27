@@ -15,7 +15,7 @@ import { fontSizes } from "../utils/sizes";
 import TextButton from "../components/TextButton";
 import { colors } from "../utils/colors";
 import { useEffect, useRef, useState } from "react";
-import { screenWidth } from "../utils/ScreenSize";
+import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { commonStyles } from "../utils/CommonStyles";
 import CostSelectionContainer from "../CostSelectionContainer";
 import * as accounting from "accounting";
@@ -46,19 +46,13 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
     setParticipationGoal,
     participationGoal,
 }) => {
-    const translateY = useRef(new Animated.Value(0)).current;
+    // const translateY = useRef(new Animated.Value(0)).current;
 
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
 
     const participationGoalRef = useRef(null);
-
-    // const handleFocus = () => {
-    //     if (participationGoalRef) {
-    //         participationGoalRef.current.;
-    //     }
-    // };
 
     useEffect(() => {
         if (isCostGuideModalVisible && participationGoalRef.current) {
@@ -82,53 +76,58 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
         }
     }, [price, isFree, isCostGuideModalVisible, participationGoal]);
 
-    useEffect(() => {
-        console.log("flaggg");
+    // useEffect(() => {
+    //     console.log("flaggg");
 
-        const keyboardDidShowListener = Keyboard.addListener(
-            Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
-            () => {
-                console.log(`keyboardDidShow called`);
+    // const keyboardDidShowListener = Keyboard.addListener(
+    //     Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
+    //     () => {
+    //         console.log(`keyboardDidShow called`);
 
-                Animated.timing(translateY, {
-                    toValue: -100,
-                    duration: 200,
-                    useNativeDriver: true,
-                }).start();
-            }
-        );
+    //         Animated.timing(translateY, {
+    //             toValue: -300,
+    //             duration: 200,
+    //             useNativeDriver: true,
+    //         }).start();
+    //     }
+    // );
 
-        const keyboardDidHideListener = Keyboard.addListener(
-            Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
-            () => {
-                // Animate modal content when the keyboard hides
-                Animated.timing(translateY, {
-                    toValue: 0,
-                    duration: 200,
-                    useNativeDriver: true,
-                }).start();
-            }
-        );
+    // const keyboardDidHideListener = Keyboard.addListener(
+    //     Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+    //     () => {
+    //         // Animate modal content when the keyboard hides
+    //         Animated.timing(translateY, {
+    //             toValue: 0,
+    //             duration: 200,
+    //             useNativeDriver: true,
+    //         }).start();
+    //     }
+    // );
 
-        return () => {
-            keyboardDidShowListener.remove();
-            keyboardDidHideListener.remove();
-        };
-    }, [translateY]);
+    //     return () => {
+    //         keyboardDidShowListener.remove();
+    //         keyboardDidHideListener.remove();
+    //     };
+    // }, [translateY]);
 
     return (
         <Modal transparent={true} visible={isCostGuideModalVisible}>
-            <TouchableWithoutFeedback onPress={dismissKeyboard}>
-                {/* <TouchableWithoutFeedback> */}
-                {/* <View> */}
-                {/* <KeyboardAvoidingView
+            {/* <TouchableWithoutFeedback onPress={dismissKeyboard}> */}
+            {/* <TouchableWithoutFeedback> */}
+            {/* <View> */}
+            {/* <KeyboardAvoidingView
                     style={{ flex: 1 }}
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                 > */}
-                {/* 이거 쓰면 화면이 안나와. 왜 ??  */}
-                {/* <Animated.View
+            {/* 이거 쓰면 화면이 안나옴. 왜 ??  */}
+            {/* <Animated.View
                     style={{ transform: [{ translateY: translateY }] }}
                 > */}
+            {/* <View style={styles.modalContainer}> */}
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
+            >
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         <Text style={styles.titleText}>설문 제출</Text>
@@ -193,18 +192,10 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                     </Text>
                                 </View>
                                 <View style={styles.rowContainer}>
-                                    <Text
-                                        style={{
-                                            fontSize: fontSizes.s16,
-                                        }}
-                                    >
+                                    <Text style={{ fontSize: fontSizes.s16 }}>
                                         가격
                                     </Text>
-                                    <Text
-                                        style={{
-                                            fontSize: fontSizes.s16,
-                                        }}
-                                    >
+                                    <Text style={{ fontSize: fontSizes.s16 }}>
                                         {price} 원
                                     </Text>
                                 </View>
@@ -229,9 +220,10 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                         />
                     </View>
                 </View>
+                {/* </View> */}
                 {/* </Animated.View> */}
-                {/* </KeyboardAvoidingView> */}
-            </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
+            {/* </TouchableWithoutFeedback> */}
             {/* </View> */}
         </Modal>
     );
@@ -239,13 +231,23 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
 export default CostGuideModal;
 
 const styles = StyleSheet.create({
+    // modalContainer: {
+    //     flex: 1,
+    //     backgroundColor: "rgba(0, 0, 0, 0.85)",
+    //     borderWidth: 1,
+    //     borderColor: colors.black,
+    //     borderRadius: 20,
+    //     overflow: "hidden",
+    // },
     modalContainer: {
-        flex: 1,
+        width: screenWidth,
+        height: screenHeight,
         backgroundColor: "rgba(0, 0, 0, 0.85)",
         borderWidth: 1,
         borderColor: colors.black,
         borderRadius: 20,
         overflow: "hidden",
+        justifyContent: "center",
     },
     modalContent: {
         flexGrow: 1,

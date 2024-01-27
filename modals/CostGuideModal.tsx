@@ -76,39 +76,41 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
         }
     }, [price, isFree, isCostGuideModalVisible, participationGoal]);
 
-    // useEffect(() => {
-    //     console.log("flaggg");
+    const translateY = useRef(new Animated.Value(0)).current;
 
-    // const keyboardDidShowListener = Keyboard.addListener(
-    //     Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
-    //     () => {
-    //         console.log(`keyboardDidShow called`);
+    useEffect(() => {
+        console.log("flaggg");
 
-    //         Animated.timing(translateY, {
-    //             toValue: -300,
-    //             duration: 200,
-    //             useNativeDriver: true,
-    //         }).start();
-    //     }
-    // );
+        const keyboardDidShowListener = Keyboard.addListener(
+            Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
+            () => {
+                console.log(`keyboardDidShow called`);
 
-    // const keyboardDidHideListener = Keyboard.addListener(
-    //     Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
-    //     () => {
-    //         // Animate modal content when the keyboard hides
-    //         Animated.timing(translateY, {
-    //             toValue: 0,
-    //             duration: 200,
-    //             useNativeDriver: true,
-    //         }).start();
-    //     }
-    // );
+                Animated.timing(translateY, {
+                    toValue: -150,
+                    duration: 200,
+                    useNativeDriver: true,
+                }).start();
+            }
+        );
 
-    //     return () => {
-    //         keyboardDidShowListener.remove();
-    //         keyboardDidHideListener.remove();
-    //     };
-    // }, [translateY]);
+        const keyboardDidHideListener = Keyboard.addListener(
+            Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+            () => {
+                // Animate modal content when the keyboard hides
+                Animated.timing(translateY, {
+                    toValue: 0,
+                    duration: 200,
+                    useNativeDriver: true,
+                }).start();
+            }
+        );
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, [translateY]);
 
     return (
         <Modal transparent={true} visible={isCostGuideModalVisible}>
@@ -124,104 +126,115 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                     style={{ transform: [{ translateY: translateY }] }}
                 > */}
             {/* <View style={styles.modalContainer}> */}
+
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.titleText}>설문 제출</Text>
+                <Animated.View
+                    style={{ transform: [{ translateY: translateY }] }}
+                >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalContent}>
+                            <Text style={styles.titleText}>설문 제출</Text>
 
-                        <View style={{ height: 200, width: 300 }}>
-                            <View style={styles.mainContent}>
-                                <View style={styles.rowContainer}>
-                                    <Text
-                                        style={{
-                                            fontSize: fontSizes.s16,
-                                        }}
-                                    >
-                                        설문 인원
-                                    </Text>
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <TextInput
-                                            // ref={participationGoalRef}
-                                            value={participationGoal}
-                                            onChangeText={setParticipationGoal}
-                                            keyboardType="number-pad"
-                                            placeholder="10"
-                                            // ref={participationGoalRef}
-                                            // selectTextOnFocus={true}
-                                            // clearTextOnFocus={true}
-                                            // selectTextOnFocus={true}
-                                            // onFocus={handleFocus}
-                                            style={
-                                                styles.participationGoalTextInput
-                                            }
-                                        />
+                            <View style={{ height: 200, width: 300 }}>
+                                <View style={styles.mainContent}>
+                                    <View style={styles.rowContainer}>
+                                        <Text
+                                            style={{
+                                                fontSize: fontSizes.s16,
+                                            }}
+                                        >
+                                            설문 인원
+                                        </Text>
+                                        <View
+                                            style={{
+                                                flexDirection: "row",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <TextInput
+                                                // ref={participationGoalRef}
+                                                value={participationGoal}
+                                                onChangeText={
+                                                    setParticipationGoal
+                                                }
+                                                keyboardType="number-pad"
+                                                placeholder="10"
+                                                // ref={participationGoalRef}
+                                                selectTextOnFocus={true} // for android
+                                                clearTextOnFocus={true} // for ios
+                                                // selectTextOnFocus={true}
+                                                // onFocus={handleFocus}
+                                                style={
+                                                    styles.participationGoalTextInput
+                                                }
+                                            />
+                                            <Text
+                                                style={{
+                                                    fontSize: fontSizes.s16,
+                                                }}
+                                            >
+                                                {" "}
+                                                명
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.rowContainer}>
+                                        <Text
+                                            style={{
+                                                fontSize: fontSizes.s16,
+                                            }}
+                                        >
+                                            예상 소요 시간
+                                        </Text>
                                         <Text
                                             style={{
                                                 fontSize: fontSizes.s16,
                                             }}
                                         >
                                             {" "}
-                                            명
+                                            {expectedTimeInMin} 분
                                         </Text>
                                     </View>
-                                </View>
-
-                                <View style={styles.rowContainer}>
-                                    <Text
-                                        style={{
-                                            fontSize: fontSizes.s16,
-                                        }}
+                                    <View style={styles.rowContainer}>
+                                        <Text
+                                            style={{ fontSize: fontSizes.s16 }}
+                                        >
+                                            가격
+                                        </Text>
+                                        <Text
+                                            style={{ fontSize: fontSizes.s16 }}
+                                        >
+                                            {price} 원
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={[
+                                            {
+                                                alignItems: "center",
+                                                flexDirection: "column",
+                                            },
+                                        ]}
                                     >
-                                        예상 소요 시간
-                                    </Text>
-                                    <Text
-                                        style={{
-                                            fontSize: fontSizes.s16,
-                                        }}
-                                    >
-                                        {" "}
-                                        {expectedTimeInMin} 분
-                                    </Text>
-                                </View>
-                                <View style={styles.rowContainer}>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
-                                        가격
-                                    </Text>
-                                    <Text style={{ fontSize: fontSizes.s16 }}>
-                                        {price} 원
-                                    </Text>
-                                </View>
-                                <View
-                                    style={[
-                                        {
-                                            alignItems: "center",
-                                            flexDirection: "column",
-                                        },
-                                    ]}
-                                >
-                                    <CostSelectionContainer
-                                        initialIndex={isFree ? 0 : 1}
-                                        toggleFreeState={setIsFree}
-                                    />
+                                        <CostSelectionContainer
+                                            initialIndex={isFree ? 0 : 1}
+                                            toggleFreeState={setIsFree}
+                                        />
+                                    </View>
                                 </View>
                             </View>
+                            <BottomButtonContainer
+                                leftAction={onClose}
+                                rightAction={onConfirm}
+                            />
                         </View>
-                        <BottomButtonContainer
-                            leftAction={onClose}
-                            rightAction={onConfirm}
-                        />
                     </View>
-                </View>
-                {/* </View> */}
-                {/* </Animated.View> */}
+                    {/* </View> */}
+                    {/* </Animated.View> */}
+                </Animated.View>
             </KeyboardAvoidingView>
             {/* </TouchableWithoutFeedback> */}
             {/* </View> */}

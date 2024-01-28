@@ -132,6 +132,7 @@ export default function SignUpScreen({
     useEffect(() => {
         const ret =
             usernameConfirmed &&
+            passwordInput1.length >= 8 &&
             passwordInput1 === passwordInput2 &&
             phoneConfirmed &&
             birthDateValidated &&
@@ -146,6 +147,7 @@ export default function SignUpScreen({
         birthDateValidated,
         genderIndex,
     ]);
+    //
 
     useEffect(() => {
         // A 0109

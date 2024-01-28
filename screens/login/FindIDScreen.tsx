@@ -62,7 +62,7 @@ export default function FindIDScreen({
         updateLoadingStatus(false);
     };
 
-    const handlePhoneDuplicate = async (phone: string) => {
+    const sendSMSForId = async (phone: string) => {
         if (isValidPhone(phone)) {
             updateLoadingStatus(true);
 
@@ -143,7 +143,7 @@ export default function FindIDScreen({
                     title={phoneSendingAuthButtonText}
                     onPress={() => {
                         setPhoneSendingCodeButtonTapped(true);
-                        handlePhoneDuplicate(phoneInput);
+                        sendSMSForId(phoneInput);
                     }}
                     backgroundStyle={[
                         styles.authButtonBackground,

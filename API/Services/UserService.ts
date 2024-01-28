@@ -106,7 +106,7 @@ export class UserService extends BaseApi {
 
         return this.fetchData<any>(url, "GET");
     }
-
+    /** 400 if exist */
     async checkPhoneDuplicate(phone: string) {
         let url = `${API_BASE_URL}/user/check-phone`;
 
@@ -176,6 +176,20 @@ export class UserService extends BaseApi {
 
     async verifyAuthCodeForId(phoneNumber: string, code: string) {
         const url = `${API_BASE_URL}/user/find-id/verify-sms`;
+        const data = { phoneNumber, code };
+        const body = _.mapKeys(data, (value, key) => _.snakeCase(key));
+        return this.fetchData<string>(url, "POST", body);
+    }
+
+    async sendSMSAuthCodeForSignup(phoneNumber: string) {
+        const url = `${API_BASE_URL}/user/signup/send-sms`;
+        const data = { phoneNumber };
+        const body = _.mapKeys(data, (value, key) => _.snakeCase(key));
+        return this.fetchData(url, "POST", body);
+    }
+
+    async verifyAuthCodeForSignup(phoneNumber: string, code: string) {
+        const url = `${API_BASE_URL}/user/signup/verify-sms`;
         const data = { phoneNumber, code };
         const body = _.mapKeys(data, (value, key) => _.snakeCase(key));
         return this.fetchData<string>(url, "POST", body);

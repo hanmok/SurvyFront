@@ -44,7 +44,8 @@ export default function SignUpScreen({
     const [birthDateValidated, setBirthDateValidated] = useState(false);
     const [genderIndex, setGenderIndex] = useState<number>(null);
     const [satisfied, setSatisfied] = useState(false);
-
+    const [authInput, setAuthInput] = useState("");
+    const [authConfirmed, setAuthConfirmed] = useState(false);
     const { updateLoadingStatus } = useCustomContext();
 
     const handleUserDuplicate = async () => {
@@ -136,8 +137,8 @@ export default function SignUpScreen({
             passwordInput1 === passwordInput2 &&
             phoneConfirmed &&
             birthDateValidated &&
-            genderIndex !== null;
-
+            genderIndex !== null &&
+            authConfirmed;
         setSatisfied(ret);
     }, [
         usernameConfirmed,
@@ -146,8 +147,21 @@ export default function SignUpScreen({
         phoneConfirmed,
         birthDateValidated,
         genderIndex,
+        authConfirmed,
     ]);
-    //
+    const [phoneSendingAuthButtonText, setPhoneSendingAuthButtonText] =
+        useState("인증번호 받기");
+    const [authSatisfied, setAuthSatisfied] = useState(false);
+    const [phoneSendingCodeButtonTapped, setPhoneSendingCodeButtonTapped] =
+        useState(false);
+
+    useEffect(() => {
+        if (phoneSendingCodeButtonTapped) {
+            setPhoneSendingAuthButtonText("재발송");
+        } else {
+            setPhoneSendingAuthButtonText("인증번호 받기");
+        }
+    }, [phoneSendingCodeButtonTapped]);
 
     useEffect(() => {
         // A 0109
@@ -212,7 +226,7 @@ export default function SignUpScreen({
                 birthDate.slice(newDashIndex);
             setBirthDate(modified);
             // D 010-9041- , 1992 07
-        } else if (birthDate.length === 8 && birthDate.lastIndexOf("-") === 7) {
+        } else if (birthDate.length === 8 && birthDate.lastIndexOf(" ") === 7) {
             const modified = birthDate.slice(0, 7);
             setBirthDate(modified);
             // E 1992 07 21
@@ -221,6 +235,41 @@ export default function SignUpScreen({
         }
     }, [birthDate]);
 
+    const handleVerifyingSMSAuth = async (phone: string, code: string) => {
+        updateLoadingStatus(true);
+        const ret = await userService.verifyAuthCodeForSignup(phone, code);
+        if (ret.statusCode >= 200 && ret.statusCode < 300) {
+            showToast("success", "인증에 성공하였습니다.");
+            setAuthConfirmed(true);
+        } else {
+            showToast("error", "인증번호를 다시 확인해주세요.");
+        }
+        updateLoadingStatus(false);
+    };
+
+    const sendSMSForSignup = async (phone: string) => {
+        if (isValidPhone(phone)) {
+            setPhoneSendingCodeButtonTapped(true);
+            updateLoadingStatus(true);
+            setPhoneConfirmed(true);
+            try {
+                const ret = await userService.checkPhoneDuplicate(phone);
+                if (ret.statusCode === 200) {
+                    // 사용 가능한 번호
+                    showToast("success", "인증번호가 전송되었습니다.");
+                    await userService.sendSMSAuthCodeForSignup(phone);
+                }
+            } catch (error) {
+                throw new Error(error);
+            } finally {
+                updateLoadingStatus(false);
+            }
+        }
+    };
+
+    useEffect(() => {
+        setAuthSatisfied(authInput.length === 6);
+    }, [authInput]);
     return (
         <ScrollView
             style={styles.overall}
@@ -321,16 +370,10 @@ export default function SignUpScreen({
                                 autoCorrect={false}
                             />
                         </View>
-                        {/* 인증하는건 어디 갖다 팔아먹음? */}
-                        {/*  */}
                         <TextButton
-                            title="인증번호 받기"
+                            title={phoneSendingAuthButtonText}
                             onPress={() => {
-                                handlePhoneDuplicate(phoneInput);
-                                setPhoneConfirmed(true);
-                                // await userService.sendSMSAuthCodeForId(
-                                //     phoneInput
-                                // );
+                                sendSMSForSignup(phoneInput);
                             }}
                             backgroundStyle={[
                                 {
@@ -345,6 +388,46 @@ export default function SignUpScreen({
                             hasShadow={false}
                             textStyle={{
                                 color: phoneSatisfied
+                                    ? colors.white
+                                    : colors.gray2,
+                            }}
+                        />
+                    </View>
+                    {/* 인증번호 확인 */}
+                    <View
+                        style={[styles.horizontalContainer, { marginTop: 6 }]}
+                    >
+                        <View // Text Input Box
+                            style={[styles.textInputBox, { flex: 0.65 }]}
+                        >
+                            <TextInput
+                                placeholder="인증번호를 입력해주세요"
+                                style={[styles.guideText, { paddingLeft: 8 }]}
+                                value={authInput}
+                                onChangeText={setAuthInput}
+                                keyboardType="phone-pad"
+                                autoComplete="off"
+                                autoCorrect={false}
+                            />
+                        </View>
+                        <TextButton
+                            title="확인"
+                            onPress={() => {
+                                handleVerifyingSMSAuth(phoneInput, authInput);
+                            }}
+                            backgroundStyle={[
+                                {
+                                    alignSelf: "stretch",
+                                    borderRadius: 6,
+                                    flex: 0.3,
+                                },
+                                authSatisfied
+                                    ? styles.activatedBackground
+                                    : styles.inactivatedBorder,
+                            ]}
+                            hasShadow={false}
+                            textStyle={{
+                                color: authSatisfied
                                     ? colors.white
                                     : colors.gray2,
                             }}
@@ -387,7 +470,7 @@ export default function SignUpScreen({
                 </View>
             </View>
 
-            <Spacer size={80} />
+            {/* <Spacer size={80} /> */}
 
             <TextButton
                 title="가입하기"

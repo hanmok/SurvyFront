@@ -217,7 +217,7 @@ export default function SignUpScreen({
             const modified = birthDate.slice(0, 4);
             setBirthDate(modified);
             // C 010-9041 , 1992 07
-        } else if (birthDate.length === 8 && birthDate.lastIndexOf(" ") === 4) {
+        } else if (birthDate.length >= 8 && birthDate.lastIndexOf(" ") === 4) {
             console.log("case C");
             const newDashIndex = 7;
             const modified =

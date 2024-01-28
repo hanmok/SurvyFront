@@ -6,6 +6,8 @@ export function isValidEmail(email: string) {
     return emailRegex.test(email);
 }
 
-export function isValidPhone(phone: string) {
-    return phone.length === 13;
+export function isValidPhone(phoneNumber: string) {
+    // 010-9041-7421
+    const phoneNumberPattern = /^\d{3}-\d{4}-\d{4}$/;
+    return phoneNumberPattern.test(phoneNumber);
 }

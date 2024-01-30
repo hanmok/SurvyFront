@@ -24,6 +24,7 @@ import { colors } from "../utils/colors";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import DefaultSwitch from "../components/DefaultSwitch";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface CreatingQuestionModalProps {
     isCreatingQuestionModalVisible: boolean;
@@ -40,7 +41,7 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
 }) => {
     const [questionTitle, setQuestionTitle] = useState("");
     const [isExtraOptionEnabled, setIsExtraOptionEnabled] = useState(false);
-    const [dynamicInputValues, setDynamicInputValues] = useState([""]);
+    const [dynamicInputValues, setDynamicInputValues] = useState<string[]>([]);
     const [questionTypeId, SetQuestionTypeId] =
         useState<QuestionTypeId>(undefined);
     const [satisfied, setSatisfied] = useState<boolean>(false);
@@ -133,7 +134,8 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
     }, [questionTypeId, questionTitle, dynamicInputValues]);
 
     useEffect(() => {
-        setDynamicInputValues([""]);
+        // setDynamicInputValues([""]);
+        setDynamicInputValues([]);
         setQuestionTitle("");
         setPlaceHolder("답변을 입력해주세요");
         SetQuestionTypeId(undefined);
@@ -143,7 +145,20 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
         Keyboard.dismiss();
     };
 
-    // 어떻게 해야하지? ->
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
+
+    useEffect(() => {
+        setIsFocused(false);
+    }, []);
+
     return (
         <Modal
             animationType="slide"
@@ -153,107 +168,151 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
             hardwareAccelerated={true}
         >
             <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
-                {/* <View style={styles.modalContainer}> */}
                 <SafeAreaView style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        {/* <KeyboardAvoidingView style={styles.modalContent}> */}
+                    <ScrollView
+                        style={styles.scrollView}
+                        contentContainerStyle={styles.scrollViewContent}
+                    >
                         <View>
                             <TextInput
-                                placeholder="질문을 입력해주세요"
+                                placeholder={
+                                    isFocused ? "" : "질문을 입력해주세요"
+                                }
                                 style={styles.questionTextStyle}
                                 value={questionTitle}
                                 onChangeText={setQuestionTitle}
                                 autoComplete="off"
                                 autoCorrect={false}
                                 multiline={true}
-                                // numberOfLines={2}
+                                clearTextOnFocus={true}
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
                             />
                             <View style={{ height: 16 }} />
                             <QuestionTypeSelectionBoxContainer
                                 handleSelect={SetQuestionTypeId}
                             />
-                        </View>
-                        <View
-                            style={{ justifyContent: "space-between", flex: 1 }}
-                        >
-                            {/* 서술형 질문 */}
-                            {questionTypeId === QuestionTypeId.Essay ? (
-                                <View
-                                    style={{
-                                        width: screenWidth - 80,
-                                        marginTop: 60,
-                                        marginLeft: 20,
-                                    }}
-                                >
-                                    <TextInput
-                                        style={{
-                                            fontSize: fontSizes.m20,
-                                            color: colors.gray3,
-                                        }}
-                                        onChangeText={setPlaceHolder}
-                                        placeholder={placeHolder}
-                                        autoComplete="off"
-                                    />
+
+                            <View>
+                                {/* 서술형 질문 */}
+                                {questionTypeId === QuestionTypeId.Essay ? (
                                     <View
                                         style={{
-                                            backgroundColor: colors.gray2,
-                                            height: 1,
-                                            marginTop: 5,
+                                            width: screenWidth - 80,
+                                            marginTop: 60,
+                                            marginLeft: 20,
                                         }}
-                                    />
-                                </View>
-                            ) : (
-                                // 단일 선택, 다중 선택 질문
-                                <DynamicTextInputsForCreation
-                                    dynamicInputValues={dynamicInputValues}
-                                    setDynamicInputValues={
-                                        setDynamicInputValues
-                                    }
-                                    keys={dynamicInputValues.map((_, index) =>
-                                        index.toString()
-                                    )}
-                                    isExtraOptionEnabled={isExtraOptionEnabled}
-                                />
-                            )}
-
-                            {/* Extra Option Switch  */}
-                            <View
-                                style={{
-                                    marginHorizontal: 30,
-                                    // marginBottom: 10,
-                                }}
-                            >
-                                {questionTypeId === QuestionTypeId.Essay ? (
-                                    <View />
-                                ) : (
-                                    <View style={styles.extraOptionContainer}>
-                                        <Text
-                                            style={{ fontSize: fontSizes.m20 }}
-                                        >
-                                            기타 옵션 추가
-                                        </Text>
-                                        <DefaultSwitch
-                                            onValueChange={
-                                                toggleExtraOptionSwitch
+                                    >
+                                        <TextInput
+                                            style={{
+                                                fontSize: fontSizes.m20,
+                                                color: colors.gray3,
+                                            }}
+                                            onChangeText={setPlaceHolder}
+                                            placeholder={placeHolder}
+                                            autoComplete="off"
+                                        />
+                                        <View
+                                            style={{
+                                                backgroundColor: colors.gray2,
+                                                height: 1,
+                                                marginTop: 5,
+                                            }}
+                                        />
+                                    </View>
+                                ) : [
+                                      QuestionTypeId.SingleSelection,
+                                      QuestionTypeId.MultipleSelection,
+                                  ].includes(questionTypeId) ? (
+                                    // 단일 선택, 다중 선택 질문
+                                    <View>
+                                        {/* {dynamicInputValues.length !== 0 && ( */}
+                                        <DynamicTextInputsForCreation
+                                            dynamicInputValues={
+                                                dynamicInputValues
                                             }
-                                            value={isExtraOptionEnabled}
+                                            setDynamicInputValues={
+                                                setDynamicInputValues
+                                            }
+                                            // keys={dynamicInputValues.map(
+                                            //     (_, index) =>
+                                            //         index.toString()
+                                            // )}
+                                            keys={() => {
+                                                dynamicInputValues.length !== 0
+                                                    ? dynamicInputValues.map(
+                                                          (_, index) =>
+                                                              index.toString()
+                                                      )
+                                                    : "empty-key";
+                                            }}
+                                            isExtraOptionEnabled={
+                                                isExtraOptionEnabled
+                                            }
+                                        />
+                                        {/* )} */}
+                                    </View>
+                                ) : (
+                                    <View />
+                                )}
+                            </View>
+                        </View>
+                        {/* Extra Option Switch & Bottom */}
+                        <View>
+                            <View style={{ flex: 1 }}>
+                                {questionTypeId === QuestionTypeId.Essay ? (
+                                    <View>
+                                        <BottomButtonContainer
+                                            leftTitle="닫기"
+                                            leftAction={handleModalClose}
+                                            rightAction={handleConfirm}
+                                            satisfied={satisfied}
+                                        />
+                                    </View>
+                                ) : [
+                                      QuestionTypeId.SingleSelection,
+                                      QuestionTypeId.MultipleSelection,
+                                  ].includes(questionTypeId) ? (
+                                    <View>
+                                        <View
+                                            style={styles.extraOptionContainer}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontSize: fontSizes.m20,
+                                                }}
+                                            >
+                                                기타 옵션 추가
+                                            </Text>
+                                            <DefaultSwitch
+                                                onValueChange={
+                                                    toggleExtraOptionSwitch
+                                                }
+                                                value={isExtraOptionEnabled}
+                                            />
+                                        </View>
+                                        <View>
+                                            <BottomButtonContainer
+                                                leftTitle="닫기"
+                                                leftAction={handleModalClose}
+                                                rightAction={handleConfirm}
+                                                satisfied={satisfied}
+                                            />
+                                        </View>
+                                    </View>
+                                ) : (
+                                    <View>
+                                        <BottomButtonContainer
+                                            leftTitle="닫기"
+                                            leftAction={handleModalClose}
+                                            rightAction={handleConfirm}
+                                            satisfied={satisfied}
                                         />
                                     </View>
                                 )}
-
-                                <View style={{ height: 20 }} />
                             </View>
                         </View>
-
-                        <BottomButtonContainer
-                            leftTitle="닫기"
-                            leftAction={handleModalClose}
-                            rightAction={handleConfirm}
-                            satisfied={satisfied}
-                        />
-                    </View>
-                    {/* </KeyboardAvoidingView> */}
-                    {/* </View> */}
+                    </ScrollView>
                 </SafeAreaView>
             </TouchableWithoutFeedback>
         </Modal>
@@ -273,20 +332,24 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         flexGrow: 1,
-        // marginVertical: 60, // 전체 화면 관리
-        // marginTop: 60,
         marginTop: 20,
-        // marginBottom: 20,
         minHeight: screenHeight * 0.9,
         maxHeight: screenHeight * 0.9,
-        // height: screenHeight * 0.85,
-        // height: screenHeight * 0.8,
-        // marginBottom: 60,
         marginHorizontal: 20,
         backgroundColor: colors.background,
-        // backgroundColor: colors.magenta,
         borderRadius: 10,
         justifyContent: "space-between",
+    },
+    scrollView: {
+        marginHorizontal: 12,
+        marginVertical: 20,
+        borderRadius: 12,
+        backgroundColor: colors.background,
+        flex: 1,
+    },
+    scrollViewContent: {
+        justifyContent: "space-between",
+        flexGrow: 1,
     },
     bottomLeftButtonTextContainer: {
         flexGrow: 1,
@@ -325,6 +388,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        marginHorizontal: 30,
     },
 });
 

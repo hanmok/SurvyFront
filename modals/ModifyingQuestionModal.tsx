@@ -38,12 +38,17 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
 }) => {
     const [questionTitle, setQuestionTitle] = useState("");
     const [isExtraOptionEnabled, setIsExtraOptionEnabled] = useState(false);
-    const [dynamicInputValues, setDynamicInputValues] = useState([""]);
+    // const [dynamicInputValues, setDynamicInputValues] = useState([""]);
+    const [dynamicInputValues, setDynamicInputValues] = useState<string[]>([]);
     const [questionTypeId, setQuestionTypeId] =
         useState<QuestionTypeId>(undefined);
     const [satisfied, setSatisfied] = useState<boolean>(false);
-    const [placeHolder, setPlaceHolder] = useState<string>("placeholder");
-    const [removingTexts, setRemovingText] = useState<boolean>(false);
+    // const [placeHolder, setPlaceHolder] = useState<string>("placeholder");
+    const [placeHolder, setPlaceHolder] = useState<string>("");
+    /** 반드시 필요??  */
+    const [isModifyingModalVisible, setDynamicTextVisible] =
+        useState<boolean>(false);
+    /** 이름 수정 필요 */
     const [secondTexts, setSecondTexts] = useState([""]);
 
     const handleDismissKeyboard = () => {
@@ -55,7 +60,7 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
     };
 
     const handleModalClose = () => {
-        setRemovingText(true);
+        setDynamicTextVisible(true);
         console.log(`dynamicInputValues: ${dynamicInputValues}`);
         onClose();
         setIsExtraOptionEnabled(false);
@@ -152,7 +157,16 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                 <DynamicTextInputsForModification
                                     parentInputValues={dynamicInputValues}
                                     setParentInputValues={setDynamicInputValues}
-                                    isModifyingModalVisible={removingTexts}
+                                    isModifyingModalVisible={
+                                        isModifyingModalVisible
+                                    }
+                                    keys={() => {
+                                        dynamicInputValues.length !== 0
+                                            ? dynamicInputValues.map(
+                                                  (_, index) => index.toString()
+                                              )
+                                            : "empty-key";
+                                    }}
                                     setSecondTexts={setSecondTexts}
                                     isExtraOptionEnabled={isExtraOptionEnabled}
                                 />
@@ -208,19 +222,9 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
 
                             <TouchableOpacity
                                 onPress={() => {
-                                    setRemovingText(true);
-                                    log(
-                                        `dynamic input values: ${dynamicInputValues}`
-                                    );
+                                    // setDynamicTextVisible(true);
                                     let selectableOptions: SelectableOption[] =
                                         [];
-
-                                    log(
-                                        `question made: ${JSON.stringify(
-                                            selectedQuestion
-                                        )}`
-                                    );
-
                                     if (
                                         questionTypeId === QuestionTypeId.Essay
                                     ) {
@@ -247,7 +251,6 @@ const ModifyingQuestionModal: React.FC<ModifyingQuestionModalProps> = ({
                                                             ? 1
                                                             : 0
                                                     ).build();
-
                                                 selectableOptions.push(
                                                     selectableOption
                                                 );

@@ -1,18 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+    View,
+    Text,
+    TextInput,
+    Button,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    Keyboard,
+} from "react-native";
 import TextButton from "../TextButton";
 import { fontSizes } from "../../utils/sizes";
 import ImageButton from "../ImageButton";
 import { log, logObject } from "../../utils/Log";
 import { colors } from "../../utils/colors";
+
 const DynamicTextInputsForModification = ({
     parentInputValues,
     setParentInputValues,
     isModifyingModalVisible,
     setSecondTexts,
     isExtraOptionEnabled,
+    keys,
+}: {
+    parentInputValues: string[];
+    setParentInputValues: React.Dispatch<React.SetStateAction<string[]>>;
+    isModifyingModalVisible: boolean;
+    setSecondTexts: React.Dispatch<React.SetStateAction<string[]>>;
+    isExtraOptionEnabled: boolean;
+    keys: any;
 }) => {
     const [inputValues, setInputValues] = useState([""]);
+    const inputRefs = useRef([]);
+
+    const dismissKeyboard = () => {
+        Keyboard.dismiss();
+    };
+
+    useEffect(() => {
+        console.log(
+            `input values.length: ${inputValues.length}, inputRefs: ${inputRefs.current.length}`
+        );
+        const lastInputRef = inputRefs.current[inputRefs.current.length - 1];
+        if (lastInputRef && lastInputRef.current) {
+            console.log(`focused idx: ${inputRefs.current.length - 1}`);
+            lastInputRef.current.focus();
+        }
+    }, [inputValues.length]);
 
     useEffect(() => {
         setParentInputValues(inputValues);
@@ -24,6 +57,9 @@ const DynamicTextInputsForModification = ({
 
     useEffect(() => {
         setInputValues(parentInputValues);
+        while (inputRefs.current.length < parentInputValues.length) {
+            inputRefs.current.push(React.createRef());
+        }
     }, [parentInputValues]);
 
     useEffect(() => {
@@ -34,7 +70,9 @@ const DynamicTextInputsForModification = ({
     }, []);
 
     const handleAddInput = () => {
-        setInputValues([...inputValues, ""]); // 새로운 빈 문자열을 배열에 추가
+        console.log("add input called");
+        setInputValues([...inputValues, ""]);
+        inputRefs.current.push(React.createRef());
     };
 
     const handleInputChange = (text, index) => {
@@ -51,42 +89,51 @@ const DynamicTextInputsForModification = ({
     };
 
     return (
-        <View style={styles.container}>
-            {inputValues.map((value, index) => (
-                <View key={index} style={styles.inputContainer}>
-                    <TextInput
-                        placeholder={`옵션 ${index + 1}`}
-                        style={styles.input}
-                        value={value}
-                        onChangeText={text => handleInputChange(text, index)}
-                        autoComplete="off"
-                        autoCorrect={false}
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+            <View style={styles.container}>
+                {inputValues.map((value, index) => (
+                    // Inputs
+                    <View key={index} style={styles.inputContainer}>
+                        <TextInput
+                            key={keys[index]}
+                            ref={inputRefs.current[index]}
+                            placeholder={`옵션 ${index + 1}`}
+                            style={styles.input}
+                            value={value}
+                            onChangeText={text =>
+                                handleInputChange(text, index)
+                            }
+                            autoComplete="off"
+                            autoCorrect={false}
+                            onSubmitEditing={handleAddInput}
+                        />
+                        <ImageButton
+                            img={require("../../assets/minusIcon.png")}
+                            onPress={() => handleRemoveInput(index)}
+                            backgroundStyle={{ marginLeft: 10 }}
+                        />
+                    </View>
+                ))}
+                {/* Extra Option */}
+                {isExtraOptionEnabled && (
+                    <TextButton
+                        title="기타"
+                        onPress={() => {}}
+                        backgroundStyle={styles.extraBtnBG}
+                        hasShadow={false}
+                        textStyle={styles.extraBtnText}
+                        isEnabled={false}
                     />
-                    <ImageButton
-                        img={require("../../assets/minusIcon.png")}
-                        onPress={() => handleRemoveInput(index)}
-                        backgroundStyle={{ marginLeft: 10 }}
-                    />
-                </View>
-            ))}
-            {isExtraOptionEnabled && (
+                )}
+                {/* Add Input Button  */}
                 <TextButton
-                    title="기타"
-                    onPress={() => {}}
-                    backgroundStyle={styles.extraBtnBG}
-                    hasShadow={false}
-                    textStyle={styles.extraBtnText}
-                    isEnabled={false}
+                    title="Add Input"
+                    backgroundStyle={styles.addInputBG}
+                    textStyle={styles.addInputText}
+                    onPress={handleAddInput}
                 />
-            )}
-            <TextButton
-                title="Add Input"
-                backgroundStyle={styles.addInputBG}
-                textStyle={styles.addInputText}
-                onPress={handleAddInput}
-                isEnabled={false}
-            />
-        </View>
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -94,6 +141,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+        // backgroundColor: "magenta",
     },
     inputContainer: {
         flexDirection: "row",
@@ -128,6 +176,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         height: 30,
         backgroundColor: colors.white,
+        // backgroundColor: colors.magenta,
     },
     addInputText: {
         color: colors.buttonText,

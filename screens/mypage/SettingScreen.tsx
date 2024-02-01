@@ -39,18 +39,6 @@ function SettingScreen({
                 <View style={styles.upperContainer}>
                     <BlockView
                         onPress={() => {
-                            console.log("이용약관 tapped");
-                        }}
-                    >
-                        <Text
-                            style={[styles.eachBoxTextStyle, { padding: 20 }]}
-                        >
-                            이용약관
-                        </Text>
-                    </BlockView>
-
-                    <BlockView
-                        onPress={() => {
                             navigation.navigate(
                                 NavigationTitle.settingPassword,
                                 { username, shouldPopAll: false }
@@ -77,6 +65,38 @@ function SettingScreen({
                             로그아웃
                         </Text>
                     </BlockView>
+
+                    <View
+                        style={{
+                            height: 2,
+                            backgroundColor: colors.gray4,
+                        }}
+                    ></View>
+                    <BlockView
+                        onPress={() => {
+                            navigation.navigate(
+                                NavigationTitle.termsAndCondition
+                            );
+                        }}
+                    >
+                        <Text
+                            style={[styles.eachBoxTextStyle, { padding: 20 }]}
+                        >
+                            이용약관
+                        </Text>
+                    </BlockView>
+
+                    <BlockView
+                        onPress={() => {
+                            navigation.navigate(NavigationTitle.privacyPolicy);
+                        }}
+                    >
+                        <Text
+                            style={[styles.eachBoxTextStyle, { padding: 20 }]}
+                        >
+                            개인정보 처리 방침
+                        </Text>
+                    </BlockView>
                 </View>
 
                 <View style={{ height: 500 }}></View>
@@ -86,6 +106,7 @@ function SettingScreen({
                         onPress={() => {
                             setResignTapped(true);
                         }}
+                        hasShadow={false}
                         textStyle={{ color: colors.gray3 }}
                     />
                     <View style={styles.bottomLine} />

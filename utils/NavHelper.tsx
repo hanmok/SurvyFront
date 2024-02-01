@@ -32,6 +32,8 @@ export type RootStackParamList = {
     Response: { surveyId: number };
     MyGenre: undefined;
     PointHistory: undefined;
+    TermsAndCondition: undefined;
+    PrivacyPolicy: undefined;
 };
 
 export enum NavigationTitle {
@@ -65,4 +67,6 @@ export enum NavigationTitle {
     response = "Response",
     myGenre = "MyGenre",
     pointHistory = "PointHistory",
+    termsAndCondition = "TermsAndCondition",
+    privacyPolicy = "PrivacyPolicy",
 }

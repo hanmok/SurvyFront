@@ -33,6 +33,8 @@ import toastConfig from "./components/common/toast/ToastConfig";
 import PointHistoryScreen from "./screens/mypage/PointHistoryScreen";
 import MyinfoScreen from "./screens/mypage/MyinfoScreen";
 import { screenHeight } from "./utils/ScreenSize";
+import TermsAndConditionScreen from "./screens/mypage/TermsAndConditionScreen";
+import PrivacyPolicyScreen from "./screens/mypage/PrivacyPolicyScreen";
 
 const App: React.FC = () => {
     return (
@@ -254,6 +256,28 @@ const App: React.FC = () => {
                                     options={{
                                         headerShown: false,
                                     }}
+                                />
+                                <Stack.Screen
+                                    name={NavigationTitle.termsAndCondition}
+                                    component={TermsAndConditionScreen}
+                                    options={({ route }) => ({
+                                        headerTitle: "이용 약관",
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.white,
+                                        },
+                                    })}
+                                />
+                                <Stack.Screen
+                                    name={NavigationTitle.privacyPolicy}
+                                    component={PrivacyPolicyScreen}
+                                    options={({ route }) => ({
+                                        headerTitle: "개인정보 처리 방침",
+                                        headerBackTitleVisible: false,
+                                        headerStyle: {
+                                            backgroundColor: colors.white,
+                                        },
+                                    })}
                                 />
                             </Stack.Navigator>
                         </NavigationContainer>

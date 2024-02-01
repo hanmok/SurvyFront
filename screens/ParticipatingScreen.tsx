@@ -147,8 +147,8 @@ function ParticipatingScreen({
 
         showToast(
             "success",
-            "설문에 참여해주셔서 감사합니다",
-            "포인트는 검수 후 지급됩니다"
+            "설문에 참여해주셔서 감사합니다"
+            // "포인트는 검수 후 지급됩니다"
         );
 
         navigation.navigate(NavigationTitle.endParticipation);

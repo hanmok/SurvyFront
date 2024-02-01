@@ -17,6 +17,9 @@ import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import CostSelectionContainer from "../CostSelectionContainer";
 import * as accounting from "accounting";
 import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import showToast from "../components/common/toast/Toast";
+import Toast from "react-native-toast-message";
+import toastConfig from "../components/common/toast/ToastConfig";
 
 interface CostGuideModalProps {
     onClose: () => void;
@@ -45,6 +48,25 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
 }) => {
     const dismissKeyboard = () => {
         Keyboard.dismiss();
+    };
+
+    const handleParticipationGoalChage = text => {
+        const [minValue, maxValue] = [1, 30];
+
+        const numericValue = parseInt(text);
+
+        if (numericValue < minValue) {
+            const str = "1";
+            setParticipationGoal(str);
+            showToast("error", "설문 인원은 1명 이상이어야 합니다");
+        } else if (numericValue > maxValue) {
+            const str = "30";
+            setParticipationGoal(str);
+            showToast("error", "설문 인원은 30명 이하까지 가능합니다");
+        } else {
+            const str = numericValue.toString();
+            setParticipationGoal(str);
+        }
     };
 
     const participationGoalRef = useRef(null);
@@ -116,6 +138,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                 >
                     <TouchableWithoutFeedback onPress={dismissKeyboard}>
                         <View style={styles.modalContainer}>
+                            <Toast config={toastConfig} />
                             <View style={styles.modalContent}>
                                 <Text style={styles.titleText}>설문 제출</Text>
                                 <View style={{ height: 200, width: 300 }}>
@@ -137,7 +160,8 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                                 <TextInput
                                                     value={participationGoal}
                                                     onChangeText={
-                                                        setParticipationGoal
+                                                        // setParticipationGoal
+                                                        handleParticipationGoalChage
                                                     }
                                                     keyboardType="number-pad"
                                                     placeholder="10"
@@ -175,7 +199,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                                 {expectedTimeInMin} 분
                                             </Text>
                                         </View>
-                                        <View style={styles.rowContainer}>
+                                        {/* <View style={styles.rowContainer}>
                                             <Text
                                                 style={{
                                                     fontSize: fontSizes.s16,
@@ -190,8 +214,8 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                             >
                                                 {price} 원
                                             </Text>
-                                        </View>
-                                        <View
+                                        </View> */}
+                                        {/* <View
                                             style={[
                                                 {
                                                     alignItems: "center",
@@ -203,7 +227,7 @@ const CostGuideModal: React.FC<CostGuideModalProps> = ({
                                                 initialIndex={isFree ? 0 : 1}
                                                 toggleFreeState={setIsFree}
                                             />
-                                        </View>
+                                        </View> */}
                                     </View>
                                 </View>
                                 <BottomButtonContainer
@@ -246,7 +270,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
         borderRadius: 10,
         overflow: "hidden",
-
         justifyContent: "space-between",
         alignItems: "center",
     },

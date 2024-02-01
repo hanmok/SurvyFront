@@ -126,7 +126,7 @@ function MypageScreen({
                     </View>
                 </BlockView>
 
-                <PointBlockView
+                {/* <PointBlockView
                     onPressHistory={() => {
                         // showToast("success", "navToParticipatedSurveys");
                         navigation.navigate(NavigationTitle.pointHistory);
@@ -136,7 +136,7 @@ function MypageScreen({
                     }}
                     collectedReward={userDetail?.collectedReward}
                 />
-                <ReputationBlockView reputation={userDetail?.reputation} />
+                <ReputationBlockView reputation={userDetail?.reputation} /> */}
             </View>
         </View>
     );

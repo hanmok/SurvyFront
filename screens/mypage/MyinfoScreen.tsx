@@ -221,7 +221,7 @@ function MyinfoScreen({
                         justifyContent: "flex-end",
                     }}
                 >
-                    <Text
+                    {/* <Text
                         style={{
                             fontSize: 18,
                             color: "red",
@@ -231,10 +231,10 @@ function MyinfoScreen({
                         }}
                     >
                         *
-                    </Text>
-                    <Text style={{ fontSize: 12 }}>
-                        추가정보 입력시 유료설문의 기회가 많아집니다.
-                    </Text>
+                    </Text> */}
+                    {/* <Text style={{ fontSize: 12 }}> */}
+                    {/* 추가정보 입력시 유료설문의 기회가 많아집니다. */}
+                    {/* </Text> */}
                 </View>
             </View>
 

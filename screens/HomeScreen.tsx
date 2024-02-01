@@ -139,16 +139,16 @@ function HomeScreen({
                     </TouchableOpacity>
                 </View>
             ),
-            headerLeft: () => (
-                <View style={{ marginBottom: 15 }}>
-                    <CollectedMoney
-                        amount={
-                            // userDetail !== null ? userDetail.collectedReward : 0
-                            userDetail?.collectedReward ?? 0
-                        }
-                    />
-                </View>
-            ),
+            // headerLeft: () => (
+            //     <View style={{ marginBottom: 15 }}>
+            //         <CollectedMoney
+            //             amount={
+            //                 // userDetail !== null ? userDetail.collectedReward : 0
+            //                 userDetail?.collectedReward ?? 0
+            //             }
+            //         />
+            //     </View>
+            // ),
         });
         logObject("userDetail flag", userDetail);
         // log(`collected money ${userDetail.collectedReward}`);

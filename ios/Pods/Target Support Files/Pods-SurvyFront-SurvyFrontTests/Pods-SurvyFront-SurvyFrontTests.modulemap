@@ -1,0 +1,6 @@
+module Pods_SurvyFront_SurvyFrontTests {
+  umbrella header "Pods-SurvyFront-SurvyFrontTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -175,6 +175,7 @@ export default function LoginScreen({
                                 // aspectRatio: 2.74,
                                 // height: (screenWidth - 150) / 2.74,
                                 // width: screenWidth - 150,
+                                // transform
                             }}
                         />
                     </View>

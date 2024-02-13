@@ -79,8 +79,8 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 android {
     ndkVersion rootProject.ext.ndkVersion
 
-    compileSdkVersion rootProject.ext.compileSdkVersion
-
+    // compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion versions.compileSdk
     namespace 'com.OSurvey'
     defaultConfig {
         applicationId 'com.OSurvey'

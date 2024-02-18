@@ -80,12 +80,22 @@ android {
     ndkVersion rootProject.ext.ndkVersion
 
     // compileSdkVersion rootProject.ext.compileSdkVersion
-    compileSdkVersion versions.compileSdk
+    // compileSdkVersion versions.compileSdk
+    compileSdkVersion 33
+    // minSdkVersion 21
+    // targetSdkVersion 31
+
     namespace 'com.OSurvey'
+
+    buildFeatures { 
+        buildConfig true
+    }
     defaultConfig {
         applicationId 'com.OSurvey'
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        // minSdkVersion rootProject.ext.minSdkVersion
+        // targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 21
+    targetSdkVersion 31
         versionCode 1
         versionName "1.0.0"
 

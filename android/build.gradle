@@ -19,7 +19,8 @@ buildscript {
     dependencies {
         classpath('com.android.tools.build:gradle:7.4.2')
         classpath('com.facebook.react:react-native-gradle-plugin')
-        
+        // Kotlin Gradle 플러그인 추가
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -39,3 +40,23 @@ allprojects {
         maven { url 'https://www.jitpack.io' }
     }
 }
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("kotlin")) {
+            project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+                kotlinOptions {
+                    // jvmTarget = "1.8" // Kotlin 컴파일러의 JVM 타겟을 Java 1.8로 설정
+                    jvmTarget = "17"
+                    // 필요한 경우 여기서 "17"로 변경하여 Java 17과 호환되도록 설정
+                }
+            }
+        }
+    }
+}
+
+// java {
+//     toolchain {
+//         languageVersion.set(JavaLanguageVersion.of(17))
+//     }
+// }

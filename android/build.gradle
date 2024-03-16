@@ -50,7 +50,7 @@ kotlin {
         // error: No signature of method: static org.gradle.jvm.toolchain.JavaLanguageVersion.of() is applicable for argument types: (org.gradle.api.JavaVersion) values: [17]
         // javaHome.set(File(System.getenv("JAVA_HOME")))
         languageVersion.set(JavaLanguageVersion.of(17))
-        targetCompatibility
+        targetCompatibility = JavaVersion.VERSION_17
         // apiVersion = "1.8"
         // languageVersion.set
         // error: Could not set unknown property 'apiVersion' for {languageVersion=17, vendor=any, implementation=vendor-specific} of type org.gradle.jvm.toolchain.internal.DefaultToolchainSpec.
@@ -105,6 +105,7 @@ subprojects {
         if (project.hasProperty("kotlin")) {
             project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
                 kotlinOptions {
+                    // jvmTarget = "17"
                     jvmTarget = "17"
                 }
             }

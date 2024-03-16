@@ -8,3 +8,27 @@ applyNativeModulesSettingsGradle(settings)
 
 include ':app'
 includeBuild(new File(["node", "--print", "require.resolve('@react-native/gradle-plugin/package.json')"].execute(null, rootDir).text.trim()).getParentFile())
+
+include ':expo-permissions'
+
+project(':expo-permissions').projectDir = new File(rootProject.projectDir, '../node_modules/expo-permissions/android')
+
+// enableFeaturePreview('GRADLE_METADATA')
+// enableFeaturePreview('VERSION_CATALOGS')
+
+// rootProject.allprojects {
+// rootProject {
+//     configure {
+//         java {
+//             toolchain {
+//                 languageVersion.set(JavaLanguageVersion.of(17))
+//             }
+//         }
+
+//         kotlin {
+//             jvmToolchain {
+//                 targetCompatibility = JavaVersion.VERSION_17
+//             }
+//         }
+//     }
+// }

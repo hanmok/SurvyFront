@@ -94,7 +94,28 @@ android {
     compileOptions { 
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        // sourceCompatibility JavaVersion.VERSION_11
+        // targetCompatibility JavaVersion.VERSION_11
     }
+
+    java {
+        toolchain {
+            // languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17))
+            // it works 
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+
+    // 여기에서는 나올 수 없음 
+    // new lines 
+    // kotlinOptions { 
+    //     jvmTarget=17
+    // }
+
+    // kotlin {
+    //     jvmToolchain(17)
+    // }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -190,3 +211,4 @@ dependencies {
 
 apply from: new File(["node", "--print", "require.resolve('@react-native-community/cli-platform-android/package.json')"].execute(null, rootDir).text.trim(), "../native_modules.gradle");
 applyNativeModulesAppBuildGradle(project)
+

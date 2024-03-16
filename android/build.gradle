@@ -2,7 +2,8 @@
 
 buildscript {
     ext {
-        buildToolsVersion = findProperty('android.buildToolsVersion') ?: '33.0.0'
+        // buildToolsVersion = findProperty('android.buildToolsVersion') ?: '33.0.0'
+        buildToolsVersion = findProperty('android.buildToolsVersion') ?: '33.0.1'
         minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '21')
         compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '34')
         targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '33')
@@ -24,6 +25,42 @@ buildscript {
     }
 }
 
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.5.31'
+}
+
+java {
+    toolchain {        
+        // languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17)) 
+        // error: No signature of method: static org.gradle.jvm.toolchain.JavaLanguageVersion.of() is applicable for argument types: (org.gradle.api.JavaVersion) values: [17]
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+kotlin {
+    jvmToolchain {
+        // JVM toolchain 설정
+        // targetCompatibility = JavaVersion.VERSION_17
+
+        //Kotlin 의 JVM toolchain 을 사용하여 Java 버전을 17로 설정
+        // languageVersion = JavaVersion.VERSION_17 // Error!
+        // languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17)) // Error!
+        // languageVersion.set(JavaLanguageVersion.of(17)) // Error!
+        // languageVersion = JavaLanguageVersion.of(JavaVersion.VERSION_17)
+        // error: No signature of method: static org.gradle.jvm.toolchain.JavaLanguageVersion.of() is applicable for argument types: (org.gradle.api.JavaVersion) values: [17]
+        // javaHome.set(File(System.getenv("JAVA_HOME")))
+        languageVersion.set(JavaLanguageVersion.of(17))
+        targetCompatibility
+        // apiVersion = "1.8"
+        // languageVersion.set
+        // error: Could not set unknown property 'apiVersion' for {languageVersion=17, vendor=any, implementation=vendor-specific} of type org.gradle.jvm.toolchain.internal.DefaultToolchainSpec.
+        // apiVersion = JavaVersion.VERSION_17
+        // apiVersion = "1.8"
+        // apiVersion.set(1.8)
+        // targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
 allprojects {
     repositories {
         maven {
@@ -41,22 +78,41 @@ allprojects {
     }
 }
 
+
+
+// subprojects {
+//     afterEvaluate { project ->
+//         if (project.hasProperty("kotlin")) {
+//             project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+//                 kotlinOptions {
+//                     // jvmTarget = "1.8" // Kotlin 컴파일러의 JVM 타겟을 Java 1.8로 설정
+//                     jvmTarget = "17"
+//                     // 필요한 경우 여기서 "17"로 변경하여 Java 17과 호환되도록 설정
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// subprojects {
+//     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+//         kotlinOptions.jvmTarget = "17"
+//     }
+// }
+
 subprojects {
     afterEvaluate { project ->
         if (project.hasProperty("kotlin")) {
             project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
                 kotlinOptions {
-                    // jvmTarget = "1.8" // Kotlin 컴파일러의 JVM 타겟을 Java 1.8로 설정
                     jvmTarget = "17"
-                    // 필요한 경우 여기서 "17"로 변경하여 Java 17과 호환되도록 설정
                 }
             }
         }
     }
+    // java {
+    //     toolchain {
+    //         languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17))
+    //     }
+    // }
 }
-
-// java {
-//     toolchain {
-//         languageVersion.set(JavaLanguageVersion.of(17))
-//     }
-// }

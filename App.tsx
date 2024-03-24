@@ -50,7 +50,7 @@ const App: React.FC = () => {
 							>
 								{/* 테스트 용으로 막아둠 */}
 
-								<Stack.Screen
+								{/* <Stack.Screen
 									name={NavigationTitle.login}
 									component={LoginScreen}
 									options={{
@@ -103,7 +103,7 @@ const App: React.FC = () => {
 										headerTitle: "비밀번호 재설정",
 										headerBackTitleVisible: false,
 									})}
-								/>
+								/> */}
 								{/* 새 비밀번호 등록 */}
 								<Stack.Screen
 									name={NavigationTitle.mainTabs}
@@ -120,7 +120,7 @@ const App: React.FC = () => {
 									//     // headerback
 									//     // headerLeft: null,
 									//     // TODO: 개발 끝나면 false 로 처리하기.
-									//     // headerShown: false,
+									// headerShown: false,
 									//     // headerStyle: {
 									//     //     backgroundColor: colors.background,
 									//     // },
@@ -128,6 +128,7 @@ const App: React.FC = () => {
 									options={({ route }) => ({
 										headerTitle: "",
 										headerBackTitleVisible: false,
+										headerShown: false,
 										// headerLeft: null,
 										// headerStyle: {
 										// 	backgroundColor: colors.background,
@@ -148,6 +149,61 @@ const App: React.FC = () => {
 												img={require("./assets/selectedSingleSelection.png")}
 											/>
 										),
+									})}
+								/>
+
+								<Stack.Screen
+									name={NavigationTitle.login}
+									component={LoginScreen}
+									options={{
+										headerShown: false,
+									}}
+								/>
+
+								<Stack.Screen
+									name={NavigationTitle.signup}
+									component={SignUpScreen}
+									options={({ route }) => ({
+										headerTitle: "회원가입",
+										headerBackTitleVisible: false,
+									})}
+								/>
+
+								<Stack.Screen
+									name={NavigationTitle.findID}
+									component={FindIDScreen}
+									options={({ route }) => ({
+										headerTitle: "아이디 찾기",
+										headerBackTitleVisible: false,
+									})}
+								/>
+
+								<Stack.Screen
+									name={NavigationTitle.foundID}
+									component={FoundIDScreen}
+									options={({ route }) => ({
+										headerTitle: "아이디 찾기",
+										headerBackTitleVisible: false,
+									})}
+								/>
+
+								<Stack.Screen
+									name={NavigationTitle.findPassword}
+									component={FindPasswordScreen}
+									options={({ route }) => ({
+										headerTitle: "비밀번호 찾기",
+										headerBackTitleVisible: false,
+									})}
+								/>
+
+								<Stack.Screen
+									name={NavigationTitle.settingPassword}
+									// name="비밀번호 재설정"
+									component={PasswordSettingScreen}
+									// options={}
+									options={({ route }) => ({
+										headerTitle: "비밀번호 재설정",
+										headerBackTitleVisible: false,
 									})}
 								/>
 

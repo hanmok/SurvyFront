@@ -37,271 +37,276 @@ import TermsAndConditionScreen from "./screens/mypage/TermsAndConditionScreen";
 import PrivacyPolicyScreen from "./screens/mypage/PrivacyPolicyScreen";
 
 const App: React.FC = () => {
-    return (
-        <CustomProvider>
-            <ApolloProvider>
-                <Provider store={store}>
-                    <MenuProvider>
-                        <NavigationContainer>
-                            <Stack.Navigator>
-                                {/* 테스트 용으로 막아둠 */}
+	return (
+		<CustomProvider>
+			<ApolloProvider>
+				<Provider store={store}>
+					<MenuProvider>
+						<NavigationContainer>
+							<Stack.Navigator
+								screenOptions={{
+									headerStyle: { backgroundColor: "white" },
+								}}
+							>
+								{/* 테스트 용으로 막아둠 */}
 
-                                <Stack.Screen
-                                    name={NavigationTitle.login}
-                                    component={LoginScreen}
-                                    options={{
-                                        headerShown: false,
-                                    }}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.login}
+									component={LoginScreen}
+									options={{
+										headerShown: false,
+									}}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.signup}
-                                    component={SignUpScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "회원가입",
-                                        headerBackTitleVisible: false,
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.signup}
+									component={SignUpScreen}
+									options={({ route }) => ({
+										headerTitle: "회원가입",
+										headerBackTitleVisible: false,
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.findID}
-                                    component={FindIDScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "아이디 찾기",
-                                        headerBackTitleVisible: false,
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.findID}
+									component={FindIDScreen}
+									options={({ route }) => ({
+										headerTitle: "아이디 찾기",
+										headerBackTitleVisible: false,
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.foundID}
-                                    component={FoundIDScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "아이디 찾기",
-                                        headerBackTitleVisible: false,
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.foundID}
+									component={FoundIDScreen}
+									options={({ route }) => ({
+										headerTitle: "아이디 찾기",
+										headerBackTitleVisible: false,
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.findPassword}
-                                    component={FindPasswordScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "비밀번호 찾기",
-                                        headerBackTitleVisible: false,
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.findPassword}
+									component={FindPasswordScreen}
+									options={({ route }) => ({
+										headerTitle: "비밀번호 찾기",
+										headerBackTitleVisible: false,
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.settingPassword}
-                                    // name="비밀번호 재설정"
-                                    component={PasswordSettingScreen}
-                                    // options={}
-                                    options={({ route }) => ({
-                                        headerTitle: "비밀번호 재설정",
-                                        headerBackTitleVisible: false,
-                                    })}
-                                />
-                                {/* 새 비밀번호 등록 */}
-                                <Stack.Screen
-                                    name={NavigationTitle.mainTabs}
-                                    component={MainTabs}
-                                    options={{
-                                        headerShown: false,
-                                    }}
-                                />
-                                <Stack.Screen
-                                    name={NavigationTitle.participate}
-                                    component={ParticipatingScreen}
-                                    // options={{
-                                    //     // headerBackTitleVisible: false,
-                                    //     // headerback
-                                    //     // headerLeft: null,
-                                    //     // TODO: 개발 끝나면 false 로 처리하기.
-                                    //     // headerShown: false,
-                                    //     // headerStyle: {
-                                    //     //     backgroundColor: colors.background,
-                                    //     // },
-                                    // }}
-                                    options={({ route }) => ({
-                                        headerTitle: "",
-                                        headerBackTitleVisible: false,
-                                        // headerLeft: null,
-                                        headerStyle: {
-                                            backgroundColor: colors.background,
-                                        },
-                                    })}
-                                />
-                                <Stack.Screen
-                                    name={NavigationTitle.posting}
-                                    component={PostingScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "설문 작성",
-                                        headerBackTitleVisible: false,
-                                        headerStyle: {
-                                            backgroundColor: colors.background,
-                                        },
-                                        headerRight: () => (
-                                            <ImageButton
-                                                img={require("./assets/selectedSingleSelection.png")}
-                                            />
-                                        ),
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.settingPassword}
+									// name="비밀번호 재설정"
+									component={PasswordSettingScreen}
+									// options={}
+									options={({ route }) => ({
+										headerTitle: "비밀번호 재설정",
+										headerBackTitleVisible: false,
+									})}
+								/>
+								{/* 새 비밀번호 등록 */}
+								<Stack.Screen
+									name={NavigationTitle.mainTabs}
+									component={MainTabs}
+									options={{
+										headerShown: false,
+									}}
+								/>
+								<Stack.Screen
+									name={NavigationTitle.participate}
+									component={ParticipatingScreen}
+									// options={{
+									//     // headerBackTitleVisible: false,
+									//     // headerback
+									//     // headerLeft: null,
+									//     // TODO: 개발 끝나면 false 로 처리하기.
+									//     // headerShown: false,
+									//     // headerStyle: {
+									//     //     backgroundColor: colors.background,
+									//     // },
+									// }}
+									options={({ route }) => ({
+										headerTitle: "",
+										headerBackTitleVisible: false,
+										// headerLeft: null,
+										// headerStyle: {
+										// 	backgroundColor: colors.background,
+										// },
+									})}
+								/>
+								<Stack.Screen
+									name={NavigationTitle.posting}
+									component={PostingScreen}
+									options={({ route }) => ({
+										headerTitle: "설문 작성",
+										headerBackTitleVisible: false,
+										// headerStyle: {
+										// 	backgroundColor: colors.background,
+										// },
+										headerRight: () => (
+											<ImageButton
+												img={require("./assets/selectedSingleSelection.png")}
+											/>
+										),
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.participatedSurveys}
-                                    component={ParticipatedSurveysScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "참여한 설문",
-                                        headerBackTitleVisible: false,
-                                        headerStyle: {
-                                            backgroundColor: colors.background,
-                                        },
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.participatedSurveys}
+									component={ParticipatedSurveysScreen}
+									options={({ route }) => ({
+										headerTitle: "참여한 설문",
+										headerBackTitleVisible: false,
+										// headerStyle: {
+										// 	backgroundColor: colors.background,
+										// },
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.postedSurveys}
-                                    component={PostedSurveysScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "요청한 설문",
-                                        headerBackTitleVisible: false,
-                                        headerStyle: {
-                                            backgroundColor: colors.background,
-                                        },
-                                    })}
-                                    // options={{
-                                    //     headerBackTitleVisible: false,
-                                    //     headerStyle: {
-                                    //         backgroundColor: colors.background,
-                                    //     },
-                                    // }}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.postedSurveys}
+									component={PostedSurveysScreen}
+									options={({ route }) => ({
+										headerTitle: "요청한 설문",
+										headerBackTitleVisible: false,
+										// headerStyle: {
+										// 	backgroundColor: colors.background,
+										// },
+									})}
+									// options={{
+									//     headerBackTitleVisible: false,
+									//     headerStyle: {
+									//         backgroundColor: colors.background,
+									//     },
+									// }}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.setting}
-                                    component={SettingScreen}
-                                    // options={{
-                                    //     headerBackTitleVisible: false,
-                                    //     headerStyle: {
-                                    //         backgroundColor: colors.background,
-                                    //     },
-                                    // }}
-                                    options={({ route }) => ({
-                                        headerBackTitleVisible: false,
-                                        headerTitle: "설정",
-                                        headerStyle: {
-                                            backgroundColor: colors.background,
-                                        },
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.setting}
+									component={SettingScreen}
+									// options={{
+									//     headerBackTitleVisible: false,
+									//     headerStyle: {
+									//         backgroundColor: colors.background,
+									//     },
+									// }}
+									options={({ route }) => ({
+										headerBackTitleVisible: false,
+										headerTitle: "설정",
+										// headerStyle: {
+										// 	backgroundColor: colors.background,
+										// },
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.myinfo}
-                                    component={MyinfoScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "내 정보",
-                                        headerBackTitleVisible: false,
-                                        headerStyle: {
-                                            backgroundColor: colors.background,
-                                        },
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.myinfo}
+									component={MyinfoScreen}
+									options={({ route }) => ({
+										headerTitle: "내 정보",
+										headerBackTitleVisible: false,
+										headerStyle: {
+											// backgroundColor: colors.background,
+											// backgroundColor: "white",
+										},
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.myGenre}
-                                    component={MyGenreScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "관심사",
-                                        headerBackTitleVisible: false,
-                                        headerStyle: {
-                                            backgroundColor: colors.background,
-                                        },
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.myGenre}
+									component={MyGenreScreen}
+									options={({ route }) => ({
+										headerTitle: "관심사",
+										headerBackTitleVisible: false,
+										// headerStyle: {
+										// 	backgroundColor: colors.background,
+										// },
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.pointHistory}
-                                    component={PointHistoryScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "포인트 내역",
-                                        headerBackTitleVisible: false,
-                                        headerStyle: {
-                                            backgroundColor: colors.background,
-                                        },
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.pointHistory}
+									component={PointHistoryScreen}
+									options={({ route }) => ({
+										headerTitle: "포인트 내역",
+										headerBackTitleVisible: false,
+										// headerStyle: {
+										// 	backgroundColor: colors.background,
+										// },
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.targetting}
-                                    component={TargettingScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "참여자 조건 설정",
-                                        headerBackTitleVisible: false,
-                                        headerStyle: {
-                                            backgroundColor: colors.background,
-                                        },
-                                    })}
-                                />
+								<Stack.Screen
+									name={NavigationTitle.targetting}
+									component={TargettingScreen}
+									options={({ route }) => ({
+										headerTitle: "참여자 조건 설정",
+										headerBackTitleVisible: false,
+										// headerStyle: {
+										// 	backgroundColor: colors.background,
+										// },
+									})}
+								/>
 
-                                <Stack.Screen
-                                    name={NavigationTitle.response}
-                                    component={ResponseScreen}
-                                    options={{
-                                        headerBackTitleVisible: false,
-                                    }}
-                                />
-                                <Stack.Screen
-                                    name={NavigationTitle.endParticipation}
-                                    component={ParticipatingEndScreen}
-                                    options={{
-                                        headerShown: false,
-                                    }}
-                                />
-                                <Stack.Screen
-                                    name={NavigationTitle.termsAndCondition}
-                                    component={TermsAndConditionScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "이용 약관",
-                                        headerBackTitleVisible: false,
-                                        headerStyle: {
-                                            backgroundColor: colors.white,
-                                        },
-                                    })}
-                                />
-                                <Stack.Screen
-                                    name={NavigationTitle.privacyPolicy}
-                                    component={PrivacyPolicyScreen}
-                                    options={({ route }) => ({
-                                        headerTitle: "개인정보 처리 방침",
-                                        headerBackTitleVisible: false,
-                                        headerStyle: {
-                                            backgroundColor: colors.white,
-                                        },
-                                    })}
-                                />
-                            </Stack.Navigator>
-                        </NavigationContainer>
-                        <Toast config={toastConfig} />
-                        <LoadingIndicator />
-                    </MenuProvider>
-                </Provider>
-            </ApolloProvider>
-        </CustomProvider>
-    );
+								<Stack.Screen
+									name={NavigationTitle.response}
+									component={ResponseScreen}
+									options={{
+										headerBackTitleVisible: false,
+									}}
+								/>
+								<Stack.Screen
+									name={NavigationTitle.endParticipation}
+									component={ParticipatingEndScreen}
+									options={{
+										headerShown: false,
+									}}
+								/>
+								<Stack.Screen
+									name={NavigationTitle.termsAndCondition}
+									component={TermsAndConditionScreen}
+									options={({ route }) => ({
+										headerTitle: "이용 약관",
+										headerBackTitleVisible: false,
+										// headerStyle: {
+										// 	backgroundColor: colors.white,
+										// },
+									})}
+								/>
+								<Stack.Screen
+									name={NavigationTitle.privacyPolicy}
+									component={PrivacyPolicyScreen}
+									options={({ route }) => ({
+										headerTitle: "개인정보 처리 방침",
+										headerBackTitleVisible: false,
+										// headerStyle: {
+										// 	backgroundColor: colors.white,
+										// },
+									})}
+								/>
+							</Stack.Navigator>
+						</NavigationContainer>
+						<Toast config={toastConfig} />
+						<LoadingIndicator />
+					</MenuProvider>
+				</Provider>
+			</ApolloProvider>
+		</CustomProvider>
+	);
 };
 
 export default App;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    requestButton: {
-        position: "absolute",
-        bottom: 50,
-        alignSelf: "center",
-    },
+	container: {
+		flex: 1,
+		backgroundColor: "#fff",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	requestButton: {
+		position: "absolute",
+		bottom: 50,
+		alignSelf: "center",
+	},
 });

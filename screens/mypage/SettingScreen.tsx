@@ -82,7 +82,11 @@ function SettingScreen({
 						onPress={() => {
 							// navigation.navigate(NavigationTitle.login);
 							resetContext();
-							navigation.pop();
+							// navigation.pop();
+							navigation.navigate(NavigationTitle.mainTabs, {
+								index: 1,
+							});
+							// navigation.navigate("로그인");
 						}}
 					>
 						<Text

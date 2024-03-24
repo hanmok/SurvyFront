@@ -72,7 +72,7 @@ export default function LoginScreen({
 	};
 
 	const moveToMainTab = () => {
-		navigation.navigate(NavigationTitle.mainTabs);
+		navigation.navigate(NavigationTitle.mainTabs, { index: 1 });
 	};
 
 	useEffect(() => {
@@ -146,7 +146,7 @@ export default function LoginScreen({
 				return userDataManager.saveUserState(userState);
 			})
 			.then(() => {
-				navigation.navigate(NavigationTitle.mainTabs, undefined);
+				navigation.navigate(NavigationTitle.mainTabs, { index: 1 });
 				showToast("success", "로그인되었습니다.");
 			})
 			.catch((error) => {

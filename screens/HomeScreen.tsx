@@ -84,6 +84,7 @@ function HomeScreen({
 	};
 
 	const onRefresh = () => {
+		console.log("onRefresh called");
 		setRefreshing(true);
 		console.log(`accessToken: ${accessToken}`);
 		if (!accessToken) {
@@ -126,6 +127,7 @@ function HomeScreen({
 
 		const unsubscribeFocus = navigation.addListener("focus", () => {
 			fetchUserDetail();
+			// onRefresh();
 		});
 
 		return unsubscribeFocus;
@@ -171,6 +173,7 @@ function HomeScreen({
 	useEffect(() => {
 		const updateSurveys = async () => {
 			console.log(`accessToken: ${accessToken}`);
+			console.log("another refresh called");
 			if (!accessToken) {
 				console.log("allSurvey called");
 				await surveyService

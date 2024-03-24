@@ -9,20 +9,27 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { colors } from "../utils/colors";
 import LoginScreen from "./login/LoginScreen";
 import { useCustomContext } from "../features/context/CustomContext";
+import { RouteProp } from "@react-navigation/native";
 const Tab = createBottomTabNavigator();
 const isLoggedIn = false;
 
 export default function MainTabs({
 	navigation,
+	route,
 }: {
 	navigation: StackNavigationProp<
 		RootStackParamList,
 		NavigationTitle.mainTabs
 	>;
+	route: RouteProp<RootStackParamList, NavigationTitle.mainTabs>;
 }) {
 	const { userId } = useCustomContext();
+	// const { index } = route.params;
+	const initialRouteName =
+		route.params?.index === 0 ? "홈" : userId ? "마이페이지" : "로그인";
+
 	return (
-		<Tab.Navigator>
+		<Tab.Navigator initialRouteName={initialRouteName}>
 			<Tab.Screen
 				name="홈"
 				component={HomeScreen}

@@ -82,36 +82,37 @@ export default function LoginScreen({
 		return unsubscribeFocus;
 	}, [navigation]);
 
-	useEffect(() => {
-		const fetchPrevInfo = async () => {
-			try {
-				const userState = await userDataManager.loadUserState();
-				if (userState !== null && userState.refreshToken) {
-					const responseUserStateResult =
-						await userService.autoSignin(userState.refreshToken);
-					const responseUserState = responseUserStateResult.data;
+	// autosignin
+	// useEffect(() => {
+	// 	const fetchPrevInfo = async () => {
+	// 		try {
+	// 			const userState = await userDataManager.loadUserState();
+	// 			if (userState !== null && userState.refreshToken) {
+	// 				const responseUserStateResult =
+	// 					await userService.autoSignin(userState.refreshToken);
+	// 				const responseUserState = responseUserStateResult.data;
 
-					const updatedUserState =
-						await userDataManager.saveUserState({
-							...responseUserState,
-						});
+	// 				const updatedUserState =
+	// 					await userDataManager.saveUserState({
+	// 						...responseUserState,
+	// 					});
 
-					updateAccessToken(updatedUserState.accessToken);
-					updateUserId(updatedUserState.userId);
+	// 				updateAccessToken(updatedUserState.accessToken);
+	// 				updateUserId(updatedUserState.userId);
 
-					const userDetailResult = await userService.getUserDetail(
-						updatedUserState.accessToken
-					);
+	// 				const userDetailResult = await userService.getUserDetail(
+	// 					updatedUserState.accessToken
+	// 				);
 
-					updateUserDetail(userDetailResult.data);
-					moveToMainTab();
-				}
-			} catch (error) {
-				showAdminToast("error", `${error.message}`);
-			}
-		};
-		fetchPrevInfo();
-	}, []);
+	// 				updateUserDetail(userDetailResult.data);
+	// 				moveToMainTab();
+	// 			}
+	// 		} catch (error) {
+	// 			showAdminToast("error", `${error.message}`);
+	// 		}
+	// 	};
+	// 	fetchPrevInfo();
+	// }, []);
 
 	const loginAction = async (username: string, password: string) => {
 		console.log(
@@ -165,13 +166,15 @@ export default function LoginScreen({
 			<TouchableWithoutFeedback onPress={handleDismissKeyboard}>
 				<View style={[styles.mainContainer]}>
 					<View>
-						<Spacer size={150} />
+						{/* <Spacer size={150} /> */}
 						<Image
 							// source={require("../../assets/logo_gugi.png")}
 							source={require("../../assets/new_logo.png")}
 							style={{
-								height: screenWidth - 150,
-								width: (screenWidth - 150) / 0.87,
+								// height: screenWidth - 150,
+								height: screenWidth - 200,
+								// width: (screenWidth - 150) / 0.87,
+								width: (screenWidth - 200) / 0.87,
 								// aspectRatio: 2.74,
 								// height: (screenWidth - 150) / 2.74,
 								// width: screenWidth - 150,

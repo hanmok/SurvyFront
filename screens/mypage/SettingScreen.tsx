@@ -22,7 +22,7 @@ function SettingScreen({
 	const userService = new UserService();
 	const [resignTapped, setResignTapped] = useState(false);
 	const { username, userId, accessToken } = useCustomContext();
-
+	const { resetContext } = useCustomContext();
 	useEffect(() => {
 		const resign = async (userId: number, accessToken: string) => {
 			await userService.removeUser(userId, accessToken);
@@ -80,7 +80,9 @@ function SettingScreen({
 					{/* TODO: 회원 정보, Token 초기화 */}
 					<BlockView
 						onPress={() => {
-							navigation.navigate(NavigationTitle.login);
+							// navigation.navigate(NavigationTitle.login);
+							resetContext();
+							navigation.pop();
 						}}
 					>
 						<Text

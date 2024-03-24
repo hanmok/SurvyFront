@@ -42,10 +42,12 @@ function SettingScreen({
 				styles.overall,
 				{
 					// backgroundColor: "magenta",
+
 					marginTop: 28,
 				},
 			]}
-			edges={[]}
+			edges={["bottom"]}
+			// edges={[]}
 		>
 			{/* <View style={styles.overall}> */}
 			{/* <View style={styles.upperContainer}> */}
@@ -157,6 +159,7 @@ const styles = StyleSheet.create({
 		// backgroundColor: "magenta",
 		flex: 1,
 		marginTop: 0,
+		// marginBottom: 30,
 		// flexDirection: "column",
 	},
 	upperContainer: {

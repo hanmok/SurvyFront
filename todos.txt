@@ -28,3 +28,8 @@ animation 으로 처리하기. Done!
 Error Message 띄울 것. 
 완료
 but not pretty.. 
+
+어두운 색상 Color 맞추기
+;;; 할거 태산이네.. 
+
+설문 검색 시 fade 적용

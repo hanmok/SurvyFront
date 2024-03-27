@@ -23,3 +23,8 @@ fade 로 변경.
 아래서 나오는 버튼들은.. 
 animation 으로 처리하기. Done!
 
+그.. 설문 생성 시, 어떠한 설문도 저장되지 않은 상태에서도 다음 버튼이 눌린다.
+
+Error Message 띄울 것. 
+완료
+but not pretty.. 

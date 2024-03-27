@@ -1,61 +1,66 @@
 import React from "react";
 import {
-    Text,
-    TouchableOpacity,
-    ViewStyle,
-    StyleProp,
-    StyleSheet,
-    TextStyle,
+	Text,
+	TouchableOpacity,
+	ViewStyle,
+	StyleProp,
+	StyleSheet,
+	TextStyle,
 } from "react-native";
 
 interface TextButtonProps {
-    title: string;
-    onPress: () => void;
-    textStyle?: StyleProp<TextStyle>;
-    backgroundStyle?: StyleProp<ViewStyle>;
-    isEnabled?: boolean;
-    hasShadow?: boolean;
+	title: string;
+	onPress: () => void;
+	textStyle?: StyleProp<TextStyle>;
+	backgroundStyle?: StyleProp<ViewStyle>;
+	isEnabled?: boolean;
+	hasShadow?: boolean;
+	isVisible?: boolean;
 }
 
 const TextButton: React.FC<TextButtonProps> = ({
-    title,
-    onPress,
-    textStyle,
-    backgroundStyle,
-    isEnabled = true,
-    hasShadow = true,
+	title,
+	onPress,
+	textStyle,
+	backgroundStyle,
+	isEnabled = true,
+	hasShadow = true,
+	isVisible = true,
 }) => {
-    return (
-        <TouchableOpacity
-            style={[
-                styles.container,
-                backgroundStyle,
-                hasShadow && styles.shadow,
-            ]}
-            onPress={onPress}
-            disabled={!isEnabled}
-            activeOpacity={!isEnabled ? 1 : 0.2}
-        >
-            <Text style={[styles.text, textStyle]}>{title}</Text>
-        </TouchableOpacity>
-    );
+	if (!isVisible) {
+		return null;
+	}
+	return (
+		<TouchableOpacity
+			style={[
+				styles.container,
+				backgroundStyle,
+				hasShadow && styles.shadow,
+			]}
+			onPress={onPress}
+			disabled={!isEnabled}
+			activeOpacity={!isEnabled ? 1 : 0.2}
+		>
+			<Text style={[styles.text, textStyle]}>{title}</Text>
+		</TouchableOpacity>
+	);
 };
 
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: "center",
-    },
-    text: { textAlign: "center" },
-    shadow: {
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 4,
-            height: 4,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 2,
-    },
+	container: {
+		justifyContent: "center",
+	},
+	text: { textAlign: "center" },
+	shadow: {
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 4,
+			height: 4,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 2,
+	},
 });
 
 export default TextButton;

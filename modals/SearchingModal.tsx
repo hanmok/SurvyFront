@@ -6,7 +6,6 @@ import {
 	Keyboard,
 	TouchableOpacity,
 	Animated,
-	TouchableNativeFeedback,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
@@ -91,14 +90,9 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
 			<Animated.View style={{ transform: [{ translateY: translateY }] }}>
 				<TouchableOpacity
 					style={styles.modalContainer}
-					onPress={() => {
-						// Keyboard.dismiss();
-						backgroundTapAction();
-					}}
+					onPress={backgroundTapAction}
 					activeOpacity={1}
-					//
 				>
-					{/* <View style={styles.modalContent}> */}
 					<TouchableOpacity
 						style={styles.modalContent}
 						onPress={() => {}}
@@ -137,10 +131,8 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
 							}}
 							satisfied={isSatisfied}
 						/>
-						{/* </View> */}
 					</TouchableOpacity>
 				</TouchableOpacity>
-				{/* </TouchableNativeFeedback> */}
 			</Animated.View>
 		</Modal>
 	);

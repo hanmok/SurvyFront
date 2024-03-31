@@ -327,7 +327,7 @@ export default GeoMultipleSelectionModal;
 const styles = StyleSheet.create({
 	modalContainer: {
 		flex: 1,
-		backgroundColor: "rgba(0, 0, 0, 0.85)",
+		backgroundColor: colors.modalBackground,
 		borderWidth: 1,
 		borderColor: colors.black,
 		borderRadius: 20,

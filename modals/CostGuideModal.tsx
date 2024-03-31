@@ -247,7 +247,7 @@ export default CostGuideModal;
 const styles = StyleSheet.create({
 	// modalContainer: {
 	//     flex: 1,
-	//     backgroundColor: "rgba(0, 0, 0, 0.85)",
+	//     backgroundColor: colors.modalBackground,
 	//     borderWidth: 1,
 	//     borderColor: colors.black,
 	//     borderRadius: 20,
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
 	modalContainer: {
 		width: screenWidth,
 		height: screenHeight,
-		backgroundColor: "rgba(0, 0, 0, 0.85)",
+		backgroundColor: colors.modalBackground,
 		borderWidth: 1,
 		borderColor: colors.black,
 		borderRadius: 20,

@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
 	modalContainer: {
 		width: screenWidth,
 		height: screenHeight,
-		// backgroundColor: "rgba(0, 0, 0, 0.85)",
+		// backgroundColor: colors.modalBackground,
 		backgroundColor: colors.modalBackground,
 		borderWidth: 1,
 		borderColor: colors.black,

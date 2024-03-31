@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
 	},
 	modalContainer: {
 		flex: 1,
-		backgroundColor: "rgba(0, 0, 0, 0.85)",
+		backgroundColor: colors.modalBackground,
 	},
 	modalContent: {
 		flexGrow: 1,

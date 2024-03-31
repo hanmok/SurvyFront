@@ -28,11 +28,12 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
 	setSurveyTitle,
 	titleModalVisible,
 	// setTitleModalVisible,
+	surveyTitle,
 	onClose,
 	setConfirmTapped,
 }) => {
 	const [satisfied, setSatisfied] = useState(false);
-	const [title, setTitle] = useState("");
+	const [title, setTitle] = useState(surveyTitle);
 	const translateY = useRef(new Animated.Value(0)).current;
 
 	useEffect(() => {
@@ -111,6 +112,7 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
 								<TextInput
 									style={styles.surveyTitleText}
 									onChangeText={setTitle}
+									// value={title}
 									value={title}
 									placeholder="무엇에 대한 설문인가요?"
 									autoCorrect={false}
@@ -120,10 +122,13 @@ const SurveyTitleModal: React.FC<SurveyTitleModalProps> = ({
 							<BottomButtonContainer
 								leftTitle="닫기"
 								leftAction={() => {
+									setSurveyTitle(surveyTitle);
+									setTitle(surveyTitle);
 									onClose();
 								}}
 								rightAction={() => {
 									setSurveyTitle(title);
+									setTitle(title);
 									onClose();
 									setConfirmTapped(true);
 								}}

@@ -333,6 +333,10 @@ export default function PostingScreen({
 		}
 	}, [questions, currentSectionIndex]);
 
+	useEffect(() => {
+		console.log(`surveyTitle set to ${surveyTitle}`);
+	}, [surveyTitle]);
+
 	const listHeader = () => {
 		return (
 			<View style={styles.listHeaderStyle}>

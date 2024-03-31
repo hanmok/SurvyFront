@@ -1,3 +1,5 @@
+// ZMJNWTH
+
 import {
 	Modal,
 	StyleSheet,
@@ -31,83 +33,130 @@ interface SearchedSurveyModalProps {
 export const SearchedSurveyModal: React.FC<SearchedSurveyModalProps> = ({
 	onConfirmAction: onSecondSelection,
 	// title,
-	isModalVisible,
+	isModalVisible: isSearchedModalVisible,
 	confirmText,
 	onClose,
 	searchedSurvey,
 }) => {
-	return (
-		<Modal transparent={true} visible={isModalVisible}>
-			<TouchableOpacity
-				style={styles.modalContainer}
-				onPress={() => {
-					Keyboard.dismiss();
-				}}
-				activeOpacity={1}
-			>
-				<View style={styles.modalContent}>
-					<View
-						style={{
-							alignItems: "center",
-							marginTop: 30,
-						}}
-					>
-						<View style={{ alignItems: "center" }}>
-							<Text style={{ fontSize: 22, fontWeight: "800" }}>
-								{searchedSurvey?.title}
-							</Text>
-							<View style={{ height: 20 }} />
-							<Text style={{ fontSize: 18, fontWeight: "400" }}>
-								{convertToMin(
-									searchedSurvey?.expectedTimeInSec
-								)}{" "}
-								분
-							</Text>
+	const fadeAnim = useRef(new Animated.Value(0)).current;
 
-							<Text style={{ fontSize: 18, fontWeight: "400" }}>
-								{convertReward(searchedSurvey?.reward)}
-							</Text>
-							<Spacer size={10} />
-							{searchedSurvey?.genres &&
-							searchedSurvey?.genres.length !== 0 ? (
-								<View
-									style={{
-										marginLeft: 8,
-										flexDirection: "row",
-									}}
+	// Animation 범위가 바뀌어야 할 것 같은데 ??
+	useEffect(() => {
+		// when modal opens, apply fade in animation
+		if (isSearchedModalVisible) {
+			Animated.timing(fadeAnim, {
+				// toValue: 0.7,
+				toValue: 1,
+				duration: 300,
+				useNativeDriver: true,
+			}).start();
+		} else {
+			// when modal closes, apply fade out animation
+			Animated.timing(fadeAnim, {
+				toValue: 0,
+				duration: 300,
+				useNativeDriver: true,
+			}).start();
+		}
+	});
+
+	return (
+		<Modal
+			transparent={true}
+			visible={isSearchedModalVisible}
+			animationType="fade"
+		>
+			<Animated.View
+				style={[
+					styles.modalContainer,
+					// { backgroundColor: colors.magenta, opacity: fadeAnim },
+					{ backgroundColor: colors.transparent, opacity: fadeAnim },
+					// { backgroundColor: `rgba(0,0,0,${fadeAnim})` },
+				]}
+			>
+				<TouchableOpacity
+					style={styles.modalContainer}
+					onPress={() => {
+						// Keyboard.dismiss();
+						onClose();
+					}}
+					activeOpacity={1}
+				>
+					<TouchableOpacity
+						style={styles.modalContent}
+						activeOpacity={1}
+						onPress={() => {}}
+					>
+						<View
+							style={{
+								alignItems: "center",
+								marginTop: 30,
+							}}
+						>
+							<View style={{ alignItems: "center" }}>
+								<Text
+									style={{ fontSize: 22, fontWeight: "800" }}
 								>
-									{searchedSurvey.genres.map((genre) => (
-										<GenreBox
-											name={genre.name}
-											key={genre.name}
-										/>
-									))}
-								</View>
-							) : (
-								<View
-									style={{
-										marginLeft: 8,
-										flexDirection: "row",
-									}}
+									{searchedSurvey?.title}
+								</Text>
+								<View style={{ height: 20 }} />
+								<Text
+									style={{ fontSize: 18, fontWeight: "400" }}
 								>
-									<GenreBox name="일반" />
-								</View>
-							)}
+									{convertToMin(
+										searchedSurvey?.expectedTimeInSec
+									)}{" "}
+									분
+								</Text>
+
+								<Text
+									style={{ fontSize: 18, fontWeight: "400" }}
+								>
+									{convertReward(searchedSurvey?.reward)}
+								</Text>
+								<Spacer size={10} />
+								{searchedSurvey?.genres &&
+								searchedSurvey?.genres.length !== 0 ? (
+									<View
+										style={{
+											marginLeft: 8,
+											flexDirection: "row",
+										}}
+									>
+										{searchedSurvey.genres.map((genre) => (
+											<GenreBox
+												name={genre.name}
+												key={genre.name}
+											/>
+										))}
+									</View>
+								) : (
+									<View
+										style={{
+											marginLeft: 8,
+											flexDirection: "row",
+										}}
+									>
+										<GenreBox name="일반" />
+									</View>
+								)}
+							</View>
 						</View>
-					</View>
-					<BottomButtonContainer
-						rightTitle={confirmText}
-						leftAction={() => {
-							onClose();
-						}}
-						rightAction={() => {
-							// navigation 이 없는데?
-							onSecondSelection();
-							onClose();
-						}}
-					/>
-				</View>
-			</TouchableOpacity>
+						<BottomButtonContainer
+							rightTitle={confirmText}
+							leftAction={() => {
+								onClose();
+							}}
+							rightAction={() => {
+								// navigation 이 없는데?
+								onSecondSelection();
+								onClose();
+							}}
+						/>
+						{/* </View> */}
+					</TouchableOpacity>
+				</TouchableOpacity>
+			</Animated.View>
 		</Modal>
 	);
 };

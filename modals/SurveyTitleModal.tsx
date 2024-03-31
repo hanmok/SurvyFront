@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		flex: 1, // 화면 모두 가리기
 		backgroundColor: colors.modalBackground,
+		// backgroundColor: colors.modalBackground,
 	},
 	modalContainer: {
 		width: screenWidth,

@@ -7,98 +7,98 @@ import { log } from "../utils/Log";
 import TextButton from "../components/TextButton";
 
 interface SectionModalProps {
-    onClose: () => void;
-    isSectionModalVisible: boolean;
-    numOfSections: number;
-    onAdd: () => void;
-    onSelection: (number) => void;
+	onClose: () => void;
+	isSectionModalVisible: boolean;
+	numOfSections: number;
+	onAdd: () => void;
+	onSelection: (number) => void;
 }
 
 const SectionModal: React.FC<SectionModalProps> = ({
-    onClose,
-    isSectionModalVisible,
-    numOfSections,
-    onAdd,
-    onSelection,
+	onClose,
+	isSectionModalVisible,
+	numOfSections,
+	onAdd,
+	onSelection,
 }) => {
-    useEffect(() => {
-        console.log(`current numOfSections: ${numOfSections}`);
-    }, [numOfSections]);
+	useEffect(() => {
+		console.log(`current numOfSections: ${numOfSections}`);
+	}, [numOfSections]);
 
-    const sections = Array.from({ length: numOfSections }, (_, index) => (
-        <View key={index}>
-            <TextButton
-                title={`Section ${index + 1}`}
-                onPress={() => {
-                    onSelection(index);
-                    onClose();
-                }}
-                backgroundStyle={{
-                    height: 50,
-                }}
-                textStyle={styles.optionText}
-                hasShadow={false}
-            />
-            <Separator />
-        </View>
-    ));
+	const sections = Array.from({ length: numOfSections }, (_, index) => (
+		<View key={index}>
+			<TextButton
+				title={`Section ${index + 1}`}
+				onPress={() => {
+					onSelection(index);
+					onClose();
+				}}
+				backgroundStyle={{
+					height: 50,
+				}}
+				textStyle={styles.optionText}
+				hasShadow={false}
+			/>
+			<Separator />
+		</View>
+	));
 
-    return (
-        <Modal
-            transparent={true}
-            visible={isSectionModalVisible}
-            animationType="slide"
-        >
-            <TouchableNativeFeedback
-                style={styles.wholeContainer}
-                onPress={() => {
-                    log("hi");
-                    onClose();
-                }}
-            >
-                <View style={styles.wholeContainer}>
-                    <View style={styles.mainContainer}>
-                        {sections}
-                        <Separator />
-                        <TextButton
-                            title={"Add Section"}
-                            onPress={() => {
-                                onAdd();
-                                onClose();
-                            }}
-                            backgroundStyle={{
-                                height: 50,
-                            }}
-                            textStyle={styles.optionText}
-                            hasShadow={false}
-                        />
-                    </View>
-                </View>
-            </TouchableNativeFeedback>
-        </Modal>
-    );
+	return (
+		<Modal
+			transparent={true}
+			visible={isSectionModalVisible}
+			animationType="slide"
+		>
+			<TouchableNativeFeedback
+				style={styles.wholeContainer}
+				onPress={() => {
+					log("hi");
+					onClose();
+				}}
+			>
+				<View style={styles.wholeContainer}>
+					<View style={styles.mainContainer}>
+						{sections}
+						<Separator />
+						<TextButton
+							title={"Add Section"}
+							onPress={() => {
+								onAdd();
+								onClose();
+							}}
+							backgroundStyle={{
+								height: 50,
+							}}
+							textStyle={styles.optionText}
+							hasShadow={false}
+						/>
+					</View>
+				</View>
+			</TouchableNativeFeedback>
+		</Modal>
+	);
 };
 
 export default SectionModal;
 
 const styles = StyleSheet.create({
-    wholeContainer: {
-        flex: 1,
-        justifyContent: "flex-end",
-        backgroundColor: colors.bottomModalBackground,
-    },
-    mainContainer: {
-        backgroundColor: colors.white,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-        paddingBottom: 50,
-        paddingTop: 20,
-        paddingHorizontal: 12,
-    },
-    optionText: {
-        fontSize: 18,
-        textAlign: "left",
-        paddingLeft: 12,
-        color: "#007AFF",
-    },
+	wholeContainer: {
+		flex: 1,
+		justifyContent: "flex-end",
+		backgroundColor: colors.modalBackground,
+	},
+	mainContainer: {
+		backgroundColor: colors.white,
+		borderTopLeftRadius: 16,
+		borderTopRightRadius: 16,
+		paddingBottom: 50,
+		paddingTop: 20,
+		paddingHorizontal: 12,
+	},
+	optionText: {
+		fontSize: 18,
+		textAlign: "left",
+		paddingLeft: 12,
+		color: "#007AFF",
+	},
 });

@@ -106,7 +106,7 @@
 // 	wholeContainer: {
 // 		flex: 1,
 // 		justifyContent: "flex-end",
-// 		backgroundColor: colors.bottomModalBackground,
+// 		backgroundColor: colors.modalBackground,
 // 	},
 // 	mainContainer: {
 // 		backgroundColor: colors.white,
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
 	wholeContainer: {
 		flex: 1,
 		justifyContent: "flex-end",
-		backgroundColor: colors.bottomModalBackground,
+		backgroundColor: colors.modalBackground,
 	},
 	mainContainer: {
 		backgroundColor: colors.white,

@@ -301,11 +301,10 @@ function HomeScreen({
 				)}
 				<SearchingModal
 					title="설문 코드 검색"
-					onSearchAction={() => {
-						// log("second selection tapped");
-						// TODO: Search Survey By Code
-						searchAction();
-					}}
+					// onSearchAction={() => {
+					// 	searchAction();
+					// }}
+					onSearchAction={searchAction}
 					searchingCode={searchingCode}
 					setSearchingCode={setSearchingCode}
 					searchText="검색"

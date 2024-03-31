@@ -414,6 +414,10 @@ export default function PostingScreen({
 		setIsTitleModalVisible(!isVisible);
 	};
 
+	const closeTitleModal = () => {
+		setIsTitleModalVisible(false);
+	};
+
 	const selectSection = (selectedSectionIndex: number) => {
 		// 1 을 선택하면 0 이 나와야해.
 		console.log(
@@ -450,8 +454,14 @@ export default function PostingScreen({
 				setSurveyTitle={setSurveyTitle}
 				surveyTitle={surveyTitle}
 				titleModalVisible={isTitleModalVisible}
-				setTitleModalVisible={setIsTitleModalVisible}
 				setConfirmTapped={setConfirmTapped}
+				// onClose={() => {
+				// 	setIsTitleModalVisible(false);
+				// }}
+				// onClose={closeTitleModal}
+				onClose={() => {
+					setIsTitleModalVisible(false);
+				}}
 			/>
 
 			<SectionModal

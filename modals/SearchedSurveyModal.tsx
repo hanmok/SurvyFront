@@ -69,9 +69,7 @@ export const SearchedSurveyModal: React.FC<SearchedSurveyModalProps> = ({
 			<Animated.View
 				style={[
 					styles.modalContainer,
-					// { backgroundColor: colors.magenta, opacity: fadeAnim },
 					{ backgroundColor: colors.transparent, opacity: fadeAnim },
-					// { backgroundColor: `rgba(0,0,0,${fadeAnim})` },
 				]}
 			>
 				<TouchableOpacity

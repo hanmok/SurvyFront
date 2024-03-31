@@ -6,6 +6,7 @@ import {
 	Keyboard,
 	TouchableOpacity,
 	Animated,
+	TouchableNativeFeedback,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
@@ -41,6 +42,7 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
 
 	const translateY = useRef(new Animated.Value(0)).current;
 
+	const [isKeyboardAvailable, setKeyboardAvailable] = useState(false);
 	useEffect(() => {
 		const keyboardDidShowListener = Keyboard.addListener(
 			"keyboardWillShow",
@@ -50,6 +52,7 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
 					duration: 200,
 					useNativeDriver: true,
 				}).start();
+				setKeyboardAvailable(true);
 			}
 		);
 
@@ -62,6 +65,7 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
 					duration: 200,
 					useNativeDriver: true,
 				}).start();
+				setKeyboardAvailable(false);
 			}
 		);
 
@@ -70,6 +74,17 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
 			keyboardDidHideListener.remove();
 		};
 	}, [translateY]);
+	// ZMJNWTH
+
+	const backgroundTapAction = () => {
+		// console.log(`keyboard dismiss?: ${Keyboard.dismiss}`);
+		console.log(`keyboard dismiss?: ${isKeyboardAvailable}`);
+		if (isKeyboardAvailable) {
+			Keyboard.dismiss();
+		} else {
+			onClose();
+		}
+	};
 
 	return (
 		<Modal transparent={true} visible={isModalVisible} animationType="fade">
@@ -77,11 +92,18 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
 				<TouchableOpacity
 					style={styles.modalContainer}
 					onPress={() => {
-						Keyboard.dismiss();
+						// Keyboard.dismiss();
+						backgroundTapAction();
 					}}
 					activeOpacity={1}
+					//
 				>
-					<View style={styles.modalContent}>
+					{/* <View style={styles.modalContent}> */}
+					<TouchableOpacity
+						style={styles.modalContent}
+						onPress={() => {}}
+						activeOpacity={1}
+					>
 						{/* Title */}
 						<View style={{ marginTop: 30, alignItems: "center" }}>
 							<Text style={{ fontSize: 22, fontWeight: "800" }}>
@@ -115,8 +137,10 @@ export const SearchingModal: React.FC<SearhchingModalProps> = ({
 							}}
 							satisfied={isSatisfied}
 						/>
-					</View>
+						{/* </View> */}
+					</TouchableOpacity>
 				</TouchableOpacity>
+				{/* </TouchableNativeFeedback> */}
 			</Animated.View>
 		</Modal>
 	);
@@ -126,7 +150,7 @@ const styles = StyleSheet.create({
 	modalContainer: {
 		width: screenWidth,
 		height: screenHeight,
-		backgroundColor: "rgba(0, 0, 0, 0.85)",
+		backgroundColor: colors.bottomModalBackground,
 		borderWidth: 1,
 		borderColor: colors.black,
 		borderRadius: 20,
@@ -136,7 +160,7 @@ const styles = StyleSheet.create({
 	modalContent: {
 		height: 240,
 		marginHorizontal: 40,
-		backgroundColor: colors.background,
+		backgroundColor: colors.brightBackground,
 		borderRadius: 10,
 		overflow: "hidden",
 		justifyContent: "space-between",

@@ -31,5 +31,13 @@ but not pretty..
 
 어두운 색상 Color 맞추기
 ;;; 할거 태산이네.. 
+이걸.. 먼저할게 아닌데?? 
 
 설문 검색 시 fade 적용
+
+투명도 0.7 로 설정
+
+설문 코드 검색 background 눌렀을 때 화면 사라지도록.. How ?? 
+SearchingModal
+PostingMenuModal
+

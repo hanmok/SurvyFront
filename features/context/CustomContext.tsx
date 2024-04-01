@@ -4,6 +4,7 @@ import { AccessToken, UserId } from "../../types/types";
 import { GeoInfo } from "../../interfaces/GeoInfo";
 import showAdminToast from "../../components/common/toast/showAdminToast";
 import { UserDetail } from "../../interfaces/UserDetail";
+import { logObject } from "../../utils/Log";
 /** collectedReward, age, birthDate, isMale, reputation, fatigue, homeAddress, officeAddresss, occupation */
 
 interface CustomContextProps {
@@ -64,6 +65,7 @@ export const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
 	};
 
 	const updateUserDetail = (userDetail: UserDetail) => {
+		logObject("updateUserDetail called", userDetail);
 		setUserDetail(userDetail);
 	};
 

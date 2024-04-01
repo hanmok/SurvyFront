@@ -76,32 +76,14 @@ function SettingScreen({
 						</Text>
 					</BlockView>
 
-					{/* 로그아웃 */}
-					{/* TODO: 회원 정보, Token 초기화 */}
-					<BlockView
-						onPress={() => {
-							// navigation.navigate(NavigationTitle.login);
-							resetContext();
-							// navigation.pop();
-							navigation.navigate(NavigationTitle.mainTabs, {
-								index: 1,
-							});
-							// navigation.navigate("로그인");
-						}}
-					>
-						<Text
-							style={[styles.eachBoxTextStyle, { padding: 20 }]}
-						>
-							로그아웃
-						</Text>
-					</BlockView>
-
 					<View
 						style={{
 							height: 2,
 							backgroundColor: colors.gray4,
+							marginVertical: 20,
 						}}
-					></View>
+					/>
+
 					<BlockView
 						onPress={() => {
 							navigation.navigate(
@@ -127,11 +109,52 @@ function SettingScreen({
 							개인정보 처리 방침
 						</Text>
 					</BlockView>
+
+					<View
+						style={{
+							height: 2,
+							backgroundColor: colors.gray4,
+							marginVertical: 20,
+						}}
+					/>
+					{/* 로그아웃 */}
+					{/* TODO: 회원 정보, Token 초기화 */}
+					<BlockView
+						onPress={() => {
+							// navigation.navigate(NavigationTitle.login);
+							resetContext();
+							// navigation.pop();
+							navigation.navigate(NavigationTitle.mainTabs, {
+								index: 1,
+							});
+							// navigation.navigate("로그인");
+						}}
+					>
+						<Text
+							style={[styles.eachBoxTextStyle, { padding: 20 }]}
+						>
+							로그아웃
+						</Text>
+					</BlockView>
+
+					<BlockView
+						onPress={() => {
+							// navigation.navigate(NavigationTitle.login);
+							setResignTapped(true);
+							// navigation.navigate("로그인");
+						}}
+					>
+						<Text
+							style={[styles.eachBoxTextStyle, { padding: 20 }]}
+						>
+							회원 탈퇴
+						</Text>
+					</BlockView>
 				</View>
 			</View>
 
 			{/* <View style={{ height: 500 }}></View> */}
-			<View style={{ alignItems: "center" }}>
+			{/* <View style={{ alignItems: "center" }}>
 				<TextButton
 					title="회원 탈퇴"
 					onPress={() => {
@@ -141,7 +164,7 @@ function SettingScreen({
 					textStyle={{ color: colors.gray3 }}
 				/>
 				<View style={styles.bottomLine} />
-			</View>
+			</View> */}
 			{/* </View> */}
 		</SafeAreaView>
 		// </View>

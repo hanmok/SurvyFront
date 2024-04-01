@@ -88,12 +88,14 @@ function HomeScreen({
 		setRefreshing(true);
 		console.log(`accessToken: ${accessToken}`);
 		if (!accessToken) {
-			console.log("allSurvey called");
+			console.log("onRefresh, allSurvey called, fetchflag1");
+			console.log(`accessToken: ${accessToken}`);
 			surveyService.getAllSurveys().then((surveysResult) => {
 				setSurveys(surveysResult.data);
 				setRefreshing(false);
 			});
 		} else {
+			console.log("onRefresh, getSurvey called, fetchflag2");
 			surveyService
 				.getSurveys(accessToken, userId)
 				.then((surveysResult) => {
@@ -174,8 +176,9 @@ function HomeScreen({
 		const updateSurveys = async () => {
 			console.log(`accessToken: ${accessToken}`);
 			console.log("another refresh called");
+			logObject(`accessToken`, accessToken);
 			if (!accessToken) {
-				console.log("allSurvey called");
+				console.log("onRendering, allSurvey called, fetchflag3");
 				await surveyService
 					.getAllSurveys()
 					.then((surveysResult) => {
@@ -186,6 +189,7 @@ function HomeScreen({
 						showAdminToast("error", error.message);
 					});
 			} else {
+				console.log("onRefresh, getSurvey called, fetchflag4");
 				await surveyService
 					.getSurveys(accessToken, userId)
 					.then((surveysResult) => {
@@ -229,11 +233,18 @@ function HomeScreen({
 			expectedTimeInSec={item.expectedTimeInSec}
 			reward={item.reward}
 			onPress={() => {
-				updateParticipatingSurveyId(item.id);
-				navigation.navigate(NavigationTitle.participate, {
-					sectionId: item.initialSectionId,
-					surveyId: item.id,
-				});
+				// 로그인 상태인지 아닌지 확인 필요
+				if (!userId) {
+					showToast("error", "로그인이 필요합니다");
+					// navigation.navigate("로그인")
+					// navigation.navigate(NavigationTitle.login);
+				} else {
+					updateParticipatingSurveyId(item.id);
+					navigation.navigate(NavigationTitle.participate, {
+						sectionId: item.initialSectionId,
+						surveyId: item.id,
+					});
+				}
 			}}
 		/>
 	);

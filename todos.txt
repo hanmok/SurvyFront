@@ -41,4 +41,13 @@ but not pretty..
 SearchingModal
 PostingMenuModal
 
-질문 추가 시 아래에서 튀나오지 않고, fade 사용하도록. 3
+질문 추가 시 아래에서 튀나오지 않고, fade 사용하도록. 
+
+Memoization 사용해서, 성능 최적화 하기.
+Component 하나하나 보면서 state 를 가지고 있지 않은 것들 찾기.
+
+ CreatingQuestionModal, 
+ ModifyingQuestionModal 
+ 공통분모는 묶어주기
+ QuestionModal 로. 
+ 

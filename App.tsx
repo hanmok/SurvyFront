@@ -141,9 +141,6 @@ const App: React.FC = () => {
 									options={({ route }) => ({
 										headerTitle: "설문 작성",
 										headerBackTitleVisible: false,
-										// headerStyle: {
-										// 	backgroundColor: colors.background,
-										// },
 										headerRight: () => (
 											<ImageButton
 												img={require("./assets/selectedSingleSelection.png")}

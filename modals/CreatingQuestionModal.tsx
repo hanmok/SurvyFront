@@ -161,7 +161,8 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
 
 	return (
 		<Modal
-			animationType="slide"
+			// animationType="slide"
+			// animationType="fade"
 			transparent={true}
 			visible={isCreatingQuestionModalVisible}
 			onRequestClose={handleModalClose}

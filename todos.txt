@@ -33,11 +33,12 @@ but not pretty..
 ;;; 할거 태산이네.. 
 이걸.. 먼저할게 아닌데?? 
 
-설문 검색 시 fade 적용
+설문 검색 시 fade 적용 Done
 
-투명도 0.7 로 설정
+투명도 0.7 로 설정 Done
 
 설문 코드 검색 background 눌렀을 때 화면 사라지도록.. How ?? 
 SearchingModal
 PostingMenuModal
 
+질문 추가 시 아래에서 튀나오지 않고, fade 사용하도록. 3

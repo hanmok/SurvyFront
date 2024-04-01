@@ -192,7 +192,8 @@ function ParticipatingScreen({
 
 	useEffect(() => {
 		console.log("participatingScreen loaded, initializeAnswer called");
-		dispatch(initializeAnswer);
+		// dispatch(initializeAnswer);
+		dispatch(initializeAnswer());
 	}, []);
 
 	useEffect(() => {

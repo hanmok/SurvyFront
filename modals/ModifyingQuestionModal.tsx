@@ -10,7 +10,8 @@ import {
 	TouchableWithoutFeedback,
 } from "react-native";
 import { fontSizes } from "../utils/sizes";
-import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
+// import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
+import QuestionTypeSelectionBoxContainer from "../components/common/QuestionTypeSelectionBoxContainer";
 import { Question } from "../interfaces/Question";
 import { QuestionTypeId } from "../QuestionType";
 import {
@@ -21,7 +22,7 @@ import { log, logObject } from "../utils/Log";
 import { colors } from "../utils/colors";
 import { screenWidth } from "../utils/ScreenSize";
 import DynamicTextInputsForModification from "../components/posting/DynamicTextInputsForModification";
-import DefaultSwitch from "../components/DefaultSwitch";
+import DefaultSwitch from "../components/common/DefaultSwitch";
 
 interface ModifyingQuestionModalProps {
 	isModifyingQuestionModalVisible: boolean;

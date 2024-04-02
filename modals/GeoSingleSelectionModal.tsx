@@ -4,10 +4,10 @@ import { Modal, StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
-import TextButton from "../components/TextButton";
+import TextButton from "../components/common/TextButton";
 import { screenHeight } from "../utils/ScreenSize";
 import { logObject } from "../utils/Log";
-import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import BottomButtonContainer from "../components/common/BottomButtonContainer";
 import { GeoService } from "../API/Services/GeoService";
 
 interface GeoSingleSelectionModalProps {

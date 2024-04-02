@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import React from "react";
 import Separator from "../components/common/Separator";
 import { log } from "../utils/Log";
-import TextButton from "../components/TextButton";
+import TextButton from "../components/common/TextButton";
 
 interface SectionModalProps {
 	onClose: () => void;

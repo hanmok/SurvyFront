@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from "react";
 import { UserState } from "../../interfaces/UserState";
 import { AccessToken, UserId } from "../../types/types";
 import { GeoInfo } from "../../interfaces/GeoInfo";
-import showAdminToast from "../../components/common/toast/showAdminToast";
+import showAdminToast from "../../utils/toast/showAdminToast";
 import { UserDetail } from "../../interfaces/UserDetail";
 import { logObject } from "../../utils/Log";
 /** collectedReward, age, birthDate, isMale, reputation, fatigue, homeAddress, officeAddresss, occupation */

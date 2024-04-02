@@ -16,10 +16,9 @@ import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../utils/NavHelper";
 
-import ParticipatingQuestionBox from "../components/ParticipatingQuestionBox";
-import TextButton from "../components/TextButton";
-
-import SelectableOptionContainer from "../components/SelectableOptionContainer";
+import ParticipatingQuestionBox from "../components/participating/ParticipatingQuestionBox";
+import TextButton from "../components/common/TextButton";
+import SelectableOptionContainer from "../components/participating/SelectableOptionContainer";
 import {
 	addToAnswerIngredients,
 	initializeAnswer,
@@ -40,7 +39,7 @@ import { GQLSurveyResponse } from "../interfaces/SurveyResponse";
 import { GQLQuestion, GQLSurvey } from "../interfaces/GQLInterface";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useCustomContext } from "../features/context/CustomContext";
-import showToast from "../components/common/toast/Toast";
+import showToast from "../utils/toast/Toast";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { AnswerService } from "../API/Services/AnswerService";
 import { ParticipatingService } from "../API/Services/ParticipatingService";

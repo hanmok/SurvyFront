@@ -3,7 +3,7 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
-import TextButton from "../components/TextButton";
+import TextButton from "../components/common/TextButton";
 import Spacer from "../components/common/Spacer";
 
 interface DefaultModalProps {

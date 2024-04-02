@@ -6,9 +6,9 @@ import {
 	TouchableWithoutFeedback,
 	Keyboard,
 } from "react-native";
-import TextButton from "../TextButton";
+import TextButton from "../common/TextButton";
 import { fontSizes } from "../../utils/sizes";
-import ImageButton from "../ImageButton";
+import ImageButton from "../common/ImageButton";
 import { colors } from "../../utils/colors";
 
 const DynamicTextInputsForCreation = ({

@@ -11,7 +11,8 @@ import {
 	SafeAreaView,
 } from "react-native";
 import { fontSizes } from "../utils/sizes";
-import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
+// import QuestionTypeSelectionBoxContainer from "../components/QuestionTypeSelectionBoxContainer";
+import QuestionTypeSelectionBoxContainer from "../components/common/QuestionTypeSelectionBoxContainer";
 import DynamicTextInputsForCreation from "../components/posting/DynamicTextInputsForCreation";
 import { Question, QuestionBuilder } from "../interfaces/Question";
 import { QuestionTypeId } from "../QuestionType";
@@ -22,8 +23,8 @@ import {
 import { log, logObject } from "../utils/Log";
 import { colors } from "../utils/colors";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
-import DefaultSwitch from "../components/DefaultSwitch";
-import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import DefaultSwitch from "../components/common/DefaultSwitch";
+import BottomButtonContainer from "../components/common/BottomButtonContainer";
 import { ScrollView } from "react-native-gesture-handler";
 
 interface CreatingQuestionModalProps {

@@ -5,10 +5,10 @@ import { RootStackParamList } from "../utils/NavHelper";
 import { NavigationTitle } from "../utils/NavHelper";
 import CostGuideModal from "../modals/CostGuideModal";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import BlockView from "../components/BlockView";
+import BlockView from "../components/common/BlockView";
 import { Genre } from "../interfaces/Genre";
 import { ReactNode } from "react";
-import TextButton from "../components/TextButton";
+import TextButton from "../components/common/TextButton";
 import { buttonColors, colors } from "../utils/colors";
 import { fontSizes, marginSizes } from "../utils/sizes";
 import React from "react";
@@ -22,7 +22,7 @@ import {
 	TouchableWithoutFeedback,
 } from "react-native";
 
-import SelectableTextButton from "../components/SelectableTextButton";
+import SelectableTextButton from "../components/posting/SelectableTextButton";
 
 import { useEffect, useState } from "react";
 import AgeSlider from "../components/posting/AgeSlider";
@@ -40,7 +40,7 @@ import { GeoInfo } from "../interfaces/GeoInfo";
 // import { useCustomContext } from "./MyContext";
 import { useCustomContext } from "../features/context/CustomContext";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
-import showToast from "../components/common/toast/Toast";
+import showToast from "../utils/toast/Toast";
 import { SurveyService } from "../API/Services/SurveyService";
 import SurveyTitleModal from "../modals/SurveyTitleModal";
 // import { initializePostingSurvey } from "../utils/PostingSurveyStorage";

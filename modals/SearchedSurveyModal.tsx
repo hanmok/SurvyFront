@@ -14,12 +14,13 @@ import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import BottomButtonContainer from "../components/common/BottomButtonContainer";
 import { Survey } from "../interfaces/Survey";
 import { useCustomContext } from "../features/context/CustomContext";
 import { convertReward, convertToMin } from "../utils/numbers";
 import Spacer from "../components/common/Spacer";
-import { GenreBox } from "../components/common/GenreBox";
+// import { GenreBox } from "../components/common/GenreBox";
+import GenreBox from "../components/common/GenreBox";
 
 interface SearchedSurveyModalProps {
 	onConfirmAction: () => void;

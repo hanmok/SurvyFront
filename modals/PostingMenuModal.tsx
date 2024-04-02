@@ -10,7 +10,7 @@ import {
 import Separator from "../components/common/Separator";
 import { colors } from "../utils/colors";
 import { TouchableNativeFeedback } from "react-native";
-import TextButton from "../components/TextButton";
+import TextButton from "../components/common/TextButton";
 
 interface PostingMenuModalProps {
 	isMenuModalVisible: boolean;

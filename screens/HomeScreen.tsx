@@ -24,13 +24,13 @@ import { UserService } from "../API/Services/UserService";
 import { DefaultModal } from "../modals/DefaultModal";
 import { PostingSurveyState } from "../interfaces/PostingSurveyState";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
-import showAdminToast from "../components/common/toast/showAdminToast";
+import showAdminToast from "../utils/toast/showAdminToast";
 import { SearchingModal } from "../modals/SearchingModal";
 import { SurveyService } from "../API/Services/SurveyService";
 import { GeoService } from "../API/Services/GeoService";
-import CollectedMoney from "../components/CollectedMoney";
+import CollectedMoney from "../components/home/CollectedMoney";
 import { SearchedSurveyModal } from "../modals/SearchedSurveyModal";
-import showToast from "../components/common/toast/Toast";
+import showToast from "../utils/toast/Toast";
 
 const screenWidth = Dimensions.get("window").width;
 

@@ -14,12 +14,12 @@ import { fontSizes } from "../utils/sizes";
 import { colors } from "../utils/colors";
 import { useEffect, useRef, useState } from "react";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
-import CostSelectionContainer from "../CostSelectionContainer";
+import CostSelectionContainer from "../components/posting/CostSelectionContainer";
 import * as accounting from "accounting";
-import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
-import showToast from "../components/common/toast/Toast";
+import BottomButtonContainer from "../components/common/BottomButtonContainer";
+import showToast from "../utils/toast/Toast";
 import Toast from "react-native-toast-message";
-import toastConfig from "../components/common/toast/ToastConfig";
+import toastConfig from "../utils/toast/ToastConfig";
 
 interface CostGuideModalProps {
 	onClose: () => void;

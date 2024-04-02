@@ -8,7 +8,7 @@ import {
 	View,
 } from "react-native";
 import { fontSizes } from "../utils/sizes";
-import TextButton from "../components/TextButton";
+import TextButton from "../components/common/TextButton";
 import { colors } from "../utils/colors";
 import { useEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
@@ -17,7 +17,7 @@ import { screenHeight } from "../utils/ScreenSize";
 import { Genre } from "../interfaces/Genre";
 import Spacer from "../components/common/Spacer";
 import { useCustomContext } from "../features/context/CustomContext";
-import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import BottomButtonContainer from "../components/common/BottomButtonContainer";
 import { GenreService } from "../API/Services/GenreService";
 
 interface GenreSelectionModalProps {

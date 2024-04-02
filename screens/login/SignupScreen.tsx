@@ -6,13 +6,13 @@ import { useEffect, useState } from "react";
 import { fontSizes } from "../../utils/sizes";
 import { buttonColors, colors } from "../../utils/colors";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import TextButton from "../../components/TextButton";
+import TextButton from "../../components/common/TextButton";
 import GenderSelection from "../../components/posting/GenderSelection";
 import { logObject } from "../../utils/Log";
 import { isValidEmail, isValidPhone } from "../../utils/validation";
 import { useCustomContext } from "../../features/context/CustomContext";
-import showToast from "../../components/common/toast/Toast";
-import showAdminToast from "../../components/common/toast/showAdminToast";
+import showToast from "../../utils/toast/Toast";
+import showAdminToast from "../../utils/toast/showAdminToast";
 import Spacer from "../../components/common/Spacer";
 import { UserService } from "../../API/Services/UserService";
 

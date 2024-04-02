@@ -11,16 +11,16 @@ import { TextInput } from "react-native-gesture-handler";
 import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
-import TextButton from "../components/TextButton";
+import TextButton from "../components/common/TextButton";
 import { useEffect, useRef, useState } from "react";
 import { modalStyles } from "../utils/CommonStyles";
-import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import BottomButtonContainer from "../components/common/BottomButtonContainer";
 import Spacer from "../components/common/Spacer";
 // import { createWithdrawal, patchWithdrawal } from "../API/WithdrawalAPI";
 import { useCustomContext } from "../features/context/CustomContext";
 import { Withdrawal } from "../interfaces/Withdrawal";
-import showToast from "../components/common/toast/Toast";
-import showAdminToast from "../components/common/toast/showAdminToast";
+import showToast from "../utils/toast/Toast";
+import showAdminToast from "../utils/toast/showAdminToast";
 import { WithdrawalService } from "../API/Services/WithdrawalService";
 
 interface WithdrawalModalProps {

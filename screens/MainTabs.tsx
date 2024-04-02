@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import MypageScreen from "./mypage/MypageScreen";
 import HomeScreen from "./HomeScreen";
 import { NavigationTitle, RootStackParamList } from "../utils/NavHelper";
-import ImageButton from "../components/ImageButton";
+import ImageButton from "../components/common/ImageButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colors } from "../utils/colors";
 import LoginScreen from "./login/LoginScreen";

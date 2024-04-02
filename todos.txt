@@ -51,3 +51,9 @@ Component 하나하나 보면서 state 를 가지고 있지 않은 것들 찾기
  공통분모는 묶어주기
  QuestionModal 로. 
  
+
+Optimize Performance
+1. Props 가 자주 변경되지 않는 Component
+2. 순수함수 컴포넌트(state or lifeCycle 사용 X)
+3. state 에 따른 렌더링 필요하지 않는 경우
+

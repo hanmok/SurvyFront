@@ -12,7 +12,7 @@ import { colors } from "../utils/colors";
 import { fontSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
 import { useEffect, useRef, useState } from "react";
-import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import BottomButtonContainer from "../components/common/BottomButtonContainer";
 
 interface SearhchingModalProps {
 	onSearchAction: () => void;

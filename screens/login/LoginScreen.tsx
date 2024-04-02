@@ -10,7 +10,7 @@ import {
 	Image,
 } from "react-native";
 import { buttonColors, colors } from "../../utils/colors";
-import TextButton from "../../components/TextButton";
+import TextButton from "../../components/common/TextButton";
 import { screenWidth } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,8 +20,8 @@ import { UserState } from "../../interfaces/UserState";
 import { useEffect, useRef, useState } from "react";
 import { useCustomContext } from "../../features/context/CustomContext";
 import { userDataManager } from "../../utils/UserDataManager";
-import showToast from "../../components/common/toast/Toast";
-import showAdminToast from "../../components/common/toast/showAdminToast";
+import showToast from "../../utils/toast/Toast";
+import showAdminToast from "../../utils/toast/showAdminToast";
 import { isValidEmail } from "../../utils/validation";
 
 export default function LoginScreen({

@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../utils/colors";
+import React from "react";
 
 export const GenreBox: React.FC<{ name: string }> = ({ name }) => {
 	return (
@@ -11,11 +12,12 @@ export const GenreBox: React.FC<{ name: string }> = ({ name }) => {
 	);
 };
 
+export default React.memo(GenreBox);
+
 const styles = StyleSheet.create({
 	genreBox: {
 		marginRight: 10,
 		borderRadius: 6,
-		// backgroundColor: colors.gray35,
 		backgroundColor: colors.gray3,
 		padding: 6,
 	},

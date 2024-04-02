@@ -17,7 +17,7 @@ import { fontSizes } from "../../utils/sizes";
 import { screenHeight } from "../../utils/ScreenSize";
 import Spacer from "../../components/common/Spacer";
 import { Entypo } from "@expo/vector-icons";
-import TextButton from "../../components/TextButton";
+import TextButton from "../../components/common/TextButton";
 import { areSetsEqual } from "../../utils/Set";
 import { genreStyles } from "../../utils/CommonStyles";
 import { UserService } from "../../API/Services/UserService";

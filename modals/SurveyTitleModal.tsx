@@ -13,7 +13,7 @@ import {
 import { colors } from "../utils/colors";
 import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 import { screenHeight, screenWidth } from "../utils/ScreenSize";
-import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+import BottomButtonContainer from "../components/common/BottomButtonContainer";
 
 interface SurveyTitleModalProps {
 	setSurveyTitle: (string) => void;
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
 // import { colors } from "../utils/colors";
 // import { borderSizes, fontSizes, marginSizes } from "../utils/sizes";
 // import { screenHeight, screenWidth } from "../utils/ScreenSize";
-// import { BottomButtonContainer } from "../components/common/BottomButtonContainer";
+// import BottomButtonContainer from "../components/common/BottomButtonContainer";
 // import {
 // 	TouchableOpacity,
 // 	TouchableWithoutFeedback,

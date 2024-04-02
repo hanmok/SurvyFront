@@ -9,7 +9,7 @@ import {
 	paddingSizes,
 } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TextButton from "../components/TextButton";
+import TextButton from "../components/common/TextButton";
 import { useState } from "react";
 import { Question } from "../interfaces/Question";
 import PostingQuestionBox from "../components/posting/PostingQuestionBox";
@@ -28,11 +28,11 @@ import {
 import SectionModal from "../modals/SectionModal";
 import { RouteProp } from "@react-navigation/native";
 import { postingSurveyDataManager } from "../utils/PostingSurveyStorage";
-import showAdminToast from "../components/common/toast/showAdminToast";
+import showAdminToast from "../utils/toast/showAdminToast";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { PostingMenuModal } from "../modals/PostingMenuModal";
-import showToast from "../components/common/toast/Toast";
+import showToast from "../utils/toast/Toast";
 import { translateQuestionTypeIdToTime } from "../QuestionType";
 
 export default function PostingScreen({

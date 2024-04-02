@@ -19,6 +19,7 @@ import { QuestionTypeId } from "../../QuestionType";
 import { ScrollView } from "react-native-gesture-handler";
 import showToast from "../../utils/toast/Toast";
 import showAdminToast from "../../utils/toast/showAdminToast";
+import React from "react";
 
 interface SelectablContainerProps {
 	selectableOptions: GQLSelectableOption[];

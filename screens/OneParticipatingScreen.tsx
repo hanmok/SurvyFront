@@ -15,7 +15,7 @@ import { GQLSurveyResponse } from "../interfaces/SurveyResponse";
 import { useQuery } from "@apollo/client";
 import { getSurveyQuery } from "../API/gqlQuery";
 import { screenWidth } from "../utils/ScreenSize";
-import ParticipatingQuestionBox from "../components/participating/ParticipatingQuestionBox";
+import ParticipatingQuestionTextBox from "../components/participating/ParticipatingQuestionBox";
 import SelectableOptionContainer from "../components/SelectableOptionContainer";
 import { buttonColors, colors } from "../utils/colors";
 import TextButton from "../components/common/TextButton";
@@ -158,7 +158,7 @@ function OneParticipatingScreen({
 	return (
 		<View style={{ flex: 1, width: screenWidth - 40 }}>
 			<View style={styles.questionContainerBox}>
-				<ParticipatingQuestionBox {...question} />
+				<ParticipatingQuestionTextBox {...question} />
 				{question.selectableOptions !== undefined &&
 				question.selectableOptions.length > 0 ? (
 					<SelectableOptionContainer

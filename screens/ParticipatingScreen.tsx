@@ -16,7 +16,7 @@ import { fontSizes, marginSizes, borderSizes } from "../utils/sizes";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../utils/NavHelper";
 
-import ParticipatingQuestionBox from "../components/participating/ParticipatingQuestionBox";
+import ParticipatingQuestionTextBox from "../components/participating/ParticipatingQuestionBox";
 import TextButton from "../components/common/TextButton";
 import SelectableOptionContainer from "../components/participating/SelectableOptionContainer";
 import {
@@ -330,7 +330,7 @@ function ParticipatingScreen({
 
 	const renderItem = ({ item }: { item: GQLQuestion }) => (
 		<View style={styles.questionContainerBox}>
-			<ParticipatingQuestionBox {...item} />
+			<ParticipatingQuestionTextBox {...item} />
 			{item.selectableOptions !== undefined &&
 			item.selectableOptions.length > 0 ? (
 				<SelectableOptionContainer

@@ -20,7 +20,7 @@ import BottomButtonContainer from "../components/common/BottomButtonContainer";
 import showToast from "../utils/toast/Toast";
 import Toast from "react-native-toast-message";
 import toastConfig from "../utils/toast/ToastConfig";
-
+import React from "react";
 interface CostGuideModalProps {
 	onClose: () => void;
 	onConfirm: () => void;

@@ -57,3 +57,5 @@ Optimize Performance
 2. 순수함수 컴포넌트(state or lifeCycle 사용 X)
 3. state 에 따른 렌더링 필요하지 않는 경우
 
+// 아 뭐였지.. ?? 고쳐야 하는거 있었는데..... UIUX 아 .. padding!
+

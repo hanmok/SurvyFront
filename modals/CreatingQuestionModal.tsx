@@ -43,12 +43,17 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
 	const [questionTitle, setQuestionTitle] = useState("");
 	const [isExtraOptionEnabled, setIsExtraOptionEnabled] = useState(false);
 	const [dynamicInputValues, setDynamicInputValues] = useState<string[]>([]);
-	const [questionTypeId, SetQuestionTypeId] =
-		useState<QuestionTypeId>(undefined);
+	const [questionTypeId, SetQuestionTypeId] = useState<
+		QuestionTypeId | undefined
+	>(undefined);
 	const [satisfied, setSatisfied] = useState<boolean>(false);
 	const [placeHolder, setPlaceHolder] = useState<string>("");
 
 	const handleConfirm = () => {
+		if (!questionTypeId) {
+			return;
+		}
+
 		let selectableOptions: SelectableOption[] = [];
 
 		let question = new QuestionBuilder(
@@ -57,6 +62,10 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
 			questionTypeId,
 			[]
 		).build();
+
+		if (!question.id) {
+			return;
+		}
 
 		log(`question made: ${JSON.stringify(question)}`);
 
@@ -70,6 +79,9 @@ const CreatingQuestionModal: React.FC<CreatingQuestionModalProps> = ({
 			console.log("essay case, placeHolder", placeHolder);
 			selectableOptions.push(selectableOption);
 		} else {
+			if (!question.id) {
+				return;
+			}
 			dynamicInputValues.map((optionText, index) => {
 				if (optionText !== "") {
 					const selectableOption = new SelectableOptionBuilder(

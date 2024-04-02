@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
+// import TextButton from "./TextButton";
+// import TextButton from "./TextButton";
 import TextButton from "./TextButton";
 import { QuestionTypeKorean, getQuestionType } from "../../QuestionType";
 import { colors } from "../../utils/colors";

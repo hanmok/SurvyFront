@@ -15,6 +15,7 @@ import { logObject } from "../../utils/Log";
 import showAdminToast from "../../utils/toast/showAdminToast";
 import TextInputContainerView from "../../components/TextInputContainer";
 import { UserService } from "../../API/Services/UserService";
+import React from "react";
 
 export default function FindPasswordScreen({
 	navigation,
